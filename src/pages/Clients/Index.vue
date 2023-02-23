@@ -50,7 +50,7 @@
                 <el-table-column
                   v-for="column in tableColumns"
                   :key="column.label"
-                  :min-width="column.minWidth"
+                  :min-width="column.minWidth ? column.minWidth : 100"
                   :prop="column.prop"
                   :label="column.label"
                 >
@@ -177,6 +177,11 @@
           {
             prop: 'salary',
             label: 'Salary',
+            minWidth: 120
+          },
+          {
+            prop: 'salary2',
+            label: 'Salary2',
             minWidth: 120
           }
         ],

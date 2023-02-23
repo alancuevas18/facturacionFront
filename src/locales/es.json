@@ -39,6 +39,9 @@
     },
     "ConfigSide": {
       "title" : "Configuracion"
+    },
+    "clients": {
+      "create" : "Crear"
     }
   }
   
