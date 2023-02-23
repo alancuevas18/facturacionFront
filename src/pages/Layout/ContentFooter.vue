@@ -10,39 +10,20 @@
             rel="noopener"
             class="nav-link"
           >
-            Creative Time
+            Sistema de Facturacion EMACSoft
           </a>
         </li>
-        <li class="nav-item">
-          <a
-            href="https://www.creative-tim.com/presentation"
-            target="_blank"
-            rel="noopener"
-            class="nav-link"
-          >
-            About Us
-          </a>
-        </li>
-        <li class="nav-item">
-          <a
-            href="http://blog.creative-tim.com"
-            target="_blank"
-            rel="noopener"
-            class="nav-link"
-          >
-            Blog
-          </a>
-        </li>
+
       </ul>
       <div class="copyright">
-        &copy; {{ year }}, made with <i class="tim-icons icon-heart-2"></i> by
+        &copy; {{ year }}, Creado <i class="tim-icons icon-cloud-download-93"></i> por
         <a
-          href="https://www.creative-tim.com/?ref=vbdp-vuejs"
+          href="#"
           target="_blank"
           rel="noopener"
-          >Creative Tim</a
+          >EMACSoft</a
         >
-        for a better web.
+        La solucion a tu negocio
       </div>
     </div>
   </footer>

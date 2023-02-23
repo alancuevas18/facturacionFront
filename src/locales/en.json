@@ -1,11 +1,10 @@
 {
   "sidebar": {
-    "title": "Creative Tim",
+    "title": "EMAC",
     "shortTitle": "CT",
-    "dashboard": "Dashboard2",
+    "dashboard": "Dashboard",
     "pages": "Pages",
     "pricing": "Pricing",
-    "rtl": "RTL Support",
     "timeline": "Timeline",
     "login": "Login",
     "register": "Register",
