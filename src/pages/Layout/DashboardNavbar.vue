@@ -52,7 +52,7 @@
           placeholder="SEARCH"
         />
       </modal>
-      <base-dropdown
+      <!-- <base-dropdown
         tag="li"
         title-tag="a"
         title-classes="nav-link"
@@ -84,7 +84,7 @@
         <li class="nav-link">
           <a href="#" class="nav-item dropdown-item">Another one</a>
         </li>
-      </base-dropdown>
+      </base-dropdown> -->
       <base-dropdown
         tag="li"
         title-tag="a"
