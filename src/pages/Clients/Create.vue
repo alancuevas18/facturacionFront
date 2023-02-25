@@ -46,8 +46,8 @@
             </div>
           </div>
           <div class="row d-flex justify-content-center">
-              <base-button type="success"
-                ></base-button>
+              <base-button type="success" class="animation-on-hover"
+                ><i class="tim-icons icon-check-2 mr-2"></i>Create</base-button>
 
                 <router-link to="/clients/index">
                     <base-button type="danger" class="animation-on-hover"

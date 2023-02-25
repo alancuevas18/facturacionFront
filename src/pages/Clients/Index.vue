@@ -50,11 +50,23 @@
                 <el-table-column
                   v-for="column in tableColumns"
                   :key="column.label"
-                  :min-width="column.minWidth ? column.minWidth : 100"
+                  :min-width="column.minWidth"
                   :prop="column.prop"
                   :label="column.label"
                 >
                 </el-table-column>
+                <tbody :class="tbodyClasses">
+                <tr v-for="(item, index) in tableData" :key="index">
+                    <slot :row="item" :index="index">
+                    <td
+                        v-for="(column, index) in tableColumns"
+                        :key="index"
+                    >
+                        <template v-if="hasValue(item, column)">{{ itemValue(item, column) }}</template>     
+                    </td>
+                    </slot>
+                </tr>
+                </tbody>
                 <el-table-column :min-width="135" align="right" label="Actions">
                   <div slot-scope="props">
                     <base-button
@@ -115,6 +127,7 @@
   import users from './users';
   import Fuse from 'fuse.js';
   import swal from 'sweetalert2';
+  import axios from "axios";
   
   export default {
     components: {
@@ -179,13 +192,8 @@
             label: 'Salary',
             minWidth: 120
           },
-          {
-            prop: 'salary2',
-            label: 'Salary2',
-            minWidth: 120
-          }
         ],
-        tableData: users,
+        tableData: [],
         searchedData: [],
         fuseSearch: null
       };
@@ -242,9 +250,23 @@
         if (indexToDelete >= 0) {
           this.tableData.splice(indexToDelete, 1);
         }
-      }
+      },
     },
     mounted() {
+    axios
+      .get('https://emacsoft.com/api/clientes')
+      .then(response => {
+        this.info = response.data;
+        console.log(response.data[0]);
+        this.tableData = response.data[0].personas;
+      })
+      .catch(error => {
+        console.log(error)
+        this.errored = true
+      })
+      .finally(() => this.loading = false);
+
+      console.log(this.tableData)
       this.fuseSearch = new Fuse(this.tableData, {
         keys: ['name', 'email'],
         threshold: 0.3
