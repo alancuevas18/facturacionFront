@@ -17,22 +17,6 @@
               <div
                 class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
               >
-                <el-select
-                  class="select-primary mb-3 pagination-select"
-                  v-model="pagination.perPage"
-                  placeholder="Per page"
-                >
-                  <el-option
-                    class="select-primary"
-                    v-for="item in pagination.perPageOptions"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
-                 
-                </el-select>
-  
                 <base-input>
                   <el-input
                     type="search"
@@ -46,76 +30,12 @@
                   </el-input>
                 </base-input>
               </div>
-              <el-table :data="queriedData">
-                <el-table-column
-                  v-for="column in tableColumns"
-                  :key="column.label"
-                  :min-width="column.minWidth"
-                  :prop="column.prop"
-                  :label="column.label"
-                >
-                </el-table-column>
-                <tbody :class="tbodyClasses">
-                <tr v-for="(item, index) in tableData" :key="index">
-                    <slot :row="item" :index="index">
-                    <td
-                        v-for="(column, index) in tableColumns"
-                        :key="index"
-                    >
-                        <template v-if="hasValue(item, column)">{{ itemValue(item, column) }}</template>     
-                    </td>
-                    </slot>
+              <table class="table tablesorter tableClass" >
+              <tr ><tbody >
+                <td v-for="(item, index) in tableData" :key="index">{{ tableData[index] }}</td>
+              </tbody>
                 </tr>
-                </tbody>
-                <el-table-column :min-width="135" align="right" label="Actions">
-                  <div slot-scope="props">
-                    <base-button
-                      @click.native="handleView(props.$index, props.row)"
-                      class="like btn-link"
-                      type="info"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-notes"></i>
-                    </base-button>
-                    <base-button
-                      @click.native="handleEdit(props.$index, props.row)"
-                      class="edit btn-link"
-                      type="warning"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-pencil"></i>
-                    </base-button>
-                    <base-button
-                      @click.native="handleDelete(props.$index, props.row)"
-                      class="remove btn-link"
-                      type="danger"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-simple-remove"></i>
-                    </base-button>
-                  </div>
-                </el-table-column>
-              </el-table>
-            </div>
-            <div
-              slot="footer"
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-            >
-              <div class="">
-                <p class="card-category">
-                  Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
-                </p>
-              </div>
-              <base-pagination
-                class="pagination-no-border"
-                v-model="pagination.currentPage"
-                :per-page="pagination.perPage"
-                :total="total"
-              >
-              </base-pagination>
+                </table>
             </div>
           </card>
         </div>
@@ -124,27 +44,14 @@
   <script>
   import { Table, TableColumn, Select, Option } from 'element-ui';
   import { BasePagination } from 'src/components';
-  import users from './users';
-  import Fuse from 'fuse.js';
   import swal from 'sweetalert2';
   import axios from "axios";
   
   export default {
     components: {
-      BasePagination,
-      [Select.name]: Select,
-      [Option.name]: Option,
-      [Table.name]: Table,
-      [TableColumn.name]: TableColumn
+
     },
     computed: {
-      queriedData() {
-        let result = this.tableData;
-        if (this.searchedData.length > 0) {
-          result = this.searchedData;
-        }
-        return result.slice(this.from, this.to);
-      },
       to() {
         let highBound = this.from + this.pagination.perPage;
         if (this.total < highBound) {
@@ -167,35 +74,13 @@
           perPage: 5,
           currentPage: 1,
           perPageOptions: [5, 10, 25, 50],
-          total: 0
+          total: 0,
+          columns : ['A', 'B']
         },
         searchQuery: '',
-        propsToSearch: ['name', 'email', 'age'],
-        tableColumns: [
-          {
-            prop: 'name',
-            label: 'Name',
-            minWidth: 200
-          },
-          {
-            prop: 'email',
-            label: 'Email',
-            minWidth: 250
-          },
-          {
-            prop: 'age',
-            label: 'Age',
-            minWidth: 100
-          },
-          {
-            prop: 'salary',
-            label: 'Salary',
-            minWidth: 120
-          },
-        ],
-        tableData: [],
-        searchedData: [],
-        fuseSearch: null
+        tableData : [],
+        tableColumns :  [],
+        searchedData : [],
       };
     },
     methods: {
@@ -244,42 +129,25 @@
         });
       },
       deleteRow(row) {
-        let indexToDelete = this.tableData.findIndex(
-          tableRow => tableRow.id === row.id
-        );
-        if (indexToDelete >= 0) {
-          this.tableData.splice(indexToDelete, 1);
-        }
-      },
+
+      }
     },
     mounted() {
     axios
       .get('https://emacsoft.com/api/clientes')
       .then(response => {
-        this.info = response.data;
-        console.log(response.data[0]);
+        // console.log(response.data[0].personas);
+        // this.tableData =Object.values(response.data[0].personas);
         this.tableData = response.data[0].personas;
+    //   console.log(this.tableData)
       })
       .catch(error => {
-        console.log(error)
         this.errored = true
       })
       .finally(() => this.loading = false);
 
-      console.log(this.tableData)
-      this.fuseSearch = new Fuse(this.tableData, {
-        keys: ['name', 'email'],
-        threshold: 0.3
-      });
     },
     watch: {
-      searchQuery(value) {
-        let result = this.tableData;
-        if (value !== '') {
-          result = this.fuseSearch.search(this.searchQuery);
-        }
-        this.searchedData = result;
-      }
     }
   };
   </script>

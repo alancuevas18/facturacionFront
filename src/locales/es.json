@@ -41,7 +41,9 @@
       "title" : "Configuracion"
     },
     "clients": {
-      "create" : "Crear"
+      "create" : "Crear",
+      "index" : "Administracion de Clientes",
+      "clients" : "Clientes"
     }
   }
   
