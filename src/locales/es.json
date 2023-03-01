@@ -43,7 +43,8 @@
     "clients": {
       "create" : "Crear",
       "index" : "Administracion de Clientes",
-      "clients" : "Clientes"
+      "clients" : "Clientes",
+      "details" : "Detalles"
     }
   }
   

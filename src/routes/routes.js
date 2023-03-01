@@ -9,6 +9,7 @@ const Dashboard = () =>
 
 const ClientIndex = () => import('src/pages/Clients/Index.vue');
 const ClientCreate = () => import('src/pages/Clients/Create.vue');
+const ClientDetail = () => import('src/pages/Clients/Details.vue');
 
 let clientMenu = {
   path: '/clients',
@@ -25,6 +26,11 @@ let clientMenu = {
       path: 'create',
       name: 'Crear Clientes',
       components: { default: ClientCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Cliente',
+      components: { default: ClientDetail }
     },
   ]
 };

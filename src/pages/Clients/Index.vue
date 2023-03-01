@@ -30,11 +30,53 @@
                   </el-input>
                 </base-input>
               </div>
-              <table class="table tablesorter tableClass" >
-              <tr ><tbody >
-                <td v-for="(item, index) in tableData" :key="index">{{ tableData[index] }}</td>
-              </tbody>
+              <table class="table tablesorter tableClass el-table__body" >
+                <thead class="has-gutter">
+                    <tr>
+                        <th class ="el-table__cell" v-for="(item) in tableHeader">
+                            <div class="cell">{{ item }}</div>
+                        </th>
+                    </tr>
+                </thead>
+                <tbody >
+              <tr class="el-table__row">
+                <td class ="el-table__cell" v-for="(item, index) in tableData" :key="index">
+                    <slot :row="item" :index="index">
+                        <div class="cell" v-if="tableData['estadoPersona']">{{ tableData[index] }}</div>
+                    </slot>
+                </td>
+                <td>
+                    <router-link :to="'/clients/details/' + tableData['id']" >
+                        <base-button
+                      class="like btn-link"
+                      type="info"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-notes"></i>
+                    </base-button>
+                    </router-link>
+                    <base-button
+                      @click.native="handleEdit(tableData['id'])"
+                      class="edit btn-link"
+                      type="warning"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-pencil"></i>
+                    </base-button>
+                    <base-button
+                      @click.native="handleDelete(tableData['id'])"
+                      class="remove btn-link"
+                      type="danger"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-simple-remove"></i>
+                    </base-button>
+                </td>
                 </tr>
+              </tbody>
                 </table>
             </div>
           </card>
@@ -46,10 +88,11 @@
   import { BasePagination } from 'src/components';
   import swal from 'sweetalert2';
   import axios from "axios";
+  import config from '@/config';
   
   export default {
     components: {
-
+   
     },
     computed: {
       to() {
@@ -78,15 +121,16 @@
           columns : ['A', 'B']
         },
         searchQuery: '',
-        tableData : [],
-        tableColumns :  [],
+        tableHeader: [],
+        tableData: [],
         searchedData : [],
+        baseApiUrl : '',
       };
     },
     methods: {
-      handleView(index, row) {
+      handleView(index) {
         swal.fire({
-          title: `Viendo ${row.name}`,
+          title: `Viendo ${index}`,
           buttonsStyling: false,
           icon: 'success',
           customClass: {
@@ -96,14 +140,14 @@
       },
       handleEdit(index, row) {
         swal.fire({
-          title: `Editando ${row.name}`,
+          title: `Editando ${index}`,
           buttonsStyling: false,
           customClass: {
             confirmButton: 'btn btn-info btn-fill'
           }
         });
       },
-      handleDelete(index, row) {
+      handleDelete(index) {
         swal.fire({
           title: 'Are you sure?',
           text: `Esta accion no se puede reversar`,
@@ -117,10 +161,10 @@
           buttonsStyling: false
         }).then(result => {
           if (result.value) {
-            this.deleteRow(row);
+            this.deleteRow(index);
             swal.fire({
               title: 'Deleted!',
-              text: `You deleted ${row.name}`,
+              text: `You deleted ${index}`,
               icon: 'success',
               confirmButtonClass: 'btn btn-success btn-fill',
               buttonsStyling: false
@@ -128,18 +172,25 @@
           }
         });
       },
-      deleteRow(row) {
-
+      deleteRow(index) {
+        swal.fire({
+          title: `Eliminando ${index}`,
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-info btn-fill'
+          }
+        });
       }
     },
     mounted() {
+    this.baseApiUrl = config.global.baseApiUrl;
     axios
-      .get('https://emacsoft.com/api/clientes')
+      .get(this.baseApiUrl+'clientes')
       .then(response => {
-        // console.log(response.data[0].personas);
-        // this.tableData =Object.values(response.data[0].personas);
         this.tableData = response.data[0].personas;
-    //   console.log(this.tableData)
+        //Table Header Handle
+        this.tableHeader = Object.keys(this.tableData);
+        this.tableHeader.push("Actions");
       })
       .catch(error => {
         this.errored = true
