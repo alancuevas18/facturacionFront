@@ -29,15 +29,6 @@
             <p></p>
           
             <div slot="footer" class="button-container">
-                <base-button class="btn-facebook" icon round>
-                <i class="fab fa-facebook"></i>
-                </base-button>
-                <base-button class="btn-twitter" icon round>
-                <i class="fab fa-twitter"></i>
-                </base-button>
-                <base-button class="btn-google" icon round>
-                <i class="fab fa-google-plus"></i>
-                </base-button>
                 <a :href="'https://api.whatsapp.com/send?phone='+client.cellPhone">
                     <base-button class="btn-whatsapp" icon round>
                         <i class="fab fa-whatsapp"></i>

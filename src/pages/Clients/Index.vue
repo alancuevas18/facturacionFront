@@ -30,7 +30,8 @@
                   </el-input>
                 </base-input>
               </div>
-              <table class="table tablesorter tableClass el-table__body" >
+              <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
+              <table class="table-responsive table tablesorter tableClass " >
                 <thead class="has-gutter">
                     <tr>
                         <th class ="el-table__cell" v-for="(item) in tableHeader">
@@ -79,6 +80,7 @@
               </tbody>
                 </table>
             </div>
+            </div>
           </card>
         </div>
       </div></div
@@ -118,7 +120,6 @@
           currentPage: 1,
           perPageOptions: [5, 10, 25, 50],
           total: 0,
-          columns : ['A', 'B']
         },
         searchQuery: '',
         tableHeader: [],
