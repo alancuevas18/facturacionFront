@@ -13,66 +13,156 @@
         </h4>
       </template>
       <div>
-        <form method="get" action="/" class="form-horizontal">
+        <ValidationObserver v-slot="{ handleSubmit }">
+        <form class="form-horizontal"  @submit.prevent="handleSubmit()">
         <div class="row">
-            <label class="col-sm-2 col-form-label">Code</label>
+            <label class="col-sm-2 col-form-label">Codigo*</label>
             <div class="col-sm-10">
-                <base-input placeholder="Code" v-model="client.code"> </base-input>
+                <ValidationProvider
+                    name="codigo"
+                    rules="required"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.code"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">Name</label>
+            <label class="col-sm-2 col-form-label">Nombre*</label>
             <div class="col-sm-10">
-                <base-input placeholder="Name" v-model="client.name"> </base-input>
+                <ValidationProvider
+                    name="Nombre"
+                    rules="required|min:3"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.name"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">LastName</label>
+            <label class="col-sm-2 col-form-label">Apellido*</label>
             <div class="col-sm-10">
-                <base-input placeholder="LastName" v-model="client.lastName"> </base-input>
+                <ValidationProvider
+                    name="Apellido"
+                    rules="required|min:3"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.lastName"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">NationalID</label>
+            <label class="col-sm-2 col-form-label">Identificacion*</label>
             <div class="col-sm-10">
-                <base-input placeholder="NationalID" v-model="client.nationalID"> </base-input>
+                <ValidationProvider
+                    name="Identificacion"
+                    rules="required|min:3"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.nationalID"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">Email</label>
+            <label class="col-sm-2 col-form-label">Correo*</label>
             <div class="col-sm-10">
-                <base-input placeholder="Email" v-model="client.email"> </base-input>
+                <ValidationProvider
+                    name="Correo"
+                    rules="required|email"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.email"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">Address</label>
+            <label class="col-sm-2 col-form-label">Direccion*</label>
             <div class="col-sm-10">
-                <base-input placeholder="Address" v-model="client.address"> </base-input>
+                <ValidationProvider
+                    name="Direccion"
+                    rules="required"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.address"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">CellPhone</label>
+            <label class="col-sm-2 col-form-label">Celular*</label>
             <div class="col-sm-10">
-                <base-input placeholder="CellPhone" v-model="client.cellPhone"> </base-input>
+                <ValidationProvider
+                    name="Celular"
+                    rules="required|numeric"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.cellPhone"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
-            <label class="col-sm-2 col-form-label">Phone</label>
+            <label class="col-sm-2 col-form-label">Telefono*</label>
             <div class="col-sm-10">
-                <base-input placeholder="Phone" v-model="client.phone"> </base-input>
+                <ValidationProvider
+                    name="Telefono"
+                    rules="required|numeric"
+                    v-slot="{ passed, failed, errors }"
+                >
+                <base-input
+                    required
+                    v-model="client.phone"
+                    :error="errors[0]"
+                    :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
+                </base-input>
+            </ValidationProvider>
             </div>
         </div>
         <div class="row">
         <label class="col-sm-2 col-form-label">Status</label>
             <div class="col-sm-10">
                 <el-select
+                    required
                     class="select-primary"
                     size="large"
-                    placeholder="Single Select"
+                    placeholder="Status"
                     v-model="client.status"
                     >
                     <el-option
-                        v-for="option in selects.countries"
+                        v-for="option in selects.options"
                         class="select-primary"
                         :value="option.value"
                         :label="option.label"
@@ -83,7 +173,7 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center">
-            <base-button type="success" class="animation-on-hover" @click.native="create()"
+            <base-button type="success" native-type="submit" class="animation-on-hover" @click.native="create()"
             ><i class="tim-icons icon-check-2 mr-2"></i>Create</base-button>
 
             <router-link to="/clients/index">
@@ -92,6 +182,7 @@
                 </router-link>  
         </div>
         </form>
+    </ValidationObserver>
       </div>
     </card>
     <!-- end card -->
@@ -100,9 +191,16 @@
 <script>
 import { BaseCheckbox, BaseRadio } from 'src/components/index';
 import {  DatePicker, Select, Option } from 'element-ui';
-import { create } from 'domain';
+import { extend } from "vee-validate";
+import { required, email, min, numeric} from "vee-validate/dist/rules";
 import axios from "axios";
 import config from '@/config';
+import swal from 'sweetalert2';
+
+extend("email", email);
+extend("required", required);
+extend("min", min);
+extend("numeric", numeric);
 
 export default {
   components: {
@@ -117,7 +215,7 @@ export default {
         baseApiUrl : '',
         selects: {
         simple: '',
-        countries: [
+        options: [
           { value: 'Active', label: 'Active' },
           { value: 'Inactive', label: 'Inactive' },
         ]
@@ -143,19 +241,60 @@ export default {
   methods: {
     create(){
         let client = {
-            code : this.client.code,
-            name : this.client.name,
-            lastName : this.client.lastName,
-            nationalID : this.client.nationalID,
-            email : this.client.email,
-            address : this.client.address,
-            cellPhone : this.client.cellPhone,
-            phone : this.client.phone,
-            status : this.client.status,
+            estadoClientes: true,
+            id: 0,
+            personaId: 0,
+            personas:{
+            codigo : this.client.code,
+            nombre : this.client.name,
+            apellido : this.client.lastName,
+            identificacion : this.client.nationalID,
+            correo : this.client.email,
+            direccion : this.client.address,
+            celular : this.client.cellPhone,
+            telefono : this.client.phone,
+            estadoPersona : this.client.status == 'Active' ? true : false,
+            id:0
+        }
         };
-    axios.post(this.baseApiUrl+"clientes", client).then((result) => {
-    console.log(result);
-     });
+        if(!this.client.code
+        || !this.client.name
+        || !this.client.lastName
+        || !this.client.nationalID
+        || !this.client.email
+        || !this.client.address
+        || !this.client.cellPhone
+        || !this.client.phone
+        || !this.client.status
+        ){
+            swal.fire({
+          title: `Favor llenar todos los campos!`,
+          icon : 'error',
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill'
+          }
+        });
+        }else{
+    // axios.post(this.baseApiUrl+"clientes", client).then((result) => {
+    //     swal.fire({
+    //       title: `Creado con exito!`,
+    //       buttonsStyling: false,
+    //       customClass: {
+    //         confirmButton: 'btn btn-success btn-fill'
+    //       }
+    //     });
+    //  }).catch(error => {
+    //     swal.fire({
+    //       title: `Error al crear!`,
+    //       icon : 'error',
+    //       buttonsStyling: false,
+    //       customClass: {
+    //         confirmButton: 'btn btn-success btn-fill'
+    //       }
+    //     });
+    //   });
+        }
     }
   }
 };

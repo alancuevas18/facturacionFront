@@ -6,7 +6,7 @@
       <div class="row mt-5">
         <div class="col-12">
           <card card-body-classes="table-full-width">
-            <h4 slot="header" class="card-title">{{$t('clients.clients')}}  
+            <h4 slot="header" class="card-title">{{$t('clients.clients')}}
                 <router-link to="/clients/create">
                     <button class="btn floatr btn-icon btn-twitter">
                         <i class="tim-icons icon-simple-add"></i>
@@ -17,6 +17,21 @@
               <div
                 class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
               >
+                <el-select
+                  class="select-primary mb-3 pagination-select"
+                  v-model="pagination.perPage"
+                  placeholder="Per page"
+                >
+                  <el-option
+                    class="select-primary"
+                    v-for="item in pagination.perPageOptions"
+                    :key="item"
+                    :label="item"
+                    :value="item"
+                  >
+                  </el-option>
+                </el-select>
+  
                 <base-input>
                   <el-input
                     type="search"
@@ -30,56 +45,66 @@
                   </el-input>
                 </base-input>
               </div>
-              <div class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap">
-              <table class="table-responsive table tablesorter tableClass " >
-                <thead class="has-gutter">
-                    <tr>
-                        <th class ="el-table__cell" v-for="(item) in tableHeader">
-                            <div class="cell">{{ item }}</div>
-                        </th>
-                    </tr>
-                </thead>
-                <tbody >
-              <tr class="el-table__row">
-                <td class ="el-table__cell" v-for="(item, index) in tableData" :key="index">
-                    <slot :row="item" :index="index">
-                        <div class="cell" v-if="tableData['estadoPersona']">{{ tableData[index] }}</div>
-                    </slot>
-                </td>
-                <td>
-                    <router-link :to="'/clients/details/' + tableData['id']" >
+              <el-table :data="queriedData">
+                <el-table-column
+                  v-for="column in tableColumns"
+                  :key="column.label"
+                  :min-width="column.minWidth"
+                  :prop="column.prop"
+                  :label="column.label"
+                >
+                </el-table-column>
+                <el-table-column :min-width="135" align="right" label="Actions">
+                  <div slot-scope="props">
+                    <router-link :to="'/clients/details/' + props.row.id" >
                         <base-button
-                      class="like btn-link"
-                      type="info"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-notes"></i>
-                    </base-button>
+                        class="like btn-link"
+                        type="info"
+                        size="sm"
+                        icon
+                        >
+                            <i class="tim-icons icon-notes"></i>
+                        </base-button>
+                    </router-link>
+                    <router-link :to="'/clients/edit/' + props.row.id" >
+                        <base-button
+                        class="edit btn-link"
+                        type="warning"
+                        size="sm"
+                        icon
+                        >
+                            <i class="tim-icons icon-pencil"></i>
+                        </base-button>
                     </router-link>
                     <base-button
-                      @click.native="handleEdit(tableData['id'])"
-                      class="edit btn-link"
-                      type="warning"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-pencil"></i>
-                    </base-button>
-                    <base-button
-                      @click.native="handleDelete(tableData['id'])"
+                      @click.native="handleDelete(props.$index, props.row)"
                       class="remove btn-link"
                       type="danger"
                       size="sm"
                       icon
                     >
-                      <i class="tim-icons icon-simple-remove"></i>
+                        <i class="tim-icons icon-simple-remove"></i>
                     </base-button>
-                </td>
-                </tr>
-              </tbody>
-                </table>
+                  </div>
+                </el-table-column>
+              </el-table>
             </div>
+            <div
+              slot="footer"
+              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+            >
+              <div class="">
+                <p class="card-category">
+                  Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+                </p>
+              </div>
+              <base-pagination
+                class="pagination-no-border"
+                v-model="pagination.currentPage"
+                :per-page="pagination.perPage"
+                :total="total"
+              >
+              </base-pagination>
             </div>
           </card>
         </div>
@@ -88,15 +113,30 @@
   <script>
   import { Table, TableColumn, Select, Option } from 'element-ui';
   import { BasePagination } from 'src/components';
+  import Fuse from 'fuse.js';
   import swal from 'sweetalert2';
   import axios from "axios";
   import config from '@/config';
   
   export default {
     components: {
-   
+      BasePagination,
+      [Select.name]: Select,
+      [Option.name]: Option,
+      [Table.name]: Table,
+      [TableColumn.name]: TableColumn
     },
     computed: {
+      /***
+       * Returns a page from the searched data or the whole data. Search is performed in the watch section below
+       */
+      queriedData() {
+        let result = this.tableData;
+        if (this.searchedData.length > 0) {
+          result = this.searchedData;
+        }
+        return result.slice(this.from, this.to);
+      },
       to() {
         let highBound = this.from + this.pagination.perPage;
         if (this.total < highBound) {
@@ -115,43 +155,62 @@
     },
     data() {
       return {
+        baseApiUrl : '',
         pagination: {
           perPage: 5,
           currentPage: 1,
           perPageOptions: [5, 10, 25, 50],
-          total: 0,
+          total: 0
         },
         searchQuery: '',
-        tableHeader: [],
+        propsToSearch: ['name', 'email', 'age'],
+        tableColumns: [
+          {
+            prop: 'codigo',
+            label: 'Codigo',
+            minWidth: 70
+          },
+          {
+            prop: 'nombre',
+            label: 'Nombre',
+            minWidth: 100
+          },
+          {
+            prop: 'apellido',
+            label: 'apellido',
+            minWidth: 100
+          },
+          {
+            prop: 'identificacion',
+            label: 'identificacion',
+            minWidth: 120
+          },
+          {
+            prop: 'correo',
+            label: 'correo',
+            minWidth: 200
+          },
+          {
+            prop: 'celular',
+            label: 'celular',
+            minWidth: 120
+          },
+          {
+            prop: 'telefono',
+            label: 'telefono',
+            minWidth: 120
+          }
+        ],
         tableData: [],
-        searchedData : [],
-        baseApiUrl : '',
+        searchedData: [],
+        fuseSearch: null
       };
     },
     methods: {
-      handleView(index) {
-        swal.fire({
-          title: `Viendo ${index}`,
-          buttonsStyling: false,
-          icon: 'success',
-          customClass: {
-            confirmButton: 'btn btn-success btn-fill'
-          }
-        });
-      },
-      handleEdit(index, row) {
-        swal.fire({
-          title: `Editando ${index}`,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: 'btn btn-info btn-fill'
-          }
-        });
-      },
-      handleDelete(index) {
+      handleDelete(index, row) {
         swal.fire({
           title: 'Are you sure?',
-          text: `Esta accion no se puede reversar`,
+          text: `You won't be able to revert this!`,
           icon: 'warning',
           showCancelButton: true,
           customClass: {
@@ -162,10 +221,10 @@
           buttonsStyling: false
         }).then(result => {
           if (result.value) {
-            this.deleteRow(index);
+            this.deleteRow(row);
             swal.fire({
               title: 'Deleted!',
-              text: `You deleted ${index}`,
+              text: `You deleted ${row.name}`,
               icon: 'success',
               confirmButtonClass: 'btn btn-success btn-fill',
               buttonsStyling: false
@@ -173,33 +232,44 @@
           }
         });
       },
-      deleteRow(index) {
-        swal.fire({
-          title: `Eliminando ${index}`,
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: 'btn btn-info btn-fill'
-          }
+      deleteRow(row) {
+        axios.delete(this.baseApiUrl+'clientes?id='+ row.id)
+            .then(() => {
+                let indexToDelete = this.tableData.findIndex(
+          tableRow => tableRow.id === row.id
+        );
+        if (indexToDelete >= 0) {
+          this.tableData.splice(indexToDelete, 1);
+        }
         });
       }
     },
     mounted() {
-    this.baseApiUrl = config.global.baseApiUrl;
-    axios
+        this.baseApiUrl = config.global.baseApiUrl;
+        axios
       .get(this.baseApiUrl+'clientes')
       .then(response => {
-        this.tableData = response.data[0].personas;
-        //Table Header Handle
-        this.tableHeader = Object.keys(this.tableData);
-        this.tableHeader.push("Actions");
+        for(let i = 0; i<response.data.length; i++){
+            this.tableData.push(response.data[i].personas)
+        }
       })
       .catch(error => {
         this.errored = true
       })
       .finally(() => this.loading = false);
-
+      this.fuseSearch = new Fuse(this.tableData, {
+        keys: ['name', 'email'],
+        threshold: 0.3
+      });
     },
     watch: {
+      searchQuery(value) {
+        let result = this.tableData;
+        if (value !== '') {
+          result = this.fuseSearch.search(this.searchQuery);
+        }
+        this.searchedData = result;
+      }
     }
   };
   </script>
@@ -210,12 +280,8 @@
   }
   .swal2-icon-content{
     font-size: inherit !important;
-  }
-  .el-table th.el-table__cell{
+  }  .el-table th.el-table__cell{
     background-color: transparent;
-  }
-  .floatr{
-    float:right;
   }
   </style>
   
