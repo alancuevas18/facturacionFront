@@ -122,19 +122,19 @@ export default {
   methods: {
     find(){
     axios
-      .get(this.baseApiUrl+'clientes?id='+ this.id)
+      .get(this.baseApiUrl+'clientes/'+ this.id)
       .then(response => {
-        console.log(response.data[0]);
+        console.log(response.data);
         this.client = {
-            code : response.data[0].personas.codigo,
-            name : response.data[0].personas.nombre,
-            lastName : response.data[0].personas.apellido,
-            nationalID : response.data[0].personas.identificacion,
-            email : response.data[0].personas.correo,
-            address : response.data[0].personas.direccion,
-            cellPhone : response.data[0].personas.celular,
-            phone : response.data[0].personas.telefono,
-            status : response.data[0].estadoClientes ? 'active' : 'inactive',
+            code : response.data.personas.codigo,
+            name : response.data.personas.nombre,
+            lastName : response.data.personas.apellido,
+            nationalID : response.data.personas.identificacion,
+            email : response.data.personas.correo,
+            address : response.data.personas.direccion,
+            cellPhone : response.data.personas.celular,
+            phone : response.data.personas.telefono,
+            status : response.data.estadoClientes ? 'active' : 'inactive',
         };
       })
       .catch(error => {

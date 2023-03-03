@@ -23,7 +23,7 @@ let clientMenu = {
       components: { default: ClientIndex }
     },
     {
-      path: 'create',
+      path: 'create/:id?',
       name: 'Crear Clientes',
       components: { default: ClientCreate }
     },

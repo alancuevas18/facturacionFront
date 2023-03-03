@@ -1,5 +1,8 @@
 <template>
     <div class="content">
+        <loading :active.sync="isLoading"
+                 :can-cancel="true"
+                 :is-full-page="fullPage"/>
       <div class="col-md-8 ml-auto mr-auto">
         <h2 class="text-center">{{$t('clients.index')}}</h2>
       </div>
@@ -66,7 +69,7 @@
                             <i class="tim-icons icon-notes"></i>
                         </base-button>
                     </router-link>
-                    <router-link :to="'/clients/edit/' + props.row.id" >
+                    <router-link :to="'/clients/create/' + props.row.id" >
                         <base-button
                         class="edit btn-link"
                         type="warning"
@@ -108,11 +111,14 @@
             </div>
           </card>
         </div>
-      </div></div
+      </div>
+      </div
   ></template>
   <script>
   import { Table, TableColumn, Select, Option } from 'element-ui';
   import { BasePagination } from 'src/components';
+  import Loading from 'vue-loading-overlay';
+  import 'vue-loading-overlay/dist/vue-loading.css';
   import Fuse from 'fuse.js';
   import swal from 'sweetalert2';
   import axios from "axios";
@@ -120,6 +126,7 @@
   
   export default {
     components: {
+      Loading,
       BasePagination,
       [Select.name]: Select,
       [Option.name]: Option,
@@ -155,6 +162,8 @@
     },
     data() {
       return {
+        isLoading: false,
+        fullPage: true,
         baseApiUrl : '',
         pagination: {
           perPage: 5,
@@ -245,6 +254,7 @@
       }
     },
     mounted() {
+        this.isLoading = true;
         this.baseApiUrl = config.global.baseApiUrl;
         axios
       .get(this.baseApiUrl+'clientes')
@@ -252,6 +262,7 @@
         for(let i = 0; i<response.data.length; i++){
             this.tableData.push(response.data[i].personas)
         }
+        this.isLoading = false;
       })
       .catch(error => {
         this.errored = true

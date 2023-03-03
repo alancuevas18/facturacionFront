@@ -4,7 +4,7 @@
     <card>
       <template slot="header">
         <h4 class="card-title">
-            {{$t('clients.create')}}
+            {{ title }}
             <router-link to="/clients/index">
                 <button class="btn floatr btn-icon btn-youtube">
                     <i class="tim-icons icon-double-left"></i>
@@ -173,8 +173,8 @@
             </div>
         </div>
         <div class="row d-flex justify-content-center">
-            <base-button type="success" native-type="submit" class="animation-on-hover" @click.native="create()"
-            ><i class="tim-icons icon-check-2 mr-2"></i>Create</base-button>
+            <base-button type="success" native-type="submit" class="animation-on-hover" @click.native="!id ? create() : edit()"
+            ><i class="tim-icons icon-check-2 mr-2"></i>{{title}}</base-button>
 
             <router-link to="/clients/index">
                 <base-button type="danger" class="animation-on-hover"
@@ -212,7 +212,9 @@ export default {
   },
   data() {
     return {
+        id: '',
         baseApiUrl : '',
+        title : '',
         selects: {
         simple: '',
         options: [
@@ -237,8 +239,25 @@ export default {
   },
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl;
+    this.id = this.$route.params.id = '' ? '' : this.$route.params.id;
+    this.title = !this.id ? 'Cear' : 'Editar';
+    console.log(this.id)
   },
   methods: {
+    clear(){
+      this.client.code = ''; 
+      this.client.name = ''; 
+      this.client.lastName = ''; 
+      this.client.nationalID = ''; 
+      this.client.email = ''; 
+      this.client.address = ''; 
+      this.client.cellPhone = ''; 
+      this.client.phone = ''; 
+      this.client.statu = ''; 
+    },
+    edit(){
+        console.log('Click on EDIT')
+    },
     create(){
         let client = {
             estadoClientes: true,
@@ -276,24 +295,18 @@ export default {
           }
         });
         }else{
-    // axios.post(this.baseApiUrl+"clientes", client).then((result) => {
-    //     swal.fire({
-    //       title: `Creado con exito!`,
-    //       buttonsStyling: false,
-    //       customClass: {
-    //         confirmButton: 'btn btn-success btn-fill'
-    //       }
-    //     });
-    //  }).catch(error => {
-    //     swal.fire({
-    //       title: `Error al crear!`,
-    //       icon : 'error',
-    //       buttonsStyling: false,
-    //       customClass: {
-    //         confirmButton: 'btn btn-success btn-fill'
-    //       }
-    //     });
-    //   });
+    axios.post(this.baseApiUrl+"clientes", client).then((result) => {
+        this.clear();
+        console.log(result)
+        swal.fire({
+          title: `Creado con exito!`,
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill'
+          }
+        });
+        this.$router.push({ path: '/clients/index' })
+     });
         }
     }
   }
