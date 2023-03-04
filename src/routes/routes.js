@@ -1,15 +1,13 @@
-import DashboardLayout from 'src/pages/Layout/DashboardLayout.vue';
+import DashboardLayout from 'src/pages/Layout/DashboardLayout.vue'
 // GeneralViews
-import NotFound from 'src/pages/GeneralViews/NotFoundPage.vue';
+import NotFound from 'src/pages/GeneralViews/NotFoundPage.vue'
 
 // Dashboard pages
-const Dashboard = () =>
-  import('src/pages/Dashboard/Dashboard.vue');
+const Dashboard = () => import('src/pages/Dashboard/Dashboard.vue')
 
-
-const ClientIndex = () => import('src/pages/Clients/Index.vue');
-const ClientCreate = () => import('src/pages/Clients/Create.vue');
-const ClientDetail = () => import('src/pages/Clients/Details.vue');
+const ClientIndex = () => import('src/pages/Clients/Index.vue')
+const ClientCreate = () => import('src/pages/Clients/Create.vue')
+const ClientDetail = () => import('src/pages/Clients/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -31,11 +29,11 @@ let clientMenu = {
       path: 'details/:id',
       name: 'Detalles Cliente',
       components: { default: ClientDetail }
-    },
+    }
   ]
-};
+}
 
-
+let suplierMenu = {}
 
 const routes = [
   {
@@ -54,10 +52,10 @@ const routes = [
         path: 'dashboard',
         name: 'Dashboard',
         components: { default: Dashboard }
-      },
+      }
     ]
   },
   { path: '*', component: NotFound }
-];
+]
 
-export default routes;
+export default routes
