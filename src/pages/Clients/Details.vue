@@ -125,8 +125,7 @@ export default {
           phone: '',
           status: ''
         }
-      ],
-      clientStatus: 'Active'
+      ]
     }
   },
   mounted() {
@@ -139,7 +138,6 @@ export default {
       axios
         .get(this.baseApiUrl + 'clientes/' + this.id)
         .then((response) => {
-          console.log(response.data)
           this.client = {
             code: response.data.personas.codigo,
             name: response.data.personas.nombre,

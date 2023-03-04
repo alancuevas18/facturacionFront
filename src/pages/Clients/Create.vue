@@ -1,5 +1,10 @@
 <template>
   <div class="col-md-12">
+    <loading
+      :active.sync="isLoading"
+      :can-cancel="true"
+      :is-full-page="fullPage"
+    />
     <h2 class="text-center">{{ $t('clients.index') }}</h2>
     <card>
       <template slot="header">
@@ -233,9 +238,11 @@ import { BaseCheckbox, BaseRadio } from 'src/components/index'
 import { DatePicker, Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
 import { required, email, min, numeric } from 'vee-validate/dist/rules'
+import Loading from 'vue-loading-overlay'
+import 'vue-loading-overlay/dist/vue-loading.css'
 import axios from 'axios'
 import config from '@/config'
-import swal from 'sweetalert2'
+// import swal from 'sweetalert2'
 
 extend('email', email)
 extend('required', required)
@@ -244,6 +251,7 @@ extend('numeric', numeric)
 
 export default {
   components: {
+    Loading,
     BaseCheckbox,
     BaseRadio,
     [DatePicker.name]: DatePicker,
@@ -252,6 +260,8 @@ export default {
   },
   data() {
     return {
+      isLoading: false,
+      fullPage: true,
       id: '',
       baseApiUrl: '',
       title: '',
@@ -286,7 +296,21 @@ export default {
     }
   },
   methods: {
+    validateFields() {
+      return (
+        !this.client.code ||
+        !this.client.name ||
+        !this.client.lastName ||
+        !this.client.nationalID ||
+        !this.client.email ||
+        !this.client.address ||
+        !this.client.cellPhone ||
+        !this.client.phone ||
+        !this.client.status
+      )
+    },
     fillForm() {
+      this.isLoading = true
       axios
         .get(this.baseApiUrl + 'clientes/' + this.id)
         .then((response) => {
@@ -301,6 +325,7 @@ export default {
             phone: response.data.personas.telefono,
             status: response.data.estadoClientes ? 'active' : 'inactive'
           }
+          this.isLoading = false
         })
         .catch((error) => {
           this.error = error
@@ -316,20 +341,27 @@ export default {
       this.client.address = ''
       this.client.cellPhone = ''
       this.client.phone = ''
-      this.client.statu = ''
+      this.client.status = ''
     },
     edit() {
-      if (
-        !this.client.code ||
-        !this.client.name ||
-        !this.client.lastName ||
-        !this.client.nationalID ||
-        !this.client.email ||
-        !this.client.address ||
-        !this.client.cellPhone ||
-        !this.client.phone ||
-        !this.client.status
-      ) {
+      let client = {
+        estadoClientes: this.client.status == 'active' ? true : false,
+        id: 0,
+        personaId: 0,
+        personas: {
+          codigo: this.client.code,
+          nombre: this.client.name,
+          apellido: this.client.lastName,
+          identificacion: this.client.nationalID,
+          correo: this.client.email,
+          direccion: this.client.address,
+          celular: this.client.cellPhone,
+          telefono: this.client.phone,
+          estadoPersona: this.client.status == 'active' ? true : false,
+          id: this.id
+        }
+      }
+      if (this.validateFields()) {
         swal.fire({
           title: `Favor llenar todos los campos!`,
           icon: 'error',
@@ -339,9 +371,11 @@ export default {
           }
         })
       } else {
+        this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'clientes/' + this.id, this.client)
+          .patch(this.baseApiUrl + 'clientes/' + this.id, client)
           .then((response) => {
+            this.isLoading = false
             swal.fire({
               title: response.data.message,
               buttonsStyling: false,
@@ -350,11 +384,9 @@ export default {
               }
             })
             this.clear()
-            console.log(this.client)
             this.$router.push({ path: '/clients/index' })
           })
           .catch((error) => {
-            console.log(error)
             swal.fire({
               title: 'Error al ejecutar accion',
               buttonsStyling: false,
@@ -379,21 +411,11 @@ export default {
           direccion: this.client.address,
           celular: this.client.cellPhone,
           telefono: this.client.phone,
-          estadoPersona: this.client.status == 'Active' ? true : false,
+          estadoPersona: this.client.status == 'active' ? true : false,
           id: 0
         }
       }
-      if (
-        !this.client.code ||
-        !this.client.name ||
-        !this.client.lastName ||
-        !this.client.nationalID ||
-        !this.client.email ||
-        !this.client.address ||
-        !this.client.cellPhone ||
-        !this.client.phone ||
-        !this.client.status
-      ) {
+      if (this.validateFields()) {
         swal.fire({
           title: `Favor llenar todos los campos!`,
           icon: 'error',
@@ -403,10 +425,11 @@ export default {
           }
         })
       } else {
+        this.isLoading = true
         axios
           .post(this.baseApiUrl + 'clientes', client)
           .then((response) => {
-            this.clear()
+            this.isLoading = false
             swal.fire({
               title: response.data.message,
               buttonsStyling: false,
@@ -414,10 +437,10 @@ export default {
                 confirmButton: 'btn btn-success btn-fill'
               }
             })
+            this.clear()
             this.$router.push({ path: '/clients/index' })
           })
           .catch((error) => {
-            console.log(error)
             swal.fire({
               title: 'Error al ejecutar accion',
               buttonsStyling: false,
