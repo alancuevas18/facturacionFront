@@ -31,6 +31,7 @@
                   <base-input
                     required
                     v-model="client.code"
+                    :readonly="id"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -264,6 +265,7 @@ export default {
       id: '',
       baseApiUrl: '',
       title: '',
+      fixedCode: '',
       selects: {
         simple: '',
         options: [
@@ -313,16 +315,19 @@ export default {
       axios
         .get(this.baseApiUrl + 'clientes/' + this.id)
         .then((response) => {
+          this.fixedCode = response.data.codigo
           this.client = {
-            code: response.data.personas.codigo,
-            name: response.data.personas.nombre,
-            lastName: response.data.personas.apellido,
-            nationalID: response.data.personas.identificacion,
-            email: response.data.personas.correo,
-            address: response.data.personas.direccion,
-            cellPhone: response.data.personas.celular,
-            phone: response.data.personas.telefono,
-            status: response.data.estadoClientes ? 'active' : 'inactive'
+            code: response.data.codigo,
+            name: response.data.nombre,
+            lastName: response.data.apellido,
+            nationalID: response.data.identificacion,
+            email: response.data.correo,
+            address: response.data.direccion,
+            cellPhone: response.data.celular,
+            phone: response.data.telefono,
+            status: response.data.estadoClientes ? 'active' : 'inactive',
+            id: response.data.id,
+            personaId: response.data.personaId
           }
         })
         .catch((error) => {
@@ -342,29 +347,27 @@ export default {
       this.client.status = ''
     },
     edit() {
+      console.log(this.baseApiUrl + 'clientes/' + this.id)
       let client = {
+        nombre: this.client.name,
         estadoClientes: this.client.status == 'active' ? true : false,
-        id: 0,
-        personaId: 0,
-        personas: {
-          codigo: this.client.code,
-          nombre: this.client.name,
-          apellido: this.client.lastName,
-          identificacion: this.client.nationalID,
-          correo: this.client.email,
-          direccion: this.client.address,
-          celular: this.client.cellPhone,
-          telefono: this.client.phone,
-          estadoPersona: this.client.status == 'active' ? true : false,
-          id: this.id
-        }
+        personaId: this.client.personaId,
+        codigo: this.fixedCode,
+        apellido: this.client.lastName,
+        identificacion: this.client.nationalID,
+        correo: this.client.email,
+        direccion: this.client.address,
+        celular: this.client.cellPhone,
+        telefono: this.client.phone,
+        estadoPersona: this.client.status == 'active' ? true : false,
+        id: this.client.id
       }
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .patch(this.baseApiUrl + 'clientes/' + this.id, client)
+          .put(this.baseApiUrl + 'clientes/' + this.id, client)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -378,21 +381,18 @@ export default {
     },
     create() {
       let client = {
-        estadoClientes: true,
-        id: 0,
+        nombre: this.client.name,
+        estadoClientes: this.client.status == 'active' ? true : false,
         personaId: 0,
-        personas: {
-          codigo: this.client.code,
-          nombre: this.client.name,
-          apellido: this.client.lastName,
-          identificacion: this.client.nationalID,
-          correo: this.client.email,
-          direccion: this.client.address,
-          celular: this.client.cellPhone,
-          telefono: this.client.phone,
-          estadoPersona: this.client.status == 'active' ? true : false,
-          id: 0
-        }
+        codigo: this.client.code,
+        apellido: this.client.lastName,
+        identificacion: this.client.nationalID,
+        correo: this.client.email,
+        direccion: this.client.address,
+        celular: this.client.cellPhone,
+        telefono: this.client.phone,
+        estadoPersona: this.client.status == 'active' ? true : false,
+        id: 0
       }
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')

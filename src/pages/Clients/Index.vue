@@ -122,6 +122,7 @@ import { Table, TableColumn, Select, Option } from 'element-ui'
 import { BasePagination } from 'src/components'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
+import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
 
@@ -261,8 +262,7 @@ export default {
       .get(this.baseApiUrl + 'clientes')
       .then((response) => {
         for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push(response.data[i].personas)
-          this.tableData[i]['id'] = response.data[i]['id']
+          this.tableData.push(response.data[i])
         }
       })
       .catch((error) => {

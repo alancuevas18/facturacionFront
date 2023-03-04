@@ -154,14 +154,14 @@ export default {
         .then((response) => {
           this.isLoading = true
           this.client = {
-            code: response.data.personas.codigo,
-            name: response.data.personas.nombre,
-            lastName: response.data.personas.apellido,
-            nationalID: response.data.personas.identificacion,
-            email: response.data.personas.correo,
-            address: response.data.personas.direccion,
-            cellPhone: response.data.personas.celular,
-            phone: response.data.personas.telefono,
+            code: response.data.codigo,
+            name: response.data.nombre,
+            lastName: response.data.apellido,
+            nationalID: response.data.identificacion,
+            email: response.data.correo,
+            address: response.data.direccion,
+            cellPhone: response.data.celular,
+            phone: response.data.telefono,
             status: response.data.estadoClientes ? 'active' : 'inactive'
           }
         })
