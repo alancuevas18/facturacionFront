@@ -242,7 +242,6 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import axios from 'axios'
 import config from '@/config'
-// import swal from 'sweetalert2'
 
 extend('email', email)
 extend('required', required)
@@ -268,8 +267,8 @@ export default {
       selects: {
         simple: '',
         options: [
-          { value: 'Active', label: 'Active' },
-          { value: 'Inactive', label: 'Inactive' }
+          { value: 'Active', label: 'Activar' },
+          { value: 'Inactive', label: 'Inactivar' }
         ]
       },
       client: [
@@ -325,12 +324,11 @@ export default {
             phone: response.data.personas.telefono,
             status: response.data.estadoClientes ? 'active' : 'inactive'
           }
-          this.isLoading = false
         })
         .catch((error) => {
           this.error = error
         })
-        .finally(() => (this.loading = false))
+        .finally(() => (this.isLoading = false))
     },
     clear() {
       this.client.code = ''
@@ -362,39 +360,20 @@ export default {
         }
       }
       if (this.validateFields()) {
-        swal.fire({
-          title: `Favor llenar todos los campos!`,
-          icon: 'error',
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: 'btn btn-success btn-fill'
-          }
-        })
+        this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
           .patch(this.baseApiUrl + 'clientes/' + this.id, client)
           .then((response) => {
-            this.isLoading = false
-            swal.fire({
-              title: response.data.message,
-              buttonsStyling: false,
-              customClass: {
-                confirmButton: 'btn btn-success btn-fill'
-              }
-            })
+            this.globalSweetMessage(response.data.message)
             this.clear()
             this.$router.push({ path: '/clients/index' })
           })
           .catch((error) => {
-            swal.fire({
-              title: 'Error al ejecutar accion',
-              buttonsStyling: false,
-              customClass: {
-                confirmButton: 'btn btn-success btn-fill'
-              }
-            })
+            this.globalSweetMessage('Error al ejecutar accion', 'error')
           })
+          .finally(() => (this.isLoading = false))
       }
     },
     create() {
@@ -416,39 +395,20 @@ export default {
         }
       }
       if (this.validateFields()) {
-        swal.fire({
-          title: `Favor llenar todos los campos!`,
-          icon: 'error',
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: 'btn btn-success btn-fill'
-          }
-        })
+        this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
           .post(this.baseApiUrl + 'clientes', client)
           .then((response) => {
-            this.isLoading = false
-            swal.fire({
-              title: response.data.message,
-              buttonsStyling: false,
-              customClass: {
-                confirmButton: 'btn btn-success btn-fill'
-              }
-            })
+            this.globalSweetMessage(response.data.message)
             this.clear()
             this.$router.push({ path: '/clients/index' })
           })
           .catch((error) => {
-            swal.fire({
-              title: 'Error al ejecutar accion',
-              buttonsStyling: false,
-              customClass: {
-                confirmButton: 'btn btn-success btn-fill'
-              }
-            })
+            this.globalSweetMessage('Error al ejecutar accion', 'error')
           })
+          .finally(() => (this.isLoading = false))
       }
     }
   }

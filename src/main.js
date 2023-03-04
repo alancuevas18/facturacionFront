@@ -31,7 +31,11 @@ Vue.use(RouterPrefetch)
 
 Vue.mixin({
   methods: {
-    globalSweet: function (message, icon = 'success') {
+    globalSweetMessage: function (message, icon = 'success') {
+      if (message == '' || message == undefined) {
+        if (icon == 'success') message = 'Realizado con exito'
+        else if (icon == 'error') message = 'No se pudo realizar la accion'
+      }
       swal.fire({
         title: message,
         icon: icon,

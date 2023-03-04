@@ -44,7 +44,7 @@
                   class="mb-3 search-input"
                   clearable
                   prefix-icon="el-icon-search"
-                  placeholder="Search records"
+                  placeholder="Buscar"
                   v-model="searchQuery"
                   aria-controls="datatables"
                 >
@@ -122,8 +122,6 @@ import { Table, TableColumn, Select, Option } from 'element-ui'
 import { BasePagination } from 'src/components'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import Fuse from 'fuse.js'
-import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
 
@@ -137,9 +135,6 @@ export default {
     [TableColumn.name]: TableColumn
   },
   computed: {
-    /***
-     * Returns a page from the searched data or the whole data. Search is performed in the watch section below
-     */
     queriedData() {
       let result = this.tableData
       if (this.searchedData.length > 0) {
@@ -175,7 +170,7 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['name', 'email', 'age'],
+      propsToSearch: ['codigo', 'nombre', 'identificacion', 'correo'],
       tableColumns: [
         {
           prop: 'codigo',
@@ -245,14 +240,7 @@ export default {
       axios
         .delete(this.baseApiUrl + 'clientes/' + row.id)
         .then(() => {
-          this.isLoading = false
-          swal.fire({
-            title: 'Deleted!',
-            text: `You deleted ${row.name}`,
-            icon: 'success',
-            confirmButtonClass: 'btn btn-success btn-fill',
-            buttonsStyling: false
-          })
+          this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
             (tableRow) => tableRow.id === row.id
           )
@@ -261,16 +249,9 @@ export default {
           }
         })
         .catch((error) => {
-          this.isLoading = false
-          swal.fire({
-            title: `Error al eliminar!`,
-            icon: 'error',
-            buttonsStyling: false,
-            customClass: {
-              confirmButton: 'btn btn-success btn-fill'
-            }
-          })
+          this.globalSweetMessage('Error al eliminar!', 'error')
         })
+        .finally(() => (this.isLoading = false))
     }
   },
   mounted() {
@@ -281,27 +262,15 @@ export default {
       .then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           this.tableData.push(response.data[i].personas)
+          this.tableData[i]['id'] = response.data[i]['id']
         }
-        this.isLoading = false
       })
       .catch((error) => {
         this.errored = true
       })
-      .finally(() => (this.loading = false))
-    this.fuseSearch = new Fuse(this.tableData, {
-      keys: ['name', 'email'],
-      threshold: 0.3
-    })
+      .finally(() => (this.isLoading = false))
   },
-  watch: {
-    searchQuery(value) {
-      let result = this.tableData
-      if (value !== '') {
-        result = this.fuseSearch.search(this.searchQuery)
-      }
-      this.searchedData = result
-    }
-  }
+  watch: {}
 }
 </script>
 <style>
