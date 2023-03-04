@@ -241,9 +241,32 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl;
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id;
     this.title = !this.id ? 'Cear' : 'Editar';
-    console.log(this.id)
+    if(this.id){
+        this.fillForm()
+    }
   },
   methods: {
+    fillForm(){
+        axios
+      .get(this.baseApiUrl+'clientes/'+ this.id)
+      .then(response => {
+        this.client = {
+            code : response.data.personas.codigo,
+            name : response.data.personas.nombre,
+            lastName : response.data.personas.apellido,
+            nationalID : response.data.personas.identificacion,
+            email : response.data.personas.correo,
+            address : response.data.personas.direccion,
+            cellPhone : response.data.personas.celular,
+            phone : response.data.personas.telefono,
+            status : response.data.estadoClientes ? 'active' : 'inactive',
+        };
+      })
+      .catch(error => {
+        this.error = error
+      })
+      .finally(() => this.loading = false);
+    },
     clear(){
       this.client.code = ''; 
       this.client.name = ''; 
@@ -256,7 +279,47 @@ export default {
       this.client.statu = ''; 
     },
     edit(){
-        console.log('Click on EDIT')
+        if(!this.client.code
+        || !this.client.name
+        || !this.client.lastName
+        || !this.client.nationalID
+        || !this.client.email
+        || !this.client.address
+        || !this.client.cellPhone
+        || !this.client.phone
+        || !this.client.status
+        ){
+            swal.fire({
+          title: `Favor llenar todos los campos!`,
+          icon : 'error',
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill'
+          }
+        });
+        }else{
+    axios.put(this.baseApiUrl+"clientes/"+this.id, this.client).then((response) => {
+        swal.fire({
+          title: response.data.message,
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill'
+          }
+        });
+         this.clear();
+        console.log(this.client)
+        this.$router.push({ path: '/clients/index' })
+     }).catch(error => {
+        console.log(error)
+        swal.fire({
+          title: 'Error al ejecutar accion',
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill'
+          }
+        });
+      });
+        }
     },
     create(){
         let client = {
@@ -295,18 +358,26 @@ export default {
           }
         });
         }else{
-    axios.post(this.baseApiUrl+"clientes", client).then((result) => {
+    axios.post(this.baseApiUrl+"clientes", client).then((response) => {
         this.clear();
-        console.log(result)
         swal.fire({
-          title: `Creado con exito!`,
+          title: response.data.message,
           buttonsStyling: false,
           customClass: {
             confirmButton: 'btn btn-success btn-fill'
           }
         });
         this.$router.push({ path: '/clients/index' })
-     });
+     }).catch(error => {
+        console.log(error)
+        swal.fire({
+          title: 'Error al ejecutar accion',
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill'
+          }
+        });
+      });
         }
     }
   }

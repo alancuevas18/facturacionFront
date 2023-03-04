@@ -218,39 +218,53 @@
     methods: {
       handleDelete(index, row) {
         swal.fire({
-          title: 'Are you sure?',
-          text: `You won't be able to revert this!`,
+          title: 'Estas seguro?',
+          text: `Esta accion no se puede reversar!`,
           icon: 'warning',
           showCancelButton: true,
           customClass: {
             confirmButton: 'btn btn-success btn-fill',
             cancelButton: 'btn btn-danger btn-fill'
           },
-          confirmButtonText: 'Yes, delete it!',
+          confirmButtonText: 'Confimar!',
+          cancelButtonText: 'Cancelar',
           buttonsStyling: false
         }).then(result => {
           if (result.value) {
             this.deleteRow(row);
-            swal.fire({
+          }
+        });
+      },
+      deleteRow(row) {
+        this.isLoading = true;
+        axios.delete(this.baseApiUrl+'clientes/'+ row.id)
+            .then(() => {
+                this.isLoading = false;
+                swal.fire({
               title: 'Deleted!',
               text: `You deleted ${row.name}`,
               icon: 'success',
               confirmButtonClass: 'btn btn-success btn-fill',
               buttonsStyling: false
             });
-          }
-        });
-      },
-      deleteRow(row) {
-        axios.delete(this.baseApiUrl+'clientes?id='+ row.id)
-            .then(() => {
                 let indexToDelete = this.tableData.findIndex(
           tableRow => tableRow.id === row.id
+          
         );
         if (indexToDelete >= 0) {
           this.tableData.splice(indexToDelete, 1);
         }
+        }).catch(error => {
+            this.isLoading = false;
+            swal.fire({
+          title: `Error al eliminar!`,
+          icon : 'error',
+          buttonsStyling: false,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill'
+          }
         });
+      });
       }
     },
     mounted() {
