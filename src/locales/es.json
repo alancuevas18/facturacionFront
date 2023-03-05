@@ -45,6 +45,12 @@
       "index" : "Administracion de Clientes",
       "clients" : "Clientes",
       "details" : "Detalles"
+    },
+    "suppliers": {
+      "create" : "Crear",
+      "index" : "Administracion de Suplidores",
+      "suppliers" : "Suplidores",
+      "details" : "Detalles"
     }
   }
   

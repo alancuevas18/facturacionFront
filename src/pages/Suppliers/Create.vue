@@ -5,12 +5,12 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <h2 class="text-center">{{ $t('clients.index') }}</h2>
+    <h2 class="text-center">{{ $t('suppliers.index') }}</h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }}
-          <router-link to="/clients/index">
+          <router-link to="/suppliers/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -30,7 +30,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.code"
+                    v-model="supplier.code"
                     :readonly="id"
                     :error="errors[0]"
                     :class="[
@@ -52,7 +52,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.name"
+                    v-model="supplier.name"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -73,7 +73,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.lastName"
+                    v-model="supplier.lastName"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -94,7 +94,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.nationalID"
+                    v-model="supplier.nationalID"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -115,7 +115,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.email"
+                    v-model="supplier.email"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -136,7 +136,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.address"
+                    v-model="supplier.address"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -157,7 +157,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.cellPhone"
+                    v-model="supplier.cellPhone"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -178,7 +178,7 @@
                 >
                   <base-input
                     required
-                    v-model="client.phone"
+                    v-model="supplier.phone"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -197,7 +197,7 @@
                   class="select-primary"
                   size="large"
                   placeholder="Status"
-                  v-model="client.status"
+                  v-model="supplier.status"
                 >
                   <el-option
                     v-for="option in selects.options"
@@ -220,7 +220,7 @@
                 >{{ title }}</base-button
               >
 
-              <router-link to="/clients/index">
+              <router-link to="/suppliers/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >Cancel</base-button
@@ -269,11 +269,11 @@ export default {
       selects: {
         simple: '',
         options: [
-          { value: 'active', label: 'Activar' },
-          { value: 'inactive', label: 'Inactivar' }
+          { value: 'active', label: 'Activo' },
+          { value: 'inactive', label: 'Inactivo' }
         ]
       },
-      client: [
+      supplier: [
         {
           code: '',
           name: '',
@@ -299,24 +299,24 @@ export default {
   methods: {
     validateFields() {
       return (
-        !this.client.code ||
-        !this.client.name ||
-        !this.client.lastName ||
-        !this.client.nationalID ||
-        !this.client.email ||
-        !this.client.address ||
-        !this.client.cellPhone ||
-        !this.client.phone ||
-        !this.client.status
+        !this.supplier.code ||
+        !this.supplier.name ||
+        !this.supplier.lastName ||
+        !this.supplier.nationalID ||
+        !this.supplier.email ||
+        !this.supplier.address ||
+        !this.supplier.cellPhone ||
+        !this.supplier.phone ||
+        !this.supplier.status
       )
     },
     fillForm() {
       this.isLoading = true
       axios
-        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .get(this.baseApiUrl + 'suplidores/' + this.id)
         .then((response) => {
           this.fixedCode = response.data.codigo
-          this.client = {
+          this.supplier = {
             code: response.data.codigo,
             name: response.data.nombre,
             lastName: response.data.apellido,
@@ -325,10 +325,11 @@ export default {
             address: response.data.direccion,
             cellPhone: response.data.celular,
             phone: response.data.telefono,
-            status: response.data.estadoClientes ? 'active' : 'inactive',
+            status: response.data.estadoSuplidor ? 'active' : 'inactive',
             id: response.data.id,
             personaId: response.data.personaId
           }
+          console.log(response.data)
         })
         .catch((error) => {
           this.error = error
@@ -336,42 +337,42 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     clear() {
-      this.client.code = ''
-      this.client.name = ''
-      this.client.lastName = ''
-      this.client.nationalID = ''
-      this.client.email = ''
-      this.client.address = ''
-      this.client.cellPhone = ''
-      this.client.phone = ''
-      this.client.status = ''
+      this.supplier.code = ''
+      this.supplier.name = ''
+      this.supplier.lastName = ''
+      this.supplier.nationalID = ''
+      this.supplier.email = ''
+      this.supplier.address = ''
+      this.supplier.cellPhone = ''
+      this.supplier.phone = ''
+      this.supplier.status = ''
     },
     edit() {
-      console.log(this.baseApiUrl + 'clientes/' + this.id)
-      let client = {
-        nombre: this.client.name,
-        estadoClientes: this.client.status == 'active' ? true : false,
-        personaId: this.client.personaId,
+      let supplier = {
+        nombre: this.supplier.name,
+        estadoSuplidor: this.supplier.status == 'active' ? true : false,
+        personaId: this.supplier.personaId,
         codigo: this.fixedCode,
-        apellido: this.client.lastName,
-        identificacion: this.client.nationalID,
-        correo: this.client.email,
-        direccion: this.client.address,
-        celular: this.client.cellPhone,
-        telefono: this.client.phone,
-        estadoPersona: this.client.status == 'active' ? true : false,
-        id: this.client.id
+        apellido: this.supplier.lastName,
+        identificacion: this.supplier.nationalID,
+        correo: this.supplier.email,
+        direccion: this.supplier.address,
+        celular: this.supplier.cellPhone,
+        telefono: this.supplier.phone,
+        estadoPersona: this.supplier.status == 'active' ? true : false,
+        id: this.supplier.id
       }
+      console.log(supplier)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'clientes/' + this.id, client)
+          .put(this.baseApiUrl + 'suplidores/' + this.id, supplier)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/clients/index' })
+            this.$router.push({ path: '/suppliers/index' })
           })
           .catch((error) => {
             this.globalSweetMessage('Error al ejecutar accion', 'error')
@@ -380,18 +381,18 @@ export default {
       }
     },
     create() {
-      let client = {
-        nombre: this.client.name,
-        estadoClientes: this.client.status == 'active' ? true : false,
+      let supplier = {
+        nombre: this.supplier.name,
+        estadoSuplidor: this.supplier.status == 'active' ? true : false,
         personaId: 0,
-        codigo: this.client.code,
-        apellido: this.client.lastName,
-        identificacion: this.client.nationalID,
-        correo: this.client.email,
-        direccion: this.client.address,
-        celular: this.client.cellPhone,
-        telefono: this.client.phone,
-        estadoPersona: this.client.status == 'active' ? true : false,
+        codigo: this.supplier.code,
+        apellido: this.supplier.lastName,
+        identificacion: this.supplier.nationalID,
+        correo: this.supplier.email,
+        direccion: this.supplier.address,
+        celular: this.supplier.cellPhone,
+        telefono: this.supplier.phone,
+        estadoPersona: this.supplier.status == 'active' ? true : false,
         id: 0
       }
       if (this.validateFields()) {
@@ -399,11 +400,11 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'clientes', client)
+          .post(this.baseApiUrl + 'suplidores', supplier)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/clients/index' })
+            this.$router.push({ path: '/suppliers/index' })
           })
           .catch((error) => {
             this.globalSweetMessage('Error al ejecutar accion', 'error')
