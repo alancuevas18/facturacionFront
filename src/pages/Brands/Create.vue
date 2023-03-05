@@ -105,6 +105,7 @@ export default {
       },
       brand: [
         {
+          id: 0,
           description: ''
         }
       ]
@@ -128,6 +129,7 @@ export default {
         .get(this.baseApiUrl + 'marcas/' + this.id)
         .then((response) => {
           this.brand = {
+            id: response.data.id,
             description: response.data.descripcion
           }
         })
@@ -141,14 +143,15 @@ export default {
     },
     edit() {
       let brand = {
-        description: response.data.descripcion
+        id: this.brand.id,
+        descripcion: this.brand.description
       }
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'marcas/' + this.id, brand)
+          .put(this.baseApiUrl + 'marcas/' + this.brand.id, brand)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -162,7 +165,8 @@ export default {
     },
     create() {
       let brand = {
-        description: this.brand.description
+        id: 0,
+        descripcion: this.brand.description
       }
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')

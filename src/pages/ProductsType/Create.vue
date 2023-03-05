@@ -30,7 +30,7 @@
                 >
                   <base-input
                     required
-                    v-model="brand.description"
+                    v-model="producttype.description"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -103,7 +103,7 @@ export default {
           { value: 'inactive', label: 'Inactivar' }
         ]
       },
-      brand: [
+      producttype: [
         {
           description: ''
         }
@@ -120,14 +120,16 @@ export default {
   },
   methods: {
     validateFields() {
-      return !this.brand.description
+      return !this.producttype.description
     },
     fillForm() {
       this.isLoading = true
       axios
-        .get(this.baseApiUrl + 'marcas/' + this.id)
+        .get(this.baseApiUrl + 'tipoproductos/' + this.id)
         .then((response) => {
-          this.brand = {
+          console.log(response.data)
+
+          this.producttype = {
             description: response.data.descripcion
           }
         })
@@ -137,18 +139,20 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     clear() {
-      this.brand.description = ''
+      this.producttype.description = ''
     },
     edit() {
-      let brand = {
-        description: response.data.descripcion
+      let producttype = {
+        id: this.id,
+        descripcion: this.producttype.description
       }
+      console.log(producttype)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'marcas/' + this.id, brand)
+          .put(this.baseApiUrl + 'tipoproductos/' + this.id, producttype)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -161,15 +165,16 @@ export default {
       }
     },
     create() {
-      let brand = {
-        description: this.brand.description
+      let producttype = {
+        id: 0,
+        descripcion: this.producttype.description
       }
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'marcas', brand)
+          .post(this.baseApiUrl + 'tipoproductos', producttype)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

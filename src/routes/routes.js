@@ -84,7 +84,7 @@ let brandMenu = {
     },
     {
       path: 'create/:id?',
-      name: 'Crear Suplidor',
+      name: 'Crear Marca',
       components: { default: BrandCreate }
     }
   ]
@@ -103,7 +103,7 @@ let productTypeMenu = {
     },
     {
       path: 'create/:id?',
-      name: 'Crear Suplidor',
+      name: 'Crear Tipo de Marca',
       components: { default: ProductTypeCreate }
     }
   ]
