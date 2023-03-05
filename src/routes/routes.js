@@ -15,6 +15,14 @@ const SupplierIndex = () => import('src/pages/Suppliers/Index.vue')
 const SupplierCreate = () => import('src/pages/Suppliers/Create.vue')
 const SupplierDetail = () => import('src/pages/Suppliers/Details.vue')
 
+//Brands
+const BrandIndex = () => import('src/pages/Brands/Index.vue')
+const BrandCreate = () => import('src/pages/Brands/Create.vue')
+
+//ProductsType
+const ProductTypeIndex = () => import('src/pages/ProductsType/Index.vue')
+const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
+
 let clientMenu = {
   path: '/clients',
   component: DashboardLayout,
@@ -63,6 +71,44 @@ let supplierMenu = {
   ]
 }
 
+let brandMenu = {
+  path: '/brands',
+  component: DashboardLayout,
+  redirect: '/brands/index',
+  name: 'Marcas',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Marcas',
+      components: { default: BrandIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Suplidor',
+      components: { default: BrandCreate }
+    }
+  ]
+}
+
+let productTypeMenu = {
+  path: '/productstype',
+  component: DashboardLayout,
+  redirect: '/productstype/index',
+  name: 'Tipo de Productos',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Tipo de Productos',
+      components: { default: ProductTypeIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Suplidor',
+      components: { default: ProductTypeCreate }
+    }
+  ]
+}
+
 const routes = [
   {
     path: '/',
@@ -71,6 +117,8 @@ const routes = [
   },
   clientMenu,
   supplierMenu,
+  brandMenu,
+  productTypeMenu,
   {
     path: '/',
     component: DashboardLayout,

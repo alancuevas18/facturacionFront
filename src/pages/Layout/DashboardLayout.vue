@@ -31,11 +31,28 @@
         <sidebar-item
           :link="{
             name: $t('suppliers.suppliers'),
-            icon: 'tim-icons icon-image-02'
+            icon: 'tim-icons icon-delivery-fast'
           }"
         >
           <sidebar-item
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+        <!-- Products Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('products.products'),
+            icon: 'tim-icons icon-cart'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('products.index'), path: '/products/index' }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{ name: $t('brands.brands'), path: '/brands/index' }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{ name: $t('products.type'), path: '/productstype/index' }"
           ></sidebar-item>
         </sidebar-item>
       </template>

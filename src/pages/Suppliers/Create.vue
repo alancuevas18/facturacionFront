@@ -329,7 +329,6 @@ export default {
             id: response.data.id,
             personaId: response.data.personaId
           }
-          console.log(response.data)
         })
         .catch((error) => {
           this.error = error
@@ -362,7 +361,6 @@ export default {
         estadoPersona: this.supplier.status == 'active' ? true : false,
         id: this.supplier.id
       }
-      console.log(supplier)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {

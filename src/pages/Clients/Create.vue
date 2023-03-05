@@ -347,7 +347,6 @@ export default {
       this.client.status = ''
     },
     edit() {
-      console.log(this.baseApiUrl + 'clientes/' + this.id)
       let client = {
         nombre: this.client.name,
         estadoClientes: this.client.status == 'active' ? true : false,

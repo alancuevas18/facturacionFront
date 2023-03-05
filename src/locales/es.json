@@ -51,6 +51,19 @@
       "index" : "Administracion de Suplidores",
       "suppliers" : "Suplidores",
       "details" : "Detalles"
+    },
+    "brands": {
+      "create" : "Crear",
+      "index" : "Administracion de Marcas",
+      "brands" : "Marcas",
+      "details" : "Detalles"
+    },
+    "products": {
+      "create" : "Crear",
+      "index" : "Administracion de Productos",
+      "products" : "Productos",
+      "details" : "Detalles",
+      "type" : "Tipo de Productos"
     }
   }
   
