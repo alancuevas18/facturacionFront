@@ -5,7 +5,7 @@
       <ul class="nav">
         <li class="nav-item">
           <a
-            href="http://creative-tim.com"
+            href="https://emacsoft.com"
             target="_blank"
             rel="noopener"
             class="nav-link"
@@ -13,14 +13,11 @@
             Sistema de Facturacion EMACSoft
           </a>
         </li>
-
       </ul>
       <div class="copyright">
-        &copy; {{ year }}, Creado <i class="tim-icons icon-cloud-download-93"></i> por
-        <a
-          href="#"
-          target="_blank"
-          rel="noopener"
+        &copy; {{ year }}, Creado
+        <i class="tim-icons icon-cloud-download-93"></i> por
+        <a href="https://emacsoft.com" target="_blank" rel="noopener"
           >EMACSoft</a
         >
         La solucion a tu negocio
@@ -33,8 +30,8 @@ export default {
   data() {
     return {
       year: new Date().getFullYear()
-    };
+    }
   }
-};
+}
 </script>
 <style></style>
