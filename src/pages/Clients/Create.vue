@@ -9,7 +9,7 @@
     <card>
       <template slot="header">
         <h4 class="card-title">
-          {{ title }}
+          {{ title }} {{ currentCode }}
           <router-link to="/clients/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
@@ -21,17 +21,20 @@
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
-              <label class="col-sm-2 col-form-label">Codigo*</label>
+              <label class="col-sm-2 col-form-label">Identificacion*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="codigo"
-                  rules="required"
+                  name="Identificacion"
+                  rules="required|min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
+                    title="Escriba la identificaion y presione 'Enter'"
+                    placeholder="Escriba la identificaion y presione 'Enter'"
                     required
-                    v-model="client.code"
-                    :readonly="id"
+                    autofocus
+                    v-on:keyup.enter="checkIdentification()"
+                    v-model="client.nationalID"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -52,6 +55,7 @@
                 >
                   <base-input
                     required
+                    :disabled="checkedID"
                     v-model="client.name"
                     :error="errors[0]"
                     :class="[
@@ -73,28 +77,8 @@
                 >
                   <base-input
                     required
+                    :disabled="checkedID"
                     v-model="client.lastName"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Identificacion*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Identificacion"
-                  rules="required|min:3"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="client.nationalID"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -115,6 +99,7 @@
                 >
                   <base-input
                     required
+                    :disabled="checkedID"
                     v-model="client.email"
                     :error="errors[0]"
                     :class="[
@@ -136,6 +121,7 @@
                 >
                   <base-input
                     required
+                    :disabled="checkedID"
                     v-model="client.address"
                     :error="errors[0]"
                     :class="[
@@ -157,6 +143,7 @@
                 >
                   <base-input
                     required
+                    :disabled="checkedID"
                     v-model="client.cellPhone"
                     :error="errors[0]"
                     :class="[
@@ -178,6 +165,7 @@
                 >
                   <base-input
                     required
+                    :disabled="checkedID"
                     v-model="client.phone"
                     :error="errors[0]"
                     :class="[
@@ -193,6 +181,7 @@
               <label class="col-sm-2 col-form-label">Status</label>
               <div class="col-sm-10">
                 <el-select
+                  :disabled="checkedID"
                   required
                   class="select-primary"
                   size="large"
@@ -216,6 +205,7 @@
                 native-type="submit"
                 class="animation-on-hover"
                 @click.native="!id ? create() : edit()"
+                :disabled="checkedID"
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
@@ -260,17 +250,20 @@ export default {
   },
   data() {
     return {
+      checkedID: false,
       isLoading: false,
       fullPage: true,
       id: '',
+      currentCode: '',
       baseApiUrl: '',
       title: '',
       fixedCode: '',
+      mandatoryFields: ['name', 'lastName', 'nationalID'],
       selects: {
         simple: '',
         options: [
-          { value: 'active', label: 'Activar' },
-          { value: 'inactive', label: 'Inactivar' }
+          { value: 'active', label: 'Activo' },
+          { value: 'inactive', label: 'Inactivo' }
         ]
       },
       client: [
@@ -290,37 +283,66 @@ export default {
   },
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
-    this.id = this.$route.params.id = '' ? '' : this.$route.params.id
+    this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'
-    if (this.id) {
-      this.fillForm()
-    }
+    if (this.id) this.fillForm(this.id)
+    this.currentCode = !this.id ? '' : this.currentCode
+    this.checkedID = !this.id && !this.client.nationalID
   },
   methods: {
-    validateFields() {
-      return (
-        !this.client.code ||
-        !this.client.name ||
-        !this.client.lastName ||
-        !this.client.nationalID ||
-        !this.client.email ||
-        !this.client.address ||
-        !this.client.cellPhone ||
-        !this.client.phone ||
-        !this.client.status
-      )
-    },
-    fillForm() {
+    checkIdentification() {
       this.isLoading = true
       axios
-        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .get(
+          this.baseApiUrl +
+            'clientes/byidentificacion/' +
+            this.client.nationalID
+        )
         .then((response) => {
+          if (response.data.id > 0) {
+            this.title = 'Editar'
+            this.globalSweetMessage('Cliente existente')
+            //no editar si existe la persona llenar los campos y personaID
+            this.id = response.data.id
+          }
+          this.fillForm(response.data.id)
+        })
+        .catch((error) => {
+          this.globalSweetMessage('Error al consultar identificacion', 'error')
+        })
+        .finally(() => (this.isLoading = false))
+      this.checkedID = false
+    },
+    validateFields() {
+      this.mandatoryFields.forEach((field) => {
+        this.client[field]
+      })
+      // return (
+      //   !this.client.code ||
+      //   !this.client.name ||
+      //   !this.client.lastName ||
+      //   !this.client.nationalID ||
+      //   !this.client.email ||
+      //   !this.client.address ||
+      //   !this.client.cellPhone ||
+      //   !this.client.phone ||
+      //   !this.client.status
+      // )
+    },
+    fillForm(id) {
+      this.isLoading = true
+      axios
+        .get(this.baseApiUrl + 'clientes/' + id)
+        .then((response) => {
+          this.currentCode = ' / Codigo: ' + response.data.codigo
           this.fixedCode = response.data.codigo
           this.client = {
             code: response.data.codigo,
             name: response.data.nombre,
             lastName: response.data.apellido,
-            nationalID: response.data.identificacion,
+            nationalID: this.client.nationalID
+              ? this.client.nationalID
+              : response.data.identificacion,
             email: response.data.correo,
             address: response.data.direccion,
             cellPhone: response.data.celular,
@@ -361,6 +383,7 @@ export default {
         estadoPersona: this.client.status == 'active' ? true : false,
         id: this.client.id
       }
+      console.log(client)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
@@ -373,7 +396,7 @@ export default {
             this.$router.push({ path: '/clients/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }
@@ -383,16 +406,17 @@ export default {
         nombre: this.client.name,
         estadoClientes: this.client.status == 'active' ? true : false,
         personaId: 0,
-        codigo: this.client.code,
+        codigo: '',
         apellido: this.client.lastName,
         identificacion: this.client.nationalID,
-        correo: this.client.email,
-        direccion: this.client.address,
-        celular: this.client.cellPhone,
-        telefono: this.client.phone,
+        correo: this.client.email ?? null,
+        direccion: this.client.address ?? null,
+        celular: this.client.cellPhone ?? null,
+        telefono: this.client.phone ?? null,
         estadoPersona: this.client.status == 'active' ? true : false,
         id: 0
       }
+      console.log(client)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
@@ -405,7 +429,7 @@ export default {
             this.$router.push({ path: '/clients/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }
@@ -416,5 +440,29 @@ export default {
 <style>
 .floatr {
   float: right;
+}
+
+.tooltip {
+  position: relative;
+  display: inline-block;
+  border-bottom: 1px dotted black;
+}
+
+.tooltip .tooltiptext {
+  visibility: hidden;
+  width: 120px;
+  background-color: black;
+  color: #fff;
+  text-align: center;
+  border-radius: 6px;
+  padding: 5px 0;
+
+  /* Position the tooltip */
+  position: absolute;
+  z-index: 1;
+}
+
+.tooltip:hover .tooltiptext {
+  visibility: visible;
 }
 </style>

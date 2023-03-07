@@ -373,7 +373,7 @@ export default {
             this.$router.push({ path: '/suppliers/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }
@@ -405,7 +405,7 @@ export default {
             this.$router.push({ path: '/suppliers/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }

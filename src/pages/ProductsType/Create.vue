@@ -30,6 +30,7 @@
                 >
                   <base-input
                     required
+                    autofocus
                     v-model="producttype.description"
                     :error="errors[0]"
                     :class="[
@@ -127,8 +128,6 @@ export default {
       axios
         .get(this.baseApiUrl + 'tipoproductos/' + this.id)
         .then((response) => {
-          console.log(response.data)
-
           this.producttype = {
             description: response.data.descripcion
           }
@@ -146,7 +145,6 @@ export default {
         id: this.id,
         descripcion: this.producttype.description
       }
-      console.log(producttype)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
@@ -159,7 +157,8 @@ export default {
             this.$router.push({ path: '/productstype/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            console.log(error.response)
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }
@@ -181,7 +180,7 @@ export default {
             this.$router.push({ path: '/productstype/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }

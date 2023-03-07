@@ -30,6 +30,7 @@
                 >
                   <base-input
                     required
+                    autofocus
                     v-model="brand.description"
                     :error="errors[0]"
                     :class="[
@@ -158,7 +159,7 @@ export default {
             this.$router.push({ path: '/brands/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }
@@ -180,7 +181,7 @@ export default {
             this.$router.push({ path: '/brands/index' })
           })
           .catch((error) => {
-            this.globalSweetMessage('Error al ejecutar accion', 'error')
+            this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }

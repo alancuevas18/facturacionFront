@@ -36,5 +36,13 @@
     "widgets": "Widgets",
     "charts": "Charts",
     "calendar": "Calendar"
+  },
+  "products": {
+    "create" : "Crear",
+    "index" : "Administracion de Productos",
+    "products" : "Productos",
+    "details" : "Detalles",
+    "type" : "Products Type"
   }
+  
 }

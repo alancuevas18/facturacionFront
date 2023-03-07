@@ -250,7 +250,7 @@ export default {
           }
         })
         .catch((error) => {
-          this.globalSweetMessage('Error al eliminar!', 'error')
+          this.globalSweetMessage(error.response.data.message, 'error')
         })
         .finally(() => (this.isLoading = false))
     }
