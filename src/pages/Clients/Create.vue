@@ -34,7 +34,7 @@
                     required
                     autofocus
                     v-on:keyup.enter="checkIdentification()"
-                    v-model="client.nationalID"
+                    v-model="client.identificacion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -56,7 +56,9 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.name"
+                    v-model="client.nombre"
+                    :readonly="readOnly"
+                    :key="readOnly"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -78,7 +80,9 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.lastName"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.apellido"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -100,7 +104,9 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.email"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.correo"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -122,7 +128,9 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.address"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.direccion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -144,7 +152,9 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.cellPhone"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.celular"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -166,7 +176,9 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.phone"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.telefono"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -182,11 +194,13 @@
               <div class="col-sm-10">
                 <el-select
                   :disabled="checkedID"
+                  :readonly="readOnly"
+                  :key="readOnly"
                   required
                   class="select-primary"
                   size="large"
                   placeholder="Status"
-                  v-model="client.status"
+                  v-model="client.estadoClientes"
                 >
                   <el-option
                     v-for="option in selects.options"
@@ -250,6 +264,7 @@ export default {
   },
   data() {
     return {
+      readOnly: false,
       checkedID: false,
       isLoading: false,
       fullPage: true,
@@ -262,50 +277,63 @@ export default {
       selects: {
         simple: '',
         options: [
-          { value: 'active', label: 'Activo' },
-          { value: 'inactive', label: 'Inactivo' }
+          { value: true, label: 'Activo' },
+          { value: false, label: 'Inactivo' }
         ]
       },
-      client: [
-        {
-          code: '',
-          name: '',
-          lastName: '',
-          nationalID: '',
-          email: '',
-          address: '',
-          cellPhone: '',
-          phone: '',
-          status: ''
-        }
-      ]
+      client: {
+        codigo: '',
+        nombre: '',
+        apellido: '',
+        identificacion: '',
+        correo: '',
+        direccion: '',
+        celular: '',
+        telefono: '',
+        estadoClientes: '',
+        personaId: 0,
+        id: 0,
+        estadoPersona: ''
+      }
     }
   },
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'
-    if (this.id) this.fillForm(this.id)
+    if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.client.nationalID
   },
   methods: {
+    checkId() {
+      axios
+        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .then((response) => {
+          this.isLoading = true
+          this.fillForm(response.data)
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    },
     checkIdentification() {
       this.isLoading = true
       axios
         .get(
           this.baseApiUrl +
             'clientes/byidentificacion/' +
-            this.client.nationalID
+            this.client.identificacion
         )
         .then((response) => {
           if (response.data.id > 0) {
-            this.title = 'Editar'
-            this.globalSweetMessage('Cliente existente')
-            //no editar si existe la persona llenar los campos y personaID
-            this.id = response.data.id
+            this.globalSweetMessage('Cliente existe!', 'warning')
+            this.$router.push({ path: '/clients/index' })
+          } else {
+            this.readOnly = response.data.personaId > 0
           }
-          this.fillForm(response.data.id)
+          this.fillForm(response.data)
         })
         .catch((error) => {
           this.globalSweetMessage('Error al consultar identificacion', 'error')
@@ -314,82 +342,50 @@ export default {
       this.checkedID = false
     },
     validateFields() {
-      this.mandatoryFields.forEach((field) => {
-        this.client[field]
-      })
-      // return (
-      //   !this.client.code ||
-      //   !this.client.name ||
-      //   !this.client.lastName ||
-      //   !this.client.nationalID ||
-      //   !this.client.email ||
-      //   !this.client.address ||
-      //   !this.client.cellPhone ||
-      //   !this.client.phone ||
-      //   !this.client.status
-      // )
+      return (
+        !this.client.nombre ||
+        !this.client.apellido ||
+        !this.client.identificacion
+      )
     },
-    fillForm(id) {
-      this.isLoading = true
-      axios
-        .get(this.baseApiUrl + 'clientes/' + id)
-        .then((response) => {
-          this.currentCode = ' / Codigo: ' + response.data.codigo
-          this.fixedCode = response.data.codigo
-          this.client = {
-            code: response.data.codigo,
-            name: response.data.nombre,
-            lastName: response.data.apellido,
-            nationalID: this.client.nationalID
-              ? this.client.nationalID
-              : response.data.identificacion,
-            email: response.data.correo,
-            address: response.data.direccion,
-            cellPhone: response.data.celular,
-            phone: response.data.telefono,
-            status: response.data.estadoClientes ? 'active' : 'inactive',
-            id: response.data.id,
-            personaId: response.data.personaId
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
+    fillForm(obj) {
+      this.client = {
+        estadoClientes: obj.estadoClientes,
+        personaId: obj.personaId,
+        codigo: obj.codigo,
+        nombre: obj.nombre,
+        apellido: obj.apellido,
+        identificacion: this.client.identificacion
+          ? this.client.identificacion
+          : obj.identificacion,
+        correo: obj.correo,
+        direccion: obj.direccion,
+        celular: obj.celular,
+        telefono: obj.telefono,
+        estadoPersona: true,
+        id: obj.id
+      }
+      if (obj.id != 0)
+        this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },
     clear() {
-      this.client.code = ''
-      this.client.name = ''
-      this.client.lastName = ''
-      this.client.nationalID = ''
-      this.client.email = ''
-      this.client.address = ''
-      this.client.cellPhone = ''
-      this.client.phone = ''
-      this.client.status = ''
+      this.client.codigo = ''
+      this.client.nombre = ''
+      this.client.apellido = ''
+      this.client.identificacion = ''
+      this.client.correo = ''
+      this.client.direccion = ''
+      this.client.celular = ''
+      this.client.telefono = ''
+      this.client.estadoClientes = ''
     },
     edit() {
-      let client = {
-        nombre: this.client.name,
-        estadoClientes: this.client.status == 'active' ? true : false,
-        personaId: this.client.personaId,
-        codigo: this.fixedCode,
-        apellido: this.client.lastName,
-        identificacion: this.client.nationalID,
-        correo: this.client.email,
-        direccion: this.client.address,
-        celular: this.client.cellPhone,
-        telefono: this.client.phone,
-        estadoPersona: this.client.status == 'active' ? true : false,
-        id: this.client.id
-      }
-      console.log(client)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'clientes/' + this.id, client)
+          .put(this.baseApiUrl + 'clientes/' + this.client.id, this.client)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -402,27 +398,12 @@ export default {
       }
     },
     create() {
-      let client = {
-        nombre: this.client.name,
-        estadoClientes: this.client.status == 'active' ? true : false,
-        personaId: 0,
-        codigo: '',
-        apellido: this.client.lastName,
-        identificacion: this.client.nationalID,
-        correo: this.client.email ?? null,
-        direccion: this.client.address ?? null,
-        celular: this.client.cellPhone ?? null,
-        telefono: this.client.phone ?? null,
-        estadoPersona: this.client.status == 'active' ? true : false,
-        id: 0
-      }
-      console.log(client)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'clientes', client)
+          .post(this.baseApiUrl + 'clientes', this.client)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

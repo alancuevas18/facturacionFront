@@ -261,9 +261,8 @@ export default {
     axios
       .get(this.baseApiUrl + 'clientes')
       .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
+        for (let i = 0; i < response.data.length; i++)
           this.tableData.push(response.data[i])
-        }
       })
       .catch((error) => {
         this.errored = true
