@@ -22,12 +22,12 @@ const SellerDetail = () => import('src/pages/Sellers/Details.vue')
 
 
 
-//Sellers
+//Spends
 const SpendIndex = () => import('src/pages/Spends/Index.vue')
 const SpendCreate = () => import('src/pages/Spends/Create.vue')
 const SpendDetail = () => import('src/pages/Spends/Details.vue')
 
-//Delivery
+//Deliveries
 const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
 const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
 const DeliveryDetail = () => import('src/pages/Deliveries/Details.vue')
@@ -39,6 +39,16 @@ const BrandCreate = () => import('src/pages/Brands/Create.vue')
 //ProductsType
 const ProductTypeIndex = () => import('src/pages/ProductsType/Index.vue')
 const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
+
+//Office
+const OfficesIndex=()=> import('src/pages/Offices/Index.vue')
+const OfficesCreate=()=> import('src/pages/Offices/Create.vue')
+const OfficesDetail=()=> import('src/pages/Offices/Details.vue')
+
+//StructureComprabante
+const StructureComprobantesIndex=()=> import('src/pages/StructureComprobantes/Index.vue')
+const StructureComprobantesCreate=()=> import('src/pages/StructureComprobantes/Create.vue')
+const StructureComprobantesDetail=()=> import('src/pages/StructureComprobantes/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -179,6 +189,43 @@ let brandMenu = {
   ]
 }
 
+let officeMenu = {
+  path: '/offices',
+  component: DashboardLayout,
+  redirect: '/offices/index',
+  name: 'Offices',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Sucursales',
+      components: { default: OfficesIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Sucursal',
+      components: { default: OfficesCreate }
+    }
+  ]
+}
+let structureComprobanteMenu = {
+  path: '/structureComprobantes',
+  component: DashboardLayout,
+  redirect: '/structureComprobantes/index',
+  name: 'Offices',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Comprobantes',
+      components: { default: StructureComprobantesIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Comprobante',
+      components: { default: StructureComprobantesCreate }
+    }
+  ]
+}
+
 let productTypeMenu = {
   path: '/productstype',
   component: DashboardLayout,
@@ -211,6 +258,8 @@ const routes = [
   DeliveryMenu,
   SpendMenu,
   productTypeMenu,
+  officeMenu,
+  structureComprobanteMenu,
   {
     path: '/',
     component: DashboardLayout,
