@@ -15,8 +15,8 @@
             path: '/dashboard'
           }"
         >
-          <!-- Clients Menu -->
         </sidebar-item>
+        <!-- Clients Menu -->
         <sidebar-item
           :link="{
             name: $t('clients.clients'),
@@ -36,6 +36,28 @@
         >
           <sidebar-item
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+        <!-- Sellers Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('sellers.sellers'),
+            icon: 'tim-icons icon-image-02'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+        <!-- delivery Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('delivery.delivery'),
+            icon: 'tim-icons icon-image-02'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('delivery.index'), path: '/delivery/index' }"
           ></sidebar-item>
         </sidebar-item>
         <!-- Products Menu -->

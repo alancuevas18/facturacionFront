@@ -15,6 +15,16 @@ const SupplierIndex = () => import('src/pages/Suppliers/Index.vue')
 const SupplierCreate = () => import('src/pages/Suppliers/Create.vue')
 const SupplierDetail = () => import('src/pages/Suppliers/Details.vue')
 
+//Sellers
+const SellerIndex = () => import('src/pages/Sellers/Index.vue')
+const SellerCreate = () => import('src/pages/Sellers/Create.vue')
+const SellerDetail = () => import('src/pages/Sellers/Details.vue')
+
+//Delivery
+const DeliveryIndex = () => import('src/pages/Delivery/Index.vue')
+const DeliveryCreate = () => import('src/pages/Delivery/Create.vue')
+const DeliveryDetail = () => import('src/pages/Delivery/Details.vue')
+
 //Brands
 const BrandIndex = () => import('src/pages/Brands/Index.vue')
 const BrandCreate = () => import('src/pages/Brands/Create.vue')
@@ -71,6 +81,54 @@ let supplierMenu = {
   ]
 }
 
+let SellerMenu = {
+  path: '/sellers',
+  component: DashboardLayout,
+  redirect: '/sellers/index',
+  name: 'Vendedores',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Vendedores',
+      components: { default: DeliveryIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Vendedor',
+      components: { default: DeliveryCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Vendedor',
+      components: { default: DeliveryDetail }
+    }
+  ]
+}
+
+let DeliveryMenu = {
+  path: '/delivery',
+  component: DashboardLayout,
+  redirect: '/delivery/index',
+  name: 'Mensajeros',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Mensajeros',
+      components: { default: SellerIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Mensajero',
+      components: { default: SellerCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Mensajero',
+      components: { default: SellerDetail }
+    }
+  ]
+}
+
 let brandMenu = {
   path: '/brands',
   component: DashboardLayout,
@@ -118,6 +176,8 @@ const routes = [
   clientMenu,
   supplierMenu,
   brandMenu,
+  SellerMenu,
+  DeliveryMenu,
   productTypeMenu,
   {
     path: '/',
