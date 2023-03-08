@@ -62,6 +62,15 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
+                  <base-button class="like btn-link" type="info" size="sm" icon>
+                    <i
+                      class="fas fa-circle"
+                      :class="{
+                        active: props.row.estadoSuplidor,
+                        inactive: !props.row.estadoSuplidor
+                      }"
+                    ></i>
+                  </base-button>
                   <router-link :to="'/suppliers/details/' + props.row.id">
                     <base-button
                       class="like btn-link"
@@ -163,6 +172,7 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
+      isActive: 'inactive',
       baseApiUrl: '',
       pagination: {
         perPage: 5,
