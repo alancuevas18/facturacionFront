@@ -34,7 +34,7 @@
                     required
                     autofocus
                     v-on:keyup.enter="checkIdentification()"
-                    v-model="client.identificacion"
+                    v-model="seller.identificacion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -56,7 +56,7 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.nombre"
+                    v-model="seller.nombre"
                     :readonly="readOnly"
                     :key="readOnly"
                     :error="errors[0]"
@@ -82,7 +82,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.apellido"
+                    v-model="seller.apellido"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -106,7 +106,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.correo"
+                    v-model="seller.correo"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -130,7 +130,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.direccion"
+                    v-model="seller.direccion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -154,7 +154,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.celular"
+                    v-model="seller.celular"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -178,7 +178,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.telefono"
+                    v-model="seller.telefono"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -200,7 +200,7 @@
                   class="select-primary"
                   size="large"
                   placeholder="Status"
-                  v-model="client.estadoVendedores"
+                  v-model="seller.estadoVendedores"
                 >
                   <el-option
                     v-for="option in selects.options"
@@ -281,7 +281,7 @@ export default {
           { value: false, label: 'Inactivo' }
         ]
       },
-      client: {
+      seller: {
         codigo: '',
         nombre: '',
         apellido: '',
@@ -303,7 +303,7 @@ export default {
     this.title = !this.id ? 'Cear' : 'Editar'
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
-    this.checkedID = !this.id && !this.client.nationalID
+    this.checkedID = !this.id && !this.seller.nationalID
   },
   methods: {
     checkId() {
@@ -324,11 +324,11 @@ export default {
         .get(
           this.baseApiUrl +
             'Vendedores/byidentificacion/' +
-            this.client.identificacion
+            this.seller.identificacion
         )
         .then((response) => {
           if (response.data.id > 0) {
-            this.globalSweetMessage('Cliente existe!', 'warning')
+            this.globalSweetMessage('Vendedor existe!', 'warning')
             this.$router.push({ path: '/sellers/index' })
           } else {
             this.readOnly = response.data.personaId > 0
@@ -343,20 +343,20 @@ export default {
     },
     validateFields() {
       return (
-        !this.client.nombre ||
-        !this.client.apellido ||
-        !this.client.identificacion
+        !this.seller.nombre ||
+        !this.seller.apellido ||
+        !this.seller.identificacion
       )
     },
     fillForm(obj) {
-      this.client = {
+      this.seller = {
         estadoVendedores: obj.estadoVendedores,
         personaId: obj.personaId,
         codigo: obj.codigo,
         nombre: obj.nombre,
         apellido: obj.apellido,
-        identificacion: this.client.identificacion
-          ? this.client.identificacion
+        identificacion: this.seller.identificacion
+          ? this.seller.identificacion
           : obj.identificacion,
         correo: obj.correo,
         direccion: obj.direccion,
@@ -369,15 +369,15 @@ export default {
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },
     clear() {
-      this.client.codigo = ''
-      this.client.nombre = ''
-      this.client.apellido = ''
-      this.client.identificacion = ''
-      this.client.correo = ''
-      this.client.direccion = ''
-      this.client.celular = ''
-      this.client.telefono = ''
-      this.client.estadoVendedores = ''
+      this.seller.codigo = ''
+      this.seller.nombre = ''
+      this.seller.apellido = ''
+      this.seller.identificacion = ''
+      this.seller.correo = ''
+      this.seller.direccion = ''
+      this.seller.celular = ''
+      this.seller.telefono = ''
+      this.seller.estadoVendedores = ''
     },
     edit() {
       if (this.validateFields()) {
@@ -385,7 +385,7 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'Vendedores/' + this.client.id, this.client)
+          .put(this.baseApiUrl + 'Vendedores/' + this.seller.id, this.seller)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -403,7 +403,7 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'Vendedores', this.client)
+          .post(this.baseApiUrl + 'Vendedores', this.seller)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

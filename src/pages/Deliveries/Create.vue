@@ -34,7 +34,7 @@
                     required
                     autofocus
                     v-on:keyup.enter="checkIdentification()"
-                    v-model="client.identificacion"
+                    v-model="delivery.identificacion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -56,7 +56,7 @@
                   <base-input
                     required
                     :disabled="checkedID"
-                    v-model="client.nombre"
+                    v-model="delivery.nombre"
                     :readonly="readOnly"
                     :key="readOnly"
                     :error="errors[0]"
@@ -82,7 +82,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.apellido"
+                    v-model="delivery.apellido"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -106,7 +106,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.correo"
+                    v-model="delivery.correo"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -130,7 +130,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.direccion"
+                    v-model="delivery.direccion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -154,7 +154,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.celular"
+                    v-model="delivery.celular"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -178,7 +178,7 @@
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
-                    v-model="client.telefono"
+                    v-model="delivery.telefono"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -200,7 +200,7 @@
                   class="select-primary"
                   size="large"
                   placeholder="Status"
-                  v-model="client.estadoMensajero"
+                  v-model="delivery.estadoMensajero"
                 >
                   <el-option
                     v-for="option in selects.options"
@@ -281,7 +281,7 @@ export default {
           { value: false, label: 'Inactivo' }
         ]
       },
-      client: {
+      delivery: {
         codigo: '',
         nombre: '',
         apellido: '',
@@ -303,7 +303,7 @@ export default {
     this.title = !this.id ? 'Cear' : 'Editar'
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
-    this.checkedID = !this.id && !this.client.nationalID
+    this.checkedID = !this.id && !this.delivery.nationalID
   },
   methods: {
     checkId() {
@@ -324,11 +324,11 @@ export default {
         .get(
           this.baseApiUrl +
             'Mensajeros/byidentificacion/' +
-            this.client.identificacion
+            this.delivery.identificacion
         )
         .then((response) => {
           if (response.data.id > 0) {
-            this.globalSweetMessage('Cliente existe!', 'warning')
+            this.globalSweetMessage('Mensajero existe!', 'warning')
             this.$router.push({ path: '/deliveries/index' })
           } else {
             this.readOnly = response.data.personaId > 0
@@ -343,20 +343,20 @@ export default {
     },
     validateFields() {
       return (
-        !this.client.nombre ||
-        !this.client.apellido ||
-        !this.client.identificacion
+        !this.delivery.nombre ||
+        !this.delivery.apellido ||
+        !this.delivery.identificacion
       )
     },
     fillForm(obj) {
-      this.client = {
+      this.delivery = {
         estadoMensajero: obj.estadoMensajero,
         personaId: obj.personaId,
         codigo: obj.codigo,
         nombre: obj.nombre,
         apellido: obj.apellido,
-        identificacion: this.client.identificacion
-          ? this.client.identificacion
+        identificacion: this.delivery.identificacion
+          ? this.delivery.identificacion
           : obj.identificacion,
         correo: obj.correo,
         direccion: obj.direccion,
@@ -369,15 +369,15 @@ export default {
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },
     clear() {
-      this.client.codigo = ''
-      this.client.nombre = ''
-      this.client.apellido = ''
-      this.client.identificacion = ''
-      this.client.correo = ''
-      this.client.direccion = ''
-      this.client.celular = ''
-      this.client.telefono = ''
-      this.client.estadoMensajero = ''
+      this.delivery.codigo = ''
+      this.delivery.nombre = ''
+      this.delivery.apellido = ''
+      this.delivery.identificacion = ''
+      this.delivery.correo = ''
+      this.delivery.direccion = ''
+      this.delivery.celular = ''
+      this.delivery.telefono = ''
+      this.delivery.estadoMensajero = ''
     },
     edit() {
       if (this.validateFields()) {
@@ -385,7 +385,7 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'Mensajeros/' + this.client.id, this.client)
+          .put(this.baseApiUrl + 'Mensajeros/' + this.delivery.id, this.delivery)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -403,7 +403,7 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'Mensajeros', this.client)
+          .post(this.baseApiUrl + 'Mensajeros', this.delivery)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
