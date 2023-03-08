@@ -5,12 +5,12 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <h2 class="text-center">{{ $t('clients.index') }}</h2>
+    <h2 class="text-center">{{ $t('sellers.index') }}</h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/clients/index">
+          <router-link to="/sellers/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -200,7 +200,7 @@
                   class="select-primary"
                   size="large"
                   placeholder="Status"
-                  v-model="client.estadoClientes"
+                  v-model="client.estadoVendedores"
                 >
                   <el-option
                     v-for="option in selects.options"
@@ -224,7 +224,7 @@
                 >{{ title }}</base-button
               >
 
-              <router-link to="/clients/index">
+              <router-link to="/sellers/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >Cancel</base-button
@@ -290,7 +290,7 @@ export default {
         direccion: '',
         celular: '',
         telefono: '',
-        estadoClientes: '',
+        estadoVendedores: '',
         personaId: 0,
         id: 0,
         estadoPersona: ''
@@ -308,7 +308,7 @@ export default {
   methods: {
     checkId() {
       axios
-        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .get(this.baseApiUrl + 'Vendedores/' + this.id)
         .then((response) => {
           this.isLoading = true
           this.fillForm(response.data)
@@ -323,13 +323,13 @@ export default {
       axios
         .get(
           this.baseApiUrl +
-            'clientes/byidentificacion/' +
+            'Vendedores/byidentificacion/' +
             this.client.identificacion
         )
         .then((response) => {
           if (response.data.id > 0) {
             this.globalSweetMessage('Cliente existe!', 'warning')
-            this.$router.push({ path: '/clients/index' })
+            this.$router.push({ path: '/sellers/index' })
           } else {
             this.readOnly = response.data.personaId > 0
           }
@@ -350,7 +350,7 @@ export default {
     },
     fillForm(obj) {
       this.client = {
-        estadoClientes: obj.estadoClientes,
+        estadoVendedores: obj.estadoVendedores,
         personaId: obj.personaId,
         codigo: obj.codigo,
         nombre: obj.nombre,
@@ -377,7 +377,7 @@ export default {
       this.client.direccion = ''
       this.client.celular = ''
       this.client.telefono = ''
-      this.client.estadoClientes = ''
+      this.client.estadoVendedores = ''
     },
     edit() {
       if (this.validateFields()) {
@@ -385,11 +385,11 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'clientes/' + this.client.id, this.client)
+          .put(this.baseApiUrl + 'Vendedores/' + this.client.id, this.client)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/clients/index' })
+            this.$router.push({ path: '/sellers/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
@@ -403,11 +403,11 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'clientes', this.client)
+          .post(this.baseApiUrl + 'Vendedores', this.client)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/clients/index' })
+            this.$router.push({ path: '/sellers/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')

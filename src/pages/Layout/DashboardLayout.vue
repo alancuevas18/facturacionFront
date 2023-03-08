@@ -49,17 +49,31 @@
             :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
           ></sidebar-item>
         </sidebar-item>
-        <!-- delivery Menu -->
+
+        <!-- spends Menu -->
         <sidebar-item
           :link="{
-            name: $t('delivery.delivery'),
+            name: $t('spends.spends'),
             icon: 'tim-icons icon-image-02'
           }"
         >
           <sidebar-item
-            :link="{ name: $t('delivery.index'), path: '/delivery/index' }"
+            :link="{ name: $t('spends.index'), path: '/spends/index' }"
           ></sidebar-item>
         </sidebar-item>
+
+          <!-- delivery Menu -->
+          <sidebar-item
+          :link="{
+            name: $t('deliveries.deliveries'),
+            icon: 'tim-icons icon-image-02'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+
         <!-- Products Menu -->
         <sidebar-item
           :link="{

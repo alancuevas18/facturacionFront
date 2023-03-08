@@ -20,10 +20,17 @@ const SellerIndex = () => import('src/pages/Sellers/Index.vue')
 const SellerCreate = () => import('src/pages/Sellers/Create.vue')
 const SellerDetail = () => import('src/pages/Sellers/Details.vue')
 
+
+
+//Sellers
+const SpendIndex = () => import('src/pages/Spends/Index.vue')
+const SpendCreate = () => import('src/pages/Spends/Create.vue')
+const SpendDetail = () => import('src/pages/Spends/Details.vue')
+
 //Delivery
-const DeliveryIndex = () => import('src/pages/Delivery/Index.vue')
-const DeliveryCreate = () => import('src/pages/Delivery/Create.vue')
-const DeliveryDetail = () => import('src/pages/Delivery/Details.vue')
+const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
+const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
+const DeliveryDetail = () => import('src/pages/Deliveries/Details.vue')
 
 //Brands
 const BrandIndex = () => import('src/pages/Brands/Index.vue')
@@ -81,6 +88,30 @@ let supplierMenu = {
   ]
 }
 
+let SpendMenu = {
+  path: '/spends',
+  component: DashboardLayout,
+  redirect: '/spends/index',
+  name: 'Gastos',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Gastos',
+      components: { default: SpendIndex }
+
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Gasto',
+      components: { default: SpendCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Gasto',
+      components: { default: SpendDetail }
+    }
+  ]
+}
 let SellerMenu = {
   path: '/sellers',
   component: DashboardLayout,
@@ -90,41 +121,41 @@ let SellerMenu = {
     {
       path: 'index',
       name: 'Administracion Vendedores',
-      components: { default: DeliveryIndex }
+      components: { default: SellerIndex }
+
     },
     {
       path: 'create/:id?',
       name: 'Crear Vendedor',
-      components: { default: DeliveryCreate }
+      components: { default: SellerCreate }
     },
     {
       path: 'details/:id',
       name: 'Detalles Vendedor',
-      components: { default: DeliveryDetail }
+      components: { default: SellerDetail }
     }
   ]
 }
-
 let DeliveryMenu = {
-  path: '/delivery',
+  path: '/deliveries',
   component: DashboardLayout,
-  redirect: '/delivery/index',
+  redirect: '/deliveries/index',
   name: 'Mensajeros',
   children: [
     {
       path: 'index',
       name: 'Administracion Mensajeros',
-      components: { default: SellerIndex }
+      components: { default: DeliveryIndex }
     },
     {
       path: 'create/:id?',
       name: 'Crear Mensajero',
-      components: { default: SellerCreate }
+      components: { default: DeliveryCreate }
     },
     {
       path: 'details/:id',
       name: 'Detalles Mensajero',
-      components: { default: SellerDetail }
+      components: { default: DeliveryDetail }
     }
   ]
 }
@@ -178,6 +209,7 @@ const routes = [
   brandMenu,
   SellerMenu,
   DeliveryMenu,
+  SpendMenu,
   productTypeMenu,
   {
     path: '/',

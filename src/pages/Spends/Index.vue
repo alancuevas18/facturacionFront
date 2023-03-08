@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('sellers.index') }}s</h2>
+      <h2 class="text-center">{{ $t('spends.index') }}s</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('sellers.sellers') }}
-            <router-link to="/sellers/create">
+            {{ $t('spends.spends') }}
+            <router-link to="/spends/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,7 +62,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/sellers/details/' + props.row.id">
+                  <router-link :to="'/spends/details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -72,7 +72,7 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
-                  <router-link :to="'/sellers/create/' + props.row.id">
+                  <router-link :to="'/spends/create/' + props.row.id">
                     <base-button
                       class="edit btn-link"
                       type="warning"
@@ -171,43 +171,19 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['codigo', 'nombre', 'identificacion', 'correo'],
+      propsToSearch: ['descripcion', 'total'],
       tableColumns: [
         {
-          prop: 'codigo',
-          label: 'Codigo',
+          prop: 'descripcion',
+          label: 'Descripción',
           minWidth: 70
         },
         {
-          prop: 'nombre',
-          label: 'Nombre',
+          prop: 'total',
+          label: 'Total',
           minWidth: 100
-        },
-        {
-          prop: 'apellido',
-          label: 'apellido',
-          minWidth: 100
-        },
-        {
-          prop: 'identificacion',
-          label: 'identificacion',
-          minWidth: 120
-        },
-        {
-          prop: 'correo',
-          label: 'correo',
-          minWidth: 200
-        },
-        {
-          prop: 'celular',
-          label: 'celular',
-          minWidth: 120
-        },
-        {
-          prop: 'telefono',
-          label: 'telefono',
-          minWidth: 120
-        }
+        },     
+        
       ],
       tableData: [],
       searchedData: [],
@@ -239,7 +215,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'Vendedores/' + row.id)
+        .delete(this.baseApiUrl + 'Gastos/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -259,7 +235,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     axios
-      .get(this.baseApiUrl + 'Vendedores')
+      .get(this.baseApiUrl + 'Gastos')
       .then((response) => {
         for (let i = 0; i < response.data.length; i++)
           this.tableData.push(response.data[i])

@@ -58,6 +58,24 @@
       "brands" : "Marcas",
       "details" : "Detalles"
     },
+    "sellers": {
+      "create" : "Crear",
+      "index" : "Administracion de Vendedores",
+      "sellers" : "Vendedores",
+      "details" : "Detalles"
+    },
+    "deliveries": {
+      "create" : "Crear",
+      "index" : "Administracion de Mensajeros",
+      "deliveries" : "Mensajeros",
+      "details" : "Detalles"
+    },
+    "spends": {
+      "create" : "Crear",
+      "index" : "Administracion de Gastos",
+      "spends" : "Gastos",
+      "details" : "Detalles"
+    },
     "products": {
       "create" : "Crear",
       "index" : "Administracion de Productos",

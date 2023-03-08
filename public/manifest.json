@@ -1,6 +1,6 @@
 {
-  "name": "Facturacion EMAC",
-  "short_name": "Facturacion EMAC",
+  "name": "FacturacionEMAC",
+  "short_name": "FacturacionEMAC",
   "icons": [
     {
       "src": "./img/icons/android-chrome-192x192.png",
