@@ -70,6 +70,20 @@
       "deliveries" : "Mensajeros",
       "details" : "Detalles"
     },
+    "offices": {
+      "create" : "Crear",
+      "index" : "Administracion de Sucursales",
+      "offices" : "Sucursales",
+      "details" : "Detalles"
+    },
+
+    "structureComprobantes": {
+      "create" : "Crear",
+      "index" : "Administracion de Comprobantes",
+      "structureComprobantes" : "Comprobantes",
+      "details" : "Detalles"
+    },
+
     "spends": {
       "create" : "Crear",
       "index" : "Administracion de Gastos",
