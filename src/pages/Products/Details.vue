@@ -6,12 +6,12 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-12">
-      <h2 class="text-center">{{ $t('sellers.index') }}</h2>
+      <h2 class="text-center">{{ $t('clients.index') }}</h2>
       <card>
         <template slot="header">
           <h4 class="card-title">
-            {{ $t('sellers.details') }}
-            <router-link to="/sellers/index">
+            {{ $t('clients.details') }}
+            <router-link to="/clients/index">
               <button class="btn floatr btn-icon btn-youtube">
                 <i class="tim-icons icon-double-left"></i>
               </button>
@@ -29,11 +29,11 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5 class="title text-capitalize" :class="seller.status">
-                    {{ seller.status }}
+                  <h5 class="title text-capitalize" :class="client.status">
+                    {{ client.status }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ seller.name }} {{ seller.lastName }}
+                    {{ client.name }} {{ client.lastName }}
                   </p>
                 </div>
                 <p></p>
@@ -41,7 +41,7 @@
                 <div slot="footer" class="button-container">
                   <a
                     :href="
-                      'https://api.whatsapp.com/send?phone=' + seller.cellPhone
+                      'https://api.whatsapp.com/send?phone=' + client.cellPhone
                     "
                   >
                     <base-button class="btn-whatsapp" icon round>
@@ -62,41 +62,41 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>NationalID:</b> {{ seller.nationalID }}
+                    <b>NationalID:</b> {{ client.nationalID }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Email:</b> {{ seller.email }}
+                    <b>Email:</b> {{ client.email }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Address:</b> {{ seller.address }}
+                    <b>Address:</b> {{ client.address }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>CellPhone:</b> {{ seller.cellPhone }}
+                    <b>CellPhone:</b> {{ client.cellPhone }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Phone:</b> {{ seller.phone }}
+                    <b>Phone:</b> {{ client.phone }}
                   </p>
                 </div>
                 <p></p>
 
                 <div slot="footer" class="button-container">
-                  <a :href="'tel:' + seller.cellPhone">
+                  <a :href="'tel:' + client.cellPhone">
                     <base-button icon round>
                       <i class="fas fa-phone"></i>
                     </base-button>
                   </a>
-                  <a :href="'tel:' + seller.phone">
+                  <a :href="'tel:' + client.phone">
                     <base-button icon round>
                       <i class="fas fa-mobile"></i>
                     </base-button>
                   </a>
-                  <a :href="'mailto:' + seller.email">
+                  <a :href="'mailto:' + client.email">
                     <base-button icon round>
                       <i class="fas fa-envelope-open"></i>
                     </base-button>
                   </a>
                   <a
-                    :href="'http://maps.google.com/?q=' + seller.address"
+                    :href="'http://maps.google.com/?q=' + client.address"
                     target="_blank"
                   >
                     <base-button icon round>
@@ -127,7 +127,7 @@ export default {
       fullPage: true,
       id: '',
       baseApiUrl: '',
-      seller: [
+      client: [
         {
           code: '',
           name: '',
@@ -150,10 +150,10 @@ export default {
   methods: {
     find() {
       axios
-        .get(this.baseApiUrl + 'Vendedores/' + this.id)
+        .get(this.baseApiUrl + 'clientes/' + this.id)
         .then((response) => {
           this.isLoading = true
-          this.seller = {
+          this.client = {
             code: response.data.codigo,
             name: response.data.nombre,
             lastName: response.data.apellido,

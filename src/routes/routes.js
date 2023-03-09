@@ -20,17 +20,20 @@ const SellerIndex = () => import('src/pages/Sellers/Index.vue')
 const SellerCreate = () => import('src/pages/Sellers/Create.vue')
 const SellerDetail = () => import('src/pages/Sellers/Details.vue')
 
+//Deliveries
+const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
+const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
+const DeliveryDetail = () => import('src/pages/Deliveries/Details.vue')
 
+//Deliveries
+const ProductIndex = () => import('src/pages/Products/Index.vue')
+const ProductCreate = () => import('src/pages/Products/Create.vue')
+const ProductDetail = () => import('src/pages/Products/Details.vue')
 
 //Spends
 const SpendIndex = () => import('src/pages/Spends/Index.vue')
 const SpendCreate = () => import('src/pages/Spends/Create.vue')
 const SpendDetail = () => import('src/pages/Spends/Details.vue')
-
-//Deliveries
-const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
-const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
-const DeliveryDetail = () => import('src/pages/Deliveries/Details.vue')
 
 //Brands
 const BrandIndex = () => import('src/pages/Brands/Index.vue')
@@ -41,14 +44,15 @@ const ProductTypeIndex = () => import('src/pages/ProductsType/Index.vue')
 const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
 
 //Office
-const OfficesIndex=()=> import('src/pages/Offices/Index.vue')
-const OfficesCreate=()=> import('src/pages/Offices/Create.vue')
-const OfficesDetail=()=> import('src/pages/Offices/Details.vue')
+const OfficesIndex = () => import('src/pages/Offices/Index.vue')
+const OfficesCreate = () => import('src/pages/Offices/Create.vue')
+const OfficesDetail = () => import('src/pages/Offices/Details.vue')
 
 //StructureComprabante
-const StructureComprobantesIndex=()=> import('src/pages/StructureComprobantes/Index.vue')
-const StructureComprobantesCreate=()=> import('src/pages/StructureComprobantes/Create.vue')
-const StructureComprobantesDetail=()=> import('src/pages/StructureComprobantes/Details.vue')
+const StructureComprobantesIndex = () =>
+  import('src/pages/StructureComprobantes/Index.vue')
+const StructureComprobantesCreate = () =>
+  import('src/pages/StructureComprobantes/Create.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -73,7 +77,6 @@ let clientMenu = {
     }
   ]
 }
-
 let supplierMenu = {
   path: '/suppliers',
   component: DashboardLayout,
@@ -97,7 +100,29 @@ let supplierMenu = {
     }
   ]
 }
-
+let ProductsMenu = {
+  path: '/products',
+  component: DashboardLayout,
+  redirect: '/products/index',
+  name: 'Productos',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Productos',
+      components: { default: ProductIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Productos',
+      components: { default: ProductCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Producto',
+      components: { default: ProductDetail }
+    }
+  ]
+}
 let SpendMenu = {
   path: '/spends',
   component: DashboardLayout,
@@ -108,7 +133,6 @@ let SpendMenu = {
       path: 'index',
       name: 'Administracion Gastos',
       components: { default: SpendIndex }
-
     },
     {
       path: 'create/:id?',
@@ -132,7 +156,6 @@ let SellerMenu = {
       path: 'index',
       name: 'Administracion Vendedores',
       components: { default: SellerIndex }
-
     },
     {
       path: 'create/:id?',
@@ -169,7 +192,6 @@ let DeliveryMenu = {
     }
   ]
 }
-
 let brandMenu = {
   path: '/brands',
   component: DashboardLayout,
@@ -188,7 +210,6 @@ let brandMenu = {
     }
   ]
 }
-
 let officeMenu = {
   path: '/offices',
   component: DashboardLayout,
@@ -211,7 +232,7 @@ let structureComprobanteMenu = {
   path: '/structureComprobantes',
   component: DashboardLayout,
   redirect: '/structureComprobantes/index',
-  name: 'Offices',
+  name: 'Comprobantes',
   children: [
     {
       path: 'index',
@@ -225,7 +246,6 @@ let structureComprobanteMenu = {
     }
   ]
 }
-
 let productTypeMenu = {
   path: '/productstype',
   component: DashboardLayout,
@@ -253,6 +273,7 @@ const routes = [
   },
   clientMenu,
   supplierMenu,
+  ProductsMenu,
   brandMenu,
   SellerMenu,
   DeliveryMenu,
