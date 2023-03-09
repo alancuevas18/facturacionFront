@@ -6,7 +6,7 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('offices.index') }}s</h2>
+      <h2 class="text-center">{{ $t('offices.index') }}</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
@@ -192,7 +192,7 @@ export default {
           prop: 'telefono2',
           label: 'Otro telefono',
           minWidth: 120
-        },       
+        }
       ],
       tableData: [],
       searchedData: [],

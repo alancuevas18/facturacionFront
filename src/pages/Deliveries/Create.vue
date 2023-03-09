@@ -385,7 +385,10 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'Mensajeros/' + this.delivery.id, this.delivery)
+          .put(
+            this.baseApiUrl + 'Mensajeros/' + this.delivery.id,
+            this.delivery
+          )
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -398,6 +401,7 @@ export default {
       }
     },
     create() {
+      console.log(this.delivery)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {

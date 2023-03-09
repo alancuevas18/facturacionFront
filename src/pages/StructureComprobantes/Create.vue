@@ -20,7 +20,6 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
- 
             <div class="row">
               <label class="col-sm-2 col-form-label">Secuencia*</label>
               <div class="col-sm-10">
@@ -43,7 +42,7 @@
                 </ValidationProvider>
               </div>
             </div>
-           
+
             <div class="row">
               <label class="col-sm-2 col-form-label">Base*</label>
               <div class="col-sm-10">
@@ -65,7 +64,7 @@
                 </ValidationProvider>
               </div>
             </div>
-              <div class="row">
+            <div class="row">
               <label class="col-sm-2 col-form-label">Tipo Comprobante</label>
               <div class="col-sm-10">
                 <el-select
@@ -86,7 +85,7 @@
                 </el-select>
               </div>
             </div>
-           
+
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
@@ -149,12 +148,12 @@ export default {
         simple: '',
         options: []
       },
-      
+
       structureComprobante: {
         secuencia: '',
         base: '',
-        tipoComprobante: 1,
-        id: 0,
+        tipoComprobante: '01',
+        id: 0
       }
     }
   },
@@ -165,20 +164,20 @@ export default {
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
     axios
-        .get(this.baseApiUrl + 'Catalogo/TipoComprobante')
-        .then((response) => {
-          this.isLoading = true
-          this.selects.options=response.data.filter(c=>c.id!=0)
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
+      .get(this.baseApiUrl + 'catalogo/tipocomprobante')
+      .then((response) => {
+        this.isLoading = true
+        this.selects.options = response.data.filter((c) => c.id != 0)
+      })
+      .catch((error) => {
+        this.error = error
+      })
+      .finally(() => (this.isLoading = false))
   },
   methods: {
     checkId() {
       axios
-        .get(this.baseApiUrl + 'EstructuraComprobante/' + this.id)
+        .get(this.baseApiUrl + 'estructuracomprobante/' + this.id)
         .then((response) => {
           this.isLoading = true
           this.fillForm(response.data)
@@ -191,8 +190,7 @@ export default {
 
     validateFields() {
       return (
-        !this.structureComprobante.secuencia ||
-        !this.structureComprobante.base 
+        !this.structureComprobante.secuencia || !this.structureComprobante.base
       )
     },
     fillForm(obj) {
@@ -202,8 +200,7 @@ export default {
         tipoComprobante: obj.tipoComprobante,
         id: obj.id
       }
-      if (obj.id != 0)
-        this.currentCode = obj.id ? ' / Codigo: ' + obj.id : ''
+      if (obj.id != 0) this.currentCode = obj.id ? ' / Codigo: ' + obj.id : ''
     },
     clear() {
       this.structureComprobante.secuencia = ''
@@ -215,7 +212,12 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'EstructuraComprobante/' + this.structureComprobante.id, this.structureComprobante)
+          .put(
+            this.baseApiUrl +
+              'estructuracomprobante/' +
+              this.structureComprobante.id,
+            this.structureComprobante
+          )
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -234,7 +236,10 @@ export default {
         this.isLoading = true
         console.log(this.structureComprobante)
         axios
-          .post(this.baseApiUrl + 'EstructuraComprobante', this.structureComprobante)
+          .post(
+            this.baseApiUrl + 'estructuracomprobante',
+            this.structureComprobante
+          )
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

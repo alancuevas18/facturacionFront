@@ -62,7 +62,9 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/structureComprobantes/details/' + props.row.id">
+                  <router-link
+                    :to="'/structureComprobantes/details/' + props.row.id"
+                  >
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -72,7 +74,9 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
-                  <router-link :to="'/structureComprobantes/create/' + props.row.id">
+                  <router-link
+                    :to="'/structureComprobantes/create/' + props.row.id"
+                  >
                     <base-button
                       class="edit btn-link"
                       type="warning"
@@ -187,7 +191,7 @@ export default {
           prop: 'tipocomprobantetext',
           label: 'TipoComprobante',
           minWidth: 100
-        }       
+        }
       ],
       tableData: [],
       searchedData: [],
@@ -219,7 +223,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'EstructuraComprobante/' + row.id)
+        .delete(this.baseApiUrl + 'estructuracomprobante/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -239,8 +243,9 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     axios
-      .get(this.baseApiUrl + 'EstructuraComprobante')
+      .get(this.baseApiUrl + 'estructuracomprobante')
       .then((response) => {
+        console.log(response.data)
         for (let i = 0; i < response.data.length; i++)
           this.tableData.push(response.data[i])
       })
@@ -248,8 +253,7 @@ export default {
         this.errored = true
       })
       .finally(() => (this.isLoading = false))
-  },
-  watch: {}
+  }
 }
 </script>
 <style>

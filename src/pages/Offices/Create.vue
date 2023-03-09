@@ -20,7 +20,6 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
- 
             <div class="row">
               <label class="col-sm-2 col-form-label">Nombre*</label>
               <div class="col-sm-10">
@@ -42,7 +41,7 @@
                 </ValidationProvider>
               </div>
             </div>
-           
+
             <div class="row">
               <label class="col-sm-2 col-form-label">Ubicación*</label>
               <div class="col-sm-10">
@@ -74,7 +73,7 @@
                 >
                   <base-input
                     required
-                     v-model="office.telefono"
+                    v-model="office.telefono"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -94,7 +93,7 @@
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                     v-model="office.telefono2"
+                    v-model="office.telefono2"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -105,7 +104,7 @@
                 </ValidationProvider>
               </div>
             </div>
-           
+
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
@@ -171,15 +170,14 @@ export default {
           { value: false, label: 'Inactivo' }
         ]
       },
-      
 
       office: {
         nombre: '',
         ubicacion: '',
         telefono: '',
         telefono2: '',
-        imagen:'',
-        id: 0,
+        imagen: '',
+        id: 0
       }
     }
   },
@@ -206,9 +204,7 @@ export default {
 
     validateFields() {
       return (
-        !this.office.nombre ||
-        !this.office.ubicacion ||
-        !this.office.telefono
+        !this.office.nombre || !this.office.ubicacion || !this.office.telefono
       )
     },
     fillForm(obj) {
@@ -219,8 +215,7 @@ export default {
         telefono2: obj.telefono2,
         id: obj.id
       }
-      if (obj.id != 0)
-        this.currentCode = obj.id ? ' / Codigo: ' + obj.id : ''
+      if (obj.id != 0) this.currentCode = obj.id ? ' / Codigo: ' + obj.id : ''
     },
     clear() {
       this.office.nombre = ''
@@ -233,6 +228,8 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
+        console.log(this.office)
+
         axios
           .put(this.baseApiUrl + 'Sucursales/' + this.office.id, this.office)
           .then((response) => {
