@@ -6,12 +6,12 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-12">
-      <h2 class="text-center">{{ $t('clients.index') }}</h2>
+      <h2 class="text-center">{{ $t('products.index') }}</h2>
       <card>
         <template slot="header">
           <h4 class="card-title">
-            {{ $t('clients.details') }}
-            <router-link to="/clients/index">
+            {{ $t('products.details') }}
+            <router-link to="/products/index">
               <button class="btn floatr btn-icon btn-youtube">
                 <i class="tim-icons icon-double-left"></i>
               </button>
@@ -29,26 +29,29 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5 class="title text-capitalize" :class="client.status">
-                    {{ client.status }}
+                  <h5 class="title text-capitalize" :class="product.status">
+                    {{ product.status }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ client.name }} {{ client.lastName }}
+                    {{ product.nombre }}
+                  </p>
+                  <p class="description text-capitalize">
+                    {{ product.descripcion }}
                   </p>
                 </div>
                 <p></p>
 
-                <div slot="footer" class="button-container">
+                <!-- <div slot="footer" class="button-container">
                   <a
                     :href="
-                      'https://api.whatsapp.com/send?phone=' + client.cellPhone
+                      'https://api.whatsapp.com/send?phone=' + product.cellPhone
                     "
                   >
                     <base-button class="btn-whatsapp" icon round>
                       <i class="fab fa-whatsapp"></i>
                     </base-button>
                   </a>
-                </div>
+                </div> -->
               </card>
             </template>
           </div>
@@ -62,48 +65,25 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>NationalID:</b> {{ client.nationalID }}
+                    <b>Codigo:</b> {{ product.codigo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Email:</b> {{ client.email }}
+                    <b>Marca:</b> {{ product.marcaId }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Address:</b> {{ client.address }}
+                    <b>TIpo:</b> {{ product.tipoProductoId }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>CellPhone:</b> {{ client.cellPhone }}
+                    <b>Estado:</b> {{ product.estado }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Phone:</b> {{ client.phone }}
+                    <b>Precio de Compra:</b> {{ product.estado }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Precio de Venta:</b> {{ product.estado }}
                   </p>
                 </div>
                 <p></p>
-
-                <div slot="footer" class="button-container">
-                  <a :href="'tel:' + client.cellPhone">
-                    <base-button icon round>
-                      <i class="fas fa-phone"></i>
-                    </base-button>
-                  </a>
-                  <a :href="'tel:' + client.phone">
-                    <base-button icon round>
-                      <i class="fas fa-mobile"></i>
-                    </base-button>
-                  </a>
-                  <a :href="'mailto:' + client.email">
-                    <base-button icon round>
-                      <i class="fas fa-envelope-open"></i>
-                    </base-button>
-                  </a>
-                  <a
-                    :href="'http://maps.google.com/?q=' + client.address"
-                    target="_blank"
-                  >
-                    <base-button icon round>
-                      <i class="fas fa-map-marker-alt"></i>
-                    </base-button>
-                  </a>
-                </div>
               </card>
             </template>
           </div>
@@ -127,17 +107,16 @@ export default {
       fullPage: true,
       id: '',
       baseApiUrl: '',
-      client: [
+      product: [
         {
-          code: '',
-          name: '',
-          lastName: '',
-          nationalID: '',
-          email: '',
-          address: '',
-          cellPhone: '',
-          phone: '',
-          status: ''
+          codigo: '',
+          nombre: '',
+          descripcion: '',
+          marcaId: '',
+          Imagen: '',
+          tipoProductoId: '',
+          MarcaId: '',
+          estado: ''
         }
       ]
     }
@@ -150,19 +129,19 @@ export default {
   methods: {
     find() {
       axios
-        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .get(this.baseApiUrl + 'productos/' + this.id)
         .then((response) => {
           this.isLoading = true
-          this.client = {
-            code: response.data.codigo,
-            name: response.data.nombre,
-            lastName: response.data.apellido,
-            nationalID: response.data.identificacion,
-            email: response.data.correo,
-            address: response.data.direccion,
-            cellPhone: response.data.celular,
-            phone: response.data.telefono,
-            status: response.data.estadoClientes ? 'active' : 'inactive'
+          this.product = {
+            nombre: response.data.nombre,
+            descripcion: response.data.descripcion,
+            codigo: response.data.codigo,
+            marcaId: response.data.marcaId,
+            imagen: response.data.imagen,
+            tipoProductoId: response.data.tipoProductoId,
+            validarCodigo: true,
+            id: response.data.id,
+            estado: 'Activo'
           }
         })
         .catch((error) => {
