@@ -62,8 +62,8 @@
           ></sidebar-item>
         </sidebar-item>
 
-          <!-- delivery Menu -->
-          <sidebar-item
+        <!-- delivery Menu -->
+        <sidebar-item
           :link="{
             name: $t('deliveries.deliveries'),
             icon: 'tim-icons icon-image-02'
@@ -74,8 +74,8 @@
           ></sidebar-item>
         </sidebar-item>
 
-          <!-- office Menu -->
-          <sidebar-item
+        <!-- office Menu -->
+        <sidebar-item
           :link="{
             name: $t('offices.offices'),
             icon: 'tim-icons icon-image-02'
@@ -85,7 +85,6 @@
             :link="{ name: $t('offices.index'), path: '/offices/index' }"
           ></sidebar-item>
         </sidebar-item>
-        
 
         <!-- Products Menu -->
         <sidebar-item
@@ -105,18 +104,20 @@
           ></sidebar-item>
         </sidebar-item>
 
-      <!-- structureComprobantes Menu -->
-       <sidebar-item
+        <!-- structureComprobantes Menu -->
+        <sidebar-item
           :link="{
             name: $t('structureComprobantes.structureComprobantes'),
             icon: 'tim-icons icon-image-02'
           }"
         >
           <sidebar-item
-            :link="{ name: $t('structureComprobantes.index'), path: '/structureComprobantes/index' }"
+            :link="{
+              name: $t('structureComprobantes.index'),
+              path: '/structureComprobantes/index'
+            }"
           ></sidebar-item>
         </sidebar-item>
-
       </template>
     </side-bar>
     <!--Presentacion de Configuracion-->

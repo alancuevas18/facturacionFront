@@ -22,18 +22,18 @@ export default {
   name: 'sidebar-toggle-button',
   methods: {
     minimizeSidebar() {
-      // Remove this code if you don't want to display notifications while minimizing sidebar
+      // Mensaje de minimizada
       let isMinimizedText = this.$sidebar.isMinimized
         ? 'Desactivada'
-        : 'Activada';
+        : 'Activada'
       // this.$notify({
       //   type: 'primary',
       //   message: `Sidebar mini ${isMinimizedText}...`,
       //   icon: 'tim-icons icon-bell-55'
       // });
-      this.$sidebar.toggleMinimize();
+      this.$sidebar.toggleMinimize()
     }
   }
-};
+}
 </script>
 <style></style>
