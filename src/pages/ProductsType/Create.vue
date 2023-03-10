@@ -31,7 +31,7 @@
                   <base-input
                     required
                     autofocus
-                    v-model="producttype.description"
+                    v-model="producttype.descripcion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -70,16 +70,14 @@
 import { BaseCheckbox, BaseRadio } from 'src/components/index'
 import { DatePicker, Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
-import { required, email, min, numeric } from 'vee-validate/dist/rules'
+import { required, min } from 'vee-validate/dist/rules'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import axios from 'axios'
 import config from '@/config'
 
-extend('email', email)
 extend('required', required)
 extend('min', min)
-extend('numeric', numeric)
 
 export default {
   components: {
@@ -106,7 +104,7 @@ export default {
       },
       producttype: [
         {
-          description: ''
+          descripcion: ''
         }
       ]
     }
@@ -115,13 +113,11 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'
-    if (this.id) {
-      this.fillForm()
-    }
+    if (this.id) this.fillForm()
   },
   methods: {
     validateFields() {
-      return !this.producttype.description
+      return !this.producttype.descripcion
     },
     fillForm() {
       this.isLoading = true
@@ -129,7 +125,8 @@ export default {
         .get(this.baseApiUrl + 'tipoproductos/' + this.id)
         .then((response) => {
           this.producttype = {
-            description: response.data.descripcion
+            id: response.data.id,
+            descripcion: response.data.descripcion
           }
         })
         .catch((error) => {
@@ -138,19 +135,15 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     clear() {
-      this.producttype.description = ''
+      this.producttype.descripcion = ''
     },
     edit() {
-      let producttype = {
-        id: this.id,
-        descripcion: this.producttype.description
-      }
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'tipoproductos/' + this.id, producttype)
+          .put(this.baseApiUrl + 'tipoproductos/' + this.id, this.producttype)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
@@ -164,16 +157,12 @@ export default {
       }
     },
     create() {
-      let producttype = {
-        id: 0,
-        descripcion: this.producttype.description
-      }
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'tipoproductos', producttype)
+          .post(this.baseApiUrl + 'tipoproductos', this.producttype)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

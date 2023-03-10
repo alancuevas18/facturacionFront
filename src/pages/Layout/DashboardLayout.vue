@@ -20,7 +20,7 @@
         <sidebar-item
           :link="{
             name: $t('clients.clients'),
-            icon: 'tim-icons icon-image-02'
+            icon: 'fas fa-users'
           }"
         >
           <sidebar-item
@@ -42,7 +42,7 @@
         <sidebar-item
           :link="{
             name: $t('sellers.sellers'),
-            icon: 'tim-icons icon-image-02'
+            icon: 'fas fa-user'
           }"
         >
           <sidebar-item
@@ -54,7 +54,7 @@
         <sidebar-item
           :link="{
             name: $t('spends.spends'),
-            icon: 'tim-icons icon-image-02'
+            icon: 'fas fa-dollar-sign'
           }"
         >
           <sidebar-item
@@ -66,7 +66,7 @@
         <sidebar-item
           :link="{
             name: $t('deliveries.deliveries'),
-            icon: 'tim-icons icon-image-02'
+            icon: 'tim-icons icon-email-85'
           }"
         >
           <sidebar-item
@@ -78,7 +78,7 @@
         <sidebar-item
           :link="{
             name: $t('offices.offices'),
-            icon: 'tim-icons icon-image-02'
+            icon: 'far fa-building'
           }"
         >
           <sidebar-item
@@ -108,7 +108,7 @@
         <sidebar-item
           :link="{
             name: $t('structureComprobantes.structureComprobantes'),
-            icon: 'tim-icons icon-image-02'
+            icon: 'far fa-list-alt'
           }"
         >
           <sidebar-item

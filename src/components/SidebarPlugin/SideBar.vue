@@ -51,7 +51,7 @@ export default {
     backgroundColor: {
       type: String,
       default: 'vue',
-      validator: value => {
+      validator: (value) => {
         let acceptedValues = [
           '',
           'vue',
@@ -60,8 +60,8 @@ export default {
           'orange',
           'red',
           'primary'
-        ];
-        return acceptedValues.indexOf(value) !== -1;
+        ]
+        return acceptedValues.indexOf(value) !== -1
       },
       description:
         'Sidebar background color (vue|blue|green|orange|red|primary)'
@@ -82,21 +82,21 @@ export default {
   provide() {
     return {
       autoClose: this.autoClose
-    };
+    }
   },
   methods: {
     minimizeSidebar() {
       if (this.$sidebar) {
-        this.$sidebar.toggleMinimize();
+        this.$sidebar.toggleMinimize()
       }
     }
   },
   beforeDestroy() {
     if (this.$sidebar.showSidebar) {
-      this.$sidebar.showSidebar = false;
+      this.$sidebar.showSidebar = false
     }
   }
-};
+}
 </script>
 <style>
 @media (min-width: 992px) {
