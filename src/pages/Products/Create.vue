@@ -5,12 +5,12 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <h2 class="text-center">{{ $t('clients.index') }}</h2>
+    <h2 class="text-center">{{ $t('products.index') }}</h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/clients/index">
+          <router-link to="/products/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -21,20 +21,17 @@
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
-              <label class="col-sm-2 col-form-label">Identificacion*</label>
+              <label class="col-sm-2 col-form-label">Codigo*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="Identificacion"
+                  name="codigo"
                   rules="required|min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    title="Escriba la identificaion y presione 'Enter'"
-                    placeholder="Escriba la identificaion y presione 'Enter'"
                     required
                     autofocus
-                    v-on:keyup.enter="checkIdentification()"
-                    v-model="client.identificacion"
+                    v-model="product.codigo"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -55,10 +52,7 @@
                 >
                   <base-input
                     required
-                    :disabled="checkedID"
-                    v-model="client.nombre"
-                    :readonly="readOnly"
-                    :key="readOnly"
+                    v-model="product.nombre"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -70,19 +64,16 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Apellido*</label>
+              <label class="col-sm-2 col-form-label">Descripcion*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="Apellido"
+                  name="descripcion"
                   rules="required|min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    :disabled="checkedID"
-                    :readonly="readOnly"
-                    :key="readOnly"
-                    v-model="client.apellido"
+                    v-model="product.descripcion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -94,43 +85,16 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Correo*</label>
+              <label class="col-sm-2 col-form-label">Imagen*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="Correo"
-                  rules="required|email"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    :disabled="checkedID"
-                    :readonly="readOnly"
-                    :key="readOnly"
-                    v-model="client.correo"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Direccion*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Direccion"
+                  name="imagen"
                   rules="required"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    :disabled="checkedID"
-                    :readonly="readOnly"
-                    :key="readOnly"
-                    v-model="client.direccion"
+                    v-model="product.imagen"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -142,75 +106,101 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Celular*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Celular"
-                  rules="required|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    :disabled="checkedID"
-                    :readonly="readOnly"
-                    :key="readOnly"
-                    v-model="client.celular"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Telefono*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Telefono"
-                  rules="required|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    :disabled="checkedID"
-                    :readonly="readOnly"
-                    :key="readOnly"
-                    v-model="client.telefono"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Status</label>
+              <label class="col-sm-2 col-form-label">Marca</label>
               <div class="col-sm-10">
                 <el-select
-                  :disabled="checkedID"
                   :readonly="readOnly"
                   :key="readOnly"
                   required
+                  filterable
                   class="select-primary"
                   size="large"
-                  placeholder="Status"
-                  v-model="client.estadoClientes"
+                  placeholder="marca"
+                  v-model="product.marcaId"
                 >
                   <el-option
-                    v-for="option in selects.options"
+                    v-for="option in selects.brands"
                     class="select-primary"
-                    :value="option.value"
-                    :label="option.label"
-                    :key="option.label"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
                   >
                   </el-option>
                 </el-select>
+                <base-button
+                  :type="showInsertModalBrand ? 'danger' : 'success'"
+                  class="animation-on-hover"
+                  size="sm"
+                  @click.native="showModalInsertBrand()"
+                  >{{ showInsertModalBrand ? 'x' : '+' }}</base-button
+                >
+                <div class="d-flex">
+                  <form v-if="showInsertModalBrand">
+                    <base-input
+                      class="mb-0"
+                      placeholder="Descripcion"
+                      required
+                      v-model="newBrand.descripcion"
+                    >
+                    </base-input>
+                    <base-button
+                      type="success"
+                      class="animation-on-hover"
+                      size="sm"
+                      @click.native="insertNewBrand()"
+                      ><i class="fas fa-paper-plane"></i
+                    ></base-button>
+                  </form>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Tipo de Producto</label>
+              <div class="col-sm-10">
+                <el-select
+                  :readonly="readOnly"
+                  :key="readOnly"
+                  required
+                  filterable
+                  class="select-primary"
+                  size="large"
+                  placeholder="Tipo de Producto"
+                  v-model="product.tipoProductoId"
+                >
+                  <el-option
+                    v-for="option in selects.productType"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
+                  >
+                  </el-option>
+                </el-select>
+                <base-button
+                  :type="showInsertModalProductType ? 'danger' : 'success'"
+                  class="animation-on-hover"
+                  size="sm"
+                  @click.native="showModalInsertProductType()"
+                  >{{ showInsertModalProductType ? 'x' : '+' }}</base-button
+                >
+                <div class="d-flex">
+                  <form v-if="showInsertModalProductType">
+                    <base-input
+                      class="mb-0"
+                      placeholder="Descripcion"
+                      required
+                      v-model="newproductType.descripcion"
+                    >
+                    </base-input>
+                    <base-button
+                      type="success"
+                      class="animation-on-hover"
+                      size="sm"
+                      @click.native="insertNewProductType()"
+                      ><i class="fas fa-paper-plane"></i
+                    ></base-button>
+                  </form>
+                </div>
               </div>
             </div>
             <div class="row d-flex justify-content-center">
@@ -219,12 +209,11 @@
                 native-type="submit"
                 class="animation-on-hover"
                 @click.native="!id ? create() : edit()"
-                :disabled="checkedID"
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
 
-              <router-link to="/clients/index">
+              <router-link to="/products/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >Cancel</base-button
@@ -264,6 +253,8 @@ export default {
   },
   data() {
     return {
+      showInsertModalProductType: false,
+      showInsertModalBrand: false,
       readOnly: false,
       checkedID: false,
       isLoading: false,
@@ -273,26 +264,30 @@ export default {
       baseApiUrl: '',
       title: '',
       fixedCode: '',
+      newproductType: {
+        id: 0,
+        descripcion: ''
+      },
+      newBrand: {
+        id: 0,
+        descripcion: ''
+      },
       selects: {
         simple: '',
-        options: [
-          { value: true, label: 'Activo' },
-          { value: false, label: 'Inactivo' }
-        ]
+        brands: [],
+        productType: []
       },
-      client: {
-        codigo: '',
+      product: {
         nombre: '',
-        apellido: '',
-        identificacion: '',
-        correo: '',
-        direccion: '',
-        celular: '',
-        telefono: '',
-        estadoClientes: '',
-        personaId: 0,
-        id: 0,
-        estadoPersona: ''
+        descripcion: '',
+        codigo: '',
+        marcaId: 1,
+        marcas: null,
+        imagen: '',
+        tipoProductoId: 4,
+        tipoProductos: null,
+        validarCodigo: true,
+        id: 0
       }
     }
   },
@@ -302,93 +297,86 @@ export default {
     this.title = !this.id ? 'Cear' : 'Editar'
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
-    this.checkedID = !this.id && !this.client.nationalID
+    this.fillCatalog()
   },
   methods: {
     checkId() {
+      console.log(this.baseApiUrl + 'products/' + this.id)
       axios
-        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .get(this.baseApiUrl + 'productos/' + this.id)
         .then((response) => {
+          console.log(response.data)
           this.isLoading = true
-          this.fillForm(response.data)
+          this.fillForm(response.data.result)
         })
         .catch((error) => {
           this.error = error
         })
         .finally(() => (this.isLoading = false))
     },
-    checkIdentification() {
-      this.isLoading = true
-      axios
-        .get(
-          this.baseApiUrl +
-            'clientes/byidentificacion/' +
-            this.client.identificacion
-        )
-        .then((response) => {
-          if (response.data.id > 0) {
-            this.globalSweetMessage('Cliente existe!', 'warning')
-            this.$router.push({ path: '/clients/index' })
-          } else {
-            this.readOnly = response.data.personaId > 0
-          }
-          this.fillForm(response.data)
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Error al consultar identificacion', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-      this.checkedID = false
-    },
     validateFields() {
       return (
-        !this.client.nombre ||
-        !this.client.apellido ||
-        !this.client.identificacion
+        !this.product.nombre ||
+        !this.product.descripcion ||
+        !this.product.codigo
       )
     },
+    fillCatalog() {
+      axios
+        .get(this.baseApiUrl + 'catalogo/marcas')
+        .then((response) => {
+          this.selects.brands = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+
+      axios
+        .get(this.baseApiUrl + 'catalogo/tipoproductos')
+        .then((response) => {
+          this.isLoading = true
+          this.selects.productType = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    },
     fillForm(obj) {
-      this.client = {
-        estadoClientes: obj.estadoClientes,
-        personaId: obj.personaId,
-        codigo: obj.codigo,
+      this.product = {
         nombre: obj.nombre,
-        apellido: obj.apellido,
-        identificacion: this.client.identificacion
-          ? this.client.identificacion
-          : obj.identificacion,
-        correo: obj.correo,
-        direccion: obj.direccion,
-        celular: obj.celular,
-        telefono: obj.telefono,
-        estadoPersona: true,
+        descripcion: obj.descripcion,
+        codigo: obj.codigo,
+        marcaId: obj.marcaId,
+        marcas: null,
+        imagen: obj.imagen,
+        tipoProductoId: obj.tipoProductoId,
+        tipoProductos: null,
+        validarCodigo: true,
         id: obj.id
       }
       if (obj.id != 0)
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },
     clear() {
-      this.client.codigo = ''
-      this.client.nombre = ''
-      this.client.apellido = ''
-      this.client.identificacion = ''
-      this.client.correo = ''
-      this.client.direccion = ''
-      this.client.celular = ''
-      this.client.telefono = ''
-      this.client.estadoClientes = ''
+      this.product.codigo = ''
+      this.product.nombre = ''
+      this.product.imagen = ''
+      this.product.descripcion = ''
     },
     edit() {
+      console.log(this.product)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'clientes/' + this.client.id, this.client)
+          .put(this.baseApiUrl + 'productos/' + this.product.id, this.product)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/clients/index' })
+            this.$router.push({ path: '/products/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
@@ -397,23 +385,54 @@ export default {
       }
     },
     create() {
-      console.log(this.client)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'clientes', this.client)
+          .post(this.baseApiUrl + 'productos', this.product)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/clients/index' })
+            this.$router.push({ path: '/products/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }
+    },
+    insertNewProductType() {
+      this.isLoading = true
+      axios
+        .post(this.baseApiUrl + 'tipoproductos', this.newproductType)
+        .then((response) => {
+          this.fillCatalog()
+          this.newproductType.descripcion = ''
+        })
+        .catch((error) => {
+          this.globalSweetMessage(error.response.data.message, 'error')
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    insertNewBrand() {
+      this.isLoading = true
+      axios
+        .post(this.baseApiUrl + 'marcas', this.newBrand)
+        .then((response) => {
+          this.fillCatalog()
+          this.newBrand.descripcion = ''
+        })
+        .catch((error) => {
+          this.globalSweetMessage(error.response.data.message, 'error')
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    showModalInsertProductType() {
+      this.showInsertModalProductType = !this.showInsertModalProductType
+    },
+    showModalInsertBrand() {
+      this.showInsertModalBrand = !this.showInsertModalBrand
     }
   }
 }
@@ -423,6 +442,9 @@ export default {
   float: right;
 }
 
+.inline {
+  display: inline-block;
+}
 .tooltip {
   position: relative;
   display: inline-block;

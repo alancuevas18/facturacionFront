@@ -170,6 +170,7 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
+      brands: {},
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [
@@ -189,12 +190,12 @@ export default {
           minWidth: 200
         },
         {
-          prop: 'marcaId',
+          prop: 'marcaProducto',
           label: 'Marca',
           minWidth: 120
         },
         {
-          prop: 'tipoProductoId',
+          prop: 'tipoProducto',
           label: 'Tipo Producto',
           minWidth: 200
         }
@@ -249,10 +250,25 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     axios
-      .get(this.baseApiUrl + 'productos')
+      .get(this.baseApiUrl + 'catalogo/marcas')
       .then((response) => {
         for (let i = 0; i < response.data.length; i++)
+          this.brands.push(response.data[i])
+      })
+      .catch((error) => {
+        this.errored = true
+      })
+    axios
+      .get(this.baseApiUrl + 'productos')
+      .then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
           this.tableData.push(response.data[i])
+          this.tableData[i]['marcaProducto'] =
+            response.data[i].marcas.descripcion
+          this.tableData[i]['tipoProducto'] =
+            response.data[i].tipoProductos.descripcion
+        }
+        console.log(this.tableData)
       })
       .catch((error) => {
         this.errored = true
