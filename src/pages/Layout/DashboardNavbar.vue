@@ -22,9 +22,8 @@
 
     <ul class="navbar-nav ml-auto">
       <div class="search-bar input-group" @click="searchModalVisible = true">
-       
-          <input type="text" class="form-control" placeholder="Search...">
-           <!--<div class="input-group-addon"><i class="tim-icons icon-zoom-split"></i></div>
+        <input type="text" class="form-control" placeholder="Search..." />
+        <!--<div class="input-group-addon"><i class="tim-icons icon-zoom-split"></i></div>
         -->
         <button
           class="btn btn-link"
@@ -92,9 +91,7 @@
         title-classes="nav-link"
         menu-classes="dropdown-navbar"
       >
-        <template
-          slot="title"
-        >
+        <template slot="title">
           <div class="photo"><img src="img/mike.jpg" /></div>
           <b class="caret d-none d-lg-block d-xl-block"></b>
           <p class="d-lg-none">Log out</p>
@@ -114,8 +111,8 @@
   </base-nav>
 </template>
 <script>
-import { BaseNav, Modal } from '@/components';
-import SidebarToggleButton from './SidebarToggleButton';
+import { BaseNav, Modal } from '@/components'
+import SidebarToggleButton from './SidebarToggleButton'
 
 export default {
   components: {
@@ -125,11 +122,11 @@ export default {
   },
   computed: {
     routeName() {
-      const { name } = this.$route;
-      return this.capitalizeFirstLetter(name);
+      const { name } = this.$route
+      return this.capitalizeFirstLetter(name)
     },
     isRTL() {
-      return false;
+      return false
     }
   },
   data() {
@@ -138,29 +135,29 @@ export default {
       showMenu: false,
       searchModalVisible: false,
       searchQuery: ''
-    };
+    }
   },
   methods: {
     capitalizeFirstLetter(string) {
-      return string.charAt(0).toUpperCase() + string.slice(1);
+      return string.charAt(0).toUpperCase() + string.slice(1)
     },
     toggleNotificationDropDown() {
-      this.activeNotifications = !this.activeNotifications;
+      this.activeNotifications = !this.activeNotifications
     },
     closeDropDown() {
-      this.activeNotifications = false;
+      this.activeNotifications = false
     },
     toggleSidebar() {
-      this.$sidebar.displaySidebar(!this.$sidebar.showSidebar);
+      this.$sidebar.displaySidebar(!this.$sidebar.showSidebar)
     },
     hideSidebar() {
-      this.$sidebar.displaySidebar(false);
+      this.$sidebar.displaySidebar(false)
     },
     toggleMenu() {
-      this.showMenu = !this.showMenu;
+      this.showMenu = !this.showMenu
     }
   }
-};
+}
 </script>
 <style scoped>
 .top-navbar {

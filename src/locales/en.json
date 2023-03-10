@@ -37,6 +37,9 @@
     "charts": "Charts",
     "calendar": "Calendar"
   },
+  "global":{
+    "cancel":"Cancel"
+  },
   "products": {
     "create" : "Crear",
     "index" : "Administracion de Productos",

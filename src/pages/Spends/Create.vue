@@ -20,7 +20,6 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
-          
             <div class="row">
               <label class="col-sm-2 col-form-label">Descripción*</label>
               <div class="col-sm-10">
@@ -31,7 +30,7 @@
                 >
                   <base-input
                     required
-                    v-model="spend.descripcion"                   
+                    v-model="spend.descripcion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -64,7 +63,7 @@
                 </ValidationProvider>
               </div>
             </div>
-            
+
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
@@ -78,7 +77,7 @@
               <router-link to="/spends/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
-                  >Cancel</base-button
+                  >{{ $t('global.cancel') }}</base-button
                 >
               </router-link>
             </div>
@@ -133,7 +132,7 @@ export default {
       spend: {
         descripcion: '',
         total: 0,
-        id: 0,
+        id: 0
       }
     }
   },
@@ -157,17 +156,14 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
-     validateFields() {
-      return (
-        !this.spend.descripcion ||
-        !this.spend.total 
-      )
+    validateFields() {
+      return !this.spend.descripcion || !this.spend.total
     },
     fillForm(obj) {
       this.spend = {
         descripcion: obj.descripcion,
         total: obj.total,
-      
+
         id: obj.id
       }
       if (obj.id != 0)

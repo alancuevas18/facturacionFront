@@ -99,7 +99,7 @@
               <router-link to="/structureComprobantes/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
-                  >Cancel</base-button
+                  >{{ $t('global.cancel') }}</base-button
                 >
               </router-link>
             </div>

@@ -134,10 +134,13 @@
                   @click.native="showModalInsertBrand()"
                   >{{ showInsertModalBrand ? 'x' : '+' }}</base-button
                 >
-                <div class="d-flex">
-                  <form v-if="showInsertModalBrand">
+                <div class="container">
+                  <form
+                    class="row align-items-center"
+                    v-if="showInsertModalBrand"
+                  >
                     <base-input
-                      class="mb-0"
+                      class=""
                       placeholder="Descripcion"
                       required
                       v-model="newBrand.descripcion"
@@ -183,8 +186,11 @@
                   @click.native="showModalInsertProductType()"
                   >{{ showInsertModalProductType ? 'x' : '+' }}</base-button
                 >
-                <div class="d-flex">
-                  <form v-if="showInsertModalProductType">
+                <div class="container">
+                  <form
+                    class="row align-items-center"
+                    v-if="showInsertModalProductType"
+                  >
                     <base-input
                       class="mb-0"
                       placeholder="Descripcion"
@@ -216,7 +222,7 @@
               <router-link to="/products/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
-                  >Cancel</base-button
+                  >{{ $t('global.cancel') }}</base-button
                 >
               </router-link>
             </div>

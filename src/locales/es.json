@@ -37,6 +37,9 @@
       "charts": "Charts",
       "calendar": "Calendar"
     },
+    "global":{
+      "cancel":"Cancelar"
+    },
     "ConfigSide": {
       "title" : "Configuracion"
     },
