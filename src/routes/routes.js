@@ -25,10 +25,19 @@ const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
 const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
 const DeliveryDetail = () => import('src/pages/Deliveries/Details.vue')
 
-//Deliveries
+//Products
 const ProductIndex = () => import('src/pages/Products/Index.vue')
 const ProductCreate = () => import('src/pages/Products/Create.vue')
 const ProductDetail = () => import('src/pages/Products/Details.vue')
+
+//ProductsOffice
+const ProductOfficeIndex = () => import('src/pages/ProductsOffice/Index.vue')
+const ProductOfficeCreate = () => import('src/pages/ProductsOffice/Create.vue')
+const ProductOfficeDetail = () => import('src/pages/ProductsOffice/Details.vue')
+
+//Services
+const ServiceIndex = () => import('src/pages/Services/Index.vue')
+const ServiceCreate = () => import('src/pages/Services/Create.vue')
 
 //Spends
 const SpendIndex = () => import('src/pages/Spends/Index.vue')
@@ -120,6 +129,47 @@ let ProductsMenu = {
       path: 'details/:id',
       name: 'Detalles Producto',
       components: { default: ProductDetail }
+    }
+  ]
+}
+let ProductOfficesMenu = {
+  path: '/productsoffice',
+  component: DashboardLayout,
+  redirect: '/products/index',
+  name: 'Productos Por Sucursal',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Productos Por Sucursal',
+      components: { default: ProductOfficeIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Productos Por Sucursal',
+      components: { default: ProductOfficeCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Producto Por Sucursal',
+      components: { default: ProductOfficeDetail }
+    }
+  ]
+}
+let ServicesMenu = {
+  path: '/services',
+  component: DashboardLayout,
+  redirect: '/services/index',
+  name: 'Servicios',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Servicios',
+      components: { default: ServiceIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Servicios',
+      components: { default: ServiceCreate }
     }
   ]
 }
@@ -274,6 +324,8 @@ const routes = [
   clientMenu,
   supplierMenu,
   ProductsMenu,
+  ProductOfficesMenu,
+  ServicesMenu,
   brandMenu,
   SellerMenu,
   DeliveryMenu,

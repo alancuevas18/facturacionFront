@@ -98,7 +98,14 @@
       "index" : "Administracion de Productos",
       "products" : "Productos",
       "details" : "Detalles",
-      "type" : "Tipo de Productos"
+      "type" : "Tipo de Productos",
+      "byOffice" : "Productos por Sucursal"
+    },
+    "services": {
+      "create" : "Crear",
+      "index" : "Administracion de Servicios",
+      "services": "Servicios",
+      "details" : "Detalles"
     }
   }
   

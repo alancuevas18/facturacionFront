@@ -42,7 +42,7 @@
         <sidebar-item
           :link="{
             name: $t('sellers.sellers'),
-            icon: 'fas fa-user'
+            icon: 'fa-solid fa-handshake'
           }"
         >
           <sidebar-item
@@ -97,10 +97,25 @@
             :link="{ name: $t('products.index'), path: '/products/index' }"
           ></sidebar-item>
           <sidebar-item
+            :link="{ name: $t('products.byOffice'), path: '/products/index' }"
+          ></sidebar-item>
+          <sidebar-item
             :link="{ name: $t('brands.brands'), path: '/brands/index' }"
           ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('products.type'), path: '/productstype/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+
+        <!-- serivices Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('services.services'),
+            icon: 'fa-solid fa-people-carry-box'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('services.index'), path: '/services/index' }"
           ></sidebar-item>
         </sidebar-item>
 
