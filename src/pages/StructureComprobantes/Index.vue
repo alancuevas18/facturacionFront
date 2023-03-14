@@ -233,7 +233,6 @@ export default {
     axios
       .get(this.baseApiUrl + 'estructuracomprobante')
       .then((response) => {
-        console.log(response.data)
         for (let i = 0; i < response.data.length; i++)
           this.tableData.push(response.data[i])
       })

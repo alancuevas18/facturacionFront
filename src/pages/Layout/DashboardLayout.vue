@@ -86,6 +86,26 @@
           ></sidebar-item>
         </sidebar-item>
 
+        <!-- office Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('invetory.invetory'),
+            icon: 'fa-solid fa-box-open'
+          }"
+        >
+          <sidebar-item
+            :link="{
+              name: $t('products.byOffice'),
+              path: '/ProductsOffice/index'
+            }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{ name: $t('services.byOffice'), path: '/services/index' }"
+          ></sidebar-item>
+          <!-- <sidebar-item
+            :link="{ name: $t('invetory.index'), path: '/invetory/index' }"
+          ></sidebar-item> -->
+        </sidebar-item>
         <!-- Products Menu -->
         <sidebar-item
           :link="{
@@ -95,9 +115,6 @@
         >
           <sidebar-item
             :link="{ name: $t('products.index'), path: '/products/index' }"
-          ></sidebar-item>
-          <sidebar-item
-            :link="{ name: $t('products.byOffice'), path: '/products/index' }"
           ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('brands.brands'), path: '/brands/index' }"

@@ -228,8 +228,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.office)
-
         axios
           .put(this.baseApiUrl + 'Sucursales/' + this.office.id, this.office)
           .then((response) => {

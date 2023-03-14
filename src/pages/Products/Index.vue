@@ -268,7 +268,6 @@ export default {
           this.tableData[i]['tipoProducto'] =
             response.data[i].tipoProductos.descripcion
         }
-        console.log(this.tableData)
       })
       .catch((error) => {
         this.errored = true

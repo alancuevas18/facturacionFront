@@ -234,7 +234,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.structureComprobante)
         axios
           .post(
             this.baseApiUrl + 'estructuracomprobante',

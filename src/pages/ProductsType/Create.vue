@@ -150,7 +150,6 @@ export default {
             this.$router.push({ path: '/productstype/index' })
           })
           .catch((error) => {
-            console.log(error.response)
             this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))

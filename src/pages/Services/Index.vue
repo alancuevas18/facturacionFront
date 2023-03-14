@@ -235,7 +235,6 @@ export default {
         for (let i = 0; i < response.data.length; i++) {
           this.tableData.push(response.data[i])
         }
-        console.log(this.tableData)
       })
       .catch((error) => {
         this.errored = true

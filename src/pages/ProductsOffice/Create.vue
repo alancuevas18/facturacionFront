@@ -5,12 +5,14 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <h2 class="text-center">{{ $t('products.index') }}</h2>
+    <h2 class="text-center">
+      {{ $t('global.add') }} {{ $t('products.byOffice') }}
+    </h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/products/index">
+          <router-link to="/ProductsOffice/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -18,20 +20,21 @@
         </h4>
       </template>
       <div>
-        <ValidationObserver v-slot="{ handleSubmit }">
-          <form class="form-horizontal" @submit.prevent="handleSubmit()">
+        <ValidationObserver>
+          <form class="form-horizontal">
             <div class="row">
               <label class="col-sm-2 col-form-label">Codigo*</label>
-              <div class="col-sm-10">
+              <div class="col-sm-9">
                 <ValidationProvider
                   name="codigo"
-                  rules="required|min:3"
+                  rules="required|min:1"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
                     autofocus
-                    v-model="product.codigo"
+                    v-model="productByOffice.codigo"
+                    v-on:keyup.enter="checkProductCode()"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -41,185 +44,29 @@
                   </base-input>
                 </ValidationProvider>
               </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Nombre*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Nombre"
-                  rules="required|min:3"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="product.nombre"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Descripcion*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="descripcion"
-                  rules="required|min:3"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="product.descripcion"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Imagen*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="imagen"
-                  rules="required"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="product.imagen"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Marca</label>
-              <div class="col-sm-10">
-                <el-select
-                  :readonly="readOnly"
-                  :key="readOnly"
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="marca"
-                  v-model="product.marcaId"
-                >
-                  <el-option
-                    v-for="option in selects.brands"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
+              <div class="col-sm-1">
                 <base-button
-                  :type="showInsertModalBrand ? 'danger' : 'success'"
+                  type="info"
                   class="animation-on-hover"
-                  size="sm"
-                  @click.native="showModalInsertBrand()"
-                  >{{ showInsertModalBrand ? 'x' : '+' }}</base-button
-                >
-                <div class="container">
-                  <form
-                    class="row align-items-center"
-                    v-if="showInsertModalBrand"
-                  >
-                    <base-input
-                      class=""
-                      placeholder="Descripcion"
-                      required
-                      v-model="newBrand.descripcion"
-                    >
-                    </base-input>
-                    <base-button
-                      type="success"
-                      class="animation-on-hover"
-                      size="sm"
-                      @click.native="insertNewBrand()"
-                      ><i class="fas fa-paper-plane"></i
-                    ></base-button>
-                  </form>
-                </div>
+                  size="md"
+                  @click.native="showSearchProductModal = true"
+                  ><i class="tim-icons icon-zoom-split"></i
+                ></base-button>
               </div>
             </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Tipo de Producto</label>
-              <div class="col-sm-10">
-                <el-select
-                  :readonly="readOnly"
-                  :key="readOnly"
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Tipo de Producto"
-                  v-model="product.tipoProductoId"
-                >
-                  <el-option
-                    v-for="option in selects.productType"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
-                <base-button
-                  :type="showInsertModalProductType ? 'danger' : 'success'"
-                  class="animation-on-hover"
-                  size="sm"
-                  @click.native="showModalInsertProductType()"
-                  >{{ showInsertModalProductType ? 'x' : '+' }}</base-button
-                >
-                <div class="container">
-                  <form
-                    class="row align-items-center"
-                    v-if="showInsertModalProductType"
-                  >
-                    <base-input
-                      class="mb-0"
-                      placeholder="Descripcion"
-                      required
-                      v-model="newproductType.descripcion"
-                    >
-                    </base-input>
-                    <base-button
-                      type="success"
-                      class="animation-on-hover"
-                      size="sm"
-                      @click.native="insertNewProductType()"
-                      ><i class="fas fa-paper-plane"></i
-                    ></base-button>
-                  </form>
-                </div>
-              </div>
-            </div>
+
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
+                :disabled="checkedID"
                 @click.native="!id ? create() : edit()"
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
 
-              <router-link to="/products/index">
+              <router-link to="/productsoffice/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >{{ $t('global.cancel') }}</base-button
@@ -231,36 +78,74 @@
       </div>
     </card>
     <!-- end card -->
+    <modal
+      :show.sync="showSearchProductModal"
+      class="modal-search"
+      id="searchModal"
+      :centered="false"
+      :show-close="true"
+    >
+      <input
+        slot="header"
+        v-model="searchQuery"
+        type="text"
+        class="form-control"
+        id="inlineFormInputGroup"
+        placeholder="SEARCH"
+      />
+      <el-table :data="queriedData">
+        <el-table-column
+          v-for="column in tableColumns"
+          :key="column.label"
+          :min-width="column.minWidth"
+          :prop="column.prop"
+          :label="column.label"
+        >
+        </el-table-column>
+        <el-table-column :min-width="135" align="right" label="Actions">
+          <div slot-scope="props">
+            <base-button
+              @click.native="selectProduct(props.$index, props.row)"
+              class="remove btn-link"
+              type="danger"
+              size="sm"
+              icon
+            >
+              <i class="tim-icons icon-simple-remove"></i>
+            </base-button>
+          </div>
+        </el-table-column>
+      </el-table>
+    </modal>
   </div>
 </template>
 <script>
-import { BaseCheckbox, BaseRadio } from 'src/components/index'
-import { DatePicker, Select, Option } from 'element-ui'
+import { Modal } from '@/components'
+import { Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
-import { required, email, min, numeric } from 'vee-validate/dist/rules'
+import { required, min, numeric } from 'vee-validate/dist/rules'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import axios from 'axios'
 import config from '@/config'
 
-extend('email', email)
 extend('required', required)
 extend('min', min)
 extend('numeric', numeric)
 
 export default {
   components: {
+    Modal,
     Loading,
-    BaseCheckbox,
-    BaseRadio,
-    [DatePicker.name]: DatePicker,
     [Select.name]: Select,
-    [Option.name]: Option
+    [Option.name]: Option,
+    [Table.name]: Table,
+    [TableColumn.name]: TableColumn
   },
   data() {
     return {
-      showInsertModalProductType: false,
-      showInsertModalBrand: false,
+      searchQuery: '',
+      showSearchProductModal: false,
       readOnly: false,
       checkedID: false,
       isLoading: false,
@@ -269,32 +154,48 @@ export default {
       currentCode: '',
       baseApiUrl: '',
       title: '',
-      fixedCode: '',
-      newproductType: {
-        id: 0,
-        descripcion: ''
-      },
-      newBrand: {
-        id: 0,
-        descripcion: ''
-      },
       selects: {
-        simple: '',
-        brands: [],
-        productType: []
+        simple: ''
       },
-      product: {
-        nombre: '',
-        descripcion: '',
+      productByOffice: {
+        id: 0,
         codigo: '',
-        marcaId: 1,
-        marcas: null,
-        imagen: '',
-        tipoProductoId: 4,
-        tipoProductos: null,
-        validarCodigo: true,
-        id: 0
-      }
+        productoId: 0,
+        stock: 0,
+        stockMinimo: 0,
+        precio: 0,
+        precioMinimo: 0,
+        sucursalesId: 0,
+        estadoProductos: 1,
+        total: 0
+      },
+      tableColumns: [
+        {
+          prop: 'codigo',
+          label: 'Codigo',
+          minWidth: 70
+        },
+        {
+          prop: 'nombre',
+          label: 'Nombre',
+          minWidth: 100
+        },
+        {
+          prop: 'descripcion',
+          label: 'Descripcion',
+          minWidth: 200
+        },
+        {
+          prop: 'marcaProducto',
+          label: 'Marca',
+          minWidth: 120
+        },
+        {
+          prop: 'tipoProducto',
+          label: 'Tipo Producto',
+          minWidth: 200
+        }
+      ]
     }
   },
   mounted() {
@@ -302,12 +203,25 @@ export default {
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'
     if (this.id) this.checkId()
-    this.currentCode = !this.id ? '' : this.currentCode
-    this.fillCatalog()
+    this.checkedID = true
   },
   methods: {
+    checkProductCode() {
+      axios
+        .get(this.baseApiUrl + 'productos/' + this.productByOffice.codigo)
+        .then((response) => {
+          this.isLoading = true
+          console.log(response.data)
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    searchProduct() {
+      console.log('search code')
+    },
     checkId() {
-      console.log(this.baseApiUrl + 'products/' + this.id)
       axios
         .get(this.baseApiUrl + 'productos/' + this.id)
         .then((response) => {
@@ -319,76 +233,6 @@ export default {
           this.error = error
         })
         .finally(() => (this.isLoading = false))
-    },
-    validateFields() {
-      return (
-        !this.product.nombre ||
-        !this.product.descripcion ||
-        !this.product.codigo
-      )
-    },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/marcas')
-        .then((response) => {
-          this.selects.brands = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-
-      axios
-        .get(this.baseApiUrl + 'catalogo/tipoproductos')
-        .then((response) => {
-          this.isLoading = true
-          this.selects.productType = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    fillForm(obj) {
-      this.product = {
-        nombre: obj.nombre,
-        descripcion: obj.descripcion,
-        codigo: obj.codigo,
-        marcaId: obj.marcaId,
-        marcas: null,
-        imagen: obj.imagen,
-        tipoProductoId: obj.tipoProductoId,
-        tipoProductos: null,
-        validarCodigo: true,
-        id: obj.id
-      }
-      if (obj.id != 0)
-        this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
-    },
-    clear() {
-      this.product.codigo = ''
-      this.product.nombre = ''
-      this.product.imagen = ''
-      this.product.descripcion = ''
-    },
-    edit() {
-      console.log(this.product)
-      if (this.validateFields()) {
-        this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .put(this.baseApiUrl + 'productos/' + this.product.id, this.product)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/products/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
-      }
     },
     create() {
       if (this.validateFields()) {
@@ -407,35 +251,6 @@ export default {
           })
           .finally(() => (this.isLoading = false))
       }
-    },
-    insertNewProductType() {
-      this.isLoading = true
-      axios
-        .post(this.baseApiUrl + 'tipoproductos', this.newproductType)
-        .then((response) => {
-          this.fillCatalog()
-          this.newproductType.descripcion = ''
-        })
-        .catch((error) => {
-          this.globalSweetMessage(error.response.data.message, 'error')
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    insertNewBrand() {
-      this.isLoading = true
-      axios
-        .post(this.baseApiUrl + 'marcas', this.newBrand)
-        .then((response) => {
-          this.fillCatalog()
-          this.newBrand.descripcion = ''
-        })
-        .catch((error) => {
-          this.globalSweetMessage(error.response.data.message, 'error')
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    showModalInsertProductType() {
-      this.showInsertModalProductType = !this.showInsertModalProductType
     },
     showModalInsertBrand() {
       this.showInsertModalBrand = !this.showInsertModalBrand

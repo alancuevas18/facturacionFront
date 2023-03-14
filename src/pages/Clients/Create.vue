@@ -397,7 +397,6 @@ export default {
       }
     },
     create() {
-      console.log(this.client)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {

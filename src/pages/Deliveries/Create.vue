@@ -401,7 +401,6 @@ export default {
       }
     },
     create() {
-      console.log(this.delivery)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {

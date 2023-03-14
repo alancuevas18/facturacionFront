@@ -307,11 +307,9 @@ export default {
   },
   methods: {
     checkId() {
-      console.log(this.baseApiUrl + 'products/' + this.id)
       axios
         .get(this.baseApiUrl + 'productos/' + this.id)
         .then((response) => {
-          console.log(response.data)
           this.isLoading = true
           this.fillForm(response.data.result)
         })
@@ -372,7 +370,6 @@ export default {
       this.product.descripcion = ''
     },
     edit() {
-      console.log(this.product)
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {

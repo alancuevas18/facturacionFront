@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('products.index') }}</h2>
+      <h2 class="text-center">{{ $t('products.byOffice') }}</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('products.products') }}
-            <router-link to="/products/create">
+            <router-link to="/productsoffice/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -268,7 +268,6 @@ export default {
           this.tableData[i]['tipoProducto'] =
             response.data[i].tipoProductos.descripcion
         }
-        console.log(this.tableData)
       })
       .catch((error) => {
         this.errored = true

@@ -38,7 +38,8 @@
       "calendar": "Calendar"
     },
     "global":{
-      "cancel":"Cancelar"
+      "cancel":"Cancelar",
+      "add": "Agregar"
     },
     "ConfigSide": {
       "title" : "Configuracion"
@@ -105,7 +106,13 @@
       "create" : "Crear",
       "index" : "Administracion de Servicios",
       "services": "Servicios",
-      "details" : "Detalles"
+      "details" : "Detalles",
+      "byOffice" : "Servicios por Sucursal"
+    },
+    "invetory": {
+      "create" : "Crear",
+      "index" : "Administracion de Inventario",
+      "invetory": "Inventario"
     }
   }
   
