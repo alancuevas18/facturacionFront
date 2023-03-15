@@ -6,12 +6,12 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-12">
-      <h2 class="text-center">{{ $t('products.index') }}</h2>
+      <h2 class="text-center">{{ $t('products.byOffice') }}</h2>
       <card>
         <template slot="header">
           <h4 class="card-title">
             {{ $t('products.details') }}
-            <router-link to="/products/index">
+            <router-link to="/productsoffice/index">
               <button class="btn floatr btn-icon btn-youtube">
                 <i class="tim-icons icon-double-left"></i>
               </button>
@@ -29,29 +29,24 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5 class="title text-capitalize" :class="product.status">
-                    {{ product.status }}
+                  <h5
+                    class="title text-capitalize"
+                    :class="
+                      productStatus[productByOffice.estadoProductos - 1].nombre
+                    "
+                  >
+                    {{
+                      productStatus[productByOffice.estadoProductos - 1].nombre
+                    }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ product.nombre }}
+                    {{ productByOffice.productos.nombre }}
                   </p>
                   <p class="description text-capitalize">
-                    {{ product.descripcion }}
+                    {{ productByOffice.productos.descripcion }}
                   </p>
                 </div>
                 <p></p>
-
-                <!-- <div slot="footer" class="button-container">
-                  <a
-                    :href="
-                      'https://api.whatsapp.com/send?phone=' + product.cellPhone
-                    "
-                  >
-                    <base-button class="btn-whatsapp" icon round>
-                      <i class="fab fa-whatsapp"></i>
-                    </base-button>
-                  </a>
-                </div> -->
               </card>
             </template>
           </div>
@@ -65,22 +60,22 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>Codigo:</b> {{ product.codigo }}
+                    <b>Sucursal:</b> {{ productByOffice.sucursales.nombre }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Marca:</b> {{ product.marcaId }}
+                    <b>Precio:</b> {{ productByOffice.precio }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>TIpo:</b> {{ product.tipoProductoId }}
+                    <b>Precio Minimo:</b> {{ productByOffice.precioMinimo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Estado:</b> {{ product.estado }}
+                    <b>Stock:</b> {{ productByOffice.stock }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Precio de Compra:</b> {{ product.estado }}
+                    <b>Stock:</b> {{ productByOffice.stockMinimo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Precio de Venta:</b> {{ product.estado }}
+                    <b>Total:</b> {{ productByOffice.total }}
                   </p>
                 </div>
                 <p></p>
@@ -107,41 +102,62 @@ export default {
       fullPage: true,
       id: '',
       baseApiUrl: '',
-      product: [
-        {
-          codigo: '',
-          nombre: '',
-          descripcion: '',
-          marcaId: '',
-          Imagen: '',
-          tipoProductoId: '',
-          MarcaId: '',
-          estado: ''
-        }
-      ]
+      productCode: '',
+      productStatus: {},
+      productByOffice: {
+        id: '',
+        productoId: '',
+        stock: '',
+        stockMinimo: '',
+        precio: '',
+        productos: null,
+        sucursales: null,
+        precioMinimo: '',
+        sucursalesId: '',
+        estadoProductos: '',
+        total: '',
+        productos: [],
+        sucursales: []
+      }
     }
   },
   mounted() {
     this.id = this.$route.params.id
     this.baseApiUrl = config.global.baseApiUrl
     this.find()
+    this.fillCatalog()
   },
   methods: {
+    fillCatalog() {
+      axios
+        .get(this.baseApiUrl + 'catalogo/estadoproducto')
+        .then((response) => {
+          this.productStatus = response.data
+          console.log(this.productStatus)
+        })
+        .catch((error) => {
+          this.errored = true
+        })
+    },
     find() {
       axios
-        .get(this.baseApiUrl + 'productos/' + this.id)
+        .get(this.baseApiUrl + 'productossucursales/' + this.id)
         .then((response) => {
           this.isLoading = true
-          this.product = {
-            nombre: response.data.nombre,
-            descripcion: response.data.descripcion,
-            codigo: response.data.codigo,
-            marcaId: response.data.marcaId,
-            imagen: response.data.imagen,
-            tipoProductoId: response.data.tipoProductoId,
-            validarCodigo: true,
+          this.productByOffice = {
             id: response.data.id,
-            estado: 'Activo'
+            productoId: response.data.productos.id,
+            stock: response.data.stock,
+            stockMinimo: response.data.stockMinimo,
+            precio: response.data.precio,
+            productos: null,
+            sucursales: null,
+            precioMinimo: response.data.precioMinimo,
+            sucursalesId: response.data.sucursalesId,
+            estadoProductos: response.data.estadoProductos,
+            total: response.data.total,
+            productos: response.data.productos,
+            sucursales: response.data.sucursales
           }
         })
         .catch((error) => {
@@ -156,40 +172,13 @@ export default {
 .floatr {
   float: right;
 }
-.active {
+.Activo {
   color: forestgreen !important;
 }
-.inactive {
+.Inactivo {
   color: red !important;
 }
-.btn-whatsapp {
-  background: #25d366;
-  background-image: -webkit-gradient(
-    linear,
-    right top,
-    left bottom,
-    from(#25d366),
-    color-stop(#075e54),
-    to(#25d366)
-  );
-  background-image: linear-gradient(to bottom left, #25d366, #075e54, #25d366);
-  background-size: 210% 210%;
-  background-position: top right;
-  color: #ffffff;
-  background-size: 210% 210%;
-  background-position: top right;
-  background-repeat: space;
-}
-.btn-whatsapp:hover {
-  background: #25d366;
-  background-image: -webkit-gradient(
-    linear,
-    right top,
-    left bottom,
-    from(#25d366),
-    color-stop(#075e54),
-    to(#25d366)
-  );
-  background-image: linear-gradient(to bottom left, #25d366, #075e54, #25d366);
+.Agotado {
+  color: orange !important;
 }
 </style>

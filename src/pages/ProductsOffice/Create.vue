@@ -33,6 +33,7 @@
                   <base-input
                     required
                     autofocus
+                    :readonly="id"
                     v-model="productCode"
                     class="mr-1"
                     :error="errors[0]"
@@ -46,11 +47,12 @@
               </div>
               <div class="col-sm-1">
                 <base-button
-                  type="success"
+                  :type="readonly ? 'success' : 'danger'"
                   class="animation-on-hover ml-0 p-2"
                   size="md"
-                  @click.native="checkCode()"
-                  ><i class="tim-icons icon-check-2"></i
+                  @click.native="readonly ? checkCode() : resetCode()"
+                  ><i v-if="readonly" class="tim-icons icon-check-2"></i>
+                  <i v-else class="tim-icons icon-simple-remove"></i
                 ></base-button>
               </div>
               <div class="col-sm-1">
@@ -73,6 +75,7 @@
                 >
                   <base-input
                     required
+                    :readonly="readonly"
                     v-model="productByOffice.stock"
                     :error="errors[0]"
                     :class="[
@@ -94,6 +97,7 @@
                 >
                   <base-input
                     required
+                    :readonly="readonly"
                     v-model="productByOffice.stockMinimo"
                     :error="errors[0]"
                     :class="[
@@ -115,6 +119,7 @@
                 >
                   <base-input
                     required
+                    :readonly="readonly"
                     v-model="productByOffice.precio"
                     :error="errors[0]"
                     :class="[
@@ -136,6 +141,7 @@
                 >
                   <base-input
                     required
+                    :readonly="readonly"
                     v-model="productByOffice.precioMinimo"
                     :error="errors[0]"
                     :class="[
@@ -151,13 +157,13 @@
               <label class="col-sm-2 col-form-label">Total*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="Total"
+                  name="total"
                   rules="required|min:1|numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     v-model="productByOffice.total"
+                    readonly="readonly"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -173,11 +179,12 @@
               <div class="col-sm-10">
                 <el-select
                   required
+                  :readonly="readonly"
                   filterable
                   class="select-primary"
                   size="large"
                   placeholder="Sucursal"
-                  v-model="productByOffice.sucursal"
+                  v-model="productByOffice.sucursalesId"
                 >
                   <el-option
                     v-for="option in selects.offices"
@@ -195,6 +202,7 @@
               <div class="col-sm-10">
                 <el-select
                   required
+                  :readonly="readonly"
                   filterable
                   class="select-primary mt-2"
                   size="large"
@@ -204,8 +212,8 @@
                   <el-option
                     v-for="option in selects.statusProduct"
                     class="select-primary"
-                    :value="option.value"
-                    :label="option.label"
+                    :value="option.id"
+                    :label="option.nombre"
                     :key="option.id"
                   >
                   </el-option>
@@ -259,6 +267,7 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
+      readonly: true,
       id: '',
       currentCode: '',
       baseApiUrl: '',
@@ -266,15 +275,11 @@ export default {
       selects: {
         simple: '',
         offices: [],
-        statusProduct: [
-          { value: 1, label: 'Activo' },
-          { value: 2, label: 'Inactivo' },
-          { value: 2, label: 'Agotado' }
-        ]
+        statusProduct: []
       },
       productCode: '',
       productByOffice: {
-        id: '',
+        id: 0,
         productoId: '',
         stock: '',
         stockMinimo: '',
@@ -282,9 +287,9 @@ export default {
         productos: null,
         sucursales: null,
         precioMinimo: '',
-        sucursalesId: 0,
+        sucursalesId: '',
         estadoProductos: '',
-        total: ''
+        total: 0
       }
     }
   },
@@ -301,23 +306,33 @@ export default {
       axios
         .get(
           this.baseApiUrl +
-            'productos/bycodigoornombre/null/' +
+            'Productos/ByCodigoOrNombre?Nombre=' +
+            this.productCode +
+            '&Codigo=' +
             this.productCode
         )
         .then((response) => {
           this.productByOffice.productoId = response.data[0].id
+          this.readonly = !response.data[0].id > 0
         })
         .catch((error) => {
           this.globalSweetMessage('Codigo invalido', 'error')
         })
         .finally(() => (this.isLoading = false))
     },
+    resetCode() {
+      this.productByOffice.productoId = 0
+      this.productCode = ''
+      this.readonly = !this.readonly
+    },
     checkId() {
       axios
-        .get(this.baseApiUrl + 'productos/' + this.id)
+        .get(this.baseApiUrl + 'productossucursales/' + this.id)
         .then((response) => {
           this.isLoading = true
-          this.fillForm(response.data.result)
+          this.fillForm(response.data)
+          this.productByOffice.productoId = response.data.productoId
+          this.readonly = false
         })
         .catch((error) => {
           this.error = error
@@ -325,15 +340,13 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     validateFields() {
-      console.log(this.productByOffice)
       return (
         !this.productByOffice.stock ||
         !this.productByOffice.stockMinimo ||
         !this.productByOffice.precio ||
         !this.productByOffice.precioMinimo ||
         !this.productByOffice.sucursalesId ||
-        !this.productByOffice.estadoProductos ||
-        !this.productByOffice.total
+        !this.productByOffice.estadoProductos
       )
     },
     fillCatalog() {
@@ -346,28 +359,40 @@ export default {
           this.error = error
         })
         .finally(() => (this.isLoading = false))
+      axios
+        .get(this.baseApiUrl + 'catalogo/estadoproducto')
+        .then((response) => {
+          this.selects.statusProduct = response.data
+        })
+        .catch((error) => {
+          this.errored = true
+        })
     },
     fillForm(obj) {
-      this.product = {
-        nombre: obj.nombre,
-        descripcion: obj.descripcion,
-        codigo: obj.codigo,
-        marcaId: obj.marcaId,
-        marcas: null,
-        imagen: obj.imagen,
-        tipoProductoId: obj.tipoProductoId,
-        tipoProductos: null,
-        validarCodigo: true,
-        id: obj.id
+      this.productByOffice = {
+        id: obj.id,
+        productoId: obj.productos.id,
+        stock: obj.stock,
+        stockMinimo: obj.stockMinimo,
+        precio: obj.precio,
+        productos: null,
+        sucursales: null,
+        precioMinimo: obj.precioMinimo,
+        sucursalesId: obj.sucursalesId,
+        estadoProductos: obj.estadoProductos,
+        total: obj.total
       }
+      this.productCode = obj.productos.codigo
       if (obj.id != 0)
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },
     clear() {
-      this.product.codigo = ''
-      this.product.nombre = ''
-      this.product.imagen = ''
-      this.product.descripcion = ''
+      this.productByOffice.stock = ''
+      this.productByOffice.stockMinimo = ''
+      this.productByOffice.precio = ''
+      this.productByOffice.precioMinimo = ''
+      this.productByOffice.sucursalesId = ''
+      this.productByOffice.estadoProductos = ''
     },
     edit() {
       if (this.validateFields()) {
@@ -378,7 +403,9 @@ export default {
         else {
           axios
             .put(
-              this.baseApiUrl + 'productos/' + this.productByOffice.id,
+              this.baseApiUrl +
+                'productossucursales/' +
+                this.productByOffice.id,
               this.productByOffice
             )
             .then((response) => {
@@ -398,8 +425,9 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        if (!this.productByOffice.id) this.checkCode()
+        if (!this.productByOffice.productoId) this.checkCode()
         else {
+          console.log(this.productByOffice)
           axios
             .post(this.baseApiUrl + 'productossucursales', this.productByOffice)
             .then((response) => {

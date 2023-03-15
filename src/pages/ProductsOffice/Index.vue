@@ -201,6 +201,7 @@ export default {
         simple: '',
         offices: []
       },
+      productStatus: {},
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [
@@ -307,6 +308,10 @@ export default {
               response.data[i].productos.codigo
             this.tableData[i]['productoNombre'] =
               response.data[i].productos.nombre
+            this.tableData[i]['sucursalesId'] =
+              response.data[i].sucursales.nombre
+            this.tableData[i]['estadoProductos'] =
+              this.productStatus[response.data[i].estadoProductos - 1].nombre
           }
         })
         .catch((error) => {
@@ -324,6 +329,14 @@ export default {
           this.error = error
         })
         .finally(() => (this.isLoading = false))
+      axios
+        .get(this.baseApiUrl + 'catalogo/estadoproducto')
+        .then((response) => {
+          this.productStatus = response.data
+        })
+        .catch((error) => {
+          this.errored = true
+        })
     },
     filterByOffice() {
       this.tableData = []
