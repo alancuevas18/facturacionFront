@@ -100,7 +100,10 @@
             }"
           ></sidebar-item>
           <sidebar-item
-            :link="{ name: $t('services.byOffice'), path: '/services/index' }"
+            :link="{
+              name: $t('services.byOffice'),
+              path: '/servicesoffice/index'
+            }"
           ></sidebar-item>
           <!-- <sidebar-item
             :link="{ name: $t('invetory.index'), path: '/invetory/index' }"

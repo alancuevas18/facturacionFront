@@ -39,6 +39,10 @@ const ProductOfficeDetail = () => import('src/pages/ProductsOffice/Details.vue')
 const ServiceIndex = () => import('src/pages/Services/Index.vue')
 const ServiceCreate = () => import('src/pages/Services/Create.vue')
 
+//ServicesOffice
+const ServiceOfficeIndex = () => import('src/pages/ServicesOffice/Index.vue')
+const ServiceOfficeCreate = () => import('src/pages/ServicesOffice/Create.vue')
+
 //Spends
 const SpendIndex = () => import('src/pages/Spends/Index.vue')
 const SpendCreate = () => import('src/pages/Spends/Create.vue')
@@ -170,6 +174,24 @@ let ServicesMenu = {
       path: 'create/:id?',
       name: 'Crear Servicios',
       components: { default: ServiceCreate }
+    }
+  ]
+}
+let ServiceOfficesMenu = {
+  path: '/servicesoffice',
+  component: DashboardLayout,
+  redirect: '/servicesoffice/index',
+  name: 'Servicios Por Sucursal',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Servicios Por Sucursal',
+      components: { default: ServiceOfficeIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Servicios Por Sucursal',
+      components: { default: ServiceOfficeCreate }
     }
   ]
 }
@@ -333,6 +355,7 @@ const routes = [
   productTypeMenu,
   officeMenu,
   structureComprobanteMenu,
+  ServiceOfficesMenu,
   {
     path: '/',
     component: DashboardLayout,

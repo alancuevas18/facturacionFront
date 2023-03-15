@@ -32,18 +32,18 @@
                   <h5
                     class="title text-capitalize"
                     :class="
-                      productStatus[productByOffice.estadoProductos - 1].nombre
+                      productStatus[serviceByOffice.estadoservicios - 1].nombre
                     "
                   >
                     {{
-                      productStatus[productByOffice.estadoProductos - 1].nombre
+                      productStatus[serviceByOffice.estadoservicios - 1].nombre
                     }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ productByOffice.productos.nombre }}
+                    {{ serviceByOffice.servicios.nombre }}
                   </p>
                   <p class="description text-capitalize">
-                    {{ productByOffice.productos.descripcion }}
+                    {{ serviceByOffice.servicios.descripcion }}
                   </p>
                 </div>
                 <p></p>
@@ -60,22 +60,22 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>Sucursal:</b> {{ productByOffice.sucursales.nombre }}
+                    <b>Sucursal:</b> {{ serviceByOffice.sucursales.nombre }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Precio:</b> {{ productByOffice.precio }}
+                    <b>Precio:</b> {{ serviceByOffice.precio }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Precio Minimo:</b> {{ productByOffice.precioMinimo }}
+                    <b>Precio Minimo:</b> {{ serviceByOffice.precioMinimo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Stock:</b> {{ productByOffice.stock }}
+                    <b>Stock:</b> {{ serviceByOffice.stock }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Stock:</b> {{ productByOffice.stockMinimo }}
+                    <b>Stock:</b> {{ serviceByOffice.stockMinimo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Total:</b> {{ productByOffice.total }}
+                    <b>Total:</b> {{ serviceByOffice.total }}
                   </p>
                 </div>
                 <p></p>
@@ -104,19 +104,19 @@ export default {
       baseApiUrl: '',
       productCode: '',
       productStatus: {},
-      productByOffice: {
+      serviceByOffice: {
         id: '',
         productoId: '',
         stock: '',
         stockMinimo: '',
         precio: '',
-        productos: null,
+        servicios: null,
         sucursales: null,
         precioMinimo: '',
         sucursalesId: '',
-        estadoProductos: '',
+        estadoservicios: '',
         total: '',
-        productos: [],
+        servicios: [],
         sucursales: []
       }
     }
@@ -140,22 +140,22 @@ export default {
     },
     find() {
       axios
-        .get(this.baseApiUrl + 'productossucursales/' + this.id)
+        .get(this.baseApiUrl + 'serviciossucursales/' + this.id)
         .then((response) => {
           this.isLoading = true
-          this.productByOffice = {
+          this.serviceByOffice = {
             id: response.data.id,
-            productoId: response.data.productos.id,
+            productoId: response.data.servicios.id,
             stock: response.data.stock,
             stockMinimo: response.data.stockMinimo,
             precio: response.data.precio,
-            productos: null,
+            servicios: null,
             sucursales: null,
             precioMinimo: response.data.precioMinimo,
             sucursalesId: response.data.sucursalesId,
-            estadoProductos: response.data.estadoProductos,
+            estadoservicios: response.data.estadoservicios,
             total: response.data.total,
-            productos: response.data.productos,
+            servicios: response.data.servicios,
             sucursales: response.data.sucursales
           }
         })
