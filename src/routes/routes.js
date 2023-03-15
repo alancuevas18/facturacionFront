@@ -135,7 +135,7 @@ let ProductsMenu = {
 let ProductOfficesMenu = {
   path: '/productsoffice',
   component: DashboardLayout,
-  redirect: '/products/index',
+  redirect: '/productsoffice/index',
   name: 'Productos Por Sucursal',
   children: [
     {

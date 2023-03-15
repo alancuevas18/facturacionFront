@@ -237,13 +237,12 @@
 import { BaseCheckbox, BaseRadio } from 'src/components/index'
 import { DatePicker, Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
-import { required, email, min, numeric } from 'vee-validate/dist/rules'
+import { required, min, numeric } from 'vee-validate/dist/rules'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import axios from 'axios'
 import config from '@/config'
 
-extend('email', email)
 extend('required', required)
 extend('min', min)
 extend('numeric', numeric)

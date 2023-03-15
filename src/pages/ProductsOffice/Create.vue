@@ -12,7 +12,7 @@
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/ProductsOffice/index">
+          <router-link to="/productsoffice/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -20,11 +20,11 @@
         </h4>
       </template>
       <div>
-        <ValidationObserver>
-          <form class="form-horizontal">
+        <ValidationObserver v-slot="{ handleSubmit }">
+          <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
               <label class="col-sm-2 col-form-label">Codigo*</label>
-              <div class="col-sm-9">
+              <div class="col-sm-8 p-0">
                 <ValidationProvider
                   name="codigo"
                   rules="required|min:1"
@@ -33,8 +33,8 @@
                   <base-input
                     required
                     autofocus
-                    v-model="productByOffice.codigo"
-                    v-on:keyup.enter="checkProductCode()"
+                    v-model="productCode"
+                    class="mr-1"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -46,21 +46,177 @@
               </div>
               <div class="col-sm-1">
                 <base-button
-                  type="info"
-                  class="animation-on-hover"
+                  type="success"
+                  class="animation-on-hover ml-0 p-2"
                   size="md"
-                  @click.native="showSearchProductModal = true"
+                  @click.native="checkCode()"
+                  ><i class="tim-icons icon-check-2"></i
+                ></base-button>
+              </div>
+              <div class="col-sm-1">
+                <base-button
+                  type="info"
+                  class="animation-on-hover ml-0 p-2"
+                  size="md"
+                  @click.native="suggestCode()"
                   ><i class="tim-icons icon-zoom-split"></i
                 ></base-button>
               </div>
             </div>
-
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Stock*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="Stock"
+                  rules="required|min:1|numeric"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="productByOffice.stock"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">StockMinimo*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="StockMinimo"
+                  rules="required|min:1|numeric"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="productByOffice.stockMinimo"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Precio*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="precio"
+                  rules="required|min:1|numeric"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="productByOffice.precio"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">PrecioMinimo*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="PrecioMinimo"
+                  rules="required|min:1|numeric"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="productByOffice.precioMinimo"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Total*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="Total"
+                  rules="required|min:1|numeric"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="productByOffice.total"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Sucursal*</label>
+              <div class="col-sm-10">
+                <el-select
+                  required
+                  filterable
+                  class="select-primary"
+                  size="large"
+                  placeholder="Sucursal"
+                  v-model="productByOffice.sucursal"
+                >
+                  <el-option
+                    v-for="option in selects.offices"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">estadoProductos*</label>
+              <div class="col-sm-10">
+                <el-select
+                  required
+                  filterable
+                  class="select-primary mt-2"
+                  size="large"
+                  placeholder="Estado Producto"
+                  v-model="productByOffice.estadoProductos"
+                >
+                  <el-option
+                    v-for="option in selects.statusProduct"
+                    class="select-primary"
+                    :value="option.value"
+                    :label="option.label"
+                    :key="option.id"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
-                :disabled="checkedID"
                 @click.native="!id ? create() : edit()"
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
@@ -78,49 +234,9 @@
       </div>
     </card>
     <!-- end card -->
-    <modal
-      :show.sync="showSearchProductModal"
-      class="modal-search"
-      id="searchModal"
-      :centered="false"
-      :show-close="true"
-    >
-      <input
-        slot="header"
-        v-model="searchQuery"
-        type="text"
-        class="form-control"
-        id="inlineFormInputGroup"
-        placeholder="SEARCH"
-      />
-      <el-table :data="queriedData">
-        <el-table-column
-          v-for="column in tableColumns"
-          :key="column.label"
-          :min-width="column.minWidth"
-          :prop="column.prop"
-          :label="column.label"
-        >
-        </el-table-column>
-        <el-table-column :min-width="135" align="right" label="Actions">
-          <div slot-scope="props">
-            <base-button
-              @click.native="selectProduct(props.$index, props.row)"
-              class="remove btn-link"
-              type="danger"
-              size="sm"
-              icon
-            >
-              <i class="tim-icons icon-simple-remove"></i>
-            </base-button>
-          </div>
-        </el-table-column>
-      </el-table>
-    </modal>
   </div>
 </template>
 <script>
-import { Modal } from '@/components'
 import { Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
 import { required, min, numeric } from 'vee-validate/dist/rules'
@@ -135,19 +251,12 @@ extend('numeric', numeric)
 
 export default {
   components: {
-    Modal,
     Loading,
     [Select.name]: Select,
-    [Option.name]: Option,
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [Option.name]: Option
   },
   data() {
     return {
-      searchQuery: '',
-      showSearchProductModal: false,
-      readOnly: false,
-      checkedID: false,
       isLoading: false,
       fullPage: true,
       id: '',
@@ -155,47 +264,28 @@ export default {
       baseApiUrl: '',
       title: '',
       selects: {
-        simple: ''
+        simple: '',
+        offices: [],
+        statusProduct: [
+          { value: 1, label: 'Activo' },
+          { value: 2, label: 'Inactivo' },
+          { value: 2, label: 'Agotado' }
+        ]
       },
+      productCode: '',
       productByOffice: {
-        id: 0,
-        codigo: '',
-        productoId: 0,
-        stock: 0,
-        stockMinimo: 0,
-        precio: 0,
-        precioMinimo: 0,
+        id: '',
+        productoId: '',
+        stock: '',
+        stockMinimo: '',
+        precio: '',
+        productos: null,
+        sucursales: null,
+        precioMinimo: '',
         sucursalesId: 0,
-        estadoProductos: 1,
-        total: 0
-      },
-      tableColumns: [
-        {
-          prop: 'codigo',
-          label: 'Codigo',
-          minWidth: 70
-        },
-        {
-          prop: 'nombre',
-          label: 'Nombre',
-          minWidth: 100
-        },
-        {
-          prop: 'descripcion',
-          label: 'Descripcion',
-          minWidth: 200
-        },
-        {
-          prop: 'marcaProducto',
-          label: 'Marca',
-          minWidth: 120
-        },
-        {
-          prop: 'tipoProducto',
-          label: 'Tipo Producto',
-          minWidth: 200
-        }
-      ]
+        estadoProductos: '',
+        total: ''
+      }
     }
   },
   mounted() {
@@ -203,29 +293,29 @@ export default {
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'
     if (this.id) this.checkId()
-    this.checkedID = true
+    this.currentCode = !this.id ? '' : this.currentCode
+    this.fillCatalog()
   },
   methods: {
-    checkProductCode() {
+    checkCode() {
       axios
-        .get(this.baseApiUrl + 'productos/' + this.productByOffice.codigo)
+        .get(
+          this.baseApiUrl +
+            'productos/bycodigoornombre/null/' +
+            this.productCode
+        )
         .then((response) => {
-          this.isLoading = true
-          console.log(response.data)
+          this.productByOffice.productoId = response.data[0].id
         })
         .catch((error) => {
-          this.error = error
+          this.globalSweetMessage('Codigo invalido', 'error')
         })
         .finally(() => (this.isLoading = false))
-    },
-    searchProduct() {
-      console.log('search code')
     },
     checkId() {
       axios
         .get(this.baseApiUrl + 'productos/' + this.id)
         .then((response) => {
-          console.log(response.data)
           this.isLoading = true
           this.fillForm(response.data.result)
         })
@@ -234,26 +324,95 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
+    validateFields() {
+      console.log(this.productByOffice)
+      return (
+        !this.productByOffice.stock ||
+        !this.productByOffice.stockMinimo ||
+        !this.productByOffice.precio ||
+        !this.productByOffice.precioMinimo ||
+        !this.productByOffice.sucursalesId ||
+        !this.productByOffice.estadoProductos ||
+        !this.productByOffice.total
+      )
+    },
+    fillCatalog() {
+      axios
+        .get(this.baseApiUrl + 'catalogo/sucursales')
+        .then((response) => {
+          this.selects.offices = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    fillForm(obj) {
+      this.product = {
+        nombre: obj.nombre,
+        descripcion: obj.descripcion,
+        codigo: obj.codigo,
+        marcaId: obj.marcaId,
+        marcas: null,
+        imagen: obj.imagen,
+        tipoProductoId: obj.tipoProductoId,
+        tipoProductos: null,
+        validarCodigo: true,
+        id: obj.id
+      }
+      if (obj.id != 0)
+        this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
+    },
+    clear() {
+      this.product.codigo = ''
+      this.product.nombre = ''
+      this.product.imagen = ''
+      this.product.descripcion = ''
+    },
+    edit() {
+      if (this.validateFields()) {
+        this.globalSweetMessage('Favor llenar todos los campos!', 'error')
+      } else {
+        this.isLoading = true
+        if (!this.productByOffice.id) this.checkCode()
+        else {
+          axios
+            .put(
+              this.baseApiUrl + 'productos/' + this.productByOffice.id,
+              this.productByOffice
+            )
+            .then((response) => {
+              this.globalSweetMessage(response.data.message)
+              this.clear()
+              this.$router.push({ path: '/productsoffice/index' })
+            })
+            .catch((error) => {
+              this.globalSweetMessage(error.response.data.message, 'error')
+            })
+            .finally(() => (this.isLoading = false))
+        }
+      }
+    },
     create() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        axios
-          .post(this.baseApiUrl + 'productos', this.product)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/products/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+        if (!this.productByOffice.id) this.checkCode()
+        else {
+          axios
+            .post(this.baseApiUrl + 'productossucursales', this.productByOffice)
+            .then((response) => {
+              this.globalSweetMessage(response.data.message)
+              this.clear()
+              this.$router.push({ path: '/productsoffice/index' })
+            })
+            .catch((error) => {
+              this.globalSweetMessage(error.response.data.message, 'error')
+            })
+            .finally(() => (this.isLoading = false))
+        }
       }
-    },
-    showModalInsertBrand() {
-      this.showInsertModalBrand = !this.showInsertModalBrand
     }
   }
 }

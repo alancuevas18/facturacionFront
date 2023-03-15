@@ -37,6 +37,31 @@
                 >
                 </el-option>
               </el-select>
+              <div>
+                <el-select
+                  class="select-primary"
+                  v-model="office"
+                  placeholder="Sucursal"
+                  filterable
+                  @change="filterByOffice()"
+                >
+                  <el-option
+                    v-for="option in selects.offices"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
+                  >
+                  </el-option> </el-select
+                ><button
+                  @click="fillTable('productossucursales', true)"
+                  title="limpiar filtros"
+                  class="btn floatr btn-icon btn-youtube"
+                  v-if="office"
+                >
+                  X
+                </button>
+              </div>
 
               <base-input>
                 <el-input
@@ -62,7 +87,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/products/details/' + props.row.id">
+                  <router-link :to="'/productsoffice/details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -72,7 +97,7 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
-                  <router-link :to="'/products/create/' + props.row.id">
+                  <router-link :to="'/productsoffice/create/' + props.row.id">
                     <base-button
                       class="edit btn-link"
                       type="warning"
@@ -125,6 +150,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
+import { CLOSING } from 'ws'
 
 export default {
   components: {
@@ -170,34 +196,58 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      brands: {},
+      office: '',
+      selects: {
+        simple: '',
+        offices: []
+      },
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [
         {
-          prop: 'codigo',
-          label: 'Codigo',
-          minWidth: 70
+          prop: 'sucursalesId',
+          label: 'Sucursal',
+          minWidth: 110
         },
         {
-          prop: 'nombre',
+          prop: 'productoCodigo',
+          label: 'Codigo',
+          minWidth: 100
+        },
+        {
+          prop: 'productoNombre',
           label: 'Nombre',
           minWidth: 100
         },
         {
-          prop: 'descripcion',
-          label: 'Descripcion',
-          minWidth: 200
+          prop: 'stock',
+          label: 'Stock',
+          minWidth: 70
         },
         {
-          prop: 'marcaProducto',
-          label: 'Marca',
-          minWidth: 120
+          prop: 'stockMinimo',
+          label: 'Stock Minimo',
+          minWidth: 65
         },
         {
-          prop: 'tipoProducto',
-          label: 'Tipo Producto',
-          minWidth: 200
+          prop: 'precio',
+          label: 'Precio',
+          minWidth: 100
+        },
+        {
+          prop: 'precioMinimo',
+          label: 'Precio Minimo',
+          minWidth: 110
+        },
+        {
+          prop: 'estadoProductos',
+          label: 'Estado',
+          minWidth: 100
+        },
+        {
+          prop: 'total',
+          label: 'Total',
+          minWidth: 100
         }
       ],
       tableData: [],
@@ -230,7 +280,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'productos/' + row.id)
+        .delete(this.baseApiUrl + 'productossucursales/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -244,35 +294,47 @@ export default {
           this.globalSweetMessage(error.response.data.message, 'error')
         })
         .finally(() => (this.isLoading = false))
+    },
+    fillTable(resource, clearFilters) {
+      this.tableData = []
+      if (clearFilters) this.office = ''
+      axios
+        .get(this.baseApiUrl + resource)
+        .then((response) => {
+          for (let i = 0; i < response.data.length; i++) {
+            this.tableData.push(response.data[i])
+            this.tableData[i]['productoCodigo'] =
+              response.data[i].productos.codigo
+            this.tableData[i]['productoNombre'] =
+              response.data[i].productos.nombre
+          }
+        })
+        .catch((error) => {
+          this.errored = true
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    fillCatalog() {
+      axios
+        .get(this.baseApiUrl + 'catalogo/sucursales')
+        .then((response) => {
+          this.selects.offices = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    filterByOffice() {
+      this.tableData = []
+      this.fillTable('productossucursales/bysuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    axios
-      .get(this.baseApiUrl + 'catalogo/marcas')
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++)
-          this.brands.push(response.data[i])
-      })
-      .catch((error) => {
-        this.errored = true
-      })
-    axios
-      .get(this.baseApiUrl + 'productos')
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push(response.data[i])
-          this.tableData[i]['marcaProducto'] =
-            response.data[i].marcas.descripcion
-          this.tableData[i]['tipoProducto'] =
-            response.data[i].tipoProductos.descripcion
-        }
-      })
-      .catch((error) => {
-        this.errored = true
-      })
-      .finally(() => (this.isLoading = false))
+    this.fillCatalog()
+    this.fillTable('productossucursales', true)
   },
   watch: {}
 }

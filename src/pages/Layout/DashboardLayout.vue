@@ -96,7 +96,7 @@
           <sidebar-item
             :link="{
               name: $t('products.byOffice'),
-              path: '/ProductsOffice/index'
+              path: '/productsoffice/index'
             }"
           ></sidebar-item>
           <sidebar-item
