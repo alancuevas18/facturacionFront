@@ -427,7 +427,6 @@ export default {
         this.isLoading = true
         if (!this.productByOffice.productoId) this.checkCode()
         else {
-          console.log(this.productByOffice)
           axios
             .post(this.baseApiUrl + 'productossucursales', this.productByOffice)
             .then((response) => {

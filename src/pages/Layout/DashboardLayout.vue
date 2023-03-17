@@ -105,6 +105,12 @@
               path: '/servicesoffice/index'
             }"
           ></sidebar-item>
+          <sidebar-item
+            :link="{
+              name: $t('entrance.entrance'),
+              path: '/entrance/index'
+            }"
+          ></sidebar-item>
           <!-- <sidebar-item
             :link="{ name: $t('invetory.index'), path: '/invetory/index' }"
           ></sidebar-item> -->

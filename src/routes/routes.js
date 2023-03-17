@@ -43,6 +43,11 @@ const ServiceCreate = () => import('src/pages/Services/Create.vue')
 const ServiceOfficeIndex = () => import('src/pages/ServicesOffice/Index.vue')
 const ServiceOfficeCreate = () => import('src/pages/ServicesOffice/Create.vue')
 
+//ProductsOffice
+const EntranceIndex = () => import('src/pages/Entrance/Index.vue')
+const EntranceCreate = () => import('src/pages/Entrance/Create.vue')
+const EntranceDetail = () => import('src/pages/Entrance/Details.vue')
+
 //Spends
 const SpendIndex = () => import('src/pages/Spends/Index.vue')
 const SpendCreate = () => import('src/pages/Spends/Create.vue')
@@ -192,6 +197,29 @@ let ServiceOfficesMenu = {
       path: 'create/:id?',
       name: 'Crear Servicios Por Sucursal',
       components: { default: ServiceOfficeCreate }
+    }
+  ]
+}
+let EntranceMenu = {
+  path: '/entrance',
+  component: DashboardLayout,
+  redirect: '/entrance/index',
+  name: 'Entradas',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Entradas',
+      components: { default: EntranceIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Entrada',
+      components: { default: EntranceCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Entrada',
+      components: { default: EntranceDetail }
     }
   ]
 }
@@ -356,6 +384,7 @@ const routes = [
   officeMenu,
   structureComprobanteMenu,
   ServiceOfficesMenu,
+  EntranceMenu,
   {
     path: '/',
     component: DashboardLayout,

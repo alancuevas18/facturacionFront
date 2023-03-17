@@ -113,6 +113,11 @@
       "create" : "Crear",
       "index" : "Administracion de Inventario",
       "invetory": "Inventario"
+    },
+    "entrance": {
+      "create" : "Crear",
+      "index" : "Administracion de Entrada",
+      "entrance": "Entradas"
     }
   }
   
