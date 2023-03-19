@@ -73,7 +73,9 @@
                   name="nota"
                   v-slot="{ passed, failed, errors }"
                 >
-                  <base-input
+                  <textarea
+                    rows="4"
+                    class="form-control"
                     required
                     :disabled="addedProducts"
                     v-model="entrada.nota"
@@ -82,8 +84,7 @@
                       { 'has-success': passed },
                       { 'has-danger': failed }
                     ]"
-                  >
-                  </base-input>
+                  ></textarea>
                 </ValidationProvider>
               </div>
             </div>
