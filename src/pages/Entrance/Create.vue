@@ -12,7 +12,7 @@
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/productsoffice/index">
+          <router-link to="/entrace/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -67,27 +67,6 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Estado</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  :disabled="addedProducts"
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Estado"
-                  v-model="entrada.estadoDetalleEntrada"
-                >
-                  <el-option
-                    v-for="option in selects.statusDetails"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id + option.nombre"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
               <label class="col-sm-2 col-form-label">Nota</label>
               <div class="col-sm-4">
                 <ValidationProvider
@@ -96,6 +75,7 @@
                 >
                   <base-input
                     required
+                    :disabled="addedProducts"
                     v-model="entrada.nota"
                     :error="errors[0]"
                     :class="[
@@ -111,44 +91,35 @@
             <!-- products details -->
             <div class="row">
               <label class="col-sm-2 col-form-label">Producto</label>
-              <div class="col-sm-3">
-                <ValidationProvider
-                  name="producto"
-                  rules="required|min:2"
-                  v-slot="{ passed, failed, errors }"
+              <div class="col-sm-4">
+                <el-select
+                  required
+                  filterable
+                  class="select-primary"
+                  size="large"
+                  placeholder="Producto"
+                  v-model="product.productName"
                 >
-                  <base-input
-                    required
-                    v-model="product.productCode"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                  <el-option
+                    v-for="option in selects.products"
+                    class="select-primary"
+                    :value="option.nombre"
+                    :label="option.nombre"
+                    :key="option.id"
                   >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-              <div class="col-sm-1">
-                <base-button
-                  type="success"
-                  class="animation-on-hover"
-                  size="sm"
-                  @click.native="checkProductCode()"
-                  ><i class="tim-icons icon-check-2 mr-2"></i
-                ></base-button>
+                  </el-option>
+                </el-select>
               </div>
 
-              <label class="col-sm-2 col-form-label">Precio</label>
+              <label class="col-sm-2 col-form-label">Valor</label>
               <div class="col-sm-4">
                 <ValidationProvider
-                  name="precio"
-                  rules="required|min:1|numeric"
+                  name="valor"
+                  rules="min:1|numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    :disabled="!validProduct"
                     v-model="product.productPrice"
                     :error="errors[0]"
                     :class="[
@@ -166,12 +137,11 @@
               <div class="col-sm-4">
                 <ValidationProvider
                   name="cantidad"
-                  rules="required|min:1|numeric"
+                  rules="min:1|numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    :disabled="!validProduct"
                     v-model="product.productQuantity"
                     :error="errors[0]"
                     :class="[
@@ -182,8 +152,47 @@
                   </base-input>
                 </ValidationProvider>
               </div>
-              <label class="col-sm-2 col-form-label">Mostrar</label>
-              <div class="col-sm-3">
+              <label class="col-sm-2 col-form-label">Estado</label>
+              <div class="col-sm-4">
+                <el-select
+                  required
+                  filterable
+                  class="select-primary"
+                  size="large"
+                  placeholder="Estado"
+                  v-model="product.estadoDetalleEntrada"
+                >
+                  <el-option
+                    v-for="option in selects.statusDetails"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id + option.nombre"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
+            <div class="row d-flex justify-content-center">
+              <base-button
+                type="primary"
+                native-type="submit"
+                class="animation-on-hover"
+                @click.native="!editingProduct ? addProduct() : editProduct()"
+                >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
+              >
+              <base-button
+                @click.native="cleanProducts()"
+                type="danger"
+                class="animation-on-hover"
+                ><i class="tim-icons icon-simple-remove"></i
+                >Limpiar</base-button
+              >
+            </div>
+            <hr />
+            <div class="row">
+              <div class="offset-sm-4 col-sm-3">
+                <label>Mostrar: </label>
                 <el-select
                   class="select-primary mb-3 pagination-select"
                   v-model="pagination.perPage"
@@ -199,23 +208,6 @@
                   </el-option>
                 </el-select>
               </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-              <base-button
-                :disabled="!validProduct"
-                type="primary"
-                native-type="submit"
-                class="animation-on-hover"
-                @click.native="addProduct()"
-                >+ Agregar</base-button
-              >
-              <base-button
-                @click.native="cleanProducts()"
-                type="danger"
-                class="animation-on-hover"
-                ><i class="tim-icons icon-simple-remove"></i
-                >Limpiar</base-button
-              >
             </div>
             <!-- Table -->
             <div class="row">
@@ -285,7 +277,7 @@ import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import axios from 'axios'
 import config from '@/config'
-
+import swal from 'sweetalert2'
 extend('required', required)
 extend('min', min)
 extend('numeric', numeric)
@@ -334,6 +326,11 @@ export default {
       searchQuery: '',
       tableColumns: [
         {
+          prop: 'id',
+          label: 'Id',
+          minWidth: 70
+        },
+        {
           prop: 'codigo',
           label: 'Codigo',
           minWidth: 70
@@ -359,13 +356,18 @@ export default {
           minWidth: 120
         },
         {
-          prop: 'precio',
-          label: 'Precio',
+          prop: 'valor',
+          label: 'Valor',
           minWidth: 100
         },
         {
           prop: 'cantidad',
           label: 'Cantidad',
+          minWidth: 100
+        },
+        {
+          prop: 'estadoDetalleEntradaText',
+          label: 'Estado',
           minWidth: 100
         }
       ],
@@ -375,23 +377,27 @@ export default {
       isLoading: false,
       fullPage: true,
       readonly: true,
-      validProduct: false,
       id: '',
       currentCode: '',
       baseApiUrl: '',
       addedProducts: false,
+      editingProduct: false,
+      editRow: {},
+      indexToUpdate: '',
       title: '',
       selects: {
         simple: '',
         offices: [],
         suppliers: [],
-        statusDetails: []
+        statusDetails: [],
+        products: []
       },
       currentProduct: {},
       product: {
         productPrice: '',
         productQuantity: '',
-        productCode: ''
+        productName: '',
+        estadoDetalleEntrada: ''
       },
       entrada: {
         id: 0,
@@ -399,9 +405,8 @@ export default {
         sucursalId: '',
         fehca: '',
         nota: '',
-        estadoDetalleEntrada: ''
-      },
-      detalleEntradas: []
+        detalleEntradas: []
+      }
     }
   },
   mounted() {
@@ -413,63 +418,115 @@ export default {
     this.fillCatalog()
   },
   methods: {
-    checkProductCode() {
-      if (!this.product.productCode)
-        return this.globalSweetMessage('Favor digitar codigo', 'error')
-      axios
-        .get(
-          this.baseApiUrl +
-            'Productos/ByCodigoOrNombre?Nombre=' +
-            this.product.productCode +
-            '&Codigo=' +
-            this.product.productCode
-        )
-        .then((response) => {
-          this.validProduct = true
-          this.currentProduct = response.data[0]
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Codigo invalido', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-    },
     addProduct() {
       if (this.validateFields())
         return this.globalSweetMessage(
           'Favor llenar todos los campos!',
           'error'
         )
-      this.currentProduct['precio'] = this.product.productPrice
-      this.currentProduct['cantidad'] = this.product.productQuantity
-      this.fillTable(this.currentProduct)
-      this.addedProducts = true
-      this.validProduct = false
-      this.product.productCode = ''
-      this.product.productQuantity = ''
-      this.product.productPrice = ''
+      if (this.isAddedProduct(this.product.productName))
+        return this.globalSweetMessage(
+          'Este producto a sido agregado!',
+          'error'
+        )
+      axios
+        .get(
+          this.baseApiUrl +
+            'Productos/ByCodigoOrNombre?Nombre=' +
+            this.product.productName +
+            '&Codigo=' +
+            this.product.productName
+        )
+        .then((response) => {
+          this.currentProduct = response.data[0]
+          this.currentProduct['valor'] = this.product.productPrice
+          this.currentProduct['cantidad'] = this.product.productQuantity
+          this.currentProduct['estadoDetalleEntrada'] =
+            this.product.estadoDetalleEntrada
+          this.currentProduct['estadoDetalleEntradaText'] =
+            this.selects.statusDetails[
+              this.product.estadoDetalleEntrada - 1
+            ].nombre
+          this.fillTable(this.currentProduct)
+          this.addedProducts = true
+          this.cleanProduct()
+        })
+        .catch((error) => {
+          this.globalSweetMessage('Codigo invalido', 'error')
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    isAddedProduct(code) {
+      function findProduct(product) {
+        return product.nombre === code
+      }
+      return this.tableData.find((product) => findProduct(product))
     },
     fillTable(obj) {
       let detalleTable = {
+        id: obj.id,
         codigo: obj.codigo,
         nombre: obj.nombre,
         descripcion: obj.descripcion,
         marcaProducto: obj.marcas.descripcion,
         tipoProducto: obj.tipoProductos.descripcion,
-        precio: obj.precio,
-        cantidad: obj.cantidad
+        valor: obj.valor,
+        cantidad: obj.cantidad,
+        estadoDetalleEntrada: obj.estadoDetalleEntrada,
+        estadoDetalleEntradaText: obj.estadoDetalleEntradaText
       }
       this.tableData.push(detalleTable)
-      console.log(this.tableData)
+    },
+    cleanProduct() {
+      this.product.productName = ''
+      this.product.productQuantity = ''
+      this.product.productPrice = ''
+      this.product.estadoDetalleEntrada = ''
+      this.currentProduct = []
     },
     cleanProducts() {
       this.tableData = []
       this.addedProducts = false
       this.clear()
     },
-    // resetCode() {
-    //   this.productByOffice.productoId = 0
-    //   this.productCode = ''
-    // },
+    handleEdit(index, row) {
+      this.indexToUpdate = this.tableData.findIndex(
+        (tableRow) => tableRow.id === row.id
+      )
+      if (this.indexToUpdate >= 0) {
+        this.editRow = row
+        this.editingProduct = true
+        this.product.nombre = row.nombre
+        this.product.productPrice = row.precio
+        this.product.productQuantity = row.cantidad
+      }
+    },
+    editProduct() {
+      this.editRow.precio = this.product.productPrice
+      this.editRow.cantidad = this.product.productQuantity
+      this.editingProduct = false
+      this.editRow = ''
+      this.product = {}
+    },
+    handleDelete(index, row) {
+      swal
+        .fire({
+          title: 'Estas seguro?',
+          text: `Esta accion no se puede reversar!`,
+          icon: 'warning',
+          showCancelButton: true,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill',
+            cancelButton: 'btn btn-danger btn-fill'
+          },
+          confirmButtonText: 'Confimar!',
+          cancelButtonText: 'Cancelar',
+          buttonsStyling: false
+        })
+        .then((result) => {
+          this.tableData.splice(index, 1)
+        })
+    },
     // checkId() {
     //   axios
     //     .get(this.baseApiUrl + 'productossucursales/' + this.id)
@@ -486,12 +543,12 @@ export default {
     // },
     validateFields() {
       return (
-        !this.product.productCode ||
+        !this.product.productName ||
         !this.product.productQuantity ||
         !this.product.productPrice ||
         !this.entrada.sucursalId ||
         !this.entrada.suplidorId ||
-        !this.entrada.estadoDetalleEntrada
+        !this.product.estadoDetalleEntrada
       )
     },
     fillCatalog() {
@@ -512,11 +569,19 @@ export default {
         .catch((error) => {
           this.errored = true
         })
-
       axios
         .get(this.baseApiUrl + 'catalogo/estadodetalleentrada')
         .then((response) => {
           this.selects.statusDetails = response.data
+        })
+        .catch((error) => {
+          this.errored = true
+        })
+
+      axios
+        .get(this.baseApiUrl + 'catalogo/productos')
+        .then((response) => {
+          this.selects.products = response.data
         })
         .catch((error) => {
           this.errored = true
@@ -536,18 +601,19 @@ export default {
     //     estadoProductos: obj.estadoProductos,
     //     total: obj.total
     //   }
-    //   this.productCode = obj.productos.codigo
+    //   this.productName = obj.productos.codigo
     //   if (obj.id != 0)
     //     this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     // },
     clear() {
-      this.product.productCode = ''
+      this.product.productName = ''
       this.product.productQuantity = ''
       this.product.productPrice = ''
       this.entrada.sucursalId = ''
       this.entrada.suplidorId = ''
       this.entrada.estadoDetalleEntrada = ''
-    }
+      this.entrada.nota = ''
+    },
     // edit() {
     //   if (this.validateFields()) {
     //     this.globalSweetMessage('Favor llenar todos los campos!', 'error')
@@ -574,27 +640,28 @@ export default {
     //     }
     //   }
     // },
-    // create() {
-    //   if (this.validateFields()) {
-    //     this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-    //   } else {
-    //     this.isLoading = true
-    //     if (!this.productByOffice.productoId) this.checkCode()
-    //     else {
-    //       axios
-    //         .post(this.baseApiUrl + 'productossucursales', this.productByOffice)
-    //         .then((response) => {
-    //           this.globalSweetMessage(response.data.message)
-    //           this.clear()
-    //           this.$router.push({ path: '/productsoffice/index' })
-    //         })
-    //         .catch((error) => {
-    //           this.globalSweetMessage(error.response.data.message, 'error')
-    //         })
-    //         .finally(() => (this.isLoading = false))
-    //     }
-    //   }
-    // }
+    create() {
+      if (this.tableData.length == 0)
+        return this.globalSweetMessage('No hay productos agregados', 'error')
+
+      for (let i = 0; i < this.tableData.length; i++) {
+        let product = {
+          id: 0,
+          productoId: this.tableData[i].id,
+          cantidad: this.tableData[i].cantidad,
+          valor: this.tableData[i].valor,
+          total: 0,
+          codigoProducto: this.tableData[i].codigo,
+          entradaId: 0,
+          entradas: null,
+          productos: null,
+          estadoDetalleEntrada: this.tableData[i].estadoDetalleEntrada
+        }
+        this.entrada.detalleEntradas.push(product)
+      }
+
+      console.log(this.entrada)
+    }
   }
 }
 </script>

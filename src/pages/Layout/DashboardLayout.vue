@@ -107,7 +107,7 @@
           ></sidebar-item>
           <sidebar-item
             :link="{
-              name: $t('entrance.entrance'),
+              name: $t('entrance.index'),
               path: '/entrance/index'
             }"
           ></sidebar-item>
@@ -159,6 +159,7 @@
             }"
           ></sidebar-item>
         </sidebar-item>
+        <hr />
       </template>
     </side-bar>
     <!--Presentacion de Configuracion-->
