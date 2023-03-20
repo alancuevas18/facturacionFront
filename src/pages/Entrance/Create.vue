@@ -22,138 +22,159 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Sucursal</label>
-              <div class="col-sm-4">
-                <el-select
-                  :disabled="addedProducts"
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Sucursal"
-                  v-model="entrada.sucursalId"
-                >
-                  <el-option
-                    v-for="option in selects.offices"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-              <label class="col-sm-2 col-form-label">Suplidor</label>
-              <div class="col-sm-4">
-                <el-select
-                  :disabled="addedProducts"
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Suplidor"
-                  v-model="entrada.suplidorId"
-                >
-                  <el-option
-                    v-for="option in selects.suppliers"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Nota</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="nota"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <textarea
-                    rows="4"
-                    class="form-control"
+            <div class="entrada" v-if="showEntrance">
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Sucursal</label>
+                <div class="col-sm-4">
+                  <el-select
                     required
-                    :disabled="addedProducts"
-                    v-model="entrada.nota"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  ></textarea>
-                </ValidationProvider>
+                    filterable
+                    class="select-primary"
+                    size="large"
+                    placeholder="Sucursal"
+                    v-model="entrada.sucursalId"
+                  >
+                    <el-option
+                      v-for="option in selects.offices"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
+                <label class="col-sm-2 col-form-label">Suplidor</label>
+                <div class="col-sm-4">
+                  <el-select
+                    required
+                    filterable
+                    class="select-primary"
+                    size="large"
+                    placeholder="Suplidor"
+                    v-model="entrada.suplidorId"
+                  >
+                    <el-option
+                      v-for="option in selects.suppliers"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
               </div>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Nota</label>
+                <div class="col-sm-4">
+                  <ValidationProvider
+                    name="nota"
+                    v-slot="{ passed, failed, errors }"
+                  >
+                    <textarea
+                      rows="4"
+                      class="form-control"
+                      required
+                      v-model="entrada.nota"
+                      :error="errors[0]"
+                      :class="[
+                        { 'has-success': passed },
+                        { 'has-danger': failed }
+                      ]"
+                    ></textarea>
+                  </ValidationProvider>
+                </div>
+                <label class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-4">
+                  <ValidationProvider
+                    name="fecha"
+                    v-slot="{ passed, failed, errors }"
+                  >
+                    <base-input>
+                      <el-date-picker
+                        type="datetime"
+                        placeholder="Fecha"
+                        v-model="entrada.fecha"
+                        :error="errors[0]"
+                        :class="[
+                          { 'has-success': passed },
+                          { 'has-danger': failed }
+                        ]"
+                      >
+                      </el-date-picker>
+                    </base-input>
+                  </ValidationProvider>
+                </div>
+              </div>
+              <hr />
             </div>
-            <hr />
             <!-- products details -->
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Producto</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Producto"
-                  v-model="product.productName"
-                >
-                  <el-option
-                    v-for="option in selects.products"
+            <div v-if="!showEntrance">
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Producto</label>
+                <div class="col-sm-4">
+                  <el-select
+                    required
+                    filterable
+                    :disabled="editingProduct"
                     class="select-primary"
-                    :value="option.nombre"
-                    :label="option.nombre"
-                    :key="option.id"
+                    size="large"
+                    placeholder="Producto"
+                    v-model="product.productName"
                   >
-                  </el-option>
-                </el-select>
-              </div>
+                    <el-option
+                      v-for="option in selects.products"
+                      class="select-primary"
+                      :value="option.nombre"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
 
-              <label class="col-sm-2 col-form-label">Valor</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="valor"
-                  rules="min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="product.productPrice"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                <label class="col-sm-2 col-form-label">Valor</label>
+                <div class="col-sm-4">
+                  <ValidationProvider
+                    name="valor"
+                    rules="min:1|numeric"
+                    v-slot="{ passed, failed, errors }"
                   >
-                  </base-input>
-                </ValidationProvider>
+                    <base-input
+                      required
+                      v-model="product.productPrice"
+                      :error="errors[0]"
+                      :class="[
+                        { 'has-success': passed },
+                        { 'has-danger': failed }
+                      ]"
+                    >
+                    </base-input>
+                  </ValidationProvider>
+                </div>
               </div>
-            </div>
-            <hr />
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Cantidad</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="cantidad"
-                  rules="min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="product.productQuantity"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Cantidad</label>
+                <div class="col-sm-4">
+                  <ValidationProvider
+                    name="cantidad"
+                    rules="min:1|numeric"
+                    v-slot="{ passed, failed, errors }"
                   >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-              <label class="col-sm-2 col-form-label">Estado</label>
+                    <base-input
+                      required
+                      v-model="product.productQuantity"
+                      :error="errors[0]"
+                      :class="[
+                        { 'has-success': passed },
+                        { 'has-danger': failed }
+                      ]"
+                    >
+                    </base-input>
+                  </ValidationProvider>
+                </div>
+                <!-- <label class="col-sm-2 col-form-label">Estado</label>
               <div class="col-sm-4">
                 <el-select
                   required
@@ -172,81 +193,103 @@
                   >
                   </el-option>
                 </el-select>
+              </div> -->
+              </div>
+              <div class="row d-flex justify-content-center">
+                <base-button
+                  type="primary"
+                  native-type="submit"
+                  class="animation-on-hover"
+                  @click.native="!editingProduct ? addProduct() : editProduct()"
+                  >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
+                >
+                <base-button
+                  @click.native="cleanProducts()"
+                  type="danger"
+                  class="animation-on-hover"
+                  ><i class="tim-icons icon-simple-remove"></i
+                  >Limpiar</base-button
+                >
+              </div>
+              <hr />
+              <div class="row">
+                <div class="offset-sm-4 col-sm-3">
+                  <label>Mostrar: </label>
+                  <el-select
+                    class="select-primary mb-3 pagination-select"
+                    v-model="pagination.perPage"
+                    placeholder="Per page"
+                  >
+                    <el-option
+                      class="select-primary"
+                      v-for="item in pagination.perPageOptions"
+                      :key="item"
+                      :label="item"
+                      :value="item"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+              <!-- Table -->
+              <div class="row">
+                <el-table :data="queriedData">
+                  <el-table-column
+                    v-for="column in tableColumns"
+                    :key="column.label"
+                    :min-width="column.minWidth"
+                    :prop="column.prop"
+                    :label="column.label"
+                  >
+                  </el-table-column>
+                  <el-table-column
+                    :min-width="135"
+                    align="right"
+                    label="Actions"
+                  >
+                    <div slot-scope="props">
+                      <base-button
+                        @click.native="handleEdit(props.$index, props.row)"
+                        class="edit btn-link"
+                        type="warning"
+                        size="sm"
+                        icon
+                      >
+                        <i class="tim-icons icon-pencil"></i>
+                      </base-button>
+                      <base-button
+                        @click.native="handleDelete(props.$index, props.row)"
+                        class="remove btn-link"
+                        type="danger"
+                        size="sm"
+                        icon
+                      >
+                        <i class="tim-icons icon-simple-remove"></i>
+                      </base-button>
+                    </div>
+                  </el-table-column>
+                </el-table>
               </div>
             </div>
             <div class="row d-flex justify-content-center">
               <base-button
-                type="primary"
+                v-if="!showEntrance"
+                type="success"
                 native-type="submit"
                 class="animation-on-hover"
-                @click.native="!editingProduct ? addProduct() : editProduct()"
-                >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
+                @click.native="changeShow()"
+                ><i class="fa-solid fa-arrow-right"></i>Siguiente</base-button
               >
               <base-button
-                @click.native="cleanProducts()"
-                type="danger"
+                v-if="showEntrance"
+                type="warning"
+                native-type="submit"
                 class="animation-on-hover"
-                ><i class="tim-icons icon-simple-remove"></i
-                >Limpiar</base-button
+                @click.native="changeShow()"
+                ><i class="fa-solid fa-arrow-left"></i>Atras</base-button
               >
-            </div>
-            <hr />
-            <div class="row">
-              <div class="offset-sm-4 col-sm-3">
-                <label>Mostrar: </label>
-                <el-select
-                  class="select-primary mb-3 pagination-select"
-                  v-model="pagination.perPage"
-                  placeholder="Per page"
-                >
-                  <el-option
-                    class="select-primary"
-                    v-for="item in pagination.perPageOptions"
-                    :key="item"
-                    :label="item"
-                    :value="item"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
-            <!-- Table -->
-            <div class="row">
-              <el-table :data="queriedData">
-                <el-table-column
-                  v-for="column in tableColumns"
-                  :key="column.label"
-                  :min-width="column.minWidth"
-                  :prop="column.prop"
-                  :label="column.label"
-                >
-                </el-table-column>
-                <el-table-column :min-width="135" align="right" label="Actions">
-                  <div slot-scope="props">
-                    <base-button
-                      @click.native="handleEdit(props.$index, props.row)"
-                      class="edit btn-link"
-                      type="warning"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-pencil"></i>
-                    </base-button>
-                    <base-button
-                      @click.native="handleDelete(props.$index, props.row)"
-                      class="remove btn-link"
-                      type="danger"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-simple-remove"></i>
-                    </base-button>
-                  </div>
-                </el-table-column>
-              </el-table>
-            </div>
-            <div class="row d-flex justify-content-center">
               <base-button
+                v-if="showEntrance"
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
@@ -254,7 +297,6 @@
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
-
               <router-link to="/productsoffice/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
@@ -270,7 +312,7 @@
   </div>
 </template>
 <script>
-import { Table, TableColumn, Select, Option, Autocomplete } from 'element-ui'
+import { Table, TableColumn, Select, Option, DatePicker } from 'element-ui'
 import { BasePagination } from 'src/components'
 import { extend } from 'vee-validate'
 import { required, min, numeric } from 'vee-validate/dist/rules'
@@ -287,6 +329,7 @@ export default {
   components: {
     Loading,
     BasePagination,
+    [DatePicker.name]: DatePicker,
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
@@ -372,6 +415,7 @@ export default {
           minWidth: 100
         }
       ],
+      showEntrance: false,
       tableData: [],
       searchedData: [],
       fuseSearch: null,
@@ -381,7 +425,6 @@ export default {
       id: '',
       currentCode: '',
       baseApiUrl: '',
-      addedProducts: false,
       editingProduct: false,
       editRow: {},
       indexToUpdate: '',
@@ -398,13 +441,13 @@ export default {
         productPrice: '',
         productQuantity: '',
         productName: '',
-        estadoDetalleEntrada: ''
+        estadoDetalleEntrada: 1
       },
       entrada: {
         id: 0,
         suplidorId: '',
         sucursalId: '',
-        fehca: '',
+        fecha: '',
         nota: '',
         detalleEntradas: []
       }
@@ -419,6 +462,9 @@ export default {
     this.fillCatalog()
   },
   methods: {
+    changeShow() {
+      this.showEntrance = !this.showEntrance
+    },
     addProduct() {
       if (this.validateFields())
         return this.globalSweetMessage(
@@ -439,17 +485,16 @@ export default {
             this.product.productName
         )
         .then((response) => {
+          console.log(response.data[0])
           this.currentProduct = response.data[0]
           this.currentProduct['valor'] = this.product.productPrice
           this.currentProduct['cantidad'] = this.product.productQuantity
-          this.currentProduct['estadoDetalleEntrada'] =
-            this.product.estadoDetalleEntrada
+          this.currentProduct['estadoDetalleEntrada'] = 1
           this.currentProduct['estadoDetalleEntradaText'] =
             this.selects.statusDetails[
-              this.product.estadoDetalleEntrada - 1
+              this.currentProduct['estadoDetalleEntrada'] - 1
             ].nombre
           this.fillTable(this.currentProduct)
-          this.addedProducts = true
           this.cleanProduct()
         })
         .catch((error) => {
@@ -473,7 +518,7 @@ export default {
         tipoProducto: obj.tipoProductos.descripcion,
         valor: obj.valor,
         cantidad: obj.cantidad,
-        estadoDetalleEntrada: obj.estadoDetalleEntrada,
+        estadoDetalleEntrada: 1,
         estadoDetalleEntradaText: obj.estadoDetalleEntradaText
       }
       this.tableData.push(detalleTable)
@@ -487,7 +532,6 @@ export default {
     },
     cleanProducts() {
       this.tableData = []
-      this.addedProducts = false
       this.clear()
     },
     handleEdit(index, row) {
@@ -497,13 +541,13 @@ export default {
       if (this.indexToUpdate >= 0) {
         this.editRow = row
         this.editingProduct = true
-        this.product.nombre = row.nombre
-        this.product.productPrice = row.precio
+        this.product.productName = row.nombre
+        this.product.productPrice = row.valor
         this.product.productQuantity = row.cantidad
       }
     },
     editProduct() {
-      this.editRow.precio = this.product.productPrice
+      this.editRow.valor = this.product.productPrice
       this.editRow.cantidad = this.product.productQuantity
       this.editingProduct = false
       this.editRow = ''
@@ -546,10 +590,14 @@ export default {
       return (
         !this.product.productName ||
         !this.product.productQuantity ||
-        !this.product.productPrice ||
+        !this.product.productPrice
+      )
+    },
+    validateEntrance() {
+      return (
         !this.entrada.sucursalId ||
         !this.entrada.suplidorId ||
-        !this.product.estadoDetalleEntrada
+        !this.entrada.fecha
       )
     },
     fillCatalog() {
@@ -644,7 +692,11 @@ export default {
     create() {
       if (this.tableData.length == 0)
         return this.globalSweetMessage('No hay productos agregados', 'error')
-
+      if (this.validateEntrance())
+        return this.globalSweetMessage(
+          'Favor llenar todos los campos!',
+          'error'
+        )
       for (let i = 0; i < this.tableData.length; i++) {
         let product = {
           id: 0,
@@ -660,7 +712,6 @@ export default {
         }
         this.entrada.detalleEntradas.push(product)
       }
-
       console.log(this.entrada)
     }
   }
