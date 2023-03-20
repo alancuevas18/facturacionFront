@@ -112,7 +112,7 @@ export default {
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
-    this.title = !this.id ? 'Cear' : 'Editar'
+    this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id) this.fillForm()
   },
   methods: {

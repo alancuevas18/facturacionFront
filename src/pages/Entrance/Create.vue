@@ -67,27 +67,7 @@
                   </el-select>
                 </div>
               </div>
-              <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Nota</label>
-                <div class="col-sm-4">
-                  <ValidationProvider
-                    name="nota"
-                    v-slot="{ passed, failed, errors }"
-                  >
-                    <textarea
-                      rows="4"
-                      class="form-control"
-                      required
-                      v-model="entrada.nota"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
-                    ></textarea>
-                  </ValidationProvider>
-                </div>
-              </div>
+           
               <div class="row">
                 <label class="col-sm-2 col-form-label">Fecha</label>
                 <div class="col-sm-4">
@@ -111,6 +91,28 @@
                   </ValidationProvider>
                 </div>
               </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Nota</label>
+                <div class="col-sm-4">
+                  <ValidationProvider
+                    name="nota"
+                    v-slot="{ passed, failed, errors }"
+                  >
+                    <textarea
+                      rows="4"
+                      class="form-control"
+                      required
+                      v-model="entrada.nota"
+                      :error="errors[0]"
+                      :class="[
+                        { 'has-success': passed },
+                        { 'has-danger': failed }
+                      ]"
+                    ></textarea>
+                  </ValidationProvider>
+                </div>
+              </div>
+            
               <hr />
             </div>
             <!-- products details -->
@@ -122,7 +124,7 @@
                     required
                     filterable
                     :disabled="editingProduct"
-                    class="select-primary"
+                    class="select-primary w-100"
                     size="large"
                     placeholder="Producto"
                     v-model="product.productName"
@@ -180,7 +182,7 @@
                   </ValidationProvider>
                 </div>
               </div>
-              <div class="row d-flex justify-content-center">
+              <div class="row col-ms-12 col-md-6 d-flex justify-content-center">
                 <base-button
                   type="primary"
                   native-type="submit"
@@ -441,7 +443,7 @@ export default {
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-    this.title = !this.id ? 'Cear' : 'Editar'
+    this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
     this.fillCatalog()
