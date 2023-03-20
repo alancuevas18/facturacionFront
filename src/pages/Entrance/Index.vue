@@ -82,15 +82,7 @@
                       <i class="tim-icons icon-pencil"></i>
                     </base-button>
                   </router-link>
-                  <base-button
-                    @click.native="handleDelete(props.$index, props.row)"
-                    class="remove btn-link"
-                    type="danger"
-                    size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-simple-remove"></i>
-                  </base-button>
+       
                 </div>
               </el-table-column>
             </el-table>
@@ -198,12 +190,8 @@ export default {
           prop: 'nota',
           label: 'Nota',
           minWidth: 70
-        },
-        {
-          prop: 'estadoEntrada',
-          label: 'Estado Entrada',
-          minWidth: 100
         }
+   
       ],
       tableData: [],
       searchedData: [],
@@ -258,10 +246,9 @@ export default {
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            // this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-            this.tableData[i]['estadoEntrada'] = 'Estado'
+            this.tableData[i]['sucursalesId'] = response.data[i].sucursales.nombre
+            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
+          //this.tableData[i]['estadoEntrada'] = 'Estado'
           }
         })
         .catch((error) => {
@@ -289,14 +276,14 @@ export default {
     },
     filterByOffice() {
       this.tableData = []
-      this.fillTable('productossucursales/bysuculsal/' + this.office)
+      this.fillTable('Entradas/bysuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('productossucursales', true)
+    this.fillTable('Entradas', true)
   },
   watch: {}
 }

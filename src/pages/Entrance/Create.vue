@@ -77,7 +77,7 @@
                   >
                     <base-input>
                       <el-date-picker
-                        type="datetime"
+                        type="date"
                         placeholder="Fecha"
                         v-model="entrada.fecha"
                         :error="errors[0]"
@@ -434,6 +434,8 @@ export default {
         id: 0,
         suplidorId: '',
         sucursalId: '',
+        Suplidores:null,
+        Sucursales:null,
         fecha: '',
         nota: '',
         detalleEntradas: []
@@ -700,6 +702,20 @@ export default {
         this.entrada.detalleEntradas.push(product)
       }
       console.log(this.entrada)
+
+      this.isLoading = true
+      axios
+          .post(this.baseApiUrl + 'entradas', this.entrada)
+          .then((response) => {
+            this.globalSweetMessage(response.data.message)
+            this.clear()
+            this.$router.push({ path: '/entrance/index' })
+          })
+          .catch((error) => {
+            this.globalSweetMessage(error.response.data.message, 'error')
+          })
+          .finally(() => (this.isLoading = false))
+
     }
   }
 }
