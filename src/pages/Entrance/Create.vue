@@ -44,6 +44,8 @@
                     </el-option>
                   </el-select>
                 </div>
+              </div>
+              <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Suplidor</label>
                 <div class="col-sm-4">
                   <el-select
@@ -65,7 +67,7 @@
                   </el-select>
                 </div>
               </div>
-              <div class="row">
+              <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Nota</label>
                 <div class="col-sm-4">
                   <ValidationProvider
@@ -85,6 +87,8 @@
                     ></textarea>
                   </ValidationProvider>
                 </div>
+              </div>
+              <div class="row">
                 <label class="col-sm-2 col-form-label">Fecha</label>
                 <div class="col-sm-4">
                   <ValidationProvider
@@ -111,7 +115,7 @@
             </div>
             <!-- products details -->
             <div v-if="!showEntrance">
-              <div class="row">
+              <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Producto</label>
                 <div class="col-sm-4">
                   <el-select
@@ -133,7 +137,8 @@
                     </el-option>
                   </el-select>
                 </div>
-
+              </div>
+              <div class="row">
                 <label class="col-sm-2 col-form-label">Valor</label>
                 <div class="col-sm-4">
                   <ValidationProvider
@@ -174,26 +179,6 @@
                     </base-input>
                   </ValidationProvider>
                 </div>
-                <!-- <label class="col-sm-2 col-form-label">Estado</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Estado"
-                  v-model="product.estadoDetalleEntrada"
-                >
-                  <el-option
-                    v-for="option in selects.statusDetails"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id + option.nombre"
-                  >
-                  </el-option>
-                </el-select>
-              </div> -->
               </div>
               <div class="row d-flex justify-content-center">
                 <base-button
