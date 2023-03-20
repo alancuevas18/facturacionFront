@@ -189,6 +189,103 @@
                 </ValidationProvider>
               </div>
             </div>
+
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Nombre Empresa</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresa"
+                  rules=""
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="supplier.empresa"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Rnc</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresaRnc"
+                  rules=""
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="supplier.empresaRnc"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Telefono empresa*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresaTelefono"
+                  rules="required|numeric"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="supplier.empresaTelefono"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Direccion empresa</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresaDireccion"
+                  rules=""
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="supplier.empresaDireccion"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Status</label>
               <div class="col-sm-10">
@@ -293,14 +390,18 @@ export default {
         estadoSuplidor: '',
         personaId: 0,
         id: 0,
-        estadoPersona: ''
+        estadoPersona: '',
+        empresa:'',
+        empresaTelefono:'',
+        empresaDireccion:'',
+        empresaRnc:'',
       }
     }
   },
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-    this.title = !this.id ? 'Cear' : 'Editar'
+    this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.supplier.nationalID
@@ -362,6 +463,11 @@ export default {
         direccion: obj.direccion,
         celular: obj.celular,
         telefono: obj.telefono,
+        empresa: obj.empresa,
+        empresaRnc: obj.empresaRnc,
+        empresaTelefono: obj.empresaTelefono,
+        empresaDireccion: obj.empresaDireccion,
+
         estadoPersona: true,
         id: obj.id
       }
@@ -378,6 +484,10 @@ export default {
       this.supplier.celular = ''
       this.supplier.telefono = ''
       this.supplier.estadoSuplidor = ''
+      this.supplier.empresa = ''
+      this.supplier.empresaRnc = ''
+      this.supplier.empresaTelefono = ''
+      this.supplier.empresaDireccion = ''
     },
     edit() {
       if (this.validateFields()) {
