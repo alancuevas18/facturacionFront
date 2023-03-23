@@ -22,69 +22,18 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
+            
             <div class="row">
-              <label class="col-sm-2 col-form-label">Codigo*</label>
-              <div class="col-sm-8 p-0">
-                <ValidationProvider
-                  name="codigo"
-                  rules="required|min:1"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    autofocus
-                    :readonly="id"
-                    v-model="productCode"
-                    class="mr-1"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
+              <label class="col-sm-2 col-form-label">Codigo:</label>
+              <div class="col-sm-10">
+                <label class="col-form-label"> {{ productCode }}</label>
               </div>
-              <div class="col-sm-1">
-                <base-button
-                  :type="readonly ? 'success' : 'danger'"
-                  class="animation-on-hover ml-0 p-2"
-                  size="md"
-                  @click.native="readonly ? checkCode() : resetCode()"
-                  ><i v-if="readonly" class="tim-icons icon-check-2"></i>
-                  <i v-else class="tim-icons icon-simple-remove"></i
-                ></base-button>
-              </div>
-              <div class="col-sm-1">
-                <base-button
-                  type="info"
-                  class="animation-on-hover ml-0 p-2"
-                  size="md"
-                  @click.native="suggestCode()"
-                  ><i class="tim-icons icon-zoom-split"></i
-                ></base-button>
-              </div>
+ 
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Stock*</label>
+              <label class="col-sm-2 col-form-label">Stock:</label>
               <div class="col-sm-10">
-                <ValidationProvider
-                  name="Stock"
-                  rules="required|min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    :readonly="readonly"
-                    v-model="productByOffice.stock"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
+               <label class="col-form-label"> {{ productByOffice.stock }}</label>
               </div>
             </div>
             <div class="row">
@@ -97,6 +46,8 @@
                 >
                   <base-input
                     required
+                    autofocus
+                    
                     :readonly="readonly"
                     v-model="productByOffice.stockMinimo"
                     :error="errors[0]"
@@ -154,70 +105,22 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Total*</label>
+              <label class="col-sm-2 col-form-label">Total:</label>
               <div class="col-sm-10">
-                <ValidationProvider
-                  name="total"
-                  rules="required|min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    v-model="productByOffice.total"
-                    readonly="readonly"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
+                <label class="col-form-label"> {{ productByOffice.total }}</label>
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Sucursal*</label>
-              <div class="col-sm-10">
-                <el-select
-                  required
-                  :readonly="readonly"
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Sucursal"
-                  v-model="productByOffice.sucursalesId"
-                >
-                  <el-option
-                    v-for="option in selects.offices"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
+              <label class="col-sm-2 col-form-label">Sucursal:</label>
+              <div class="col-sm-10">                
+                <label class="col-form-label"> {{offices}}</label>
+
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">estadoProductos*</label>
+              <label class="col-sm-2 col-form-label">Estado:</label>
               <div class="col-sm-10">
-                <el-select
-                  required
-                  :readonly="readonly"
-                  filterable
-                  class="select-primary mt-2"
-                  size="large"
-                  placeholder="Estado Producto"
-                  v-model="productByOffice.estadoProductos"
-                >
-                  <el-option
-                    v-for="option in selects.statusProduct"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
+                  <label class="col-form-label">{{selects.statusProduct.filter(c=>c.id==productByOffice.estadoProductos)[0].nombre}}</label>
               </div>
             </div>
             <div class="row d-flex justify-content-center">
@@ -277,6 +180,7 @@ export default {
         offices: [],
         statusProduct: []
       },
+      offices:'',
       productCode: '',
       productByOffice: {
         id: 0,
@@ -302,29 +206,7 @@ export default {
     this.fillCatalog()
   },
   methods: {
-    checkCode() {
-      axios
-        .get(
-          this.baseApiUrl +
-            'Productos/ByCodigoOrNombre?Nombre=' +
-            this.productCode +
-            '&Codigo=' +
-            this.productCode
-        )
-        .then((response) => {
-          this.productByOffice.productoId = response.data[0].id
-          this.readonly = !response.data[0].id > 0
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Codigo invalido', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    resetCode() {
-      this.productByOffice.productoId = 0
-      this.productCode = ''
-      this.readonly = !this.readonly
-    },
+   
     checkId() {
       axios
         .get(this.baseApiUrl + 'productossucursales/' + this.id)
@@ -332,6 +214,7 @@ export default {
           this.isLoading = true
           this.fillForm(response.data)
           this.productByOffice.productoId = response.data.productoId
+          this.offices=response.data.sucursales.nombre
           this.readonly = false
         })
         .catch((error) => {
@@ -397,10 +280,11 @@ export default {
     edit() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
+      }
+      else 
+      {
         this.isLoading = true
-        if (!this.productByOffice.id) this.checkCode()
-        else {
+ 
           axios
             .put(
               this.baseApiUrl +
@@ -417,29 +301,11 @@ export default {
               this.globalSweetMessage(error.response.data.message, 'error')
             })
             .finally(() => (this.isLoading = false))
-        }
+        
       }
     },
     create() {
-      if (this.validateFields()) {
-        this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        if (!this.productByOffice.productoId) this.checkCode()
-        else {
-          axios
-            .post(this.baseApiUrl + 'productossucursales', this.productByOffice)
-            .then((response) => {
-              this.globalSweetMessage(response.data.message)
-              this.clear()
-              this.$router.push({ path: '/productsoffice/index' })
-            })
-            .catch((error) => {
-              this.globalSweetMessage(error.response.data.message, 'error')
-            })
-            .finally(() => (this.isLoading = false))
-        }
-      }
+  
     }
   }
 }

@@ -105,6 +105,20 @@
                 </ValidationProvider>
               </div>
             </div>
+
+            <div class="row mb-2">
+            <label class="col-sm-2 col-form-label">Validar Codigo</label>
+              <div class="col-sm-10">           
+                <BaseCheckbox
+                v-model="product.validarCodigo"
+                  :checked="product.validarCodigo"
+                  class="m-0 p-0  "
+                  >
+                  </BaseCheckbox>
+              </div>
+            </div>
+            
+            
             <div class="row">
               <label class="col-sm-2 col-form-label">Marca</label>
               <div class="col-sm-10">
@@ -291,7 +305,7 @@ export default {
         imagen: '',
         tipoProductoId: 4,
         tipoProductos: null,
-        validarCodigo: true,
+        validarCodigo: false,
         id: 0
       }
     }
@@ -310,7 +324,7 @@ export default {
         .get(this.baseApiUrl + 'productos/' + this.id)
         .then((response) => {
           this.isLoading = true
-          this.fillForm(response.data.result)
+          this.fillForm(response.data)
         })
         .catch((error) => {
           this.error = error
@@ -356,7 +370,7 @@ export default {
         imagen: obj.imagen,
         tipoProductoId: obj.tipoProductoId,
         tipoProductos: null,
-        validarCodigo: true,
+        validarCodigo: obj.validarCodigo,
         id: obj.id
       }
       if (obj.id != 0)

@@ -66,6 +66,17 @@ const OfficesIndex = () => import('src/pages/Offices/Index.vue')
 const OfficesCreate = () => import('src/pages/Offices/Create.vue')
 const OfficesDetail = () => import('src/pages/Offices/Details.vue')
 
+
+
+//Shopping
+const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
+const ShoppingPending = () => import('src/pages/Shopping/ShoppingPending.vue')
+const ShoppingRequest = () => import('src/pages/Shopping/ShoppingRequest.vue')
+const ShoppingCreate = () => import('src/pages/Shopping/Create.vue')
+const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
+//Pyment
+const PaymentCreate = () => import('src/pages/Payments/Create.vue')
+
 //StructureComprabante
 const StructureComprobantesIndex = () =>
   import('src/pages/StructureComprobantes/Index.vue')
@@ -223,6 +234,41 @@ let EntranceMenu = {
     }
   ]
 }
+let ShoppingeMenu = {
+  path: '/shopping',
+  component: DashboardLayout,
+  redirect: '/shopping/index',
+  name: 'Compras',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion compras',
+      components: { default: ShoppingIndex }
+    },
+    {
+      path: 'ShoppingRequest',
+      name: 'Solicitudes de Compra',
+      components: { default: ShoppingRequest}
+    },
+    {
+      path: 'Shoppingpending',
+      name: 'Compras Pendientes de pago',
+      components: { default: ShoppingPending}
+    },
+
+    {
+      path: 'create/:id?',
+      name: 'Crear compras',
+      components: { default: ShoppingCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles compras',
+      components: { default: ShoppingDetail }
+    }
+  ]
+}
+
 let SpendMenu = {
   path: '/spends',
   component: DashboardLayout,
@@ -365,6 +411,20 @@ let productTypeMenu = {
   ]
 }
 
+let paymentMenu = {
+  path: '/Payments',
+  component: DashboardLayout,
+  redirect: '/Shopping/index',
+  name: 'Pagos',
+  children: [   
+    {
+      path: 'create/:id?',
+      name: 'Crear Pago',
+      components: { default: PaymentCreate }
+    }
+  ]
+}
+
 const routes = [
   {
     path: '/',
@@ -385,6 +445,8 @@ const routes = [
   structureComprobanteMenu,
   ServiceOfficesMenu,
   EntranceMenu,
+  ShoppingeMenu,
+  paymentMenu,
   {
     path: '/',
     component: DashboardLayout,

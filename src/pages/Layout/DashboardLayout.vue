@@ -86,7 +86,7 @@
           ></sidebar-item>
         </sidebar-item>
 
-        <!-- office Menu -->
+        <!-- invetory Menu -->
         <sidebar-item
           :link="{
             name: $t('invetory.invetory'),
@@ -115,6 +115,35 @@
             :link="{ name: $t('invetory.index'), path: '/invetory/index' }"
           ></sidebar-item> -->
         </sidebar-item>
+
+  <!-- shopping Menu -->
+       <sidebar-item
+          :link="{
+            name: $t('shopping.shopping'),
+            icon: 'fa-solid fa-bag-shopping'
+          }"
+        >
+           <sidebar-item
+            :link="{
+              name: $t('shopping.index'),
+              path: '/shopping/index'
+            }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{
+              name: $t('shopping.request'),
+              path: '/shopping/ShoppingRequest'
+            }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{
+              name: $t('shopping.pending'),
+              path: '/shopping/ShoppingPending'
+            }"
+          ></sidebar-item>
+        </sidebar-item>
+
+
         <!-- Products Menu -->
         <sidebar-item
           :link="{
