@@ -6,14 +6,18 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('products.byOffice') }}</h2>
+      <h2 class="text-center">{{ $t('spends.index') }}s</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('products.products') }}
-       
+            {{ $t('spends.spends') }}
+            <router-link to="/spends/create">
+              <button class="btn floatr btn-icon btn-twitter">
+                <i class="tim-icons icon-simple-add"></i>
+              </button>
+            </router-link>
           </h4>
           <div>
             <div
@@ -33,31 +37,6 @@
                 >
                 </el-option>
               </el-select>
-              <div>
-                <el-select
-                  class="select-primary"
-                  v-model="office"
-                  placeholder="Sucursal"
-                  filterable
-                  @change="filterByOffice()"
-                >
-                  <el-option
-                    v-for="option in selects.offices"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option> </el-select
-                ><button
-                  @click="fillTable('productossucursales', true)"
-                  title="limpiar filtros"
-                  class="btn floatr btn-icon btn-youtube"
-                  v-if="office"
-                >
-                  X
-                </button>
-              </div>
 
               <base-input>
                 <el-input
@@ -83,8 +62,17 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-   
-                  <router-link :to="'/productsoffice/create/' + props.row.id">
+                  <router-link :to="'/spends/details/' + props.row.id">
+                    <base-button
+                      class="like btn-link"
+                      type="info"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-notes"></i>
+                    </base-button>
+                  </router-link>
+                  <router-link :to="'/spends/create/' + props.row.id">
                     <base-button
                       class="edit btn-link"
                       type="warning"
@@ -94,7 +82,15 @@
                       <i class="tim-icons icon-pencil"></i>
                     </base-button>
                   </router-link>
-
+                  <base-button
+                    @click.native="handleDelete(props.$index, props.row)"
+                    class="remove btn-link"
+                    type="danger"
+                    size="sm"
+                    icon
+                  >
+                    <i class="tim-icons icon-simple-remove"></i>
+                  </base-button>
                 </div>
               </el-table-column>
             </el-table>
@@ -129,7 +125,6 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
-import { CLOSING } from 'ws'
 
 export default {
   components: {
@@ -175,53 +170,20 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      office: '',
-      selects: {
-        simple: '',
-        offices: []
-      },
-      productStatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: ['descripcion', 'total'],
       tableColumns: [
-    
         {
-          prop: 'productoCodigo',
-          label: 'Codigo',
-          minWidth: 100
-        },
-        {
-          prop: 'productoNombre',
-          label: 'Nombre',
-          minWidth: 100
-        },
-        {
-          prop: 'stock',
-          label: 'Stock',
+          prop: 'descripcion',
+          label: 'Descripción',
           minWidth: 70
-        },
-
-        {
-          prop: 'precio',
-          label: 'Precio',
-          minWidth: 100
         },
         {
           prop: 'total',
           label: 'Total',
           minWidth: 100
-        },
-        {
-          prop: 'sucursalesId',
-          label: 'Sucursal',
-          minWidth: 110
-        },
-        {
-          prop: 'estadoProductos',
-          label: 'Estado',
-          minWidth: 100
-        },
-   
+        },     
+        
       ],
       tableData: [],
       searchedData: [],
@@ -253,7 +215,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'productossucursales/' + row.id)
+        .delete(this.baseApiUrl + 'Gastos/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -267,59 +229,21 @@ export default {
           this.globalSweetMessage(error.response.data.message, 'error')
         })
         .finally(() => (this.isLoading = false))
-    },
-    fillTable(resource, clearFilters) {
-      this.tableData = []
-      if (clearFilters) this.office = ''
-      axios
-        .get(this.baseApiUrl + resource)
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['productoCodigo'] =
-              response.data[i].productos.codigo
-            this.tableData[i]['productoNombre'] =
-              response.data[i].productos.nombre
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['estadoProductos'] =
-              this.productStatus[response.data[i].estadoProductos - 1].nombre
-          }
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/sucursales')
-        .then((response) => {
-          this.selects.offices = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-      axios
-        .get(this.baseApiUrl + 'catalogo/estadoproducto')
-        .then((response) => {
-          this.productStatus = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-    },
-    filterByOffice() {
-      this.tableData = []
-      this.fillTable('productossucursales/bysuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillCatalog()
-    this.fillTable('productossucursales', true)
+    axios
+      .get(this.baseApiUrl + 'Gastos')
+      .then((response) => {
+        for (let i = 0; i < response.data.length; i++)
+          this.tableData.push(response.data[i])
+      })
+      .catch((error) => {
+        this.errored = true
+      })
+      .finally(() => (this.isLoading = false))
   },
   watch: {}
 }

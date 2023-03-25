@@ -102,11 +102,11 @@ export default {
           { value: 'inactive', label: 'Inactivar' }
         ]
       },
-      producttype: [
+      producttype: 
         {
           descripcion: ''
         }
-      ]
+      
     }
   },
   mounted() {
@@ -160,8 +160,9 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
+        console.log(this.producttype)
         axios
-          .post(this.baseApiUrl + 'tipoproductos', this.producttype)
+          .post(this.baseApiUrl + 'TipoProductos', this.producttype)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

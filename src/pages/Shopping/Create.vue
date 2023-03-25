@@ -6,13 +6,13 @@
       :is-full-page="fullPage"
     />
     <h2 class="text-center">
-      {{ $t('global.add') }} {{ $t('entrance.entrance') }}
+      {{ $t('global.add') }} {{ $t('shopping.shopping') }}
     </h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/entrance/index">
+          <router-link to="/shopping/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -22,7 +22,7 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
-            <div class="entrada" v-if="showEntrance">
+            <div class="compra" v-if="showshopping">
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Sucursal</label>
                 <div class="col-sm-4">
@@ -32,7 +32,7 @@
                     class="select-primary"
                     size="large"
                     placeholder="Sucursal"
-                    v-model="entrada.sucursalId"
+                    v-model="compra.sucursalId"
                   >
                     <el-option
                       v-for="option in selects.offices"
@@ -54,7 +54,7 @@
                     class="select-primary"
                     size="large"
                     placeholder="Suplidor"
-                    v-model="entrada.suplidorId"
+                    v-model="compra.suplidorId"
                   >
                     <el-option
                       v-for="option in selects.suppliers"
@@ -67,7 +67,61 @@
                   </el-select>
                 </div>
               </div>
-           
+
+              
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Tipo compra</label>
+                <div class="col-sm-4">
+                  <el-select
+                    required
+                    filterable
+                    class="select-primary"
+                    size="large"
+                    placeholder="Sucursal"
+                    v-model="compra.tipoCompra"
+                    @change="$event=>changetypeshopping()"  
+                  >
+                    <el-option
+                      v-for="option in selects.typeShopping"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Estado</label>
+                <div class="col-sm-4">
+                  <el-select
+                    required
+                    filterable
+                    class="select-primary"
+                    size="large"
+                    placeholder="Sucursal"
+                    :key="compra.estadoCompra"
+                    v-model="compra.estadoCompra"
+                  >
+                    <el-option
+                      v-for="option in selects.status"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Total</label>
+                <div class="col-sm-4">
+                <label class="col-form-label">{{ compra.total }}</label>
+                </div>
+              </div>
               <div class="row">
                 <label class="col-sm-2 col-form-label">Fecha</label>
                 <div class="col-sm-4">
@@ -79,7 +133,7 @@
                       <el-date-picker
                         type="date"
                         placeholder="Fecha"
-                        v-model="entrada.fecha"
+                        v-model="compra.fecha"
                         :error="errors[0]"
                         :class="[
                           { 'has-success': passed },
@@ -102,7 +156,7 @@
                       rows="4"
                       class="form-control"
                       required
-                      v-model="entrada.nota"
+                      v-model="compra.nota"
                       :error="errors[0]"
                       :class="[
                         { 'has-success': passed },
@@ -116,7 +170,7 @@
               <hr />
             </div>
             <!-- products details -->
-            <div v-if="!showEntrance">
+            <div v-if="!showshopping">
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Producto</label>
                 <div class="col-sm-4">
@@ -172,8 +226,6 @@
                   >
                     <base-input
                       required
-                      :readonly="showcode"
-                       :key="showcode"
                       v-model="product.productQuantity"
                       :error="errors[0]"
                       :class="[
@@ -186,26 +238,6 @@
                 </div>
               </div>
 
-              <div class="row" v-show="showcode">
-                <label class="col-sm-2 col-form-label">Codigo producto</label>
-                <div class="col-sm-4">
-                  <ValidationProvider
-                    name="codigoProducto"
-                    v-slot="{ passed, failed, errors }"
-                  >
-                    <base-input
-                      required
-                      v-model="product.code"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
-                    >
-                    </base-input>
-                  </ValidationProvider>
-                </div>
-              </div>
 
               <div class="row col-ms-12 col-md-6 d-flex justify-content-center">
                 <base-button
@@ -285,7 +317,7 @@
             </div>
             <div class="row d-flex justify-content-center">
               <base-button
-                v-if="!showEntrance"
+                v-if="!showshopping"
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
@@ -293,7 +325,7 @@
                 ><i class="fa-solid fa-arrow-right"></i>Siguiente</base-button
               >
               <base-button
-                v-if="showEntrance"
+                v-if="showshopping"
                 type="warning"
                 native-type="submit"
                 class="animation-on-hover"
@@ -301,7 +333,7 @@
                 ><i class="fa-solid fa-arrow-left"></i>Atras</base-button
               >
               <base-button
-                v-if="showEntrance"
+                v-if="showshopping"
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
@@ -387,11 +419,6 @@ export default {
           minWidth: 70
         },
         {
-          prop: 'codigoProducto',
-          label: 'Codigo',
-          minWidth: 70
-        },
-        {
           prop: 'nombre',
           label: 'Nombre',
           minWidth: 100
@@ -407,12 +434,7 @@ export default {
           minWidth: 120
         },
         {
-          prop: 'tipoProducto',
-          label: 'Tipo Producto',
-          minWidth: 120
-        },
-        {
-          prop: 'valor',
+          prop: 'valorProducto',
           label: 'Valor',
           minWidth: 100
         },
@@ -421,20 +443,22 @@ export default {
           label: 'Cantidad',
           minWidth: 100
         },
+
         {
-          prop: 'estadoDetalleEntradaText',
-          label: 'Estado',
+          prop: 'total',
+          label: 'Total',
           minWidth: 100
-        }
+        },
+     
+        
       ],
-      showEntrance: false,
+      showshopping: false,
       tableData: [],
       searchedData: [],
       fuseSearch: null,
       isLoading: false,
       fullPage: true,
       readonly: true,
-      showcode: false,
       id: '',
       currentCode: '',
       baseApiUrl: '',
@@ -446,26 +470,30 @@ export default {
         simple: '',
         offices: [],
         suppliers: [],
-        statusDetails: [],
-        products: []
+        status: [],
+        products: [],
+        typeShopping:[]
       },
+      listStatus:[],
       currentProduct: {},
       product: {
         productPrice: '',
         productQuantity: '',
         productName: '',
         code:'',
-        estadoDetalleEntrada: 1
       },
-      entrada: {
+      compra: {
         id: 0,
         suplidorId: '',
+        fecha: new Date(),
         sucursalId: '',
+        estadoCompra:3,
+        total:0,
+        abono:0,
+        tipoCompra: 1,
         Suplidores:null,
         Sucursales:null,
-        fecha: '',
-        nota: '',
-        detalleEntradas: []
+        detallecompra: []
       }
     }
   },
@@ -479,94 +507,74 @@ export default {
   },
   methods: {
     changeShow() {
-      this.showEntrance = !this.showEntrance
+      this.showshopping = !this.showshopping
+
+     this.compra.total=this.tableData.reduce((accumulator, object) => { return accumulator + object.total;}, 0)
+     
     },
+    changetypeshopping(){
+      if(this.compra.tipoCompra==1){
+        this.selects.status= this.listStatus.filter(c=>c.id==3)
+        this.compra.estadoCompra=3
+      }
+      else{
+        this.selects.status= this.listStatus.filter(c=>c.id!=3)
+        this.compra.estadoCompra=1
+      }
+     },
     changeProduct(){
       axios
         .get(this.baseApiUrl +'productos/'+this.product.productoId)
         .then((response) => {
           this.currentProduct = response.data
-          this.showcode=response.data.validarCodigo
-          this.product.code=''
           this.product.productQuantity=1
         })
         .catch((error) => {
           this.globalSweetMessage('Codigo invalido', 'error')
-        })
-
-
-        
-        
+        })        
     },
+
     addProduct() {
       if (this.validateFields())
         return this.globalSweetMessage(
           'Favor llenar todos los campos!',
           'error'
         )
-      if (this.isAddedProduct(this.product.productoId,this.product.code))
+      if (this.isAddedProduct(this.product.productoId))
         return this.globalSweetMessage(
           'Este producto a sido agregado!',
           'error'
         )
-        this.currentProduct['valor'] = this.product.productPrice
-          this.currentProduct['cantidad'] = this.product.productQuantity
-          this.currentProduct['estadoDetalleEntrada'] = 1
-          this.currentProduct['estadoDetalleEntradaText'] =
-            this.selects.statusDetails[
-              this.currentProduct['estadoDetalleEntrada'] - 1
-            ].nombre
-          this.fillTable(this.currentProduct)
+         this.currentProduct['valor'] = this.product.productPrice
+         this.currentProduct['cantidad'] = this.product.productQuantity
+         this.fillTable(this.currentProduct)
           this.cleanProduct()
-      /* axios
-        .get(this.baseApiUrl +'productos/'+this.product.productoId)
-        .then((response) => {
-          console.log(response.data)
-          this.currentProduct = response.data
-          this.currentProduct['valor'] = this.product.productPrice
-          this.currentProduct['cantidad'] = this.product.productQuantity
-          this.currentProduct['estadoDetalleEntrada'] = 1
-          this.currentProduct['estadoDetalleEntradaText'] =
-            this.selects.statusDetails[
-              this.currentProduct['estadoDetalleEntrada'] - 1
-            ].nombre
-          this.fillTable(this.currentProduct)
-          this.cleanProduct()
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Codigo invalido', 'error')
-        })
-        .finally(() => (this.isLoading = false))*/
     },
-    isAddedProduct(id,code) {
-      function findProduct(product) {
-        
-        return (product.productoId === id && product.codigoProducto===code) 
+    //valide product to add a table
+    isAddedProduct(id) {
+      function findProduct(product) {        
+        return (product.productoId === id) 
       }
       return this.tableData.find((product) => findProduct(product))
     },
     fillTable(obj) {
       console.log(obj)
       let detalleTable = {
+        compraId:0,
         productoId: obj.id,
-        codigoProducto:  this.product.code,
         nombre: obj.nombre,
         descripcion: obj.descripcion,
         marcaProducto: obj.marcas.descripcion,
-        tipoProducto: obj.tipoProductos.descripcion,
-        valor: obj.valor,
+        valorProducto: obj.valor,
         cantidad: obj.cantidad,
-        estadoDetalleEntrada: 1,
-        estadoDetalleEntradaText: obj.estadoDetalleEntradaText
+        total: obj.cantidad*obj.valor
       }
       this.tableData.push(detalleTable)
     },
     cleanProduct() {
       this.product.productName = ''
-      if(!this.showcode)
       this.product.productQuantity = ''
       this.product.productPrice = ''
-      this.product.estadoDetalleEntrada = ''
     },
     cleanProducts() {
       this.tableData = []
@@ -581,20 +589,15 @@ export default {
         this.editingProduct = true
         this.product.productoId = row.productoId
         this.product.productName = row.nombre
-        this.product.productPrice = row.valor
+        this.product.productPrice = row.valorProducto
         this.product.productQuantity = row.cantidad
-        this.product.code = row.codigoProducto
-        if(row.codigoProducto!="")
-        this.showcode=true
-        else
-        this.showcode=false
+
 
       }
     },
     editProduct() {
-      this.editRow.valor = this.product.productPrice
+      this.editRow.valorProducto = this.product.productPrice
       this.editRow.cantidad = this.product.productQuantity
-      this.editRow.codigoProducto = this.product.code
       this.editingProduct = false
       this.editRow = ''
       this.product = {}
@@ -618,33 +621,19 @@ export default {
           this.tableData.splice(index, 1)
         })
     },
-    // checkId() {
-    //   axios
-    //     .get(this.baseApiUrl + 'productossucursales/' + this.id)
-    //     .then((response) => {
-    //       this.isLoading = true
-    //       this.fillForm(response.data)
-    //       this.productByOffice.productoId = response.data.productoId
-    //       this.readonly = false
-    //     })
-    //     .catch((error) => {
-    //       this.error = error
-    //     })
-    //     .finally(() => (this.isLoading = false))
-    // },
+
     validateFields() {
       return (
         !this.product.productoId ||
         !this.product.productQuantity ||
         !this.product.productPrice
-        ||(!this.product.code && this.showcode==true)
       )
     },
-    validateEntrance() {
+    validateshopping() {
       return (
-        !this.entrada.sucursalId ||
-        !this.entrada.suplidorId ||
-        !this.entrada.fecha
+        !this.compra.sucursalId ||
+        !this.compra.suplidorId ||
+        !this.compra.fecha
       )
     },
     fillCatalog() {
@@ -665,14 +654,27 @@ export default {
         .catch((error) => {
           this.errored = true
         })
-      axios
-        .get(this.baseApiUrl + 'catalogo/estadodetalleentrada')
+
+        axios
+        .get(this.baseApiUrl + 'catalogo/TipoCompra')
         .then((response) => {
-          this.selects.statusDetails = response.data
+          this.selects.typeShopping = response.data
         })
         .catch((error) => {
           this.errored = true
         })
+
+        
+        axios
+        .get(this.baseApiUrl + 'catalogo/EstadoCompra')
+        .then((response) => {
+          this.listStatus= response.data
+          this.selects.status = response.data.filter(c=>c.id==3)
+        })
+        .catch((error) => {
+          this.errored = true
+        })
+        
 
       axios
         .get(this.baseApiUrl + 'catalogo/productos')
@@ -683,63 +685,19 @@ export default {
           this.errored = true
         })
     },
-    // fillForm(obj) {
-    //   this.productByOffice = {
-    //     id: obj.id,
-    //     productoId: obj.productos.id,
-    //     stock: obj.stock,
-    //     stockMinimo: obj.stockMinimo,
-    //     precio: obj.precio,
-    //     productos: null,
-    //     sucursales: null,
-    //     precioMinimo: obj.precioMinimo,
-    //     sucursalesId: obj.sucursalesId,
-    //     estadoProductos: obj.estadoProductos,
-    //     total: obj.total
-    //   }
-    //   this.productName = obj.productos.codigo
-    //   if (obj.id != 0)
-    //     this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
-    // },
     clear() {
       this.product.productName = ''
       this.product.productQuantity = ''
       this.product.productPrice = ''
-      this.entrada.sucursalId = ''
-      this.entrada.suplidorId = ''
-      this.entrada.estadoDetalleEntrada = ''
-      this.entrada.nota = ''
+      this.compra.sucursalId = ''
+      this.compra.suplidorId = ''
+      this.compra.nota = ''
     },
-    // edit() {
-    //   if (this.validateFields()) {
-    //     this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-    //   } else {
-    //     this.isLoading = true
-    //     if (!this.productByOffice.id) this.checkCode()
-    //     else {
-    //       axios
-    //         .put(
-    //           this.baseApiUrl +
-    //             'productossucursales/' +
-    //             this.productByOffice.id,
-    //           this.productByOffice
-    //         )
-    //         .then((response) => {
-    //           this.globalSweetMessage(response.data.message)
-    //           this.clear()
-    //           this.$router.push({ path: '/productsoffice/index' })
-    //         })
-    //         .catch((error) => {
-    //           this.globalSweetMessage(error.response.data.message, 'error')
-    //         })
-    //         .finally(() => (this.isLoading = false))
-    //     }
-    //   }
-    // },
+
     create() {
       if (this.tableData.length == 0)
         return this.globalSweetMessage('No hay productos agregados', 'error')
-      if (this.validateEntrance())
+      if (this.validateshopping())
         return this.globalSweetMessage(
           'Favor llenar todos los campos!',
           'error'
@@ -749,25 +707,23 @@ export default {
           id: 0,
           productoId: this.tableData[i].productoId,
           cantidad: this.tableData[i].cantidad,
-          valor: this.tableData[i].valor,
-          total: 0,
-          codigoProducto: this.tableData[i].codigoProducto,
-          entradaId: 0,
-          entradas: null,
+          valorProducto: this.tableData[i].valorProducto,
+          total: this.tableData[i].valorProducto* this.tableData[i].cantidad,
+          compraId: 0,
+          compras: null,
           productos: null,
-          estadoDetalleEntrada: this.tableData[i].estadoDetalleEntrada
         }
-        this.entrada.detalleEntradas.push(product)
+        this.compra.detallecompra.push(product)
       }
-      console.log(this.entrada)
+      console.log(this.compra)
 
       this.isLoading = true
       axios
-          .post(this.baseApiUrl + 'entradas', this.entrada)
+          .post(this.baseApiUrl + 'compras', this.compra)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/entrance/index' })
+            this.$router.push({ path: '/shopping/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')

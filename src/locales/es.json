@@ -114,10 +114,23 @@
       "index" : "Administracion de Inventario",
       "invetory": "Inventario"
     },
+
+    "shopping": {
+      "create" : "Crear",
+      "request" : "Solicitudes de Compra",
+      "pending" : "Compras Pendientes de pago",
+      "index" : "Administracion de compras",
+      "shopping": "Compras"
+    },
     "entrance": {
       "create" : "Crear",
       "index" : "Administracion de Entrada",
       "entrance": "Entradas"
+    },
+    "payments": {
+      "create" : "Crear",
+      "index" : "Administracion de pagos",
+      "shopping": "Pagos"
     }
   }
   
