@@ -6,13 +6,13 @@
       :is-full-page="fullPage"
     />
     <h2 class="text-center">
-      {{ $t('global.add') }} {{ $t('entrance.entrance') }}
+      {{ $t('global.add') }} {{ $t('departures.departures') }}
     </h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/entrance/index">
+          <router-link to="/departures/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -22,9 +22,9 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
-            <div class="entrada" v-if="showEntrance">
+            <div class="salidas" v-if="!showdepartures">
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Sucursal</label>
+                <label class="col-sm-2 col-form-label">Tipo de salida</label>
                 <div class="col-sm-4">
                   <el-select
                     required
@@ -32,7 +32,30 @@
                     class="select-primary"
                     size="large"
                     placeholder="Sucursal"
-                    v-model="entrada.sucursalId"
+                    v-model="salidas.tipoSalida"
+                  >
+                    <el-option
+                      v-for="option in selects.typeDepartures"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+          
+              <div class="row mb-3">
+                <label class="col-sm-2 col-form-label">Envia</label>
+                <div class="col-sm-4">
+                  <el-select
+                    required
+                    filterable
+                    class="select-primary"
+                    size="large"
+                    placeholder="Sucursal"
+                    v-model="salidas.sucursalEnviaId"
                   >
                     <el-option
                       v-for="option in selects.offices"
@@ -45,7 +68,30 @@
                   </el-select>
                 </div>
               </div>
-              <div class="row mb-3">
+
+              <div class="row mb-3" v-show="salidas.tipoSalida==1">
+                <label class="col-sm-2 col-form-label">Recibe</label>
+                <div class="col-sm-4">
+                  <el-select
+                    required
+                    filterable
+                    class="select-primary"
+                    size="large"
+                    placeholder="Sucursal"
+                    v-model="salidas.sucursalRecibeId"
+                  >
+                    <el-option
+                      v-for="option in selects.offices"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+              <div class="row mb-3" v-show="salidas.tipoSalida==2">
                 <label class="col-sm-2 col-form-label">Suplidor</label>
                 <div class="col-sm-4">
                   <el-select
@@ -54,7 +100,7 @@
                     class="select-primary"
                     size="large"
                     placeholder="Suplidor"
-                    v-model="entrada.suplidorId"
+                    v-model="salidas.suplidorId"
                   >
                     <el-option
                       v-for="option in selects.suppliers"
@@ -67,6 +113,8 @@
                   </el-select>
                 </div>
               </div>
+
+              
            
               <div class="row">
                 <label class="col-sm-2 col-form-label">Fecha</label>
@@ -79,7 +127,7 @@
                       <el-date-picker
                         type="date"
                         placeholder="Fecha"
-                        v-model="entrada.fecha"
+                        v-model="salidas.fecha"
                         :error="errors[0]"
                         :class="[
                           { 'has-success': passed },
@@ -92,17 +140,17 @@
                 </div>
               </div>
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Nota</label>
+                <label class="col-sm-2 col-form-label">Concepto</label>
                 <div class="col-sm-4">
                   <ValidationProvider
-                    name="nota"
+                    name="concepto"
                     v-slot="{ passed, failed, errors }"
                   >
                     <textarea
                       rows="4"
                       class="form-control"
                       required
-                      v-model="entrada.nota"
+                      v-model="salidas.concepto"
                       :error="errors[0]"
                       :class="[
                         { 'has-success': passed },
@@ -116,7 +164,7 @@
               <hr />
             </div>
             <!-- products details -->
-            <div v-if="!showEntrance">
+            <div v-if="showdepartures">
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Producto</label>
                 <div class="col-sm-4">
@@ -285,7 +333,7 @@
             </div>
             <div class="row d-flex justify-content-center">
               <base-button
-                v-if="!showEntrance"
+                v-if="!showdepartures"
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
@@ -293,7 +341,7 @@
                 ><i class="fa-solid fa-arrow-right"></i>Siguiente</base-button
               >
               <base-button
-                v-if="showEntrance"
+                v-if="showdepartures"
                 type="warning"
                 native-type="submit"
                 class="animation-on-hover"
@@ -301,7 +349,7 @@
                 ><i class="fa-solid fa-arrow-left"></i>Atras</base-button
               >
               <base-button
-                v-if="showEntrance"
+                v-if="showdepartures"
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
@@ -420,14 +468,9 @@ export default {
           prop: 'cantidad',
           label: 'Cantidad',
           minWidth: 100
-        },
-        {
-          prop: 'estadoDetalleEntradaText',
-          label: 'Estado',
-          minWidth: 100
         }
       ],
-      showEntrance: false,
+      showdepartures: false,
       tableData: [],
       searchedData: [],
       fuseSearch: null,
@@ -444,28 +487,33 @@ export default {
       title: '',
       selects: {
         simple: '',
+        typeDepartures:[],
+
         offices: [],
         suppliers: [],
-        statusDetails: [],
         products: []
       },
       currentProduct: {},
+      validarProductoCode:false,
       product: {
         productPrice: '',
         productQuantity: '',
         productName: '',
         code:'',
-        estadoDetalleEntrada: 1
       },
-      entrada: {
+      salidas: {
         id: 0,
-        suplidorId: '',
-        sucursalId: '',
+        tipoSalida:1,
+        estadoSalida:1,
+        suplidorId: null,
+        sucursalEnviaId: 1,
+        sucursalRecibeId: null,
         Suplidores:null,
-        Sucursales:null,
+        sucursalesEnvia:null,
+        sucursalesRecibe:null,
         fecha: new Date(),
-        nota: '',
-        detalleEntradas: []
+        concepto: '',
+        detalleSalidas: []
       }
     }
   },
@@ -479,7 +527,7 @@ export default {
   },
   methods: {
     changeShow() {
-      this.showEntrance = !this.showEntrance
+      this.showdepartures = !this.showdepartures
     },
     changeProduct(){
       axios
@@ -498,24 +546,22 @@ export default {
         
         
     },
-    addProduct() {
+    async addProduct() {
       if (this.validateFields())
         return this.globalSweetMessage(
           'Favor llenar todos los campos!',
           'error'
         )
+   
+      if(!await this.validateCode(this.product.productoId,this.product.code,this.salidas.sucursalEnviaId,this.product.productQuantity))
+       return false;
       if (this.isAddedProduct(this.product.productoId,this.product.code))
         return this.globalSweetMessage(
           'Este producto a sido agregado!',
           'error'
         )
         this.currentProduct['valor'] = this.product.productPrice
-          this.currentProduct['cantidad'] = this.product.productQuantity
-          this.currentProduct['estadoDetalleEntrada'] = 1
-          this.currentProduct['estadoDetalleEntradaText'] =
-            this.selects.statusDetails[
-              this.currentProduct['estadoDetalleEntrada'] - 1
-            ].nombre
+          this.currentProduct['cantidad'] = this.product.productQuantity     
           this.fillTable(this.currentProduct)
           this.cleanProduct()
       /* axios
@@ -525,10 +571,10 @@ export default {
           this.currentProduct = response.data
           this.currentProduct['valor'] = this.product.productPrice
           this.currentProduct['cantidad'] = this.product.productQuantity
-          this.currentProduct['estadoDetalleEntrada'] = 1
-          this.currentProduct['estadoDetalleEntradaText'] =
+          this.currentProduct['estadoDetallesalidas'] = 1
+          this.currentProduct['estadoDetallesalidasText'] =
             this.selects.statusDetails[
-              this.currentProduct['estadoDetalleEntrada'] - 1
+              this.currentProduct['estadoDetallesalidas'] - 1
             ].nombre
           this.fillTable(this.currentProduct)
           this.cleanProduct()
@@ -539,8 +585,7 @@ export default {
         .finally(() => (this.isLoading = false))*/
     },
     isAddedProduct(id,code) {
-      function findProduct(product) {
-        
+      function findProduct(product) {        
         return (product.productoId === id && product.codigoProducto===code) 
       }
       return this.tableData.find((product) => findProduct(product))
@@ -555,9 +600,7 @@ export default {
         marcaProducto: obj.marcas.descripcion,
         tipoProducto: obj.tipoProductos.descripcion,
         valor: obj.valor,
-        cantidad: obj.cantidad,
-        estadoDetalleEntrada: 1,
-        estadoDetalleEntradaText: obj.estadoDetalleEntradaText
+        cantidad: obj.cantidad
       }
       this.tableData.push(detalleTable)
     },
@@ -566,7 +609,6 @@ export default {
       if(!this.showcode)
       this.product.productQuantity = ''
       this.product.productPrice = ''
-      this.product.estadoDetalleEntrada = ''
     },
     cleanProducts() {
       this.tableData = []
@@ -637,17 +679,39 @@ export default {
         !this.product.productoId ||
         !this.product.productQuantity ||
         !this.product.productPrice
-        ||(!this.product.code && this.showcode==true)
+        ||(!this.product.code && this.showcode==true)  
       )
     },
-    validateEntrance() {
+     validateCode:async function(productoId,code,sucursalEnviaId,productQuantity){   
+      console.log(productQuantity)   
+     await  axios.get(this.baseApiUrl+'ProductosSucursales/ValidarProductoCodigoSucursal?ProductoId='+productoId+'&Codigo='+code+'&SucursalId='+sucursalEnviaId+'&Cantidad='+productQuantity)
+     .then((response)=>{
+          if (!response.data.result){   
+            this.globalSweetMessage(response.data.message,'error')          
+          }
+          this.validarProductoCode=response.data.result
+        })
+        return this.validarProductoCode
+    },
+    validatedepartures() {
       return (
-        !this.entrada.sucursalId ||
-        !this.entrada.suplidorId ||
-        !this.entrada.fecha
+        !this.salidas.sucursalEnviaId ||
+       (!this.salidas.sucursalRecibeId && this.salidas.tipoSalida==1)||
+       (!this.salidas.suplidorId && this.salidas.tipoSalida==2)||
+        !this.salidas.fecha
       )
     },
     fillCatalog() {
+
+      axios
+        .get(this.baseApiUrl + 'catalogo/tipoSalida')
+        .then((response) => {
+          this.selects.typeDepartures = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+      
       axios
         .get(this.baseApiUrl + 'catalogo/sucursales')
         .then((response) => {
@@ -661,14 +725,6 @@ export default {
         .get(this.baseApiUrl + 'catalogo/suplidores')
         .then((response) => {
           this.selects.suppliers = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-      axios
-        .get(this.baseApiUrl + 'catalogo/estadodetalleentrada')
-        .then((response) => {
-          this.selects.statusDetails = response.data
         })
         .catch((error) => {
           this.errored = true
@@ -705,10 +761,10 @@ export default {
       this.product.productName = ''
       this.product.productQuantity = ''
       this.product.productPrice = ''
-      this.entrada.sucursalId = ''
-      this.entrada.suplidorId = ''
-      this.entrada.estadoDetalleEntrada = ''
-      this.entrada.nota = ''
+      this.salidas.sucursalId = ''
+      this.salidas.suplidorId = ''
+      this.salidas.estadoDetallesalidas = ''
+      this.salidas.nota = ''
     },
     // edit() {
     //   if (this.validateFields()) {
@@ -739,7 +795,7 @@ export default {
     create() {
       if (this.tableData.length == 0)
         return this.globalSweetMessage('No hay productos agregados', 'error')
-      if (this.validateEntrance())
+      if (this.validatedepartures())
         return this.globalSweetMessage(
           'Favor llenar todos los campos!',
           'error'
@@ -752,22 +808,22 @@ export default {
           valor: this.tableData[i].valor,
           total: 0,
           codigoProducto: this.tableData[i].codigoProducto,
-          entradaId: 0,
-          entradas: null,
+          salidasId: 0,
+          salidas: null,
           productos: null,
-          estadoDetalleEntrada: this.tableData[i].estadoDetalleEntrada
+          estadoDetallesalidas: this.tableData[i].estadoDetallesalidas
         }
-        this.entrada.detalleEntradas.push(product)
+        this.salidas.detalleSalidas.push(product)
       }
-      console.log(this.entrada)
+      console.log(this.salidas)
 
       this.isLoading = true
       axios
-          .post(this.baseApiUrl + 'entradas', this.entrada)
+          .post(this.baseApiUrl + 'salidas', this.salidas)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/entrance/index' })
+            this.$router.push({ path: '/departures/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
