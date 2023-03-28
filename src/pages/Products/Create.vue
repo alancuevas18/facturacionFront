@@ -300,10 +300,10 @@ export default {
         nombre: '',
         descripcion: '',
         codigo: '',
-        marcaId: 1,
+        marcaId: '',
         marcas: null,
         imagen: '',
-        tipoProductoId: 4,
+        tipoProductoId: '',
         tipoProductos: null,
         validarCodigo: false,
         id: 0

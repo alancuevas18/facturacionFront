@@ -131,6 +131,11 @@
       "create" : "Crear",
       "index" : "Administracion de pagos",
       "shopping": "Pagos"
+    },
+    "departures": {
+      "create" : "Crear",
+      "index" : "Administracion de salida",
+      "departures": "Salida"
     }
   }
   

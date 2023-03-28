@@ -38,18 +38,7 @@
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
           ></sidebar-item>
         </sidebar-item>
-        <!-- Sellers Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('sellers.sellers'),
-            icon: 'fa-solid fa-handshake'
-          }"
-        >
-          <sidebar-item
-            :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
-          ></sidebar-item>
-        </sidebar-item>
-
+    
         <!-- spends Menu -->
         <sidebar-item
           :link="{
@@ -60,32 +49,7 @@
           <sidebar-item
             :link="{ name: $t('spends.index'), path: '/spends/index' }"
           ></sidebar-item>
-        </sidebar-item>
-
-        <!-- delivery Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('deliveries.deliveries'),
-            icon: 'tim-icons icon-email-85'
-          }"
-        >
-          <sidebar-item
-            :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
-          ></sidebar-item>
-        </sidebar-item>
-
-        <!-- office Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('offices.offices'),
-            icon: 'far fa-building'
-          }"
-        >
-          <sidebar-item
-            :link="{ name: $t('offices.index'), path: '/offices/index' }"
-          ></sidebar-item>
-        </sidebar-item>
-
+        </sidebar-item>         
         <!-- invetory Menu -->
         <sidebar-item
           :link="{
@@ -115,9 +79,8 @@
             :link="{ name: $t('invetory.index'), path: '/invetory/index' }"
           ></sidebar-item> -->
         </sidebar-item>
-
-  <!-- shopping Menu -->
-       <sidebar-item
+        <!-- shopping Menu -->
+        <sidebar-item
           :link="{
             name: $t('shopping.shopping'),
             icon: 'fa-solid fa-bag-shopping'
@@ -142,8 +105,19 @@
             }"
           ></sidebar-item>
         </sidebar-item>
-
-
+      <!-- departures Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('departures.departures'),
+            icon: 'fa-solid fa-dolly'
+          }"
+        >
+        <sidebar-item
+            :link="{ name: $t('departures.index'), path: '/Departures/index' }"
+          ></sidebar-item>
+    
+   
+        </sidebar-item>
         <!-- Products Menu -->
         <sidebar-item
           :link="{
@@ -160,9 +134,8 @@
           <sidebar-item
             :link="{ name: $t('products.type'), path: '/productstype/index' }"
           ></sidebar-item>
-        </sidebar-item>
-
-        <!-- serivices Menu -->
+        </sidebar-item> 
+       <!-- serivices Menu -->
         <sidebar-item
           :link="{
             name: $t('services.services'),
@@ -173,7 +146,39 @@
             :link="{ name: $t('services.index'), path: '/services/index' }"
           ></sidebar-item>
         </sidebar-item>
-
+        <!-- office Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('offices.offices'),
+            icon: 'far fa-building'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('offices.index'), path: '/offices/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+        <!-- Sellers Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('sellers.sellers'),
+            icon: 'fa-solid fa-handshake'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
+          ></sidebar-item>
+        </sidebar-item>       
+        <!-- delivery Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('deliveries.deliveries'),
+            icon: 'tim-icons icon-email-85'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
+          ></sidebar-item>
+        </sidebar-item>  
         <!-- structureComprobantes Menu -->
         <sidebar-item
           :link="{
@@ -188,6 +193,8 @@
             }"
           ></sidebar-item>
         </sidebar-item>
+     
+      
         <hr />
       </template>
     </side-bar>
