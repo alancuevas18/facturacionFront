@@ -18,9 +18,9 @@
               :class="{ 'float-left': $rtl.isRTL }"
             >
               <i slot="title" class="tim-icons icon-settings-gear-63"></i>
-              <a class="dropdown-item" href="#pablo">Action</a>
-              <a class="dropdown-item" href="#pablo">Another action</a>
-              <a class="dropdown-item" href="#pablo">Something else</a>
+              <a class="dropdown-item" href="#">Action</a>
+              <a class="dropdown-item" href="#">Another action</a>
+              <a class="dropdown-item" href="#">Something else</a>
             </base-dropdown>
           </template>
           <div class="table-full-width table-responsive">
@@ -185,7 +185,7 @@
 
       <div class="col-md-6">
         <card type="testimonial" header-classes="card-header-avatar">
-          <a slot="header" href="#pablo">
+          <a slot="header" href="#">
             <img class="img img-raised" src="img/james.jpg" alt="Card image" />
           </a>
 
@@ -206,35 +206,31 @@
   </div>
 </template>
 <script>
-import TaskList from 'src/pages/Dashboard/TaskList';
-import {
-  BaseSwitch,
-  TimeLine,
-  TimeLineItem
-} from 'src/components';
+import TaskList from 'src/pages/Dashboard/TaskList'
+import { BaseSwitch, TimeLine, TimeLineItem } from 'src/components'
 
 export default {
   components: {
     BaseSwitch,
     TimeLine,
     TimeLineItem,
-    TaskList,
+    TaskList
   },
   data() {
     return {
       allContributions: true,
       pastWeekContributions: false
-    };
+    }
   },
   mounted() {
-    this.i18n = this.$i18n;
-    this.i18n.locale = 'ar';
-    this.$rtl.enableRTL();
+    this.i18n = this.$i18n
+    this.i18n.locale = 'ar'
+    this.$rtl.enableRTL()
   },
   beforeDestroy() {
-    this.i18n.locale = 'es';
-    this.$rtl.disableRTL();
+    this.i18n.locale = 'es'
+    this.$rtl.disableRTL()
   }
-};
+}
 </script>
 <style></style>

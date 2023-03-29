@@ -131,6 +131,17 @@
       "create" : "Crear",
       "index" : "Administracion de pagos",
       "shopping": "Pagos"
+    },
+    "shift": {
+      "create" : "Crear",
+      "index" : "Administracion de Turnos",
+      "shift": "Turnos"
+    }
+    ,
+    "billing": {
+      "create" : "Crear",
+      "index" : "Administracion de Facturas",
+      "billing": "Facturacion"
     }
   }
   

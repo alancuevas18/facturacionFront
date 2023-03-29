@@ -22,18 +22,18 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
-            
             <div class="row">
               <label class="col-sm-2 col-form-label">Codigo:</label>
               <div class="col-sm-10">
                 <label class="col-form-label"> {{ productCode }}</label>
               </div>
- 
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Stock:</label>
               <div class="col-sm-10">
-               <label class="col-form-label"> {{ productByOffice.stock }}</label>
+                <label class="col-form-label">
+                  {{ productByOffice.stock }}</label
+                >
               </div>
             </div>
             <div class="row">
@@ -47,7 +47,6 @@
                   <base-input
                     required
                     autofocus
-                    
                     :readonly="readonly"
                     v-model="productByOffice.stockMinimo"
                     :error="errors[0]"
@@ -107,20 +106,25 @@
             <div class="row">
               <label class="col-sm-2 col-form-label">Total:</label>
               <div class="col-sm-10">
-                <label class="col-form-label"> {{ productByOffice.total }}</label>
+                <label class="col-form-label">
+                  {{ productByOffice.total }}</label
+                >
               </div>
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Sucursal:</label>
-              <div class="col-sm-10">                
-                <label class="col-form-label"> {{offices}}</label>
-
+              <div class="col-sm-10">
+                <label class="col-form-label"> {{ offices }}</label>
               </div>
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Estado:</label>
               <div class="col-sm-10">
-                  <label class="col-form-label">{{selects.statusProduct.filter(c=>c.id==productByOffice.estadoProductos)[0].nombre}}</label>
+                <label class="col-form-label">{{
+                  selects.statusProduct.filter(
+                    (c) => c.id == productByOffice.estadoProductos
+                  )[0].nombre
+                }}</label>
               </div>
             </div>
             <div class="row d-flex justify-content-center">
@@ -180,7 +184,7 @@ export default {
         offices: [],
         statusProduct: []
       },
-      offices:'',
+      offices: '',
       productCode: '',
       productByOffice: {
         id: 0,
@@ -206,7 +210,6 @@ export default {
     this.fillCatalog()
   },
   methods: {
-   
     checkId() {
       axios
         .get(this.baseApiUrl + 'productossucursales/' + this.id)
@@ -214,7 +217,7 @@ export default {
           this.isLoading = true
           this.fillForm(response.data)
           this.productByOffice.productoId = response.data.productoId
-          this.offices=response.data.sucursales.nombre
+          this.offices = response.data.sucursales.nombre
           this.readonly = false
         })
         .catch((error) => {
@@ -280,33 +283,26 @@ export default {
     edit() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      }
-      else 
-      {
+      } else {
         this.isLoading = true
- 
-          axios
-            .put(
-              this.baseApiUrl +
-                'productossucursales/' +
-                this.productByOffice.id,
-              this.productByOffice
-            )
-            .then((response) => {
-              this.globalSweetMessage(response.data.message)
-              this.clear()
-              this.$router.push({ path: '/productsoffice/index' })
-            })
-            .catch((error) => {
-              this.globalSweetMessage(error.response.data.message, 'error')
-            })
-            .finally(() => (this.isLoading = false))
-        
+
+        axios
+          .put(
+            this.baseApiUrl + 'productossucursales/' + this.productByOffice.id,
+            this.productByOffice
+          )
+          .then((response) => {
+            this.globalSweetMessage(response.data.message)
+            this.clear()
+            this.$router.push({ path: '/productsoffice/index' })
+          })
+          .catch((error) => {
+            this.globalSweetMessage(error.response.data.message, 'error')
+          })
+          .finally(() => (this.isLoading = false))
       }
     },
-    create() {
-  
-    }
+    create() {}
   }
 }
 </script>

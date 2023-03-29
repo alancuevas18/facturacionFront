@@ -49,7 +49,6 @@
             :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
           ></sidebar-item>
         </sidebar-item>
-
         <!-- spends Menu -->
         <sidebar-item
           :link="{
@@ -61,7 +60,6 @@
             :link="{ name: $t('spends.index'), path: '/spends/index' }"
           ></sidebar-item>
         </sidebar-item>
-
         <!-- delivery Menu -->
         <sidebar-item
           :link="{
@@ -73,7 +71,6 @@
             :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
           ></sidebar-item>
         </sidebar-item>
-
         <!-- office Menu -->
         <sidebar-item
           :link="{
@@ -85,7 +82,20 @@
             :link="{ name: $t('offices.index'), path: '/offices/index' }"
           ></sidebar-item>
         </sidebar-item>
-
+        <!-- Billing Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('billing.billing'),
+            icon: 'fa-solid fa-file-invoice'
+          }"
+        >
+          <sidebar-item
+            :link="{
+              name: $t('shift.index'),
+              path: '/shift/index'
+            }"
+          ></sidebar-item>
+        </sidebar-item>
         <!-- invetory Menu -->
         <sidebar-item
           :link="{
@@ -115,15 +125,14 @@
             :link="{ name: $t('invetory.index'), path: '/invetory/index' }"
           ></sidebar-item> -->
         </sidebar-item>
-
-  <!-- shopping Menu -->
-       <sidebar-item
+        <!-- shopping Menu -->
+        <sidebar-item
           :link="{
             name: $t('shopping.shopping'),
             icon: 'fa-solid fa-bag-shopping'
           }"
         >
-           <sidebar-item
+          <sidebar-item
             :link="{
               name: $t('shopping.index'),
               path: '/shopping/index'
@@ -142,8 +151,6 @@
             }"
           ></sidebar-item>
         </sidebar-item>
-
-
         <!-- Products Menu -->
         <sidebar-item
           :link="{
@@ -161,7 +168,6 @@
             :link="{ name: $t('products.type'), path: '/productstype/index' }"
           ></sidebar-item>
         </sidebar-item>
-
         <!-- serivices Menu -->
         <sidebar-item
           :link="{
@@ -173,7 +179,6 @@
             :link="{ name: $t('services.index'), path: '/services/index' }"
           ></sidebar-item>
         </sidebar-item>
-
         <!-- structureComprobantes Menu -->
         <sidebar-item
           :link="{
@@ -196,7 +201,6 @@
     <div class="main-panel" :data="sidebarBackground">
       <dashboard-navbar></dashboard-navbar>
       <router-view name="header"></router-view>
-
       <div
         :class="{ content: !$route.meta.hideContent }"
         @click="toggleSidebar"

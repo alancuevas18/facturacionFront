@@ -1,4 +1,6 @@
 import DashboardLayout from 'src/pages/Layout/DashboardLayout.vue'
+import BillingLayout from 'src/pages/BillingLayout/Layout.vue'
+
 // GeneralViews
 import NotFound from 'src/pages/GeneralViews/NotFoundPage.vue'
 
@@ -19,6 +21,11 @@ const SupplierDetail = () => import('src/pages/Suppliers/Details.vue')
 const SellerIndex = () => import('src/pages/Sellers/Index.vue')
 const SellerCreate = () => import('src/pages/Sellers/Create.vue')
 const SellerDetail = () => import('src/pages/Sellers/Details.vue')
+
+//Shift
+const ShiftIndex = () => import('src/pages/Shift/Index.vue')
+const ShiftCreate = () => import('src/pages/Shift/Create.vue')
+const ShiftDetail = () => import('src/pages/Shift/Details.vue')
 
 //Deliveries
 const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
@@ -65,8 +72,6 @@ const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
 const OfficesIndex = () => import('src/pages/Offices/Index.vue')
 const OfficesCreate = () => import('src/pages/Offices/Create.vue')
 const OfficesDetail = () => import('src/pages/Offices/Details.vue')
-
-
 
 //Shopping
 const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
@@ -248,12 +253,12 @@ let ShoppingeMenu = {
     {
       path: 'ShoppingRequest',
       name: 'Solicitudes de Compra',
-      components: { default: ShoppingRequest}
+      components: { default: ShoppingRequest }
     },
     {
       path: 'Shoppingpending',
       name: 'Compras Pendientes de pago',
-      components: { default: ShoppingPending}
+      components: { default: ShoppingPending }
     },
 
     {
@@ -268,7 +273,6 @@ let ShoppingeMenu = {
     }
   ]
 }
-
 let SpendMenu = {
   path: '/spends',
   component: DashboardLayout,
@@ -312,6 +316,19 @@ let SellerMenu = {
       path: 'details/:id',
       name: 'Detalles Vendedor',
       components: { default: SellerDetail }
+    }
+  ]
+}
+let ShiftMenu = {
+  path: '/shift',
+  component: BillingLayout,
+  redirect: '/shift/index',
+  name: 'Turnos',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Turnos',
+      components: { default: ShiftIndex }
     }
   ]
 }
@@ -410,13 +427,12 @@ let productTypeMenu = {
     }
   ]
 }
-
 let paymentMenu = {
   path: '/Payments',
   component: DashboardLayout,
   redirect: '/Shopping/index',
   name: 'Pagos',
-  children: [   
+  children: [
     {
       path: 'create/:id?',
       name: 'Crear Pago',
@@ -438,6 +454,7 @@ const routes = [
   ServicesMenu,
   brandMenu,
   SellerMenu,
+  ShiftMenu,
   DeliveryMenu,
   SpendMenu,
   productTypeMenu,
