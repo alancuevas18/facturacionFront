@@ -22,11 +22,6 @@ const SellerIndex = () => import('src/pages/Sellers/Index.vue')
 const SellerCreate = () => import('src/pages/Sellers/Create.vue')
 const SellerDetail = () => import('src/pages/Sellers/Details.vue')
 
-//Shift
-const ShiftIndex = () => import('src/pages/Shift/Index.vue')
-const ShiftCreate = () => import('src/pages/Shift/Create.vue')
-const ShiftDetail = () => import('src/pages/Shift/Details.vue')
-
 //Deliveries
 const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
 const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
@@ -50,7 +45,7 @@ const ServiceCreate = () => import('src/pages/Services/Create.vue')
 const ServiceOfficeIndex = () => import('src/pages/ServicesOffice/Index.vue')
 const ServiceOfficeCreate = () => import('src/pages/ServicesOffice/Create.vue')
 
-//Entrance
+//ProductsOffice
 const EntranceIndex = () => import('src/pages/Entrance/Index.vue')
 const EntranceCreate = () => import('src/pages/Entrance/Create.vue')
 const EntranceDetail = () => import('src/pages/Entrance/Details.vue')
@@ -88,10 +83,12 @@ const StructureComprobantesIndex = () =>
 const StructureComprobantesCreate = () =>
   import('src/pages/StructureComprobantes/Create.vue')
 
-//ProductsOffice
-const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
-const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
-const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
+//Billing Menu
+
+//Shift
+const ShiftIndex = () => import('src/pages/Shift/Index.vue')
+const ShiftCreate = () => import('src/pages/Shift/Create.vue')
+const ShiftDetail = () => import('src/pages/Shift/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -445,29 +442,6 @@ let paymentMenu = {
     }
   ]
 }
-let DeparturesMenu = {
-  path: '/departures',
-  component: DashboardLayout,
-  redirect: '/departures/index',
-  name: 'Salidas',
-  children: [
-    {
-      path: 'index',
-      name: 'Administracion Entradas',
-      components: { default: DeparturesIndex }
-    },
-    {
-      path: 'create/:id?',
-      name: 'Crear Entrada',
-      components: { default: DeparturesCreate }
-    },
-    {
-      path: 'details/:id',
-      name: 'Detalles Entrada',
-      components: { default: DeparturesDetail }
-    }
-  ]
-}
 
 const routes = [
   {
@@ -492,7 +466,6 @@ const routes = [
   EntranceMenu,
   ShoppingeMenu,
   paymentMenu,
-  DeparturesMenu,
   {
     path: '/',
     component: DashboardLayout,

@@ -38,17 +38,6 @@
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
           ></sidebar-item>
         </sidebar-item>
-        <!-- Sellers Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('sellers.sellers'),
-            icon: 'fa-solid fa-handshake'
-          }"
-        >
-          <sidebar-item
-            :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
-          ></sidebar-item>
-        </sidebar-item>
         <!-- spends Menu -->
         <sidebar-item
           :link="{
