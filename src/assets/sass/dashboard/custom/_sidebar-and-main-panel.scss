@@ -35,7 +35,7 @@
 
     .sidebar-wrapper{
         width: $full-width;
-        min-height: 100%;
+        min-height: 150%;
         max-height: calc(100vh - 705px);
         z-index: 4;
         position: relative;
@@ -612,8 +612,11 @@
 
       .sidebar-wrapper{
         height: 100vh;
+        min-height: 100%;
+
       }
   }
+
 
   .minimize-sidebar{
       display: none;
@@ -813,6 +816,7 @@
     padding-left: 15px;
     padding-right: 15px;
   }
+  
 }
 
 @include media-breakpoint-between (md, lg){

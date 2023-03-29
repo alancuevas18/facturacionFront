@@ -50,7 +50,7 @@ const ServiceCreate = () => import('src/pages/Services/Create.vue')
 const ServiceOfficeIndex = () => import('src/pages/ServicesOffice/Index.vue')
 const ServiceOfficeCreate = () => import('src/pages/ServicesOffice/Create.vue')
 
-//ProductsOffice
+//Entrance
 const EntranceIndex = () => import('src/pages/Entrance/Index.vue')
 const EntranceCreate = () => import('src/pages/Entrance/Create.vue')
 const EntranceDetail = () => import('src/pages/Entrance/Details.vue')
@@ -87,6 +87,11 @@ const StructureComprobantesIndex = () =>
   import('src/pages/StructureComprobantes/Index.vue')
 const StructureComprobantesCreate = () =>
   import('src/pages/StructureComprobantes/Create.vue')
+
+//ProductsOffice
+const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
+const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
+const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -440,6 +445,29 @@ let paymentMenu = {
     }
   ]
 }
+let DeparturesMenu = {
+  path: '/departures',
+  component: DashboardLayout,
+  redirect: '/departures/index',
+  name: 'Salidas',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Entradas',
+      components: { default: DeparturesIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Entrada',
+      components: { default: DeparturesCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Entrada',
+      components: { default: DeparturesDetail }
+    }
+  ]
+}
 
 const routes = [
   {
@@ -464,6 +492,7 @@ const routes = [
   EntranceMenu,
   ShoppingeMenu,
   paymentMenu,
+  DeparturesMenu,
   {
     path: '/',
     component: DashboardLayout,

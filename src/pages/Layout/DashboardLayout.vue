@@ -60,42 +60,6 @@
             :link="{ name: $t('spends.index'), path: '/spends/index' }"
           ></sidebar-item>
         </sidebar-item>
-        <!-- delivery Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('deliveries.deliveries'),
-            icon: 'tim-icons icon-email-85'
-          }"
-        >
-          <sidebar-item
-            :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
-          ></sidebar-item>
-        </sidebar-item>
-        <!-- office Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('offices.offices'),
-            icon: 'far fa-building'
-          }"
-        >
-          <sidebar-item
-            :link="{ name: $t('offices.index'), path: '/offices/index' }"
-          ></sidebar-item>
-        </sidebar-item>
-        <!-- Billing Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('billing.billing'),
-            icon: 'fa-solid fa-file-invoice'
-          }"
-        >
-          <sidebar-item
-            :link="{
-              name: $t('shift.index'),
-              path: '/shift/index'
-            }"
-          ></sidebar-item>
-        </sidebar-item>
         <!-- invetory Menu -->
         <sidebar-item
           :link="{
@@ -151,6 +115,17 @@
             }"
           ></sidebar-item>
         </sidebar-item>
+        <!-- departures Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('departures.departures'),
+            icon: 'fa-solid fa-dolly'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('departures.index'), path: '/Departures/index' }"
+          ></sidebar-item>
+        </sidebar-item>
         <!-- Products Menu -->
         <sidebar-item
           :link="{
@@ -179,6 +154,39 @@
             :link="{ name: $t('services.index'), path: '/services/index' }"
           ></sidebar-item>
         </sidebar-item>
+        <!-- office Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('offices.offices'),
+            icon: 'far fa-building'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('offices.index'), path: '/offices/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+        <!-- Sellers Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('sellers.sellers'),
+            icon: 'fa-solid fa-handshake'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
+          ></sidebar-item>
+        </sidebar-item>
+        <!-- delivery Menu -->
+        <sidebar-item
+          :link="{
+            name: $t('deliveries.deliveries'),
+            icon: 'tim-icons icon-email-85'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
+          ></sidebar-item>
+        </sidebar-item>
         <!-- structureComprobantes Menu -->
         <sidebar-item
           :link="{
@@ -193,6 +201,7 @@
             }"
           ></sidebar-item>
         </sidebar-item>
+
         <hr />
       </template>
     </side-bar>

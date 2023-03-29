@@ -142,6 +142,10 @@
       "create" : "Crear",
       "index" : "Administracion de Facturas",
       "billing": "Facturacion"
+    },
+    "departures": {
+      "create" : "Crear",
+      "index" : "Administracion de salida",
+      "departures": "Salida"
     }
   }
-  
