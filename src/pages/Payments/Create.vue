@@ -425,17 +425,19 @@ export default {
       
     }
   },
-  mounted() {
+ async mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = this.payment.id==0 ? 'Crear' : 'Editar'
-    if (this.id) this.checkId()
+    if (this.id) await this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
-    this.fillCatalog()
+    await this.fillCatalog()
+    this.fillTable()
+
   },
   methods: {
-    checkId() {
-      axios
+   async  checkId() {
+   await axios
         .get(this.baseApiUrl + 'Compras/' + this.id)
         .then((response) => {
           this.isLoading = true
@@ -455,8 +457,8 @@ export default {
       if (obj.id != 0)
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.id : ''
     },
-    fillCatalog() {
-      axios
+   async fillCatalog() {
+   await axios
         .get(this.baseApiUrl + 'catalogo/tipopago')
         .then((response) => {
           this.selects.typepayment = response.data
@@ -465,12 +467,11 @@ export default {
           this.error = error
         })
         .finally(() => {
-         this.fillTable()
          this.isLoading = false 
 
         }) 
         
-        axios
+    await  axios
         .get(this.baseApiUrl + 'catalogo/EstadoCompra')
         .then((response) => {
           this.estadoCompra=  response.data.find(c=>c.id===this.compras.estadoCompra).nombre
@@ -479,7 +480,7 @@ export default {
           this.errored = true
         })
 
-        axios
+   await  axios
         .get(this.baseApiUrl + 'catalogo/TipoCompra')
         .then((response) => {
           this.tipoCompra = response.data.find(c=>c.id===this.compras.tipoCompra).nombre
@@ -492,7 +493,7 @@ export default {
     },
     fillTable(){
       this.compras.pagos.forEach((element,index) => {
-        this.tableData.push(element)
+      this.tableData.push(element)
       this.tableData[index]['tipoPago'] = this.selects.typepayment.find(c=>c.id==element.tipoPago).nombre
       });
     },

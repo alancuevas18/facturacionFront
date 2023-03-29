@@ -33,7 +33,6 @@ const ProductDetail = () => import('src/pages/Products/Details.vue')
 //ProductsOffice
 const ProductOfficeIndex = () => import('src/pages/ProductsOffice/Index.vue')
 const ProductOfficeCreate = () => import('src/pages/ProductsOffice/Create.vue')
-const ProductOfficeDetail = () => import('src/pages/ProductsOffice/Details.vue')
 
 //Services
 const ServiceIndex = () => import('src/pages/Services/Index.vue')
@@ -64,9 +63,6 @@ const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
 //Office
 const OfficesIndex = () => import('src/pages/Offices/Index.vue')
 const OfficesCreate = () => import('src/pages/Offices/Create.vue')
-const OfficesDetail = () => import('src/pages/Offices/Details.vue')
-
-
 
 //Shopping
 const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
@@ -78,12 +74,10 @@ const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
 const PaymentCreate = () => import('src/pages/Payments/Create.vue')
 
 //StructureComprabante
-const StructureComprobantesIndex = () =>
-  import('src/pages/StructureComprobantes/Index.vue')
-const StructureComprobantesCreate = () =>
-  import('src/pages/StructureComprobantes/Create.vue')
+const StructureComprobantesIndex = () => import('src/pages/StructureComprobantes/Index.vue')
+const StructureComprobantesCreate = () => import('src/pages/StructureComprobantes/Create.vue')
 
-//ProductsOffice
+//Departures
 const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
 const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
 const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
@@ -172,11 +166,6 @@ let ProductOfficesMenu = {
       path: 'create/:id?',
       name: 'Crear Productos Por Sucursal',
       components: { default: ProductOfficeCreate }
-    },
-    {
-      path: 'details/:id',
-      name: 'Detalles Producto Por Sucursal',
-      components: { default: ProductOfficeDetail }
     }
   ]
 }

@@ -62,7 +62,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/offices/details/' + props.row.id">
+                  <!-- <router-link :to="'/offices/details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -71,7 +71,7 @@
                     >
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
-                  </router-link>
+                  </router-link> -->
                   <router-link :to="'/offices/create/' + props.row.id">
                     <base-button
                       class="edit btn-link"

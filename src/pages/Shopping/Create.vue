@@ -493,7 +493,7 @@ export default {
         tipoCompra: 1,
         Suplidores:null,
         Sucursales:null,
-        detallecompra: []
+        detallecompras: []
       }
     }
   },
@@ -713,7 +713,7 @@ export default {
           compras: null,
           productos: null,
         }
-        this.compra.detallecompra.push(product)
+        this.compra.detallecompras.push(product)
       }
       console.log(this.compra)
 

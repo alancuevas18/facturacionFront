@@ -120,22 +120,29 @@
       "request" : "Solicitudes de Compra",
       "pending" : "Compras Pendientes de pago",
       "index" : "Administracion de compras",
-      "shopping": "Compras"
+      "shopping": "Compras",
+      "details":"Detalle Compra"
+
     },
     "entrance": {
       "create" : "Crear",
       "index" : "Administracion de Entrada",
-      "entrance": "Entradas"
+      "entrance": "Entradas",
+      "details":"Detalle entrada"
     },
     "payments": {
       "create" : "Crear",
       "index" : "Administracion de pagos",
-      "shopping": "Pagos"
+      "shopping": "Pagos",
+      "details":"Detalle pago"
+
     },
     "departures": {
       "create" : "Crear",
       "index" : "Administracion de salida",
-      "departures": "Salida"
+      "departures": "Salida",
+      "details":"Detalle Salida"
+      
     }
   }
   
