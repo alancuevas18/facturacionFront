@@ -35,7 +35,6 @@ const ProductDetail = () => import('src/pages/Products/Details.vue')
 //ProductsOffice
 const ProductOfficeIndex = () => import('src/pages/ProductsOffice/Index.vue')
 const ProductOfficeCreate = () => import('src/pages/ProductsOffice/Create.vue')
-const ProductOfficeDetail = () => import('src/pages/ProductsOffice/Details.vue')
 
 //Services
 const ServiceIndex = () => import('src/pages/Services/Index.vue')
@@ -66,7 +65,7 @@ const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
 //Office
 const OfficesIndex = () => import('src/pages/Offices/Index.vue')
 const OfficesCreate = () => import('src/pages/Offices/Create.vue')
-const OfficesDetail = () => import('src/pages/Offices/Details.vue')
+
 
 //Shopping
 const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
@@ -78,38 +77,9 @@ const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
 const PaymentCreate = () => import('src/pages/Payments/Create.vue')
 
 //StructureComprabante
-const StructureComprobantesIndex = () =>
-  import('src/pages/StructureComprobantes/Index.vue')
-const StructureComprobantesCreate = () =>
-  import('src/pages/StructureComprobantes/Create.vue')
+const StructureComprobantesIndex = () => import('src/pages/StructureComprobantes/Index.vue')
+const StructureComprobantesCreate = () => import('src/pages/StructureComprobantes/Create.vue')
 
-//Billing Menu
-const BillIndex = () => import('src/pages/BillMenu/BillDashboard/Index.vue')
-
-//Shift
-const ShiftIndex = () => import('src/pages/BillMenu/Shift/Index.vue')
-// const ShiftCreate = () => import('src/pages/BillMenu/Shift/Create.vue')
-// const ShiftDetail = () => import('src/pages/BillMenu/Shift/Details.vue')
-
-//Quotation
-const QuotationIndex = () => import('src/pages/BillMenu/Quotation/Index.vue')
-// const QuotationCreate = () => import('src/pages/BillMenu/Quotation/Create.vue')
-// const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
-
-//Returns
-const ReturnsIndex = () => import('src/pages/BillMenu/Returns/Index.vue')
-// const ReturnsCreate = () => import('src/pages/BillMenu/Returns/Create.vue')
-// const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
-
-//cashClose
-const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
-// const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
-// const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
-
-//bill
-const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
-// const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
-// const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -195,11 +165,6 @@ let ProductOfficesMenu = {
       path: 'create/:id?',
       name: 'Crear Productos Por Sucursal',
       components: { default: ProductOfficeCreate }
-    },
-    {
-      path: 'details/:id',
-      name: 'Detalles Producto Por Sucursal',
-      components: { default: ProductOfficeDetail }
     }
   ]
 }

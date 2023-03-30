@@ -121,17 +121,22 @@
       "request" : "Solicitudes de Compra",
       "pending" : "Compras Pendientes de pago",
       "index" : "Administracion de compras",
-      "shopping": "Compras"
+      "shopping": "Compras",
+      "details":"Detalle Compra"
+
     },
     "entrance": {
       "create" : "Crear",
       "index" : "Administracion de Entrada",
-      "entrance": "Entradas"
+      "entrance": "Entradas",
+      "details":"Detalle entrada"
     },
     "payments": {
       "create" : "Crear",
       "index" : "Administracion de pagos",
-      "shopping": "Pagos"
+      "shopping": "Pagos",
+      "details":"Detalle pago"
+
     },
     "shift": {
       "create" : "Crear",
@@ -146,24 +151,4 @@
     "departures": {
       "create" : "Crear",
       "index" : "Administracion de salida",
-      "departures": "Salida"
-    },
-    "quotation": {
-      "create" : "Crear",
-      "index" : "Administracion de Cotizacion",
-      "quotation": "Cotizacion"
-    },
-    "returns": {
-      "create" : "Crear",
-      "index" : "Administracion de Devoluciones",
-      "returns": "Devoluciones"
-    },
-    "cashClose": {
-      "index" : "Administracion de Cuadre de Caja",
-      "cashClose": "Cuadre de Caja"
-    },
-    "bill": {
-      "index" : "Facturacion",
-      "bill": "Facturacion"
-    }
   }

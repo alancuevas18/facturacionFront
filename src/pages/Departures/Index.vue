@@ -275,9 +275,7 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
-    fillCatalog() {
-   
-      
+    fillCatalog() { 
       axios
         .get(this.baseApiUrl + 'catalogo/tipoSalida')
         .then((response) => {
