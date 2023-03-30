@@ -18,34 +18,34 @@
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/register">
+        <router-link class="nav-item" tag="li" to="/billDashboard/index">
           <a class="nav-link">
             <i class="tim-icons icon-chart-pie-36"></i> Inicio
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/register">
+        <router-link class="nav-item" tag="li" to="/billDashboard/shift">
           <a class="nav-link"> <i class="tim-icons icon-laptop"></i> Turnos </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/login">
+        <router-link class="nav-item" tag="li" to="/billDashboard/quotation">
           <a class="nav-link">
             <i class="tim-icons icon-notes"></i> Cotizacion
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/pricing">
+        <router-link class="nav-item" tag="li" to="/billDashboard/returns">
           <a class="nav-link">
             <i class="tim-icons icon-coins"></i> Devoluciones
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/lock">
+        <router-link class="nav-item" tag="li" to="/billDashboard/cashClose">
           <a class="nav-link">
             <i class="tim-icons icon-money-coins"></i> Cuadre
           </a>
         </router-link>
-        <router-link class="nav-item" tag="li" to="/lock">
+        <router-link class="nav-item" tag="li" to="/billDashboard/bill">
           <a class="nav-link">
             <i class="tim-icons icon-paper"></i> Facturacion
           </a>
@@ -120,20 +120,9 @@ export default {
     toggleNavbar() {
       document.body.classList.toggle('nav-open')
       this.showMenu = !this.showMenu
-    },
-    closeMenu() {
-      document.body.classList.remove('nav-open')
-      this.showMenu = false
-    },
-    setPageClass() {
-      this.pageClass = `${this.$route.name}-page`.toLowerCase()
     }
   },
-  beforeDestroy() {
-    this.closeMenu()
-  },
   beforeRouteUpdate(to, from, next) {
-    // Close the mobile menu first then transition to next page
     if (this.showMenu) {
       this.closeMenu()
       setTimeout(() => {
@@ -143,16 +132,8 @@ export default {
       next()
     }
   },
-  mounted() {
-    this.setPageClass()
-    console.log(this.$route)
-    console.log('t')
-  },
-  watch: {
-    $route() {
-      this.setPageClass()
-    }
-  }
+  mounted() {},
+  watch: {}
 }
 </script>
 <style lang="scss">

@@ -39,7 +39,8 @@
     },
     "global":{
       "cancel":"Cancelar",
-      "add": "Agregar"
+      "add": "Agregar",
+      "create": "Crear"
     },
     "ConfigSide": {
       "title" : "Configuracion"
@@ -136,16 +137,33 @@
       "create" : "Crear",
       "index" : "Administracion de Turnos",
       "shift": "Turnos"
-    }
-    ,
+    },
     "billing": {
       "create" : "Crear",
-      "index" : "Administracion de Facturas",
+      "index" : "Modulo de Facturacion",
       "billing": "Facturacion"
     },
     "departures": {
       "create" : "Crear",
       "index" : "Administracion de salida",
       "departures": "Salida"
+    },
+    "quotation": {
+      "create" : "Crear",
+      "index" : "Administracion de Cotizacion",
+      "quotation": "Cotizacion"
+    },
+    "returns": {
+      "create" : "Crear",
+      "index" : "Administracion de Devoluciones",
+      "returns": "Devoluciones"
+    },
+    "cashClose": {
+      "index" : "Administracion de Cuadre de Caja",
+      "cashClose": "Cuadre de Caja"
+    },
+    "bill": {
+      "index" : "Facturacion",
+      "bill": "Facturacion"
     }
   }

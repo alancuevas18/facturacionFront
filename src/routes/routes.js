@@ -84,11 +84,32 @@ const StructureComprobantesCreate = () =>
   import('src/pages/StructureComprobantes/Create.vue')
 
 //Billing Menu
+const BillIndex = () => import('src/pages/BillMenu/BillDashboard/Index.vue')
 
 //Shift
-const ShiftIndex = () => import('src/pages/Shift/Index.vue')
-const ShiftCreate = () => import('src/pages/Shift/Create.vue')
-const ShiftDetail = () => import('src/pages/Shift/Details.vue')
+const ShiftIndex = () => import('src/pages/BillMenu/Shift/Index.vue')
+// const ShiftCreate = () => import('src/pages/BillMenu/Shift/Create.vue')
+// const ShiftDetail = () => import('src/pages/BillMenu/Shift/Details.vue')
+
+//Quotation
+const QuotationIndex = () => import('src/pages/BillMenu/Quotation/Index.vue')
+// const QuotationCreate = () => import('src/pages/BillMenu/Quotation/Create.vue')
+// const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
+
+//Returns
+const ReturnsIndex = () => import('src/pages/BillMenu/Returns/Index.vue')
+// const ReturnsCreate = () => import('src/pages/BillMenu/Returns/Create.vue')
+// const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
+
+//cashClose
+const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
+// const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
+// const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
+
+//bill
+const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
+// const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
+// const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -321,19 +342,6 @@ let SellerMenu = {
     }
   ]
 }
-let ShiftMenu = {
-  path: '/shift',
-  component: BillingLayout,
-  redirect: '/shift/index',
-  name: 'Turnos',
-  children: [
-    {
-      path: 'index',
-      name: 'Administracion de Turnos',
-      components: { default: ShiftIndex }
-    }
-  ]
-}
 let DeliveryMenu = {
   path: '/deliveries',
   component: DashboardLayout,
@@ -443,6 +451,85 @@ let paymentMenu = {
   ]
 }
 
+//Billing Menu
+let BillDashboard = {
+  path: '/billDashboard',
+  component: BillingLayout,
+  redirect: '/billDashboard/index',
+  name: 'Facturacion',
+  children: [
+    {
+      path: 'index',
+      name: 'DashBoard Factura',
+      components: { default: BillIndex }
+    }
+  ]
+}
+let ShiftMenu = {
+  path: '/billDashboard/shift',
+  component: BillingLayout,
+  redirect: '/billDashboard/shift/index',
+  name: 'Turnos',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Turnos',
+      components: { default: ShiftIndex }
+    }
+  ]
+}
+let QuotationMenu = {
+  path: '/billDashboard/quotation',
+  component: BillingLayout,
+  redirect: '/billDashboard/quotation/index',
+  name: 'Cotizaciones',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Cotizaciones',
+      components: { default: QuotationIndex }
+    }
+  ]
+}
+let ReturnsMenu = {
+  path: '/billDashboard/returns',
+  component: BillingLayout,
+  redirect: '/billDashboard/returns/index',
+  name: 'Devoluciones',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Devoluciones',
+      components: { default: ReturnsIndex }
+    }
+  ]
+}
+let cashCloseMenu = {
+  path: '/billDashboard/cashClose',
+  component: BillingLayout,
+  redirect: '/billDashboard/cashClose/index',
+  name: 'Turnos',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Devoluciones',
+      components: { default: cashCloseIndex }
+    }
+  ]
+}
+let billMenu = {
+  path: '/billDashboard/bill',
+  component: BillingLayout,
+  redirect: '/billDashboard/bill/index',
+  name: 'Factura',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Devoluciones',
+      components: { default: billIndex }
+    }
+  ]
+}
 const routes = [
   {
     path: '/',
@@ -456,7 +543,6 @@ const routes = [
   ServicesMenu,
   brandMenu,
   SellerMenu,
-  ShiftMenu,
   DeliveryMenu,
   SpendMenu,
   productTypeMenu,
@@ -466,6 +552,13 @@ const routes = [
   EntranceMenu,
   ShoppingeMenu,
   paymentMenu,
+  //Billing
+  BillDashboard,
+  ShiftMenu,
+  QuotationMenu,
+  ReturnsMenu,
+  cashCloseMenu,
+  billMenu,
   {
     path: '/',
     component: DashboardLayout,
