@@ -67,7 +67,6 @@
                   </el-select>
                 </div>
               </div>
-           
               <div class="row">
                 <label class="col-sm-2 col-form-label">Fecha</label>
                 <div class="col-sm-4">
@@ -112,7 +111,6 @@
                   </ValidationProvider>
                 </div>
               </div>
-            
               <hr />
             </div>
             <!-- products details -->
@@ -128,7 +126,7 @@
                     size="large"
                     placeholder="Producto"
                     v-model="product.productoId"
-                    @change="$event=>changeProduct()"                 
+                    @change="($event) => changeProduct()"
                   >
                     <el-option
                       v-for="option in selects.products"
@@ -173,7 +171,7 @@
                     <base-input
                       required
                       :readonly="showcode"
-                       :key="showcode"
+                      :key="showcode"
                       v-model="product.productQuantity"
                       :error="errors[0]"
                       :class="[
@@ -309,7 +307,7 @@
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
-              <router-link to="/productsoffice/index">
+              <router-link to="/entrance/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >{{ $t('global.cancel') }}</base-button
@@ -454,15 +452,15 @@ export default {
         productPrice: '',
         productQuantity: '',
         productName: '',
-        code:'',
+        code: '',
         estadoDetalleEntrada: 1
       },
       entrada: {
         id: 0,
         suplidorId: '',
         sucursalId: '',
-        Suplidores:null,
-        Sucursales:null,
+        Suplidores: null,
+        Sucursales: null,
         fecha: new Date(),
         nota: '',
         detalleEntradas: []
@@ -481,22 +479,18 @@ export default {
     changeShow() {
       this.showEntrance = !this.showEntrance
     },
-    changeProduct(){
+    changeProduct() {
       axios
-        .get(this.baseApiUrl +'productos/'+this.product.productoId)
+        .get(this.baseApiUrl + 'productos/' + this.product.productoId)
         .then((response) => {
           this.currentProduct = response.data
-          this.showcode=response.data.validarCodigo
-          this.product.code=''
-          this.product.productQuantity=1
+          this.showcode = response.data.validarCodigo
+          this.product.code = ''
+          this.product.productQuantity = 1
         })
         .catch((error) => {
           this.globalSweetMessage('Codigo invalido', 'error')
         })
-
-
-        
-        
     },
     addProduct() {
       if (this.validateFields())
@@ -504,44 +498,24 @@ export default {
           'Favor llenar todos los campos!',
           'error'
         )
-      if (this.isAddedProduct(this.product.productoId,this.product.code))
+      if (this.isAddedProduct(this.product.productoId, this.product.code))
         return this.globalSweetMessage(
           'Este producto a sido agregado!',
           'error'
         )
-        this.currentProduct['valor'] = this.product.productPrice
-          this.currentProduct['cantidad'] = this.product.productQuantity
-          this.currentProduct['estadoDetalleEntrada'] = 1
-          this.currentProduct['estadoDetalleEntradaText'] =
-            this.selects.statusDetails[
-              this.currentProduct['estadoDetalleEntrada'] - 1
-            ].nombre
-          this.fillTable(this.currentProduct)
-          this.cleanProduct()
-      /* axios
-        .get(this.baseApiUrl +'productos/'+this.product.productoId)
-        .then((response) => {
-          console.log(response.data)
-          this.currentProduct = response.data
-          this.currentProduct['valor'] = this.product.productPrice
-          this.currentProduct['cantidad'] = this.product.productQuantity
-          this.currentProduct['estadoDetalleEntrada'] = 1
-          this.currentProduct['estadoDetalleEntradaText'] =
-            this.selects.statusDetails[
-              this.currentProduct['estadoDetalleEntrada'] - 1
-            ].nombre
-          this.fillTable(this.currentProduct)
-          this.cleanProduct()
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Codigo invalido', 'error')
-        })
-        .finally(() => (this.isLoading = false))*/
+      this.currentProduct['valor'] = this.product.productPrice
+      this.currentProduct['cantidad'] = this.product.productQuantity
+      this.currentProduct['estadoDetalleEntrada'] = 1
+      this.currentProduct['estadoDetalleEntradaText'] =
+        this.selects.statusDetails[
+          this.currentProduct['estadoDetalleEntrada'] - 1
+        ].nombre
+      this.fillTable(this.currentProduct)
+      this.cleanProduct()
     },
-    isAddedProduct(id,code) {
+    isAddedProduct(id, code) {
       function findProduct(product) {
-        
-        return (product.productoId === id && product.codigoProducto===code) 
+        return product.productoId === id && product.codigoProducto === code
       }
       return this.tableData.find((product) => findProduct(product))
     },
@@ -549,7 +523,7 @@ export default {
       console.log(obj)
       let detalleTable = {
         productoId: obj.id,
-        codigoProducto:  this.product.code,
+        codigoProducto: this.product.code,
         nombre: obj.nombre,
         descripcion: obj.descripcion,
         marcaProducto: obj.marcas.descripcion,
@@ -563,8 +537,7 @@ export default {
     },
     cleanProduct() {
       this.product.productName = ''
-      if(!this.showcode)
-      this.product.productQuantity = ''
+      if (!this.showcode) this.product.productQuantity = ''
       this.product.productPrice = ''
       this.product.estadoDetalleEntrada = ''
     },
@@ -584,11 +557,8 @@ export default {
         this.product.productPrice = row.valor
         this.product.productQuantity = row.cantidad
         this.product.code = row.codigoProducto
-        if(row.codigoProducto!="")
-        this.showcode=true
-        else
-        this.showcode=false
-
+        if (row.codigoProducto != '') this.showcode = true
+        else this.showcode = false
       }
     },
     editProduct() {
@@ -618,26 +588,12 @@ export default {
           this.tableData.splice(index, 1)
         })
     },
-    // checkId() {
-    //   axios
-    //     .get(this.baseApiUrl + 'productossucursales/' + this.id)
-    //     .then((response) => {
-    //       this.isLoading = true
-    //       this.fillForm(response.data)
-    //       this.productByOffice.productoId = response.data.productoId
-    //       this.readonly = false
-    //     })
-    //     .catch((error) => {
-    //       this.error = error
-    //     })
-    //     .finally(() => (this.isLoading = false))
-    // },
     validateFields() {
       return (
         !this.product.productoId ||
         !this.product.productQuantity ||
-        !this.product.productPrice
-        ||(!this.product.code && this.showcode==true)
+        !this.product.productPrice ||
+        (!this.product.code && this.showcode == true)
       )
     },
     validateEntrance() {
@@ -683,24 +639,6 @@ export default {
           this.errored = true
         })
     },
-    // fillForm(obj) {
-    //   this.productByOffice = {
-    //     id: obj.id,
-    //     productoId: obj.productos.id,
-    //     stock: obj.stock,
-    //     stockMinimo: obj.stockMinimo,
-    //     precio: obj.precio,
-    //     productos: null,
-    //     sucursales: null,
-    //     precioMinimo: obj.precioMinimo,
-    //     sucursalesId: obj.sucursalesId,
-    //     estadoProductos: obj.estadoProductos,
-    //     total: obj.total
-    //   }
-    //   this.productName = obj.productos.codigo
-    //   if (obj.id != 0)
-    //     this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
-    // },
     clear() {
       this.product.productName = ''
       this.product.productQuantity = ''
@@ -710,32 +648,6 @@ export default {
       this.entrada.estadoDetalleEntrada = ''
       this.entrada.nota = ''
     },
-    // edit() {
-    //   if (this.validateFields()) {
-    //     this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-    //   } else {
-    //     this.isLoading = true
-    //     if (!this.productByOffice.id) this.checkCode()
-    //     else {
-    //       axios
-    //         .put(
-    //           this.baseApiUrl +
-    //             'productossucursales/' +
-    //             this.productByOffice.id,
-    //           this.productByOffice
-    //         )
-    //         .then((response) => {
-    //           this.globalSweetMessage(response.data.message)
-    //           this.clear()
-    //           this.$router.push({ path: '/productsoffice/index' })
-    //         })
-    //         .catch((error) => {
-    //           this.globalSweetMessage(error.response.data.message, 'error')
-    //         })
-    //         .finally(() => (this.isLoading = false))
-    //     }
-    //   }
-    // },
     create() {
       if (this.tableData.length == 0)
         return this.globalSweetMessage('No hay productos agregados', 'error')
@@ -763,17 +675,16 @@ export default {
 
       this.isLoading = true
       axios
-          .post(this.baseApiUrl + 'entradas', this.entrada)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/entrance/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
-
+        .post(this.baseApiUrl + 'entradas', this.entrada)
+        .then((response) => {
+          this.globalSweetMessage(response.data.message)
+          this.clear()
+          this.$router.push({ path: '/entrance/index' })
+        })
+        .catch((error) => {
+          this.globalSweetMessage(error.response.data.message, 'error')
+        })
+        .finally(() => (this.isLoading = false))
     }
   }
 }

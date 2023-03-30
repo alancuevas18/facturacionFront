@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('entrance.index') }}</h2>
+      <h2 class="text-center">{{ $t('returns.index') }}</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('entrance.entrance') }}
-            <router-link to="/entrance/create">
+            {{ $t('returns.returns') }}
+            <router-link to="/returns/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,7 +62,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/entrance/details/' + props.row.id">
+                  <router-link :to="'/returns/details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -156,7 +156,7 @@ export default {
         simple: '',
         offices: []
       },
-      entrancetatus: {},
+      returnstatus: {},
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [

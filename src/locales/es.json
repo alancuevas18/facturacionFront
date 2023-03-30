@@ -39,7 +39,8 @@
     },
     "global":{
       "cancel":"Cancelar",
-      "add": "Agregar"
+      "add": "Agregar",
+      "create": "Crear"
     },
     "ConfigSide": {
       "title" : "Configuracion"
@@ -137,12 +138,17 @@
       "details":"Detalle pago"
 
     },
+    "shift": {
+      "create" : "Crear",
+      "index" : "Administracion de Turnos",
+      "shift": "Turnos"
+    },
+    "billing": {
+      "create" : "Crear",
+      "index" : "Modulo de Facturacion",
+      "billing": "Facturacion"
+    },
     "departures": {
       "create" : "Crear",
       "index" : "Administracion de salida",
-      "departures": "Salida",
-      "details":"Detalle Salida"
-      
-    }
   }
-  
