@@ -106,7 +106,7 @@ const ReturnsIndex = () => import('src/pages/BillMenu/Returns/Index.vue')
 
 //cashClose
 const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
-// const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
+const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
 // const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
 
 //bill
@@ -515,8 +515,13 @@ let cashCloseMenu = {
   children: [
     {
       path: 'index',
-      name: 'Administracion de Devoluciones',
+      name: 'Administracion de Cierre de Caja',
       components: { default: cashCloseIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Cierre de Caja',
+      components: { default: cashCloseCreate }
     }
   ]
 }

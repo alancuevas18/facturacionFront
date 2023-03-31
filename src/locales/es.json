@@ -168,9 +168,5 @@
   "bill": {
     "index" : "Facturacion",
     "bill": "Facturacion"
-  },
-  "departures": {
-    "index": "Administracion de Salidas",
-    "departures": "Salidas"
   }
 }
