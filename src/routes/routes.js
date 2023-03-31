@@ -66,7 +66,6 @@ const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
 const OfficesIndex = () => import('src/pages/Offices/Index.vue')
 const OfficesCreate = () => import('src/pages/Offices/Create.vue')
 
-
 //Shopping
 const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
 const ShoppingPending = () => import('src/pages/Shopping/ShoppingPending.vue')
@@ -77,9 +76,43 @@ const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
 const PaymentCreate = () => import('src/pages/Payments/Create.vue')
 
 //StructureComprabante
-const StructureComprobantesIndex = () => import('src/pages/StructureComprobantes/Index.vue')
-const StructureComprobantesCreate = () => import('src/pages/StructureComprobantes/Create.vue')
+const StructureComprobantesIndex = () =>
+  import('src/pages/StructureComprobantes/Index.vue')
+const StructureComprobantesCreate = () =>
+  import('src/pages/StructureComprobantes/Create.vue')
+//Departures
+const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
+const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
+const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
 
+//Billing Menu
+const BillDashBoardIndex = () =>
+  import('src/pages/BillMenu/BillDashboard/Index.vue')
+
+//Shift
+const ShiftIndex = () => import('src/pages/BillMenu/Shift/Index.vue')
+const ShiftCreate = () => import('src/pages/BillMenu/Shift/Create.vue')
+// const ShiftDetail = () => import('src/pages/BillMenu/Shift/Details.vue')
+
+//Quotation
+const QuotationIndex = () => import('src/pages/BillMenu/Quotation/Index.vue')
+// const QuotationCreate = () => import('src/pages/BillMenu/Quotation/Create.vue')
+// const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
+
+//Returns
+const ReturnsIndex = () => import('src/pages/BillMenu/Returns/Index.vue')
+// const ReturnsCreate = () => import('src/pages/BillMenu/Returns/Create.vue')
+// const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
+
+//cashClose
+const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
+// const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
+// const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
+
+//bill
+const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
+// const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
+// const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -426,7 +459,7 @@ let BillDashboard = {
     {
       path: 'index',
       name: 'DashBoard Factura',
-      components: { default: BillIndex }
+      components: { default: BillDashBoardIndex }
     }
   ]
 }
@@ -440,6 +473,11 @@ let ShiftMenu = {
       path: 'index',
       name: 'Administracion de Turnos',
       components: { default: ShiftIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Abrir Turno',
+      components: { default: ShiftCreate }
     }
   ]
 }

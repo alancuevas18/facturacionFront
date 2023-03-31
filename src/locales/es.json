@@ -136,7 +136,6 @@
       "index" : "Administracion de pagos",
       "shopping": "Pagos",
       "details":"Detalle pago"
-
     },
     "shift": {
       "create" : "Crear",
@@ -150,5 +149,28 @@
     },
     "departures": {
       "create" : "Crear",
-      "index" : "Administracion de salida",
+      "index" : "Administracion de salida"
+  },
+  "quotation": {
+    "create" : "Crear",
+    "index" : "Administracion de Cotizacion",
+    "quotation": "Cotizacion"
+  },
+  "returns": {
+    "create" : "Crear",
+    "index" : "Administracion de Devoluciones",
+    "returns": "Devoluciones"
+  },
+  "cashClose": {
+    "index" : "Administracion de Cuadre de Caja",
+    "cashClose": "Cuadre de Caja"
+  },
+  "bill": {
+    "index" : "Facturacion",
+    "bill": "Facturacion"
+  },
+  "departures": {
+    "index": "Administracion de Salidas",
+    "departures": "Salidas"
   }
+}

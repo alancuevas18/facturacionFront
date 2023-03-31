@@ -10,7 +10,7 @@
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/shift/index">
+          <router-link to="/billDashboard/shift/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -223,13 +223,12 @@
 import { BaseCheckbox, BaseRadio } from 'src/components/index'
 import { DatePicker, Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
-import { required, email, min, numeric } from 'vee-validate/dist/rules'
+import { required, min, numeric } from 'vee-validate/dist/rules'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import axios from 'axios'
 import config from '@/config'
 
-extend('email', email)
 extend('required', required)
 extend('min', min)
 extend('numeric', numeric)
@@ -256,13 +255,18 @@ export default {
       selects: {
         simple: '',
         shiftStatus: [],
-        options: [
-          { value: true, label: 'Activo' },
-          { value: false, label: 'Inactivo' }
-        ]
+        offices: []
       },
       shift: {
-        codigo: ''
+        id: 0,
+        abiertoPor: '',
+        abiertoEn: '',
+        cerradoPor: '',
+        cerradoEn: '',
+        montoInicial: '',
+        montoCierre: '',
+        sucursalId: '',
+        estadoTurno: ''
       }
     }
   },
@@ -273,11 +277,12 @@ export default {
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.shift.nationalID
+    this.fillCatalog()
   },
   methods: {
     checkId() {
       axios
-        .get(this.baseApiUrl + 'Vendedores/' + this.id)
+        .get(this.baseApiUrl + 'turnos/' + this.id)
         .then((response) => {
           this.isLoading = true
           this.fillForm(response.data)
@@ -289,39 +294,55 @@ export default {
     },
     validateFields() {
       return (
-        !this.shift.nombre || !this.shift.apellido || !this.shift.identificacion
+        !this.shift.abiertoPor ||
+        !this.shift.abiertoEn ||
+        !this.shift.sucursalId ||
+        !this.shift.montoInicial
       )
     },
     fillForm(obj) {
       this.shift = {
-        estadoVendedores: obj.estadoVendedores,
-        personaId: obj.personaId,
-        codigo: obj.codigo,
-        nombre: obj.nombre,
-        apellido: obj.apellido,
-        identificacion: this.shift.identificacion
-          ? this.shift.identificacion
-          : obj.identificacion,
-        correo: obj.correo,
-        direccion: obj.direccion,
-        celular: obj.celular,
-        telefono: obj.telefono,
-        estadoPersona: true,
+        abiertoPor: obj.abiertoPor,
+        abiertoEn: obj.abiertoEn,
+        cerradoPor: obj.cerradoPor,
+        cerradoEn: obj.cerradoEn,
+        montoInicial: obj.montoInicial,
+        montoCierre: obj.montoCierre,
+        sucursalId: obj.sucursalId,
+        estadoTurno: obj.estadoTurno,
         id: obj.id
       }
       if (obj.id != 0)
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },
     clear() {
-      this.shift.codigo = ''
-      this.shift.nombre = ''
-      this.shift.apellido = ''
-      this.shift.identificacion = ''
-      this.shift.correo = ''
-      this.shift.direccion = ''
-      this.shift.celular = ''
-      this.shift.telefono = ''
-      this.shift.estadoVendedores = ''
+      this.shift.abiertoPor = ''
+      this.shift.abiertoEn = ''
+      this.shift.cerradoPor = ''
+      this.shift.cerradoEn = ''
+      this.shift.montoInicial = ''
+      this.shift.montoCierre = ''
+      this.shift.sucursalId = ''
+      this.shift.estadoTurno = ''
+    },
+    fillCatalog() {
+      axios
+        .get(this.baseApiUrl + 'catalogo/sucursales')
+        .then((response) => {
+          this.selects.offices = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+
+      axios
+        .get(this.baseApiUrl + 'catalogo/estadoturno')
+        .then((response) => {
+          this.selects.shiftStatus = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
     },
     edit() {
       if (this.validateFields()) {
@@ -329,11 +350,11 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'Vendedores/' + this.shift.id, this.shift)
+          .put(this.baseApiUrl + 'turnos/' + this.shift.id, this.shift)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/shift/index' })
+            this.$router.push({ path: '/billDashboard/shift/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
@@ -347,11 +368,11 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'Vendedores', this.shift)
+          .post(this.baseApiUrl + 'turnos', this.shift)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/shift/index' })
+            this.$router.push({ path: '/billDashboard/shift/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
