@@ -165,12 +165,8 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      office: '',
-      selects: {
-        simple: '',
-        shiftStatus: [],
-        offices: []
-      },
+      shiftStatus: [],
+      offices: [],
       shifttatus: {},
       searchQuery: '',
       propsToSearch: ['codigo'],
@@ -262,15 +258,13 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     fillTable(resource) {
-      this.tableData = []
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalId'] = response.data[i].offices.nombre
             this.tableData[i]['estadoTurno'] =
-              response.data[i].shiftStatus.nombre
+              this.shiftStatus[response.data[i].estadoTurno - 1].nombre
           }
         })
         .catch((error) => {
@@ -282,7 +276,7 @@ export default {
       axios
         .get(this.baseApiUrl + 'catalogo/sucursales')
         .then((response) => {
-          this.selects.offices = response.data
+          this.offices = response.data
         })
         .catch((error) => {
           this.error = error
@@ -291,7 +285,7 @@ export default {
       axios
         .get(this.baseApiUrl + 'catalogo/estadoturno')
         .then((response) => {
-          this.selects.shiftStatus = response.data
+          this.shiftStatus = response.data
         })
         .catch((error) => {
           this.error = error

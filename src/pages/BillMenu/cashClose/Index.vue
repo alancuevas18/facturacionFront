@@ -242,7 +242,7 @@ export default {
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalId'] = response.data[i].sucursales.nombre
+            this.tableData[i]['sucursalId'] = response.data[i].offices.nombre
           }
         })
         .catch((error) => {
@@ -273,7 +273,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('cuadreSucursal')
+    this.fillTable('cuadresucursal')
   },
   watch: {}
 }

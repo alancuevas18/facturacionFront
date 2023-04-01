@@ -205,7 +205,7 @@
                 >{{ title }}</base-button
               >
 
-              <router-link to="/shift/index">
+              <router-link to="/billDashboard/shift/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >{{ $t('global.cancel') }}</base-button
@@ -266,7 +266,11 @@ export default {
         montoInicial: '',
         montoCierre: '',
         sucursalId: '',
-        estadoTurno: ''
+        estadoTurno: '',
+        sucursales: null,
+        gastos: null,
+        facturas: null,
+        cuadreSucursal: null
       }
     }
   },
