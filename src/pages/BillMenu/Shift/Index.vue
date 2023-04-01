@@ -86,6 +86,15 @@
                       <i class="tim-icons icon-pencil"></i>
                     </base-button>
                   </router-link>
+                  <base-button
+                    @click.native="handleDelete(props.$index, props.row)"
+                    class="remove btn-link"
+                    type="danger"
+                    size="sm"
+                    icon
+                  >
+                    <i class="tim-icons icon-simple-remove"></i>
+                  </base-button>
                 </div>
               </el-table-column>
             </el-table>
@@ -174,27 +183,27 @@ export default {
         {
           prop: 'abiertoPor',
           label: 'Abierto Por',
-          minWidth: 110
+          minWidth: 100
         },
         {
           prop: 'abiertoEn',
           label: 'Abierto En',
-          minWidth: 100
+          minWidth: 70
         },
         {
           prop: 'cerradoPor',
           label: 'Cerrado Por',
-          minWidth: 110
+          minWidth: 100
         },
         {
           prop: 'cerradoEn',
           label: 'Cerrado En',
-          minWidth: 100
+          minWidth: 70
         },
         {
           prop: 'montoInicial',
           label: 'Monto Inicial',
-          minWidth: 100
+          minWidth: 70
         },
         {
           prop: 'montoCierre',
@@ -204,7 +213,7 @@ export default {
         {
           prop: 'sucursalId',
           label: 'sucursal',
-          minWidth: 70
+          minWidth: 100
         },
         {
           prop: 'estadoTurno',
@@ -263,6 +272,10 @@ export default {
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
+            let sucursal = this.offices.find(
+              (offices) => offices.id == response.data[i].sucursalId
+            )
+            this.tableData[i]['sucursalId'] = sucursal.nombre
             this.tableData[i]['estadoTurno'] =
               this.shiftStatus[response.data[i].estadoTurno - 1].nombre
           }

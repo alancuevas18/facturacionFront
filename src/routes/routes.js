@@ -448,7 +448,29 @@ let paymentMenu = {
     }
   ]
 }
-
+let DeparturesMenu = {
+  path: '/departures',
+  component: DashboardLayout,
+  redirect: '/departures/index',
+  name: 'Salidas',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Entradas',
+      components: { default: DeparturesIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Entrada',
+      components: { default: DeparturesCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Entrada',
+      components: { default: DeparturesDetail }
+    }
+  ]
+}
 //Billing Menu
 let BillDashboard = {
   path: '/billDashboard',
@@ -560,6 +582,7 @@ const routes = [
   EntranceMenu,
   ShoppingeMenu,
   paymentMenu,
+  DeparturesMenu,
   //Billing
   BillDashboard,
   ShiftMenu,

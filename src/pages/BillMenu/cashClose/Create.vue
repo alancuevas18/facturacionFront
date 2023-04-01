@@ -117,7 +117,7 @@
                   filterable
                   class="select-primary"
                   size="large"
-                  placeholder="Sucursal"
+                  placeholder="Turno"
                   v-model="cashClose.Turno"
                 >
                   <el-option
@@ -190,9 +190,8 @@ export default {
       title: '',
       fixedCode: '',
       selects: {
-        simple: '',
-        cashCloseStatus: [],
-        shift: []
+        shift: [],
+        offices: []
       },
       cashClose: {
         id: 0,
@@ -212,6 +211,7 @@ export default {
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.cashClose.nationalID
+    this.fillCatalog()
   },
   methods: {
     checkId() {

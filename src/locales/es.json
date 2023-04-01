@@ -148,6 +148,7 @@
       "billing": "Facturacion"
     },
     "departures": {
+      "departures" : "Salidas",
       "create" : "Crear",
       "index" : "Administracion de salida"
   },
