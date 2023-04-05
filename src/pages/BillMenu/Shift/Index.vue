@@ -13,7 +13,7 @@
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('shift.shift') }}
-            <router-link to="/shift/create">
+            <router-link to="/billDashboard/shift/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,7 +62,9 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/shift/details/' + props.row.id">
+                  <router-link
+                    :to="'/billDashboard/shift/details/' + props.row.id"
+                  >
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -72,6 +74,27 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
+                  <router-link
+                    :to="'/billDashboard/shift/create/' + props.row.id"
+                  >
+                    <base-button
+                      class="edit btn-link"
+                      type="warning"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-pencil"></i>
+                    </base-button>
+                  </router-link>
+                  <base-button
+                    @click.native="handleDelete(props.$index, props.row)"
+                    class="remove btn-link"
+                    type="danger"
+                    size="sm"
+                    icon
+                  >
+                    <i class="tim-icons icon-simple-remove"></i>
+                  </base-button>
                 </div>
               </el-table-column>
             </el-table>
@@ -151,33 +174,50 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      office: '',
-      selects: {
-        simple: '',
-        offices: []
-      },
+      shiftStatus: [],
+      offices: [],
       shifttatus: {},
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [
         {
-          prop: 'sucursalesId',
-          label: 'Sucursal',
-          minWidth: 110
-        },
-        {
-          prop: 'suplidorId',
-          label: 'Suplidor',
+          prop: 'abiertoPor',
+          label: 'Abierto Por',
           minWidth: 100
         },
         {
-          prop: 'fecha',
-          label: 'Fecha',
+          prop: 'abiertoEn',
+          label: 'Abierto En',
+          minWidth: 70
+        },
+        {
+          prop: 'cerradoPor',
+          label: 'Cerrado Por',
           minWidth: 100
         },
         {
-          prop: 'nota',
-          label: 'Nota',
+          prop: 'cerradoEn',
+          label: 'Cerrado En',
+          minWidth: 70
+        },
+        {
+          prop: 'montoInicial',
+          label: 'Monto Inicial',
+          minWidth: 70
+        },
+        {
+          prop: 'montoCierre',
+          label: 'Monto Cierre',
+          minWidth: 70
+        },
+        {
+          prop: 'sucursalId',
+          label: 'sucursal',
+          minWidth: 100
+        },
+        {
+          prop: 'estadoTurno',
+          label: 'estadoTurno',
           minWidth: 70
         }
       ],
@@ -211,7 +251,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'productossucursales/' + row.id)
+        .delete(this.baseApiUrl + 'turnos/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -226,18 +266,18 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
-    fillTable(resource, clearFilters) {
-      this.tableData = []
-      if (clearFilters) this.office = ''
+    fillTable(resource) {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-            //this.tableData[i]['estadoEntrada'] = 'Estado'
+            let sucursal = this.offices.find(
+              (offices) => offices.id == response.data[i].sucursalId
+            )
+            this.tableData[i]['sucursalId'] = sucursal.nombre
+            this.tableData[i]['estadoTurno'] =
+              this.shiftStatus[response.data[i].estadoTurno - 1].nombre
           }
         })
         .catch((error) => {
@@ -249,30 +289,27 @@ export default {
       axios
         .get(this.baseApiUrl + 'catalogo/sucursales')
         .then((response) => {
-          this.selects.offices = response.data
+          this.offices = response.data
         })
         .catch((error) => {
           this.error = error
         })
+
       axios
-        .get(this.baseApiUrl + 'catalogo/suplidores')
+        .get(this.baseApiUrl + 'catalogo/estadoturno')
         .then((response) => {
-          this.suppliers = response.data
+          this.shiftStatus = response.data
         })
         .catch((error) => {
-          this.errored = true
+          this.error = error
         })
-    },
-    filterByOffice() {
-      this.tableData = []
-      this.fillTable('Entradas/bysuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('Entradas', true)
+    this.fillTable('turnos')
   },
   watch: {}
 }

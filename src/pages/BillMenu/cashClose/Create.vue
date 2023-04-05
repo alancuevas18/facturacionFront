@@ -5,12 +5,14 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <h2 class="text-center">{{ $t('global.add') }} {{ $t('shift.shift') }}</h2>
+    <h2 class="text-center">
+      {{ $t('global.add') }} {{ $t('cashClose.cashClose') }}
+    </h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }} {{ currentCode }}
-          <router-link to="/shift/index">
+          <router-link to="/billDashboard/cashClose/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
             </button>
@@ -21,16 +23,16 @@
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
-              <label class="col-sm-2 col-form-label">Abierto Por*</label>
+              <label class="col-sm-2 col-form-label">Total Efectivo*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="abiertoPor"
-                  rules="required|min:3"
+                  name="totalVendidoEfectivo"
+                  rules="required|numeric|min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    v-model="shift.abiertoPor"
+                    v-model="cashClose.totalVendidoEfectivo"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -42,38 +44,18 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Abierto En</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="abiertoEn"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input>
-                    <el-date-picker
-                      type="date"
-                      placeholder="Fecha de Apertura"
-                      v-model="shift.abiertoEn"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
-                    >
-                    </el-date-picker>
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Cerrado Por*</label>
+              <label class="col-sm-2 col-form-label"
+                >Total Transferencia*</label
+              >
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="cerradoPor"
-                  rules="min:3"
+                  name="totalVendidoTransferencia"
+                  rules="required|numeric|min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    v-model="shift.cerradoPor"
+                    required
+                    v-model="cashClose.totalVendidoTransferencia"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -85,62 +67,16 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Cerrado En</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="cerradoEn"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input>
-                    <el-date-picker
-                      type="date"
-                      placeholder="Fecha de Cierre"
-                      v-model="shift.cerradoEn"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
-                    >
-                    </el-date-picker>
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Monto Inicial*</label>
+              <label class="col-sm-2 col-form-label">Total Tarjeta*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="montoInicial"
-                  rules="required|min:1|numeric"
+                  name="totalVendidoTarjeta"
+                  rules="required|numeric|min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    autofocus
-                    v-model="shift.montoInicial"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Monto Cierre*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="montoCierre"
-                  rules="required|min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    autofocus
-                    v-model="shift.montoCierre"
+                    v-model="cashClose.totalVendidoTarjeta"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -160,7 +96,7 @@
                   class="select-primary"
                   size="large"
                   placeholder="Sucursal"
-                  v-model="shift.sucursalId"
+                  v-model="cashClose.sucursalId"
                 >
                   <el-option
                     v-for="option in selects.offices"
@@ -174,18 +110,18 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Estado</label>
+              <label class="col-sm-2 col-form-label">Turno</label>
               <div class="col-sm-4">
                 <el-select
                   required
                   filterable
                   class="select-primary"
                   size="large"
-                  placeholder="Sucursal"
-                  v-model="shift.estadoTurno"
+                  placeholder="Turno"
+                  v-model="cashClose.Turno"
                 >
                   <el-option
-                    v-for="option in selects.shiftStatus"
+                    v-for="option in selects.shifts"
                     class="select-primary"
                     :value="option.id"
                     :label="option.nombre"
@@ -205,7 +141,7 @@
                 >{{ title }}</base-button
               >
 
-              <router-link to="/shift/index">
+              <router-link to="/billDashboard/cashClose/index">
                 <base-button type="danger" class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >{{ $t('global.cancel') }}</base-button
@@ -254,15 +190,17 @@ export default {
       title: '',
       fixedCode: '',
       selects: {
-        simple: '',
-        shiftStatus: [],
-        options: [
-          { value: true, label: 'Activo' },
-          { value: false, label: 'Inactivo' }
-        ]
+        shift: [],
+        offices: []
       },
-      shift: {
-        codigo: ''
+      cashClose: {
+        id: 0,
+        totalVendidoEfectivo: 0,
+        totalVendidoTarjeta: 0,
+        totalVendidoTransferencia: 0,
+        sucursalId: '',
+        fecha: new Date(),
+        turnoid: ''
       }
     }
   },
@@ -272,12 +210,13 @@ export default {
     this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
-    this.checkedID = !this.id && !this.shift.nationalID
+    this.checkedID = !this.id && !this.cashClose.nationalID
+    this.fillCatalog()
   },
   methods: {
     checkId() {
       axios
-        .get(this.baseApiUrl + 'Vendedores/' + this.id)
+        .get(this.baseApiUrl + 'turnos/' + this.id)
         .then((response) => {
           this.isLoading = true
           this.fillForm(response.data)
@@ -289,39 +228,32 @@ export default {
     },
     validateFields() {
       return (
-        !this.shift.nombre || !this.shift.apellido || !this.shift.identificacion
+        !this.cashClose.totalVendidoEfectivo ||
+        !this.cashClose.totalVendidoTarjeta ||
+        !this.cashClose.totalVendidoTransferencia ||
+        !this.cashClose.turnoid ||
+        !this.cashClose.sucursalId
       )
     },
     fillForm(obj) {
-      this.shift = {
-        estadoVendedores: obj.estadoVendedores,
-        personaId: obj.personaId,
-        codigo: obj.codigo,
-        nombre: obj.nombre,
-        apellido: obj.apellido,
-        identificacion: this.shift.identificacion
-          ? this.shift.identificacion
-          : obj.identificacion,
-        correo: obj.correo,
-        direccion: obj.direccion,
-        celular: obj.celular,
-        telefono: obj.telefono,
-        estadoPersona: true,
-        id: obj.id
+      this.cashClose = {
+        id: obj.id,
+        totalVendidoEfectivo: 0,
+        totalVendidoTarjeta: 0,
+        totalVendidoTransferencia: 0,
+        sucursalId: '',
+        fecha: new Date(),
+        turnoid: ''
       }
       if (obj.id != 0)
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },
     clear() {
-      this.shift.codigo = ''
-      this.shift.nombre = ''
-      this.shift.apellido = ''
-      this.shift.identificacion = ''
-      this.shift.correo = ''
-      this.shift.direccion = ''
-      this.shift.celular = ''
-      this.shift.telefono = ''
-      this.shift.estadoVendedores = ''
+      this.cashClose.totalVendidoEfectivo = ''
+      this.cashClose.totalVendidoTarjeta = ''
+      this.cashClose.totalVendidoTransferencia = ''
+      this.cashClose.sucursalId = ''
+      this.cashClose.turnoid = ''
     },
     edit() {
       if (this.validateFields()) {
@@ -329,11 +261,14 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'Vendedores/' + this.shift.id, this.shift)
+          .put(
+            this.baseApiUrl + 'cuadresucursal/' + this.cashClose.id,
+            this.cashClose
+          )
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/shift/index' })
+            this.$router.push({ path: '/billDashboard/cashClose/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
@@ -347,17 +282,36 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'Vendedores', this.shift)
+          .post(this.baseApiUrl + 'cuadresucursal', this.cashClose)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/shift/index' })
+            this.$router.push({ path: '/billDashboard/cashClose/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
           })
           .finally(() => (this.isLoading = false))
       }
+    },
+    fillCatalog() {
+      axios
+        .get(this.baseApiUrl + 'catalogo/sucursales')
+        .then((response) => {
+          this.selects.offices = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+
+      axios
+        .get(this.baseApiUrl + 'catalogo/turnos')
+        .then((response) => {
+          this.selects.shift = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
     }
   }
 }

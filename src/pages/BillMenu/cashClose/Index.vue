@@ -13,7 +13,7 @@
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('cashClose.cashClose') }}
-            <router-link to="/cashClose/create">
+            <router-link to="/billDashboard/cashClose/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -161,13 +161,23 @@ export default {
       propsToSearch: ['codigo'],
       tableColumns: [
         {
-          prop: 'sucursalesId',
-          label: 'Sucursal',
+          prop: 'totalVendidoEfectivo',
+          label: 'Ventas en Efectivo',
           minWidth: 110
         },
         {
-          prop: 'suplidorId',
-          label: 'Suplidor',
+          prop: 'totalVendidoTarjeta',
+          label: 'Ventas en Tarjeta',
+          minWidth: 110
+        },
+        {
+          prop: 'totalVendidoTransferencia',
+          label: 'Ventas en Transferencia',
+          minWidth: 110
+        },
+        {
+          prop: 'sucursalId',
+          label: 'Sucursal',
           minWidth: 100
         },
         {
@@ -176,8 +186,8 @@ export default {
           minWidth: 100
         },
         {
-          prop: 'nota',
-          label: 'Nota',
+          prop: 'turno',
+          label: 'Turno',
           minWidth: 70
         }
       ],
@@ -211,7 +221,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'productossucursales/' + row.id)
+        .delete(this.baseApiUrl + 'cuadresucursal/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -226,18 +236,13 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
-    fillTable(resource, clearFilters) {
-      this.tableData = []
-      if (clearFilters) this.office = ''
+    fillTable(resource) {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-            //this.tableData[i]['estadoEntrada'] = 'Estado'
+            this.tableData[i]['sucursalId'] = response.data[i].offices.nombre
           }
         })
         .catch((error) => {
@@ -262,17 +267,13 @@ export default {
         .catch((error) => {
           this.errored = true
         })
-    },
-    filterByOffice() {
-      this.tableData = []
-      this.fillTable('Entradas/bysuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('Entradas', true)
+    this.fillTable('cuadresucursal')
   },
   watch: {}
 }
