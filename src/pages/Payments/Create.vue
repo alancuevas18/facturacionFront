@@ -497,7 +497,7 @@ export default {
       this.compras.pagos.forEach((element,index) => {
       this.tableData.push(element)
       this.tableData[index]['tipoPago'] = this.selects.typepayment.find(c=>c.id==element.tipoPago).nombre
-      });
+      })
     },
     reload(){
       axios

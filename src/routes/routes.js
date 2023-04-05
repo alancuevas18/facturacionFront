@@ -26,7 +26,9 @@ const SellerDetail = () => import('src/pages/Sellers/Details.vue')
 const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
 const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
 const DeliveryDetail = () => import('src/pages/Deliveries/Details.vue')
-
+//Deliveries
+const DeductionsIndex = () => import('src/pages/Deductions/Index.vue')
+const DeductionsCreate = () => import('src/pages/Deductions/Create.vue')
 //Products
 const ProductIndex = () => import('src/pages/Products/Index.vue')
 const ProductCreate = () => import('src/pages/Products/Create.vue')
@@ -73,6 +75,7 @@ const ShoppingCreate = () => import('src/pages/Shopping/Create.vue')
 const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
 //Pyment
 const PaymentCreate = () => import('src/pages/Payments/Create.vue')
+const PaymentDetail = () => import('src/pages/Payments/Details.vue')
 
 //StructureComprabante
 const StructureComprobantesIndex = () =>
@@ -449,7 +452,13 @@ let paymentMenu = {
       path: 'create/:id?',
       name: 'Crear Pago',
       components: { default: PaymentCreate }
+    },
+    {
+      path: 'details/:id?',
+      name: 'Detalle de pago',
+      components: { default: PaymentDetail }
     }
+
   ]
 }
 let DeparturesMenu = {

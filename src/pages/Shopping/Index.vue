@@ -62,6 +62,10 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
+                  <router-link :to="'/Payments/details/' + props.row.id">                   
+                     Pagos
+                  </router-link>
+
                   <router-link :to="'/shopping/details/' + props.row.id">
                     <base-button
                       class="like btn-link"

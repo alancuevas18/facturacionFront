@@ -12,13 +12,13 @@
       <template slot="header">
         <h4 class="card-title">
           {{ title }} 
-          <router-link to="/entrance/index">
+          <router-link to="/Spends/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
               
             </button>
           </router-link>
-          <router-link to="/entrance/print">
+          <router-link to="/Spends/print">
             <button class="btn btn btn-twitter">
                  Imprimir <i class="fa-solid fa-print"></i>
             </button>
