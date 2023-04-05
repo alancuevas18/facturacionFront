@@ -111,7 +111,7 @@ const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
 
 //bill
 const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
-// const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
+const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
 // const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
 
 let clientMenu = {
@@ -555,8 +555,13 @@ let billMenu = {
   children: [
     {
       path: 'index',
-      name: 'Administracion de Devoluciones',
+      name: 'Administracion de Facturas',
       components: { default: billIndex }
+    },
+    {
+      path: 'create',
+      name: 'Facturacion',
+      components: { default: billCreate }
     }
   ]
 }

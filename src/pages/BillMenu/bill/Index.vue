@@ -5,96 +5,196 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('bill.index') }}</h2>
-    </div>
-    <div class="row mt-5">
-      <div class="col-12">
-        <card card-body-classes="table-full-width">
-          <h4 slot="header" class="card-title">
-            {{ $t('bill.bill') }}
-            <router-link to="/bill/create">
-              <button class="btn floatr btn-icon btn-twitter">
-                <i class="tim-icons icon-simple-add"></i>
-              </button>
-            </router-link>
-          </h4>
-          <div>
-            <div
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+    <card>
+      <div class="col-sm-12">
+        <div class="row">
+          <div class="col-sm-3">
+            <label class="col-form-label">Sucursal</label>
+            <el-select
+              required
+              filterable
+              class="select-primary"
+              size="large"
+              placeholder="Sucursal"
+              v-model="bill.sucursalId"
             >
-              <el-select
-                class="select-primary mb-3 pagination-select"
-                v-model="pagination.perPage"
-                placeholder="Per page"
+              <el-option
+                v-for="option in selects.sucursales"
+                class="select-primary"
+                :value="option.id"
+                :label="option.nombre"
+                :key="option.id"
               >
-                <el-option
-                  class="select-primary"
-                  v-for="item in pagination.perPageOptions"
-                  :key="item"
-                  :label="item"
-                  :value="item"
-                >
-                </el-option>
-              </el-select>
-
-              <base-input>
-                <el-input
-                  type="search"
-                  class="mb-3 search-input"
-                  clearable
-                  prefix-icon="el-icon-search"
-                  placeholder="Buscar"
-                  v-model="searchQuery"
-                  aria-controls="datatables"
-                >
-                </el-input>
-              </base-input>
-            </div>
-            <el-table :data="queriedData">
-              <el-table-column
-                v-for="column in tableColumns"
-                :key="column.label"
-                :min-width="column.minWidth"
-                :prop="column.prop"
-                :label="column.label"
-              >
-              </el-table-column>
-              <el-table-column :min-width="135" align="right" label="Actions">
-                <div slot-scope="props">
-                  <router-link :to="'/bill/details/' + props.row.id">
-                    <base-button
-                      class="like btn-link"
-                      type="info"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-notes"></i>
-                    </base-button>
-                  </router-link>
-                </div>
-              </el-table-column>
-            </el-table>
+              </el-option>
+            </el-select>
           </div>
+          <div class="col-sm-3">
+            <label class="col-form-label">Cliente</label>
+            <el-select
+              required
+              filterable
+              class="select-primary"
+              size="large"
+              placeholder="Cliente"
+              v-model="bill.clienteId"
+            >
+              <el-option
+                v-for="option in selects.clientes"
+                class="select-primary"
+                :value="option.id"
+                :label="option.nombre"
+                :key="option.id"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div class="col-sm-3">
+            <label class="col-form-label">Vendedor</label>
+            <el-select
+              required
+              filterable
+              class="select-primary"
+              size="large"
+              placeholder="Vendedor"
+              v-model="bill.vendedorId"
+            >
+              <el-option
+                v-for="option in selects.vendedores"
+                class="select-primary"
+                :value="option.id"
+                :label="option.nombre"
+                :key="option.id"
+              >
+              </el-option>
+            </el-select>
+          </div>
+          <div class="col-sm-3">
+            <label class="col-form-label">Estado</label>
+            <el-select
+              required
+              filterable
+              class="select-primary"
+              size="large"
+              placeholder="Estado"
+              v-model="bill.status"
+            >
+              <el-option
+                v-for="option in selects.estadoFactura"
+                class="select-primary"
+                :value="option.id"
+                :label="option.nombre"
+                :key="option.id"
+              >
+              </el-option>
+            </el-select>
+          </div>
+        </div>
+      </div>
+    </card>
+
+    <card>
+      <div class="container">
+        <form class="row align-items-center">
+          <label class="col-form-label">Cantidad</label>
+          <base-input
+            class="mb-0"
+            size="4"
+            placeholder="0"
+            required
+            v-model="currentCode.quanty"
+          >
+          </base-input>
+          <label class="col-form-label">Producto</label>
+          <base-input
+            class="mb-0"
+            placeholder="Producto"
+            required
+            v-model="currentCode.codigo"
+          >
+          </base-input>
+          <base-button
+            type="success"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="pickProduct()"
+            >+</base-button
+          >
+          <base-button
+            type="primary"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="subgetModal()"
+            ><i class="fa-solid fa-magnifying-glass"></i
+          ></base-button>
+        </form>
+      </div>
+    </card>
+    <div class="col-12">
+      <card card-body-classes="table-full-width">
+        <h4 slot="header" class="card-title">
+          {{ $t('products.products') }}
+        </h4>
+        <div>
           <div
-            slot="footer"
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
           >
-            <div class="">
-              <p class="card-category">
-                Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
-              </p>
-            </div>
-            <base-pagination
-              class="pagination-no-border"
-              v-model="pagination.currentPage"
-              :per-page="pagination.perPage"
-              :total="total"
+            <el-select
+              class="select-primary mb-3 pagination-select"
+              v-model="pagination.perPage"
+              placeholder="Per page"
             >
-            </base-pagination>
+              <el-option
+                class="select-primary"
+                v-for="item in pagination.perPageOptions"
+                :key="item"
+                :label="item"
+                :value="item"
+              >
+              </el-option>
+            </el-select>
+
+            <base-input>
+              <el-input
+                type="search"
+                class="mb-3 search-input"
+                clearable
+                prefix-icon="el-icon-search"
+                placeholder="Buscar"
+                v-model="searchQuery"
+                aria-controls="datatables"
+              >
+              </el-input>
+            </base-input>
           </div>
-        </card>
-      </div>
+          <el-table :data="queriedData">
+            <el-table-column
+              v-for="column in tableColumns"
+              :key="column.label"
+              :min-width="column.minWidth"
+              :prop="column.prop"
+              :label="column.label"
+            >
+            </el-table-column>
+          </el-table>
+        </div>
+        <div
+          slot="footer"
+          class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+        >
+          <div class="">
+            <p class="card-category">
+              Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+            </p>
+          </div>
+          <base-pagination
+            class="pagination-no-border"
+            v-model="pagination.currentPage"
+            :per-page="pagination.perPage"
+            :total="total"
+          >
+          </base-pagination>
+        </div>
+      </card>
     </div>
   </div>
 </template>
@@ -153,32 +253,50 @@ export default {
       },
       office: '',
       selects: {
-        simple: '',
-        offices: []
+        sucursales: [],
+        clientes: [],
+        vendedores: [],
+        estadoFactura: []
+      },
+      currentCode: {
+        codigo: ''
+      },
+      bill: {
+        codigo: ''
       },
       billtatus: {},
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [
         {
-          prop: 'sucursalesId',
-          label: 'Sucursal',
+          prop: 'codigo',
+          label: 'Codigo',
           minWidth: 110
         },
         {
-          prop: 'suplidorId',
-          label: 'Suplidor',
+          prop: 'nombre',
+          label: 'Nombre',
           minWidth: 100
         },
         {
-          prop: 'fecha',
-          label: 'Fecha',
+          prop: 'cantidad',
+          label: 'Cantidad',
           minWidth: 100
         },
         {
-          prop: 'nota',
-          label: 'Nota',
+          prop: 'precio',
+          label: 'Precio',
+          minWidth: 100
+        },
+        {
+          prop: 'itbis',
+          label: 'ITBIS',
           minWidth: 70
+        },
+        {
+          prop: 'total',
+          label: 'Total',
+          minWidth: 100
         }
       ],
       tableData: [],
@@ -245,23 +363,17 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/sucursales')
-        .then((response) => {
-          this.selects.offices = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-      axios
-        .get(this.baseApiUrl + 'catalogo/suplidores')
-        .then((response) => {
-          this.suppliers = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
+    fillCatalogs(catalogs) {
+      catalogs.forEach((catalog) => {
+        axios
+          .get(this.baseApiUrl + 'catalogo/' + catalog)
+          .then((response) => {
+            this.selects[catalog] = response.data
+          })
+          .catch((error) => {
+            this.globalSweetMessage('Error al cargar la pagina', 'error')
+          })
+      })
     },
     filterByOffice() {
       this.tableData = []
@@ -271,7 +383,7 @@ export default {
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillCatalog()
+    this.fillCatalogs(['sucursales', 'vendedores', 'clientes', 'estadoFactura'])
     this.fillTable('Entradas', true)
   },
   watch: {}
