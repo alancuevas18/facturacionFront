@@ -15,36 +15,44 @@
                 rules="required|email"
                 v-slot="{ passed, failed, errors }"
               >
-              <base-input
-                required
-                v-model="email"
-                type="email"
-                placeholder="Email"
-                addon-left-icon="tim-icons icon-email-85"
-                :error="errors[0]"
-                :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
-              </base-input>
-             </ValidationProvider>
+                <base-input
+                  required
+                  v-model="email"
+                  type="email"
+                  placeholder="Email"
+                  addon-left-icon="tim-icons icon-email-85"
+                  :error="errors[0]"
+                  :class="[{ 'has-success': passed }, { 'has-danger': failed }]"
+                >
+                </base-input>
+              </ValidationProvider>
 
-             <ValidationProvider
-               name="password"
-               rules="required|min:5"
-               v-slot="{ passed, failed, errors }"
-             >
-             <base-input
-               required
-               v-model="password"
-               placeholder="Password"
-               addon-left-icon="tim-icons icon-lock-circle"
-               type="password"
-               :error="errors[0]"
-               :class="[{ 'has-success': passed }, { 'has-danger': failed }]">
-             </base-input>
-            </ValidationProvider>
+              <ValidationProvider
+                name="password"
+                rules="required|min:5"
+                v-slot="{ passed, failed, errors }"
+              >
+                <base-input
+                  required
+                  v-model="password"
+                  placeholder="Password"
+                  addon-left-icon="tim-icons icon-lock-circle"
+                  type="password"
+                  :error="errors[0]"
+                  :class="[{ 'has-success': passed }, { 'has-danger': failed }]"
+                >
+                </base-input>
+              </ValidationProvider>
             </div>
 
             <div slot="footer">
-              <base-button native-type="submit" type="primary" class="mb-3" size="lg" block>
+              <base-button
+                native-type="submit"
+                type="primary"
+                class="mb-3"
+                size="lg"
+                block
+              >
                 Get Started
               </base-button>
               <div class="pull-left">
@@ -56,7 +64,7 @@
               </div>
 
               <div class="pull-right">
-                <h6><a href="#pablo" class="link footer-link">Need Help?</a></h6>
+                <h6><a href="#" class="link footer-link">Need Help?</a></h6>
               </div>
             </div>
           </card>
@@ -66,29 +74,28 @@
   </div>
 </template>
 <script>
+import { extend } from 'vee-validate'
+import { required, email, min } from 'vee-validate/dist/rules'
 
-import { extend } from "vee-validate";
-import { required, email, min } from "vee-validate/dist/rules";
+extend('email', email)
+extend('min', min)
 
-extend("email", email);
-extend("min", min);
-
-extend("required", required);
+extend('required', required)
 
 export default {
   data() {
     return {
-      email: "",
-      password: "",
+      email: '',
+      password: '',
       subscribe: true
-    };
+    }
   },
   methods: {
     submit() {
-      alert("Form has been submitted!");
+      alert('Form has been submitted!')
     }
   }
-};
+}
 </script>
 <style>
 .navbar-nav .nav-item p {

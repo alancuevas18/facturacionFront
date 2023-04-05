@@ -1,0 +1,172 @@
+<template>
+  <div>
+    <base-nav
+      v-model="showMenu"
+      type="white"
+      :transparent="true"
+      menu-classes="justify-content-end"
+      class="auth-navbar fixed-top"
+    >
+      <div slot="brand" class="navbar-wrapper">
+        <a class="navbar-brand" href="#" v-if="title">{{ title }}</a>
+      </div>
+
+      <ul class="navbar-nav">
+        <router-link class="nav-item" tag="li" to="/dashboard">
+          <a class="nav-link text-primary">
+            <i class="tim-icons icon-minimal-left"></i> Back to Dashboard
+          </a>
+        </router-link>
+
+        <router-link class="nav-item" tag="li" to="/billDashboard/index">
+          <a class="nav-link">
+            <i class="tim-icons icon-chart-pie-36"></i> Inicio
+          </a>
+        </router-link>
+
+        <router-link class="nav-item" tag="li" to="/billDashboard/shift">
+          <a class="nav-link"> <i class="tim-icons icon-laptop"></i> Turnos </a>
+        </router-link>
+
+        <router-link class="nav-item" tag="li" to="/billDashboard/quotation">
+          <a class="nav-link">
+            <i class="tim-icons icon-notes"></i> Cotizacion
+          </a>
+        </router-link>
+
+        <router-link class="nav-item" tag="li" to="/billDashboard/returns">
+          <a class="nav-link">
+            <i class="tim-icons icon-coins"></i> Devoluciones
+          </a>
+        </router-link>
+
+        <router-link class="nav-item" tag="li" to="/billDashboard/cashClose">
+          <a class="nav-link">
+            <i class="tim-icons icon-money-coins"></i> Cuadre
+          </a>
+        </router-link>
+        <router-link class="nav-item" tag="li" to="/billDashboard/bill">
+          <a class="nav-link">
+            <i class="tim-icons icon-paper"></i> Facturacion
+          </a>
+        </router-link>
+      </ul>
+    </base-nav>
+
+    <div class="wrapper wrapper-full-page">
+      <div class="full-page" :class="pageClass">
+        <div class="content">
+          <zoom-center-transition
+            :duration="pageTransitionDuration"
+            mode="out-in"
+          >
+            <router-view></router-view>
+          </zoom-center-transition>
+        </div>
+        <footer class="footer">
+          <div class="container-fluid">
+            <nav>
+              <ul class="nav">
+                <li class="nav-item"></li>
+                <li class="nav-item"></li>
+                <li class="nav-item"></li>
+              </ul>
+            </nav>
+            <div class="copyright">
+              &copy; {{ year }}, Creado
+              <i class="tim-icons icon-cloud-download-93"></i> por
+              <a href="https://emacsoft.com" target="_blank" rel="noopener"
+                >EMACSoft</a
+              >
+              La solucion a tu negocio
+            </div>
+          </div>
+        </footer>
+      </div>
+    </div>
+  </div>
+</template>
+<script>
+import { BaseNav } from 'src/components'
+import { ZoomCenterTransition } from 'vue2-transitions'
+
+export default {
+  components: {
+    BaseNav,
+    ZoomCenterTransition
+  },
+  props: {
+    backgroundColor: {
+      type: String,
+      default: 'black'
+    }
+  },
+  data() {
+    return {
+      showMenu: false,
+      menuTransitionDuration: 250,
+      pageTransitionDuration: 200,
+      year: new Date().getFullYear(),
+      pageClass: 'login-page'
+    }
+  },
+  computed: {
+    title() {
+      const { name } = this.$route
+      return name
+    }
+  },
+  methods: {
+    toggleNavbar() {
+      document.body.classList.toggle('nav-open')
+      this.showMenu = !this.showMenu
+    }
+  },
+  beforeRouteUpdate(to, from, next) {
+    if (this.showMenu) {
+      this.closeMenu()
+      setTimeout(() => {
+        next()
+      }, this.menuTransitionDuration)
+    } else {
+      next()
+    }
+  },
+  mounted() {},
+  watch: {}
+}
+</script>
+<style lang="scss">
+.navbar.auth-navbar {
+  top: 0;
+}
+
+$scaleSize: 0.8;
+@keyframes zoomIn8 {
+  from {
+    opacity: 0;
+    transform: scale3d($scaleSize, $scaleSize, $scaleSize);
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+.wrapper-full-page .zoomIn {
+  animation-name: zoomIn8;
+}
+
+@keyframes zoomOut8 {
+  from {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    transform: scale3d($scaleSize, $scaleSize, $scaleSize);
+  }
+}
+
+.wrapper-full-page .zoomOut {
+  animation-name: zoomOut8;
+}
+</style>

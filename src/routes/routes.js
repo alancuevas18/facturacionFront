@@ -1,4 +1,6 @@
 import DashboardLayout from 'src/pages/Layout/DashboardLayout.vue'
+import BillingLayout from 'src/pages/BillingLayout/Layout.vue'
+
 // GeneralViews
 import NotFound from 'src/pages/GeneralViews/NotFoundPage.vue'
 
@@ -42,7 +44,7 @@ const ServiceCreate = () => import('src/pages/Services/Create.vue')
 const ServiceOfficeIndex = () => import('src/pages/ServicesOffice/Index.vue')
 const ServiceOfficeCreate = () => import('src/pages/ServicesOffice/Create.vue')
 
-//Entrance
+//ProductsOffice
 const EntranceIndex = () => import('src/pages/Entrance/Index.vue')
 const EntranceCreate = () => import('src/pages/Entrance/Create.vue')
 const EntranceDetail = () => import('src/pages/Entrance/Details.vue')
@@ -63,6 +65,7 @@ const ProductTypeCreate = () => import('src/pages/ProductsType/Create.vue')
 //Office
 const OfficesIndex = () => import('src/pages/Offices/Index.vue')
 const OfficesCreate = () => import('src/pages/Offices/Create.vue')
+
 
 //Shopping
 const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
@@ -253,7 +256,7 @@ let ShoppingeMenu = {
     {
       path: 'Shoppingpending',
       name: 'Compras Pendientes de pago',
-      components: { default: ShoppingPending}
+      components: { default: ShoppingPending }
     },
 
     {
@@ -268,7 +271,6 @@ let ShoppingeMenu = {
     }
   ]
 }
-
 let SpendMenu = {
   path: '/spends',
   component: DashboardLayout,
@@ -410,13 +412,12 @@ let productTypeMenu = {
     }
   ]
 }
-
 let paymentMenu = {
   path: '/Payments',
   component: DashboardLayout,
   redirect: '/Shopping/index',
   name: 'Pagos',
-  children: [   
+  children: [
     {
       path: 'create/:id?',
       name: 'Crear Pago',
@@ -424,26 +425,83 @@ let paymentMenu = {
     }
   ]
 }
-let DeparturesMenu = {
-  path: '/departures',
-  component: DashboardLayout,
-  redirect: '/departures/index',
-  name: 'Salidas',
+
+//Billing Menu
+let BillDashboard = {
+  path: '/billDashboard',
+  component: BillingLayout,
+  redirect: '/billDashboard/index',
+  name: 'Facturacion',
   children: [
     {
       path: 'index',
-      name: 'Administracion Cambio de Sucursal',
-      components: { default: DeparturesIndex }
-    },
+      name: 'DashBoard Factura',
+      components: { default: BillIndex }
+    }
+  ]
+}
+let ShiftMenu = {
+  path: '/billDashboard/shift',
+  component: BillingLayout,
+  redirect: '/billDashboard/shift/index',
+  name: 'Turnos',
+  children: [
     {
-      path: 'create/:id?',
-      name: 'Crear salida',
-      components: { default: DeparturesCreate }
-    },
+      path: 'index',
+      name: 'Administracion de Turnos',
+      components: { default: ShiftIndex }
+    }
+  ]
+}
+let QuotationMenu = {
+  path: '/billDashboard/quotation',
+  component: BillingLayout,
+  redirect: '/billDashboard/quotation/index',
+  name: 'Cotizaciones',
+  children: [
     {
-      path: 'details/:id',
-      name: 'Detalles salida',
-      components: { default: DeparturesDetail }
+      path: 'index',
+      name: 'Administracion de Cotizaciones',
+      components: { default: QuotationIndex }
+    }
+  ]
+}
+let ReturnsMenu = {
+  path: '/billDashboard/returns',
+  component: BillingLayout,
+  redirect: '/billDashboard/returns/index',
+  name: 'Devoluciones',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Devoluciones',
+      components: { default: ReturnsIndex }
+    }
+  ]
+}
+let cashCloseMenu = {
+  path: '/billDashboard/cashClose',
+  component: BillingLayout,
+  redirect: '/billDashboard/cashClose/index',
+  name: 'Turnos',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Devoluciones',
+      components: { default: cashCloseIndex }
+    }
+  ]
+}
+let billMenu = {
+  path: '/billDashboard/bill',
+  component: BillingLayout,
+  redirect: '/billDashboard/bill/index',
+  name: 'Factura',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Devoluciones',
+      components: { default: billIndex }
     }
   ]
 }
@@ -531,6 +589,13 @@ const routes = [
   EntranceMenu,
   ShoppingeMenu,
   paymentMenu,
+  //Billing
+  BillDashboard,
+  ShiftMenu,
+  QuotationMenu,
+  ReturnsMenu,
+  cashCloseMenu,
+  billMenu,
   DeparturesMenu,
   deductionMenu,
   SpendsTypeMenu,

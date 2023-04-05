@@ -131,9 +131,9 @@
             title-classes="btn btn-link btn-icon"
           >
             <i slot="title" class="tim-icons icon-settings-gear-63"></i>
-            <a class="dropdown-item" href="#pablo"> Action </a>
-            <a class="dropdown-item" href="#pablo"> Another action </a>
-            <a class="dropdown-item" href="#pablo"> Something else </a>
+            <a class="dropdown-item" href="#"> Action </a>
+            <a class="dropdown-item" href="#"> Another action </a>
+            <a class="dropdown-item" href="#"> Something else </a>
           </base-dropdown>
         </template>
         <div class="table-full-width table-responsive">

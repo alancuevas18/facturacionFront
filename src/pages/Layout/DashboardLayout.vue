@@ -38,7 +38,6 @@
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
           ></sidebar-item>
         </sidebar-item>
-    
         <!-- spends Menu -->
         <sidebar-item
           :link="{
@@ -49,7 +48,7 @@
           <sidebar-item
             :link="{ name: $t('spends.index'), path: '/spends/index' }"
           ></sidebar-item>
-        </sidebar-item>         
+        </sidebar-item>
         <!-- invetory Menu -->
         <sidebar-item
           :link="{
@@ -86,7 +85,7 @@
             icon: 'fa-solid fa-bag-shopping'
           }"
         >
-           <sidebar-item
+          <sidebar-item
             :link="{
               name: $t('shopping.index'),
               path: '/shopping/index'
@@ -100,18 +99,16 @@
             }"
           ></sidebar-item>
         </sidebar-item>
-      <!-- departures Menu -->
+        <!-- departures Menu -->
         <sidebar-item
           :link="{
             name: $t('departures.departures'),
             icon: 'fa-solid fa-dolly'
           }"
         >
-        <sidebar-item
+          <sidebar-item
             :link="{ name: $t('departures.index'), path: '/Departures/index' }"
           ></sidebar-item>
-    
-   
         </sidebar-item>
         <!-- Products Menu -->
         <sidebar-item
@@ -129,8 +126,8 @@
           <sidebar-item
             :link="{ name: $t('products.type'), path: '/productstype/index' }"
           ></sidebar-item>
-        </sidebar-item> 
-       <!-- serivices Menu -->
+        </sidebar-item>
+        <!-- serivices Menu -->
         <sidebar-item
           :link="{
             name: $t('services.services'),
@@ -162,7 +159,7 @@
           <sidebar-item
             :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
           ></sidebar-item>
-        </sidebar-item>       
+        </sidebar-item>
         <!-- delivery Menu -->
         <sidebar-item
           :link="{
@@ -173,7 +170,7 @@
           <sidebar-item
             :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
           ></sidebar-item>
-        </sidebar-item>  
+        </sidebar-item>
          <!-- Configuration -->
          <sidebar-item
           :link="{
@@ -209,9 +206,14 @@
             }"
           ></sidebar-item>
         </sidebar-item>
-   
-     
-      
+        <sidebar-item
+          :link="{
+            name: $t('billing.index'),
+            icon: 'fa-solid fa-file-invoice',
+            path: '/billDashboard/index'
+          }"
+        >
+        </sidebar-item>
         <hr />
       </template>
     </side-bar>
@@ -220,7 +222,6 @@
     <div class="main-panel" :data="sidebarBackground">
       <dashboard-navbar></dashboard-navbar>
       <router-view name="header"></router-view>
-
       <div
         :class="{ content: !$route.meta.hideContent }"
         @click="toggleSidebar"
