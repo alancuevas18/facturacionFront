@@ -77,6 +77,18 @@
                   <p class="description text-capitalize">
                     <b>Phone:</b> {{ supplier.phone }}
                   </p>
+                  <p class="description text-capitalize">
+                    <b>Nombre Empresa:</b> {{ supplier.empresa }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Rnc:</b> {{ supplier.empresaRnc }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Dirreción:</b> {{ supplier.empresaDireccion }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Telefono Empresa:</b> {{ supplier.empresaTelefono }}
+                  </p>
                 </div>
                 <p></p>
 
@@ -138,7 +150,12 @@ export default {
           address: '',
           cellPhone: '',
           phone: '',
-          status: ''
+          status: '',
+          empresa: '',
+          empresaTelefono: '',
+          empresaDireccion: '',
+          empresaRnc: ''
+
         }
       ]
     }
@@ -163,6 +180,10 @@ export default {
             address: response.data.direccion,
             cellPhone: response.data.celular,
             phone: response.data.telefono,
+            empresa: response.data.empresa,
+            empresaTelefono: response.data.empresaTelefono,
+            empresaDireccion: response.data.empresaDireccion,
+            empresaRnc: response.data.empresaRnc,
             status: response.data.estadoSuplidor ? 'active' : 'inactive'
           }
         })

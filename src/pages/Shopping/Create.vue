@@ -22,14 +22,16 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
-            <div class="compra" v-if="showshopping">
+           <div class="row"> 
+              <!-- Datos de la compra -->
+           <div class="col-ms-12 col-md-4" >
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Sucursal</label>
-                <div class="col-sm-4">
+                <label class="col-sm-3 col-form-label">Sucursal</label>
+                <div class="col-sm-9">
                   <el-select
                     required
                     filterable
-                    class="select-primary"
+                    class="select-primary w-100"
                     size="large"
                     placeholder="Sucursal"
                     v-model="compra.sucursalId"
@@ -46,12 +48,12 @@
                 </div>
               </div>
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Suplidor</label>
-                <div class="col-sm-4">
+                <label class="col-sm-3 col-form-label">Suplidor</label>
+                <div class="col-sm-9">
                   <el-select
                     required
                     filterable
-                    class="select-primary"
+                    class="select-primary w-100"
                     size="large"
                     placeholder="Suplidor"
                     v-model="compra.suplidorId"
@@ -66,65 +68,10 @@
                     </el-option>
                   </el-select>
                 </div>
-              </div>
-
-              
-              <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Tipo compra</label>
-                <div class="col-sm-4">
-                  <el-select
-                    required
-                    filterable
-                    class="select-primary"
-                    size="large"
-                    placeholder="Sucursal"
-                    v-model="compra.tipoCompra"
-                    @change="$event=>changetypeshopping()"  
-                  >
-                    <el-option
-                      v-for="option in selects.typeShopping"
-                      class="select-primary"
-                      :value="option.id"
-                      :label="option.nombre"
-                      :key="option.id"
-                    >
-                    </el-option>
-                  </el-select>
-                </div>
-              </div>
-              <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Estado</label>
-                <div class="col-sm-4">
-                  <el-select
-                    required
-                    filterable
-                    class="select-primary"
-                    size="large"
-                    placeholder="Sucursal"
-                    :key="compra.estadoCompra"
-                    v-model="compra.estadoCompra"
-                  >
-                    <el-option
-                      v-for="option in selects.status"
-                      class="select-primary"
-                      :value="option.id"
-                      :label="option.nombre"
-                      :key="option.id"
-                    >
-                    </el-option>
-                  </el-select>
-                </div>
-              </div>
-
+              </div>  
               <div class="row">
-                <label class="col-sm-2 col-form-label">Total</label>
-                <div class="col-sm-4">
-                <label class="col-form-label">{{ compra.total }}</label>
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-sm-2 col-form-label">Fecha</label>
-                <div class="col-sm-4">
+                <label class="col-sm-3 col-form-label">Fecha</label>
+                <div class="col-sm-9">
                   <ValidationProvider
                     name="fecha"
                     v-slot="{ passed, failed, errors }"
@@ -133,6 +80,7 @@
                       <el-date-picker
                         type="date"
                         placeholder="Fecha"
+                        class="w-100"
                         v-model="compra.fecha"
                         :error="errors[0]"
                         :class="[
@@ -144,10 +92,65 @@
                     </base-input>
                   </ValidationProvider>
                 </div>
+              </div>  
+              <div class="row">
+                  <label class="col-sm-3 col-form-label">NFC</label>
+                  <div class="col-sm-9">
+                    <ValidationProvider
+                      name="Comprobante"
+                      rules="min:3"
+                      v-slot="{ passed, failed, errors }"
+                    >
+                      <base-input
+                        required
+                        v-model="compra.comprobante"
+                        :error="errors[0]"
+                        :class="[
+                          { 'has-success': passed },
+                          { 'has-danger': failed }
+                        ]"
+                      >
+                      </base-input>
+                    </ValidationProvider>
+                  </div>
+                </div>
+              <div class="row">
+                <label class="col-sm-3 col-form-label">Sub total</label>
+                <div class="col-sm-9">
+                <label class="col-form-label">{{ compra.subtotal }}</label>
+                </div>
               </div>
+              <div class="row">
+                  <label class="col-sm-3 col-form-label">Itbis</label>
+                  <div class="col-sm-9">
+                    <ValidationProvider
+                      name="itbis"
+                      v-slot="{ passed, failed, errors }"
+                    >
+                      <base-input
+                        required
+                        v-model="compra.itbis"
+                        :error="errors[0]"
+                        type="number"
+                        :class="[
+                          { 'has-success': passed },
+                          { 'has-danger': failed }
+                        ]"
+                      >
+                      </base-input>
+                    </ValidationProvider>
+                  </div>
+              </div>
+              <div class="row">
+                  <label class="col-sm-3 col-form-label">Total</label>
+                  <div class="col-sm-9">
+                <label class="col-form-label">{{ comprastotal }}</label>
+                  </div>
+              </div>
+              
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Nota</label>
-                <div class="col-sm-4">
+                <label class="col-sm-3 col-form-label">Nota</label>
+                <div class="col-sm-9">
                   <ValidationProvider
                     name="nota"
                     v-slot="{ passed, failed, errors }"
@@ -165,15 +168,16 @@
                     ></textarea>
                   </ValidationProvider>
                 </div>
-              </div>
-            
-              <hr />
+              </div>             
             </div>
             <!-- products details -->
-            <div v-if="!showshopping">
+            <div class="col-ms-12 col-md-8">
+              <card card-body-classes="table-full-width">
+          <h4 slot="header" class="card-title">
+          </h4>
               <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Producto</label>
-                <div class="col-sm-4">
+                <label class="col-sm-3 col-form-label">Producto</label>
+                <div class="col-sm-9">
                   <el-select
                     required
                     filterable
@@ -196,8 +200,8 @@
                 </div>
               </div>
               <div class="row">
-                <label class="col-sm-2 col-form-label">Valor</label>
-                <div class="col-sm-4">
+                <label class="col-sm-3 col-form-label">Precio Compra</label>
+                <div class="col-sm-9">
                   <ValidationProvider
                     name="valor"
                     rules="min:1|numeric"
@@ -217,8 +221,29 @@
                 </div>
               </div>
               <div class="row">
-                <label class="col-sm-2 col-form-label">Cantidad</label>
-                <div class="col-sm-4">
+                <label class="col-sm-3 col-form-label">Precio de Venta</label>
+                <div class="col-sm-9">
+                  <ValidationProvider
+                    name="valor"
+                    rules="min:1|numeric"
+                    v-slot="{ passed, failed, errors }"
+                  >
+                    <base-input
+                      required
+                      v-model="product.productSellPrice"
+                      :error="errors[0]"
+                      :class="[
+                        { 'has-success': passed },
+                        { 'has-danger': failed }
+                      ]"
+                    >
+                    </base-input>
+                  </ValidationProvider>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-3 col-form-label">Cantidad</label>
+                <div class="col-sm-9">
                   <ValidationProvider
                     name="cantidad"
                     rules="min:1|numeric"
@@ -256,25 +281,6 @@
                 >
               </div>
               <hr />
-              <div class="row">
-                <div class="offset-sm-4 col-sm-3">
-                  <label>Mostrar: </label>
-                  <el-select
-                    class="select-primary mb-3 pagination-select"
-                    v-model="pagination.perPage"
-                    placeholder="Per page"
-                  >
-                    <el-option
-                      class="select-primary"
-                      v-for="item in pagination.perPageOptions"
-                      :key="item"
-                      :label="item"
-                      :value="item"
-                    >
-                    </el-option>
-                  </el-select>
-                </div>
-              </div>
               <!-- Table -->
               <div class="row">
                 <el-table :data="queriedData">
@@ -314,40 +320,31 @@
                   </el-table-column>
                 </el-table>
               </div>
+              </card>
             </div>
-            <div class="row d-flex justify-content-center">
-              <base-button
-                v-if="!showshopping"
+            <div class="col-11 m-auto row">
+                <div class="col-ms-12 col-md-6">
+                  <base-button
                 type="success"
                 native-type="submit"
-                class="animation-on-hover"
-                @click.native="changeShow()"
-                ><i class="fa-solid fa-arrow-right"></i>Siguiente</base-button
-              >
-              <base-button
-                v-if="showshopping"
-                type="warning"
-                native-type="submit"
-                class="animation-on-hover"
-                @click.native="changeShow()"
-                ><i class="fa-solid fa-arrow-left"></i>Atras</base-button
-              >
-              <base-button
-                v-if="showshopping"
-                type="success"
-                native-type="submit"
-                class="animation-on-hover"
+                class="animation-on-hover w-100"
                 @click.native="create()"
                 ><i class="tim-icons icon-check-2 mr-2"></i
-                >{{ title }}</base-button
-              >
-              <router-link to="/productsoffice/index">
-                <base-button type="danger" class="animation-on-hover"
-                  ><i class="tim-icons icon-simple-remove"></i
-                  >{{ $t('global.cancel') }}</base-button
-                >
-              </router-link>
+                >{{ title }}</base-button>
+                </div>
+                <div class="col-ms-12 col-md-6">
+                  <router-link to="/productsoffice/index">
+                    <base-button type="danger" class="animation-on-hover w-100"
+                      ><i class="tim-icons icon-simple-remove"></i
+                      >{{ $t('global.cancel') }}</base-button>
+                  </router-link>
+                </div>
+         
+           
             </div>
+
+          </div>
+      
           </form>
         </ValidationObserver>
       </div>
@@ -379,34 +376,10 @@ export default {
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
-  computed: {
-    queriedData() {
-      let result = this.tableData
-      if (this.searchedData.length > 0) {
-        result = this.searchedData
-      }
-      return result.slice(this.from, this.to)
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage
-      if (this.total < highBound) {
-        highBound = this.total
-      }
-      return highBound
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1)
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length
-    }
-  },
   data() {
     return {
       pagination: {
-        perPage: 5,
+        perPage: 50,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
         total: 0
@@ -414,9 +387,9 @@ export default {
       searchQuery: '',
       tableColumns: [
         {
-          prop: 'id',
-          label: 'Id',
-          minWidth: 70
+          prop: 'codigo',
+          label: 'Codigo',
+          minWidth: 100
         },
         {
           prop: 'nombre',
@@ -429,19 +402,19 @@ export default {
           minWidth: 200
         },
         {
-          prop: 'marcaProducto',
-          label: 'Marca',
-          minWidth: 120
+          prop: 'precioCompra',
+          label: 'Precio Compra',
+          minWidth: 130
         },
         {
-          prop: 'valorProducto',
-          label: 'Valor',
-          minWidth: 100
+          prop: 'precioVenta',
+          label: 'Precio Venta',
+          minWidth: 110
         },
         {
           prop: 'cantidad',
-          label: 'Cantidad',
-          minWidth: 100
+          label: 'Cant.',
+          minWidth: 75
         },
 
         {
@@ -470,14 +443,13 @@ export default {
         simple: '',
         offices: [],
         suppliers: [],
-        status: [],
         products: [],
-        typeShopping:[]
       },
       listStatus:[],
       currentProduct: {},
       product: {
         productPrice: '',
+        productSellPrice: '',
         productQuantity: '',
         productName: '',
         code:'',
@@ -486,15 +458,49 @@ export default {
         id: 0,
         suplidorId: '',
         fecha: new Date(),
-        sucursalId: '',
-        estadoCompra:3,
-        total:0,
+        comprobante:'',
+        itbis:0,
+        subtotal:0,
         abono:0,
-        tipoCompra: 1,
+        estadoCompra:1,
+        sucursalId: '',
         Suplidores:null,
         Sucursales:null,
         detallecompras: []
       }
+    }
+  },
+  computed: {
+    queriedData() {
+      let result = this.tableData
+      if (this.searchedData.length > 0) {
+        result = this.searchedData
+      }
+      return result.slice(this.from, this.to)
+    },
+    to() {
+      let highBound = this.from + this.pagination.perPage
+      if (this.total < highBound) {
+        highBound = this.total
+      }
+      return highBound
+    },
+    from() {
+      return this.pagination.perPage * (this.pagination.currentPage - 1)
+    },
+    total() {
+      return this.searchedData.length > 0
+        ? this.searchedData.length
+        : this.tableData.length
+    },
+    comprastotal(){
+      let subtotal=0
+       this.tableData.forEach(element => {
+        subtotal+=element.total
+        this.compra.subtotal=subtotal
+       })
+       let total = parseInt(this.compra.subtotal) + parseInt(this.compra.itbis)       
+      return total
     }
   },
   mounted() {
@@ -512,21 +518,12 @@ export default {
      this.compra.total=this.tableData.reduce((accumulator, object) => { return accumulator + object.total;}, 0)
      
     },
-    changetypeshopping(){
-      if(this.compra.tipoCompra==1){
-        this.selects.status= this.listStatus.filter(c=>c.id==3)
-        this.compra.estadoCompra=3
-      }
-      else{
-        this.selects.status= this.listStatus.filter(c=>c.id!=3)
-        this.compra.estadoCompra=1
-      }
-     },
     changeProduct(){
       axios
-        .get(this.baseApiUrl +'productos/'+this.product.productoId)
+        .get(this.baseApiUrl +'ProductosSucursales/BySuculsalAndProductos?SucursalId='+this.compra.sucursalId+'&ProductoId='+this.product.productoId)
         .then((response) => {
           this.currentProduct = response.data
+          this.product.productSellPrice=response.data.precio
           this.product.productQuantity=1
         })
         .catch((error) => {
@@ -545,9 +542,8 @@ export default {
           'Este producto a sido agregado!',
           'error'
         )
-         this.currentProduct['valor'] = this.product.productPrice
-         this.currentProduct['cantidad'] = this.product.productQuantity
-         this.fillTable(this.currentProduct)
+        console.log(this.product.productQuantity*this.product.productPrice)
+         this.fillTable(this.currentProduct.productos)
           this.cleanProduct()
     },
     //valide product to add a table
@@ -562,12 +558,13 @@ export default {
       let detalleTable = {
         compraId:0,
         productoId: obj.id,
+        codigo: obj.codigo,
         nombre: obj.nombre,
         descripcion: obj.descripcion,
-        marcaProducto: obj.marcas.descripcion,
-        valorProducto: obj.valor,
-        cantidad: obj.cantidad,
-        total: obj.cantidad*obj.valor
+        precioCompra: this.product.productPrice,
+        precioVenta:this.product.productSellPrice,
+        cantidad: this.product.productQuantity,
+        total: this.product.productQuantity*this.product.productPrice
       }
       this.tableData.push(detalleTable)
     },
@@ -582,22 +579,25 @@ export default {
     },
     handleEdit(index, row) {
       this.indexToUpdate = this.tableData.findIndex(
-        (tableRow) => tableRow.id === row.id
+        (tableRow) => tableRow.productoId === row.productoId
       )
       if (this.indexToUpdate >= 0) {
         this.editRow = row
         this.editingProduct = true
         this.product.productoId = row.productoId
+        this.product.productSellPrice = row.precioVenta
+        this.product.productPrice = row.precioCompra
         this.product.productName = row.nombre
-        this.product.productPrice = row.valorProducto
         this.product.productQuantity = row.cantidad
 
 
       }
     },
     editProduct() {
-      this.editRow.valorProducto = this.product.productPrice
+      this.editRow.precioCompra = this.product.productPrice
+      this.editRow.precioVenta = this.product.productSellPrice
       this.editRow.cantidad = this.product.productQuantity
+      this.editRow.total = this.product.productQuantity*this.product.productPrice
       this.editingProduct = false
       this.editRow = ''
       this.product = {}
@@ -654,26 +654,7 @@ export default {
         .catch((error) => {
           this.errored = true
         })
-
-        axios
-        .get(this.baseApiUrl + 'catalogo/TipoCompra')
-        .then((response) => {
-          this.selects.typeShopping = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-
-        
-        axios
-        .get(this.baseApiUrl + 'catalogo/EstadoCompra')
-        .then((response) => {
-          this.listStatus= response.data
-          this.selects.status = response.data.filter(c=>c.id==3)
-        })
-        .catch((error) => {
-          this.errored = true
-        })
+      
         
 
       axios
@@ -707,8 +688,9 @@ export default {
           id: 0,
           productoId: this.tableData[i].productoId,
           cantidad: this.tableData[i].cantidad,
-          valorProducto: this.tableData[i].valorProducto,
-          total: this.tableData[i].valorProducto* this.tableData[i].cantidad,
+          precioCompra: this.tableData[i].precioCompra,
+          precioVenta: this.tableData[i].precioVenta,
+          total: this.tableData[i].precioCompra* this.tableData[i].cantidad,
           compraId: 0,
           compras: null,
           productos: null,

@@ -6,19 +6,19 @@
       :is-full-page="fullPage"
     />
     <h2 class="text-center">
-       {{ $t('spends.details') }}
+       {{ $t('inventoryadjustment.details') }}
     </h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
           {{ title }} 
-          <router-link to="/Spends/index">
+          <router-link to="/Inventoryadjustment/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
               
             </button>
           </router-link>
-          <router-link to="/Spends/print">
+          <router-link to="/Inventoryadjustment/print">
             <button class="btn btn btn-twitter">
                  Imprimir <i class="fa-solid fa-print"></i>
             </button>
@@ -28,66 +28,36 @@
         <div class="row">  
         <div class="col-ms-12 col-md-4">
             <h4 slot="header" class="card-title">
-                    Datos de la Compra
+                    Datos del Ajuste deInvetarios
                 </h4>
-          <div class="row">
-                <label class="col-sm-3 col-form-label">Descripción</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.descripcion}}</label>              
-                </div>           
-          </div>     
-           <div class="row">
+            <div class="row">
                 <label class="col-sm-3 col-form-label">Sucursal</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.sucursales.nombre}}</label>              
+                  <label class="col-form-label"> {{ ajusteInvetarios.sucursales.nombre}}</label>              
                 </div>           
             </div>
 
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Tipo de Gastos</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.tipoGastos.descripcion}}</label>              
-                </div>           
-            </div>
             
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Sub Tipo de Gastos</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.subTipoGastos.descripcion}}</label>              
-                </div>           
-            </div>
             <div class="row">
                 <label class="col-sm-3 col-form-label">Fecha</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.fecha}}</label>              
+                  <label class="col-form-label"> {{ ajusteInvetarios.fecha}}</label>              
                 </div>           
             </div>
-            
+         
             <div class="row">
-                <label class="col-sm-3 col-form-label">NFC</label>
+                <label class="col-sm-3 col-form-label">Producto modificado</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.comprobante}}</label>              
-                </div>           
-            </div>
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Sub Total</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.total}}</label>              
+                  <label class="col-form-label"> {{ ajusteInvetarios.detalleAjusteInvetarios.length}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Itbis</label>
+                <label class="col-sm-3 col-form-label">Nota</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.itbis}}</label>              
+                  <label class="col-form-label"> {{ajusteInvetarios.nota}}</label>              
                 </div>           
             </div>
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Total</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.total}}</label>              
-                </div>           
-            </div>
-    
+     
         </div>
         
         <div class="row col-ms-12 col-md-8" style="border-left:solid; ">
@@ -168,6 +138,7 @@ import Loading from 'vue-loading-overlay'
 import axios from 'axios'
 import config from '@/config'
 import { computed } from 'vue'
+import { select } from 'd3'
 export default ({
 components:{
     Loading,
@@ -206,13 +177,12 @@ components:{
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
-      gastos:{
+      ajusteInvetarios:{
         sucursales:{nombre:''},
-        tipoGastos:{descripcion:''},
-        subTipoGastos:{descripcion:''},        
+        detalleAjusteInvetarios:[]
     },
     selects: {
-      estadoCompra:[]
+      tipoajuste:[]
       },
       id:0,
       title: '',
@@ -223,23 +193,54 @@ components:{
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['retenciones.descripcion'],
+      propsToSearch: ['codigo'],
       tableColumns: [
         {
-          prop: 'retenciones.descripcion',
-          label: 'Retencion',
-          minWidth: 110
-        },
-        {
-          prop: 'retenciones.porcentaje',
-          label: 'Porcentaje',
-          minWidth: 110
-        },
-        {
-          prop: 'total',
-          label: 'Total',
+          prop: 'productos.codigo',
+          label: 'codigo',
           minWidth: 70
+        },
+        {
+          prop: 'productos.nombre',
+          label: 'Producto',
+          minWidth: 110
+        },
+        {
+          prop: 'cantidadExistenciaActual',
+          label: 'Cant. Actual',
+          minWidth: 150
+        },
+        {
+          prop: 'cantidadExistenciaNueva',
+          label: 'Cant. Nueva',
+          minWidth: 150
+        },
+        {
+          prop: 'diferencias',
+          label: 'diferentica',
+          minWidth: 100
+        },
+        {
+          prop: 'tipoAjustes',
+          label: 'Tipo',
+          minWidth: 100
+        },
+        {
+          prop: 'precioCompra',
+          label: 'Precio Compra',
+          minWidth: 150
+        },
+        {
+          prop: 'precioVenta',
+          label: 'Precio Venta',
+          minWidth: 150
+        },
+        {
+          prop: 'nota',
+          label: 'Nota',
+          minWidth: 200
         }
+        
    
       ],
       tableData: [],
@@ -248,18 +249,30 @@ components:{
     }
   }
   ,methods:{
+    async fillCatalog() {
+   
+      axios
+        .get(this.baseApiUrl + 'catalogo/tipoajustes')
+        .then((response) => {
+          this.selects.tipoajuste = response.data
+        })
+        .catch((error) => {
+          this.errored = true
+        })
+    }
 
   },
  async mounted(){
     this.baseApiUrl=config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-    axios.get(this.baseApiUrl+'gastos/'+this.id)
+    await this.fillCatalog()
+    axios.get(this.baseApiUrl+'AjusteInvetarios/'+this.id)
         .then((reponse)=>{
-            this.gastos=reponse.data
-            reponse.data.detalleRetenciones.forEach(element => {
+            this.ajusteInvetarios=reponse.data
+              reponse.data.detalleAjusteInvetarios.forEach(element => {
               this.tableData.push(element)            
-              element.retenciones.porcentaje+='%'
-              });   
+              element.tipoAjustes=this.selects.tipoajuste.find(c=>c.id==element.tipoAjustes).nombre
+              });
             })
 
   }

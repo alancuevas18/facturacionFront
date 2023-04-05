@@ -93,7 +93,7 @@
       "create" : "Crear",
       "index" : "Administracion de Gastos",
       "spends" : "Gastos",
-      "details" : "Detalles"
+      "details" : "Detalles de Gastos"
     },
     "products": {
       "create" : "Crear",
@@ -152,6 +152,22 @@
       "create" : "Crear",
       "index" : "Administracion de salida"
   },
+"deductions": {
+    "deductions" : "Retenciones",
+    "create" : "Crear",
+    "index" : "Retenciones"
+},
+"inventoryadjustment": {
+  "inventoryadjustment" : "Ajuste de invetario",
+  "create" : "Crear",
+  "index" : "Ajuste de inventario",
+  "details" : "Detalle de Ajuste de inventario"
+},
+"spendsType": {
+  "spendsType" : "Tipo de gastos",
+  "create" : "Crear",
+  "index" : "Tipo de gastos"
+},
   "quotation": {
     "create" : "Crear",
     "index" : "Administracion de Cotizacion",

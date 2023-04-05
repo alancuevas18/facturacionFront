@@ -12,13 +12,13 @@
       <template slot="header">
         <h4 class="card-title">
           {{ title }} 
-          <router-link to="/payments/index">
+          <router-link to="/Shopping/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
               
             </button>
           </router-link>
-          <router-link to="/entrance/print">
+          <router-link to="/Payments/print">
             <button class="btn btn btn-twitter">
                  Imprimir <i class="fa-solid fa-print"></i>
             </button>
@@ -26,39 +26,9 @@
         </h4>
       </template>
         <div class="row">  
-        <div class="col-ms-12 col-md-4">
-            <h4 slot="header" class="card-title">
-                    Datos de la entrada
-                </h4>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Sucursal</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ entradas.sucursales.nombre}}</label>              
-                </div>           
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Suplidor</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ entradas.suplidores.nombre}}</label>              
-                </div>           
-            </div>
-
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Fecha</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ entradas.fecha}}</label>              
-                </div>           
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Nota</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ entradas.nota}}</label>              
-                </div>           
-            </div>
-        </div>
+ 
         
-        <div class="row col-ms-12 col-md-8" style="border-left:solid; ">
+        <div class="row col-ms-12 col-md-12">
             <div class="col-12">
                 <h4 slot="header" class="card-title text-center">
                     Detalle
@@ -174,10 +144,10 @@ components:{
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
-      entradas:{
-        sucursales:{nombre:''},
-        suplidores:{nombre:''},
-    },
+      selects:{
+        typepayment:[]
+      },
+      pagos:[],
       id:0,
       title: '',
       pagination: {
@@ -190,31 +160,29 @@ components:{
       propsToSearch: ['codigo'],
       tableColumns: [
         {
-          prop: 'productos.nombre',
-          label: 'Producto',
-          minWidth: 110
-        },
-        {
-          prop: 'codigoProducto',
-          label: 'Codigo',
-          minWidth: 100
-        },
-        {
-          prop: 'cantidad',
-          label: 'Cantidad',
-          minWidth: 100
-        },
-        {
-          prop: 'valor',
-          label: 'Valor',
-          minWidth: 100
+          prop: 'fecha',
+          label: 'Fecha',
+          minWidth: 70
         },
         {
           prop: 'total',
           label: 'Total',
-          minWidth: 70
-        }
-   
+          minWidth: 100
+        },    
+        
+        {
+          prop: 'tipoPago',
+          label: 'Tipo de pago',
+          minWidth: 100
+        },     
+        
+            
+        {
+          prop: 'nota',
+          label: 'Nota',
+          minWidth: 100
+        },     
+        
       ],
       tableData: [],
       searchedData: [],
@@ -222,18 +190,39 @@ components:{
     }
   }
   ,methods:{
+   async fillCatalog() {
+        await axios
+        .get(this.baseApiUrl + 'catalogo/tipopago')
+        .then((response) => {
+          this.selects.typepayment = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => {
+         this.isLoading = false 
 
+        }) 
+
+    },
 
   },
-  mounted(){
+  async mounted(){
     this.baseApiUrl=config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-    axios.get(this.baseApiUrl+'entradas/'+this.id)
-        .then((reponse)=>{
-            this.entradas=reponse.data
-            this.tableData=reponse.data.detalleEntradas
-            })
-
+    this.fillCatalog() 
+    axios
+        .get(this.baseApiUrl + 'Pagos/ByCompras/'+this.id)
+        .then((response) => {
+          this.pagos=response.data
+          response.data.forEach((element,index) => {
+          this.tableData.push(element)
+          this.tableData[index]['tipoPago'] = this.selects.typepayment.find(c=>c.id==element.tipoPago).nombre
+          })
+        })
+        .catch((error) => {
+          this.errored = true
+        })
   }
 })
 </script>

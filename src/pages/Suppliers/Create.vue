@@ -467,8 +467,7 @@ export default {
         empresaRnc: obj.empresaRnc,
         empresaTelefono: obj.empresaTelefono,
         empresaDireccion: obj.empresaDireccion,
-
-        estadoPersona: true,
+        estadoPersona:  obj.estadoPersona,
         id: obj.id
       }
       if (obj.id != 0)

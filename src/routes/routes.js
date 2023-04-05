@@ -26,7 +26,9 @@ const SellerDetail = () => import('src/pages/Sellers/Details.vue')
 const DeliveryIndex = () => import('src/pages/Deliveries/Index.vue')
 const DeliveryCreate = () => import('src/pages/Deliveries/Create.vue')
 const DeliveryDetail = () => import('src/pages/Deliveries/Details.vue')
-
+//Deliveries
+const DeductionsIndex = () => import('src/pages/Deductions/Index.vue')
+const DeductionsCreate = () => import('src/pages/Deductions/Create.vue')
 //Products
 const ProductIndex = () => import('src/pages/Products/Index.vue')
 const ProductCreate = () => import('src/pages/Products/Create.vue')
@@ -69,11 +71,11 @@ const OfficesCreate = () => import('src/pages/Offices/Create.vue')
 //Shopping
 const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
 const ShoppingPending = () => import('src/pages/Shopping/ShoppingPending.vue')
-const ShoppingRequest = () => import('src/pages/Shopping/ShoppingRequest.vue')
 const ShoppingCreate = () => import('src/pages/Shopping/Create.vue')
 const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
 //Pyment
 const PaymentCreate = () => import('src/pages/Payments/Create.vue')
+const PaymentDetail = () => import('src/pages/Payments/Details.vue')
 
 //StructureComprabante
 const StructureComprobantesIndex = () =>
@@ -109,6 +111,16 @@ const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
 const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
 // const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
 
+
+
+//SpendsType
+const SpendsTypeIndex = () => import('src/pages/SpendsType/Index.vue')
+const SpendsTypeCreate = () => import('src/pages/SpendsType/Create.vue')
+
+//inventoryadjustment
+const InventoryadjustmentIndex = () => import('src/pages/Inventoryadjustment/Index.vue')
+const InventoryadjustmentCreate = () => import('src/pages/Inventoryadjustment/Create.vue')
+const InventoryadjustmentDetail = () => import('src/pages/Inventoryadjustment/Details.vue')
 //bill
 const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
 const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
@@ -270,11 +282,6 @@ let ShoppingeMenu = {
       path: 'index',
       name: 'Administracion compras',
       components: { default: ShoppingIndex }
-    },
-    {
-      path: 'ShoppingRequest',
-      name: 'Solicitudes de Compra',
-      components: { default: ShoppingRequest }
     },
     {
       path: 'Shoppingpending',
@@ -445,7 +452,13 @@ let paymentMenu = {
       path: 'create/:id?',
       name: 'Crear Pago',
       components: { default: PaymentCreate }
+    },
+    {
+      path: 'details/:id?',
+      name: 'Detalle de pago',
+      components: { default: PaymentDetail }
     }
+
   ]
 }
 let DeparturesMenu = {
@@ -565,6 +578,68 @@ let billMenu = {
     }
   ]
 }
+
+let deductionMenu = {
+  path: '/deductions',
+  component: DashboardLayout,
+  redirect: '/deduction/index',
+  name: 'Retenciones',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Retenciones',
+      components: { default: DeductionsIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Retenciones',
+      components: { default: DeductionsCreate }
+    }
+  ]
+}
+let SpendsTypeMenu = {
+  path: '/SpendsType',
+  component: DashboardLayout,
+  redirect: '/SpendsType/index',
+  name: 'Tipogasto',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Tipo de gasto',
+      components: { default: SpendsTypeIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Tipo de gasto',
+      components: { default: SpendsTypeCreate }
+    }
+  ]
+}
+let InventoryadjustmentMenu = {
+  path: '/Inventoryadjustment',
+  component: DashboardLayout,
+  redirect: '/Inventoryadjustment/index',
+  name: 'Inventoryadjustment',
+  children: [
+    {
+      path: 'index',
+      name: 'Lista de Ajuste de inventarios',
+      components: { default: InventoryadjustmentIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Ajuste',
+      components: { default: InventoryadjustmentCreate }
+    },
+    
+    {
+      path: 'details/:id',
+      name: 'Detalles Ajuste de inventario',
+      components: { default: InventoryadjustmentDetail }
+    }
+  ]
+}
+
 const routes = [
   {
     path: '/',
@@ -595,6 +670,10 @@ const routes = [
   ReturnsMenu,
   cashCloseMenu,
   billMenu,
+  DeparturesMenu,
+  deductionMenu,
+  SpendsTypeMenu,
+  InventoryadjustmentMenu,
   {
     path: '/',
     component: DashboardLayout,

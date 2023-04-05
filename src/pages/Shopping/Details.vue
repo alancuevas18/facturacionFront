@@ -12,13 +12,13 @@
       <template slot="header">
         <h4 class="card-title">
           {{ title }} 
-          <router-link to="/entrance/index">
+          <router-link to="/shopping/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
               
             </button>
           </router-link>
-          <router-link to="/entrance/print">
+          <router-link to="/shopping/print">
             <button class="btn btn btn-twitter">
                  Imprimir <i class="fa-solid fa-print"></i>
             </button>
@@ -30,50 +30,65 @@
             <h4 slot="header" class="card-title">
                     Datos de la Compra
                 </h4>
-            <div class="row mb-3">
+            <div class="row">
                 <label class="col-sm-3 col-form-label">Sucursal</label>
                 <div class="col-sm-9">
                   <label class="col-form-label"> {{ compras.sucursales.nombre}}</label>              
                 </div>           
             </div>
 
-            <div class="row mb-3">
+            <div class="row">
                 <label class="col-sm-3 col-form-label">Suplidor</label>
                 <div class="col-sm-9">
                   <label class="col-form-label"> {{ compras.suplidores.nombre}}</label>              
                 </div>           
             </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Total</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.total}}</label>              
-                </div>           
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">abono</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.abono}}</label>              
-                </div>           
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Total pendiente</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.totalPendiente}}</label>              
-                </div>           
-            </div>
-            <div class="row mb-3">
-                <label class="col-sm-3 col-form-label">Tipo de compra</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.tipoCompra}}</label>              
-                </div>           
-            </div>
-            <div class="row mb-3">
+            
+            <div class="row">
                 <label class="col-sm-3 col-form-label">Fecha</label>
                 <div class="col-sm-9">
                   <label class="col-form-label"> {{ compras.fecha}}</label>              
                 </div>           
             </div>
-            <div class="row mb-3">
+            
+            <div class="row">
+                <label class="col-sm-3 col-form-label">NFC</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ compras.comprobante}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Sub Total</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ compras.subTotal}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Itbis</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ compras.itbis}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Total</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ compras.total}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">abono</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ compras.abono}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Total pendiente</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ compras.totalPendiente}}</label>              
+                </div>           
+            </div>
+    
+            <div class="row">
                 <label class="col-sm-3 col-form-label">Estado</label>
                 <div class="col-sm-9">
                   <label class="col-form-label"> {{ compras.estadoCompra}}</label>              
@@ -202,7 +217,6 @@ components:{
         suplidores:{nombre:''},
     },
     selects: {
-      tipoCompra:[],
       estadoCompra:[]
       },
       id:0,
@@ -227,8 +241,13 @@ components:{
           minWidth: 100
         },
         {
-          prop: 'valorProducto',
-          label: 'Valor',
+          prop: 'precioCompra',
+          label: 'Precio de compra',
+          minWidth: 100
+        },
+        {
+          prop: 'precioVenta',
+          label: 'Precio de Venta',
           minWidth: 100
         },
         {
@@ -245,11 +264,7 @@ components:{
   }
   ,methods:{
     async fillCatalog() {
-     await axios
-        .get(this.baseApiUrl + 'catalogo/tipoCompra')
-        .then((response) => {
-          this.selects.tipoCompra = response.data
-        })      
+   
        await axios
         .get(this.baseApiUrl + 'catalogo/estadoCompra')
         .then((response) => {
@@ -266,7 +281,6 @@ components:{
         .then((reponse)=>{
             this.compras=reponse.data
             this.tableData=reponse.data.detalleCompras
-            this.compras.tipoCompra=this.selects.tipoCompra.find(c=>c.id==this.compras.tipoCompra).nombre
             this.compras.estadoCompra=this.selects.estadoCompra.find(c=>c.id==this.compras.estadoCompra).nombre    
             })
 

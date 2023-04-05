@@ -115,6 +115,42 @@
                 >
                 </BaseCheckbox>
               </div>
+            </div>     
+            <div class="row mb-2">
+            <label class="col-sm-2 col-form-label">Exento</label>
+              <div class="col-sm-10">           
+                <BaseCheckbox
+                v-model="product.exento"
+                  :checked="product.exento"
+                  class="m-0 p-0  "
+                  >
+                  </BaseCheckbox>
+              </div>
+            </div>
+            
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Porcentaje Itbis</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="descripcion"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="product.itbis"
+                    :error="errors[0]"
+                    type="number"
+                    @input="if(product.itbis > 1){product.itbis = 1}"
+
+                    step="0.01"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Marca</label>
@@ -303,6 +339,8 @@ export default {
         tipoProductoId: '',
         tipoProductos: null,
         validarCodigo: false,
+        exento: false,
+        itbis:0,
         id: 0
       }
     }
@@ -368,6 +406,8 @@ export default {
         tipoProductoId: obj.tipoProductoId,
         tipoProductos: null,
         validarCodigo: obj.validarCodigo,
+        exento: obj.exento,
+        itbis: obj.itbis,
         id: obj.id
       }
       if (obj.id != 0)
