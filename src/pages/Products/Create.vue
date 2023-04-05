@@ -105,20 +105,17 @@
                 </ValidationProvider>
               </div>
             </div>
-
             <div class="row mb-2">
-            <label class="col-sm-2 col-form-label">Validar Codigo</label>
-              <div class="col-sm-10">           
+              <label class="col-sm-2 col-form-label">Validar Codigo</label>
+              <div class="col-sm-10">
                 <BaseCheckbox
-                v-model="product.validarCodigo"
+                  v-model="product.validarCodigo"
                   :checked="product.validarCodigo"
-                  class="m-0 p-0  "
-                  >
-                  </BaseCheckbox>
+                  class="m-0 p-0"
+                >
+                </BaseCheckbox>
               </div>
-            </div>
-
-                
+            </div>     
             <div class="row mb-2">
             <label class="col-sm-2 col-form-label">Exento</label>
               <div class="col-sm-10">           
@@ -155,8 +152,6 @@
                 </ValidationProvider>
               </div>
             </div>
-            
-            
             <div class="row">
               <label class="col-sm-2 col-form-label">Marca</label>
               <div class="col-sm-10">
