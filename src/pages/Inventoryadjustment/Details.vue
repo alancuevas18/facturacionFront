@@ -6,7 +6,7 @@
       :is-full-page="fullPage"
     />
     <h2 class="text-center">
-       {{ $t('shopping.details') }}
+       {{ $t('inventoryadjustment.details') }}
     </h2>
     <card>
       <template slot="header">
@@ -28,72 +28,36 @@
         <div class="row">  
         <div class="col-ms-12 col-md-4">
             <h4 slot="header" class="card-title">
-                    Datos de la Compra
+                    Datos del Ajuste deInvetarios
                 </h4>
             <div class="row">
                 <label class="col-sm-3 col-form-label">Sucursal</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.sucursales.nombre}}</label>              
+                  <label class="col-form-label"> {{ ajusteInvetarios.sucursales.nombre}}</label>              
                 </div>           
             </div>
 
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Suplidor</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.suplidores.nombre}}</label>              
-                </div>           
-            </div>
             
             <div class="row">
                 <label class="col-sm-3 col-form-label">Fecha</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.fecha}}</label>              
+                  <label class="col-form-label"> {{ ajusteInvetarios.fecha}}</label>              
                 </div>           
             </div>
-            
+         
             <div class="row">
-                <label class="col-sm-3 col-form-label">NFC</label>
+                <label class="col-sm-3 col-form-label">Producto modificado</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.comprobante}}</label>              
-                </div>           
-            </div>
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Sub Total</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.subTotal}}</label>              
+                  <label class="col-form-label"> {{ ajusteInvetarios.detalleAjusteInvetarios.length}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Itbis</label>
+                <label class="col-sm-3 col-form-label">Nota</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.itbis}}</label>              
+                  <label class="col-form-label"> {{ajusteInvetarios.nota}}</label>              
                 </div>           
             </div>
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Total</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.total}}</label>              
-                </div>           
-            </div>
-            <div class="row">
-                <label class="col-sm-3 col-form-label">abono</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.abono}}</label>              
-                </div>           
-            </div>
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Total pendiente</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.totalPendiente}}</label>              
-                </div>           
-            </div>
-    
-            <div class="row">
-                <label class="col-sm-3 col-form-label">Estado</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ compras.estadoCompra}}</label>              
-                </div>           
-            </div>
+     
         </div>
         
         <div class="row col-ms-12 col-md-8" style="border-left:solid; ">
@@ -174,6 +138,7 @@ import Loading from 'vue-loading-overlay'
 import axios from 'axios'
 import config from '@/config'
 import { computed } from 'vue'
+import { select } from 'd3'
 export default ({
 components:{
     Loading,
@@ -212,12 +177,12 @@ components:{
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
-      compras:{
+      ajusteInvetarios:{
         sucursales:{nombre:''},
-        suplidores:{nombre:''},
+        detalleAjusteInvetarios:[]
     },
     selects: {
-      estadoCompra:[]
+      tipoajuste:[]
       },
       id:0,
       title: '',
@@ -231,30 +196,51 @@ components:{
       propsToSearch: ['codigo'],
       tableColumns: [
         {
+          prop: 'productos.codigo',
+          label: 'codigo',
+          minWidth: 70
+        },
+        {
           prop: 'productos.nombre',
           label: 'Producto',
           minWidth: 110
         },
         {
-          prop: 'cantidad',
-          label: 'Cantidad',
+          prop: 'cantidadExistenciaActual',
+          label: 'Cant. Actual',
+          minWidth: 150
+        },
+        {
+          prop: 'cantidadExistenciaNueva',
+          label: 'Cant. Nueva',
+          minWidth: 150
+        },
+        {
+          prop: 'diferencias',
+          label: 'diferentica',
+          minWidth: 100
+        },
+        {
+          prop: 'tipoAjustes',
+          label: 'Tipo',
           minWidth: 100
         },
         {
           prop: 'precioCompra',
-          label: 'Precio de compra',
-          minWidth: 100
+          label: 'Precio Compra',
+          minWidth: 150
         },
         {
           prop: 'precioVenta',
-          label: 'Precio de Venta',
-          minWidth: 100
+          label: 'Precio Venta',
+          minWidth: 150
         },
         {
-          prop: 'total',
-          label: 'Total',
-          minWidth: 70
+          prop: 'nota',
+          label: 'Nota',
+          minWidth: 200
         }
+        
    
       ],
       tableData: [],
@@ -265,10 +251,13 @@ components:{
   ,methods:{
     async fillCatalog() {
    
-       await axios
-        .get(this.baseApiUrl + 'catalogo/estadoCompra')
+      axios
+        .get(this.baseApiUrl + 'catalogo/tipoajustes')
         .then((response) => {
-          this.selects.estadoCompra = response.data
+          this.selects.tipoajuste = response.data
+        })
+        .catch((error) => {
+          this.errored = true
         })
     }
 
@@ -277,11 +266,13 @@ components:{
     this.baseApiUrl=config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     await this.fillCatalog()
-    axios.get(this.baseApiUrl+'compras/'+this.id)
+    axios.get(this.baseApiUrl+'AjusteInvetarios/'+this.id)
         .then((reponse)=>{
-            this.compras=reponse.data
-            this.tableData=reponse.data.detalleCompras
-            this.compras.estadoCompra=this.selects.estadoCompra.find(c=>c.id==this.compras.estadoCompra).nombre    
+            this.ajusteInvetarios=reponse.data
+              reponse.data.detalleAjusteInvetarios.forEach(element => {
+              this.tableData.push(element)            
+              element.tipoAjustes=this.selects.tipoajuste.find(c=>c.id==element.tipoAjustes).nombre
+              });
             })
 
   }

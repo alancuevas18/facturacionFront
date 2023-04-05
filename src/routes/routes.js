@@ -67,7 +67,6 @@ const OfficesCreate = () => import('src/pages/Offices/Create.vue')
 //Shopping
 const ShoppingIndex = () => import('src/pages/Shopping/Index.vue')
 const ShoppingPending = () => import('src/pages/Shopping/ShoppingPending.vue')
-const ShoppingRequest = () => import('src/pages/Shopping/ShoppingRequest.vue')
 const ShoppingCreate = () => import('src/pages/Shopping/Create.vue')
 const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
 //Pyment
@@ -81,6 +80,18 @@ const StructureComprobantesCreate = () => import('src/pages/StructureComprobante
 const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
 const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
 const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
+
+//Deductions
+const DeductionsIndex = () => import('src/pages/Deductions/Index.vue')
+const DeductionsCreate = () => import('src/pages/Deductions/Create.vue')
+//SpendsType
+const SpendsTypeIndex = () => import('src/pages/SpendsType/Index.vue')
+const SpendsTypeCreate = () => import('src/pages/SpendsType/Create.vue')
+
+//inventoryadjustment
+const InventoryadjustmentIndex = () => import('src/pages/Inventoryadjustment/Index.vue')
+const InventoryadjustmentCreate = () => import('src/pages/Inventoryadjustment/Create.vue')
+const InventoryadjustmentDetail = () => import('src/pages/Inventoryadjustment/Details.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -238,11 +249,6 @@ let ShoppingeMenu = {
       path: 'index',
       name: 'Administracion compras',
       components: { default: ShoppingIndex }
-    },
-    {
-      path: 'ShoppingRequest',
-      name: 'Solicitudes de Compra',
-      components: { default: ShoppingRequest}
     },
     {
       path: 'Shoppingpending',
@@ -426,18 +432,79 @@ let DeparturesMenu = {
   children: [
     {
       path: 'index',
-      name: 'Administracion Entradas',
+      name: 'Administracion Cambio de Sucursal',
       components: { default: DeparturesIndex }
     },
     {
       path: 'create/:id?',
-      name: 'Crear Entrada',
+      name: 'Crear salida',
       components: { default: DeparturesCreate }
     },
     {
       path: 'details/:id',
-      name: 'Detalles Entrada',
+      name: 'Detalles salida',
       components: { default: DeparturesDetail }
+    }
+  ]
+}
+
+let deductionMenu = {
+  path: '/deductions',
+  component: DashboardLayout,
+  redirect: '/deduction/index',
+  name: 'Retenciones',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Retenciones',
+      components: { default: DeductionsIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Retenciones',
+      components: { default: DeductionsCreate }
+    }
+  ]
+}
+let SpendsTypeMenu = {
+  path: '/SpendsType',
+  component: DashboardLayout,
+  redirect: '/SpendsType/index',
+  name: 'Tipogasto',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Tipo de gasto',
+      components: { default: SpendsTypeIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Tipo de gasto',
+      components: { default: SpendsTypeCreate }
+    }
+  ]
+}
+let InventoryadjustmentMenu = {
+  path: '/Inventoryadjustment',
+  component: DashboardLayout,
+  redirect: '/Inventoryadjustment/index',
+  name: 'Inventoryadjustment',
+  children: [
+    {
+      path: 'index',
+      name: 'Lista de Ajuste de inventarios',
+      components: { default: InventoryadjustmentIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Ajuste',
+      components: { default: InventoryadjustmentCreate }
+    },
+    
+    {
+      path: 'details/:id',
+      name: 'Detalles Ajuste de inventario',
+      components: { default: InventoryadjustmentDetail }
     }
   ]
 }
@@ -465,6 +532,9 @@ const routes = [
   ShoppingeMenu,
   paymentMenu,
   DeparturesMenu,
+  deductionMenu,
+  SpendsTypeMenu,
+  InventoryadjustmentMenu,
   {
     path: '/',
     component: DashboardLayout,

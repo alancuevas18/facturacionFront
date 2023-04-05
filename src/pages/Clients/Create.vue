@@ -189,6 +189,103 @@
                 </ValidationProvider>
               </div>
             </div>
+            
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Nombre Empresa</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresa"
+                  rules=""
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.empresa"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Rnc</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresaRnc"
+                  rules=""
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.empresaRnc"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Telefono empresa*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresaTelefono"
+                  rules="required|numeric"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.empresaTelefono"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Direccion empresa</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="empresaDireccion"
+                  rules=""
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    :disabled="checkedID"
+                    :readonly="readOnly"
+                    :key="readOnly"
+                    v-model="client.empresaDireccion"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Status</label>
               <div class="col-sm-10">
@@ -292,7 +389,11 @@ export default {
         estadoClientes: '',
         personaId: 0,
         id: 0,
-        estadoPersona: ''
+        estadoPersona: true,
+        empresa:'',
+        empresaTelefono:'',
+        empresaDireccion:'',
+        empresaRnc:'',
       }
     }
   },
@@ -361,7 +462,11 @@ export default {
         direccion: obj.direccion,
         celular: obj.celular,
         telefono: obj.telefono,
-        estadoPersona: true,
+        empresa: obj.empresa,
+        empresaRnc: obj.empresaRnc,
+        empresaTelefono: obj.empresaTelefono,
+        empresaDireccion: obj.empresaDireccion,
+        estadoPersona: obj.estadoPersona,
         id: obj.id
       }
       if (obj.id != 0)
@@ -400,6 +505,7 @@ export default {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
+       console.log(this.client)
         this.isLoading = true
         axios
           .post(this.baseApiUrl + 'clientes', this.client)

@@ -151,18 +151,36 @@
                 </div>
               </div>
 
-              
-              <div class="row mb-3">
-                <label class="col-sm-2 col-form-label">Tipo compra</label>
-                <div class="col-sm-4">
-                  <label class="col-form-label"> {{tipoCompra}}</label> 
-                </div>
-              </div>
+       
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Estado</label>
                 <div class="col-sm-4">
                   <label class="col-form-label"> {{ estadoCompra}}</label> 
                   
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-4">
+                  <label class="col-form-label"> {{ compras.fecha}}</label>                   
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">NFC</label>
+                <div class="col-sm-4">
+                <label class="col-form-label">{{ compras.comprobante }}</label>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Sub Total</label>
+                <div class="col-sm-4">
+                <label class="col-form-label">{{ compras.subTotal }}</label>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Itbis</label>
+                <div class="col-sm-4">
+                <label class="col-form-label">{{ compras.itbis }}</label>
                 </div>
               </div>
 
@@ -184,13 +202,7 @@
                 <label class="col-form-label">{{ compras.totalPendiente }}</label>
                 </div>
               </div>
-              <div class="row">
-                <label class="col-sm-2 col-form-label">Fecha</label>
-                <div class="col-sm-4">
-                  <label class="col-form-label"> {{ compras.fecha}}</label> 
-                  
-                </div>
-              </div>
+          
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Nota</label>
                 <div class="col-sm-4">
@@ -370,7 +382,6 @@ export default {
         ]
       },
       estadoCompra:'',
-      tipoCompra:'',
       payment: {
         compraId: 0,
         tipoPago: 1,
@@ -480,15 +491,6 @@ export default {
           this.errored = true
         })
 
-   await  axios
-        .get(this.baseApiUrl + 'catalogo/TipoCompra')
-        .then((response) => {
-          this.tipoCompra = response.data.find(c=>c.id===this.compras.tipoCompra).nombre
-
-        })
-        .catch((error) => {
-          this.errored = true
-        })
 
     },
     fillTable(){

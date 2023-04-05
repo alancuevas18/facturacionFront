@@ -71,8 +71,8 @@
           ></sidebar-item>
           <sidebar-item
             :link="{
-              name: $t('entrance.index'),
-              path: '/entrance/index'
+              name: $t('inventoryadjustment.index'),
+              path: '/inventoryadjustment/index'
             }"
           ></sidebar-item>
           <!-- <sidebar-item
@@ -92,12 +92,7 @@
               path: '/shopping/index'
             }"
           ></sidebar-item>
-          <sidebar-item
-            :link="{
-              name: $t('shopping.request'),
-              path: '/shopping/ShoppingRequest'
-            }"
-          ></sidebar-item>
+
           <sidebar-item
             :link="{
               name: $t('shopping.pending'),
@@ -179,6 +174,27 @@
             :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
           ></sidebar-item>
         </sidebar-item>  
+         <!-- Configuration -->
+         <sidebar-item
+          :link="{
+            name: $t('Configuration.Configuration'),
+            icon: 'fa fa-cog fa-2x'
+          }"
+        >
+          <sidebar-item
+            :link="{
+              name: $t('deductions.index'),
+              path: '/Deductions/index',
+            }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{
+              name: $t('spendsType.index'),
+              path: '/spendsType/index',
+            }"
+          ></sidebar-item>
+        </sidebar-item>
+   
         <!-- structureComprobantes Menu -->
         <sidebar-item
           :link="{
@@ -193,6 +209,7 @@
             }"
           ></sidebar-item>
         </sidebar-item>
+   
      
       
         <hr />

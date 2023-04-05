@@ -72,16 +72,7 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
-                  <router-link :to="'/shopping/create/' + props.row.id">
-                    <base-button
-                      class="edit btn-link"
-                      type="warning"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-pencil"></i>
-                    </base-button>
-                  </router-link>
+        
        
                 </div>
               </el-table-column>

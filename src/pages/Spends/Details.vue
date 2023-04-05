@@ -1,216 +1,282 @@
 <template>
-  <div class="content">
+    <div class="col-md-12">
     <loading
       :active.sync="isLoading"
-      :can-cancel="true"
+      :can-cancel="false"
       :is-full-page="fullPage"
     />
-    <div class="col-md-12">
-      <h2 class="text-center">{{ $t('sellers.index') }}</h2>
-      <card>
-        <template slot="header">
-          <h4 class="card-title">
-            {{ $t('sellers.details') }}
-            <router-link to="/sellers/index">
-              <button class="btn floatr btn-icon btn-youtube">
-                <i class="tim-icons icon-double-left"></i>
-              </button>
-            </router-link>
-          </h4>
-        </template>
-        <div class="row">
-          <div class="col-md-6">
-            <template>
-              <card class="card-user">
-                <p class="card-text"></p>
-                <div class="author">
-                  <div class="block block-one"></div>
-                  <div class="block block-two"></div>
-                  <div class="block block-three"></div>
-                  <div class="block block-four"></div>
-                  <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5 class="title text-capitalize" :class="seller.status">
-                    {{ seller.status }}
-                  </h5>
-                  <p class="description text-capitalize">
-                    {{ seller.name }} {{ seller.lastName }}
-                  </p>
-                </div>
-                <p></p>
+    <h2 class="text-center">
+       {{ $t('spends.details') }}
+    </h2>
+    <card>
+      <template slot="header">
+        <h4 class="card-title">
+          {{ title }} 
+          <router-link to="/entrance/index">
+            <button class="btn floatr btn-icon btn-youtube">
+              <i class="tim-icons icon-double-left"></i>
+              
+            </button>
+          </router-link>
+          <router-link to="/entrance/print">
+            <button class="btn btn btn-twitter">
+                 Imprimir <i class="fa-solid fa-print"></i>
+            </button>
+          </router-link>
+        </h4>
+      </template>
+        <div class="row">  
+        <div class="col-ms-12 col-md-4">
+            <h4 slot="header" class="card-title">
+                    Datos de la Compra
+                </h4>
+          <div class="row">
+                <label class="col-sm-3 col-form-label">Descripción</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.descripcion}}</label>              
+                </div>           
+          </div>     
+           <div class="row">
+                <label class="col-sm-3 col-form-label">Sucursal</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.sucursales.nombre}}</label>              
+                </div>           
+            </div>
 
-                <div slot="footer" class="button-container">
-                  <a
-                    :href="
-                      'https://api.whatsapp.com/send?phone=' + seller.cellPhone
-                    "
-                  >
-                    <base-button class="btn-whatsapp" icon round>
-                      <i class="fab fa-whatsapp"></i>
-                    </base-button>
-                  </a>
-                </div>
-              </card>
-            </template>
-          </div>
-          <div class="col-md-6">
-            <template>
-              <card class="card-user">
-                <p class="card-text"></p>
-                <div class="author">
-                  <div class="block block-one"></div>
-                  <div class="block block-two"></div>
-                  <div class="block block-three"></div>
-                  <div class="block block-four"></div>
-                  <p class="description text-capitalize">
-                    <b>NationalID:</b> {{ seller.nationalID }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>Email:</b> {{ seller.email }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>Address:</b> {{ seller.address }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>CellPhone:</b> {{ seller.cellPhone }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>Phone:</b> {{ seller.phone }}
-                  </p>
-                </div>
-                <p></p>
-
-                <div slot="footer" class="button-container">
-                  <a :href="'tel:' + seller.cellPhone">
-                    <base-button icon round>
-                      <i class="fas fa-phone"></i>
-                    </base-button>
-                  </a>
-                  <a :href="'tel:' + seller.phone">
-                    <base-button icon round>
-                      <i class="fas fa-mobile"></i>
-                    </base-button>
-                  </a>
-                  <a :href="'mailto:' + seller.email">
-                    <base-button icon round>
-                      <i class="fas fa-envelope-open"></i>
-                    </base-button>
-                  </a>
-                  <a
-                    :href="'http://maps.google.com/?q=' + seller.address"
-                    target="_blank"
-                  >
-                    <base-button icon round>
-                      <i class="fas fa-map-marker-alt"></i>
-                    </base-button>
-                  </a>
-                </div>
-              </card>
-            </template>
-          </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Tipo de Gastos</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.tipoGastos.descripcion}}</label>              
+                </div>           
+            </div>
+            
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Sub Tipo de Gastos</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.subTipoGastos.descripcion}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Fecha</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.fecha}}</label>              
+                </div>           
+            </div>
+            
+            <div class="row">
+                <label class="col-sm-3 col-form-label">NFC</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.comprobante}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Sub Total</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.total}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Itbis</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.itbis}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-3 col-form-label">Total</label>
+                <div class="col-sm-9">
+                  <label class="col-form-label"> {{ gastos.total}}</label>              
+                </div>           
+            </div>
+    
         </div>
-      </card>
-      <!-- end card -->
+        
+        <div class="row col-ms-12 col-md-8" style="border-left:solid; ">
+            <div class="col-12">
+                <h4 slot="header" class="card-title text-center">
+                    Detalle
+                </h4>
+                <div>
+                    <div
+                    class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+                    >
+                    <el-select
+                        class="select-primary mb-3 pagination-select"
+                        v-model="pagination.perPage"
+                        placeholder="Per page"
+                    >
+                        <el-option
+                        class="select-primary"
+                        v-for="item in pagination.perPageOptions"
+                        :key="item"
+                        :label="item"
+                        :value="item"
+                        >
+                        </el-option>
+                    </el-select>
+
+                    <base-input>
+                        <el-input
+                        type="search"
+                        class="mb-3 search-input"
+                        clearable
+                        prefix-icon="el-icon-search"
+                        placeholder="Buscar"
+                        v-model="searchQuery"
+                        aria-controls="datatables"
+                        >
+                        </el-input>
+                    </base-input>
+                    </div>
+                    <el-table :data="queriedData">
+                    <el-table-column
+                        v-for="column in tableColumns"
+                        :key="column.label"
+                        :min-width="column.minWidth"
+                        :prop="column.prop"
+                        :label="column.label"
+                    >
+                    </el-table-column>
+                    </el-table>
+                </div>
+                <div
+                    slot="footer"
+                    class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+                >
+                    <div class="">
+                    <p class="card-category">
+                        Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
+                    </p>
+                    </div>
+                    <base-pagination
+                    class="pagination-no-border"
+                    v-model="pagination.currentPage"
+                    :per-page="pagination.perPage"
+                    :total="total"
+                    >
+                    </base-pagination>
+                </div>
+            </div>
+        </div>
     </div>
-  </div>
+        </card>
+      </div>
 </template>
 <script>
+import { Table, TableColumn ,Select, Option,} from 'element-ui'
+import { BasePagination } from 'src/components'
+import Loading from 'vue-loading-overlay'
 import axios from 'axios'
 import config from '@/config'
-import Loading from 'vue-loading-overlay'
-import 'vue-loading-overlay/dist/vue-loading.css'
-
-export default {
-  components: { Loading },
-  data() {
-    return {
+import { computed } from 'vue'
+export default ({
+components:{
+    Loading,
+    BasePagination,
+    [Table.name]: Table,
+    [TableColumn.name]: TableColumn,
+    [Select.name]: Select,
+    [Option.name]: Option,
+}
+,computed: {
+    queriedData() {
+      let result = this.tableData
+      if (this.searchedData.length > 0) {
+        result = this.searchedData
+      }
+      return result.slice(this.from, this.to)
+    },
+    to() {
+      let highBound = this.from + this.pagination.perPage
+      if (this.total < highBound) {
+        highBound = this.total
+      }
+      return highBound
+    },
+    from() {
+      return this.pagination.perPage * (this.pagination.currentPage - 1)
+    },
+    total() {
+      return this.searchedData.length > 0
+        ? this.searchedData.length
+        : this.tableData.length
+    }
+  },
+  data(){
+    return{
       isLoading: false,
       fullPage: true,
-      id: '',
       baseApiUrl: '',
-      seller: [
+      gastos:{
+        sucursales:{nombre:''},
+        tipoGastos:{descripcion:''},
+        subTipoGastos:{descripcion:''},        
+    },
+    selects: {
+      estadoCompra:[]
+      },
+      id:0,
+      title: '',
+      pagination: {
+        perPage: 25,
+        currentPage: 1,
+        perPageOptions: [5, 10, 25, 50],
+        total: 0
+      },
+      searchQuery: '',
+      propsToSearch: ['retenciones.descripcion'],
+      tableColumns: [
         {
-          code: '',
-          name: '',
-          lastName: '',
-          nationalID: '',
-          email: '',
-          address: '',
-          cellPhone: '',
-          phone: '',
-          status: ''
+          prop: 'retenciones.descripcion',
+          label: 'Retencion',
+          minWidth: 110
+        },
+        {
+          prop: 'retenciones.porcentaje',
+          label: 'Porcentaje',
+          minWidth: 110
+        },
+        {
+          prop: 'total',
+          label: 'Total',
+          minWidth: 70
         }
-      ]
-    }
-  },
-  mounted() {
-    this.id = this.$route.params.id
-    this.baseApiUrl = config.global.baseApiUrl
-    this.find()
-  },
-  methods: {
-    find() {
-      axios
-        .get(this.baseApiUrl + 'Vendedores/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.seller = {
-            code: response.data.codigo,
-            name: response.data.nombre,
-            lastName: response.data.apellido,
-            nationalID: response.data.identificacion,
-            email: response.data.correo,
-            address: response.data.direccion,
-            cellPhone: response.data.celular,
-            phone: response.data.telefono,
-            status: response.data.estadoClientes ? 'active' : 'inactive'
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
+   
+      ],
+      tableData: [],
+      searchedData: [],
+      fuseSearch: null
     }
   }
-}
+  ,methods:{
+
+  },
+ async mounted(){
+    this.baseApiUrl=config.global.baseApiUrl
+    this.id = this.$route.params.id == '' ? '' : this.$route.params.id
+    axios.get(this.baseApiUrl+'gastos/'+this.id)
+        .then((reponse)=>{
+            this.gastos=reponse.data
+            reponse.data.detalleRetenciones.forEach(element => {
+              this.tableData.push(element)            
+              element.retenciones.porcentaje+='%'
+              });   
+            })
+
+  }
+})
 </script>
 <style>
 .floatr {
   float: right;
 }
-.active {
-  color: forestgreen !important;
+.pagination-select,
+.search-input {
+  width: 200px;
 }
-.inactive {
-  color: red !important;
+.swal2-icon-content {
+  font-size: inherit !important;
 }
-.btn-whatsapp {
-  background: #25d366;
-  background-image: -webkit-gradient(
-    linear,
-    right top,
-    left bottom,
-    from(#25d366),
-    color-stop(#075e54),
-    to(#25d366)
-  );
-  background-image: linear-gradient(to bottom left, #25d366, #075e54, #25d366);
-  background-size: 210% 210%;
-  background-position: top right;
-  color: #ffffff;
-  background-size: 210% 210%;
-  background-position: top right;
-  background-repeat: space;
-}
-.btn-whatsapp:hover {
-  background: #25d366;
-  background-image: -webkit-gradient(
-    linear,
-    right top,
-    left bottom,
-    from(#25d366),
-    color-stop(#075e54),
-    to(#25d366)
-  );
-  background-image: linear-gradient(to bottom left, #25d366, #075e54, #25d366);
+.el-table th.el-table__cell {
+  background-color: transparent;
 }
 </style>

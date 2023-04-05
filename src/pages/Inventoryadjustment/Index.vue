@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('shopping.pending') }}</h2>
+      <h2 class="text-center">{{ $t('inventoryadjustment.index') }}</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('shopping.shopping') }}
-            <router-link to="/shopping/create">
+            {{ $t('inventoryadjustment.inventoryadjustment') }}
+            <router-link to="/inventoryadjustment/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,16 +62,18 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/Payments/create/' + props.row.id">
+                  <router-link :to="'/inventoryadjustment/details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
                       size="sm"
                       icon
                     >
-                      <i class="fa-solid fa-coins"></i>
+                      <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
+        
+       
                 </div>
               </el-table-column>
             </el-table>
@@ -166,18 +168,13 @@ export default {
           minWidth: 110
         },
         {
-          prop: 'suplidorId',
-          label: 'Suplidor',
+          prop: 'fecha',
+          label: 'Fecha',
           minWidth: 100
         },
         {
-          prop: 'total',
-          label: 'Total',
-          minWidth: 100
-        },
-        {
-          prop: 'abono',
-          label: 'Abono',
+          prop: 'nota',
+          label: 'Nota',
           minWidth: 70
         }
    
@@ -272,7 +269,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('Compras/ByEsdato/1', true)
+    this.fillTable('AjusteInvetarios', true)
   },
   watch: {}
 }
