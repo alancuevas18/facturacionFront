@@ -1,19 +1,24 @@
 import Vue from 'vue'
+import Vuex from 'vuex'
 import VueRouter from 'vue-router'
 import RouterPrefetch from 'vue-router-prefetch'
 import DashboardPlugin from './plugins/dashboard-plugin'
 import App from './App.vue'
 import swal from 'sweetalert2'
-
+import axios from 'axios'
 // router setup
 import router from './routes/router'
 import i18n from './i18n'
 import './registerServiceWorker'
+import store from './storage'
+
 // plugin setup
 Vue.use(DashboardPlugin)
 Vue.use(VueRouter)
 Vue.use(RouterPrefetch)
 
+var token = localStorage.getItem('token')
+if (token) axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
 Vue.mixin({
   methods: {
     globalSweetMessage: function (message, icon = 'success') {
@@ -37,5 +42,6 @@ new Vue({
   el: '#app',
   render: (h) => h(App),
   router,
+  store,
   i18n
 })

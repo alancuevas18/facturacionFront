@@ -147,7 +147,7 @@
         <div class="table-responsive"><user-table></user-table></div>
       </card>
     </div>
-    <div class="col-lg-12"><country-map-card></country-map-card></div>
+    <!-- <div class="col-lg-12"><country-map-card></country-map-card></div> -->
   </div>
 </template>
 <script>
@@ -204,6 +204,7 @@ export default {
   },
   data() {
     return {
+      routeName: 'DashBoard',
       statsCards: [
         {
           title: '150GB',

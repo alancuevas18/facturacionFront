@@ -17,7 +17,7 @@
           <span class="navbar-toggler-bar bar3"></span>
         </button>
       </div>
-      <a class="navbar-brand" href="#">{{ routeName }}</a>
+      <!-- <a class="navbar-brand" href="#">{{ routeName }}</a> -->
     </div>
 
     <ul class="navbar-nav ml-auto">
@@ -33,7 +33,6 @@
         >
           <i class="tim-icons icon-zoom-split"></i>
         </button>
-        <!-- You can choose types of search input -->
       </div>
       <modal
         :show.sync="searchModalVisible"
@@ -97,14 +96,20 @@
           <p class="d-lg-none">Log out</p>
         </template>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Profile</a>
+          <a href="#" class="nav-item dropdown-item">{{ userName }}</a>
+          <!--   store.state.usuario -->
         </li>
-        <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Settings</a>
-        </li>
+        <!-- <li class="nav-link">
+          <a href="#" class="nav-item dropdown-item">Configuracion</a>
+        </li> -->
         <div class="dropdown-divider"></div>
         <li class="nav-link">
-          <a href="#" class="nav-item dropdown-item">Log out</a>
+          <a
+            href="#"
+            @click="$store.commit('logOut')"
+            class="nav-item dropdown-item"
+            >Log out</a
+          >
         </li>
       </base-dropdown>
     </ul>
@@ -122,8 +127,7 @@ export default {
   },
   computed: {
     routeName() {
-      const { name } = this.$route
-      return this.capitalizeFirstLetter(name)
+      return 'DashBoard'
     },
     isRTL() {
       return false
@@ -155,6 +159,11 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu
+    }
+  },
+  computed: {
+    userName() {
+      return this.$store.state.usuario
     }
   }
 }

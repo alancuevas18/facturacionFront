@@ -35,6 +35,7 @@
           }"
         >
           <sidebar-item
+            v-if="noAbleToSee"
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
           ></sidebar-item>
         </sidebar-item>
@@ -171,8 +172,8 @@
             :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
           ></sidebar-item>
         </sidebar-item>
-         <!-- Configuration -->
-         <sidebar-item
+        <!-- Configuration -->
+        <sidebar-item
           :link="{
             name: $t('Configuration.Configuration'),
             icon: 'fa fa-cog fa-2x'
@@ -181,17 +182,17 @@
           <sidebar-item
             :link="{
               name: $t('deductions.index'),
-              path: '/Deductions/index',
+              path: '/Deductions/index'
             }"
           ></sidebar-item>
           <sidebar-item
             :link="{
               name: $t('spendsType.index'),
-              path: '/spendsType/index',
+              path: '/spendsType/index'
             }"
           ></sidebar-item>
         </sidebar-item>
-   
+
         <!-- structureComprobantes Menu -->
         <sidebar-item
           :link="{
@@ -268,7 +269,7 @@ export default {
   },
   data() {
     return {
-      sidebarBackground: 'vue' //vue|blue|orange|green|red|primary
+      sidebarBackground: 'vue'
     }
   },
   methods: {
@@ -294,6 +295,11 @@ export default {
   },
   mounted() {
     this.initScrollbar()
+  },
+  computed: {
+    noAbleToSee() {
+      return true
+    }
   }
 }
 </script>

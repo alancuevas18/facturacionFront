@@ -79,7 +79,7 @@
               v-model="bill.status"
             >
               <el-option
-                v-for="option in selects.estadoFactura"
+                v-for="option in selects.tipoFactura"
                 class="select-primary"
                 :value="option.id"
                 :label="option.nombre"
@@ -93,15 +93,18 @@
     </card>
 
     <card>
+      <!-- Product -->
       <div class="container">
-        <form class="row align-items-center">
+        <form class="row align-items-center" v-if="formToAddProducts">
           <label class="col-form-label">Cantidad</label>
           <base-input
             class="mb-0"
             size="4"
             placeholder="0"
             required
+            type="number"
             v-model="currentCode.quanty"
+            v-on:keyup.enter="pickProduct()"
           >
           </base-input>
           <label class="col-form-label">Producto</label>
@@ -110,6 +113,17 @@
             placeholder="Producto"
             required
             v-model="currentCode.codigo"
+            v-on:keyup.enter="pickProduct()"
+          >
+          </base-input>
+          <label class="col-form-label">Descuento</label>
+          <base-input
+            class="mb-0"
+            placeholder="Descuento"
+            required
+            v-model="currentCode.descuento"
+            type="number"
+            v-on:keyup.enter="pickProduct()"
           >
           </base-input>
           <base-button
@@ -126,9 +140,72 @@
             @click.native="subgetModal()"
             ><i class="fa-solid fa-magnifying-glass"></i
           ></base-button>
+          <base-button
+            type="info"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="changeShowForm()"
+          >
+            Agregar Servicios</base-button
+          >
+        </form>
+        <form class="row align-items-center" v-if="!formToAddProducts">
+          <label class="col-form-label">Cantidad</label>
+          <base-input
+            class="mb-0"
+            size="4"
+            placeholder="0"
+            required
+            type="number"
+            v-model="currentCode.quanty"
+            v-on:keyup.enter="pickService()"
+          >
+          </base-input>
+          <label class="col-form-label">Servicio</label>
+          <base-input
+            class="mb-0"
+            placeholder="Servicio"
+            required
+            v-model="currentCode.codigo"
+            v-on:keyup.enter="pickService()"
+          >
+          </base-input>
+          <label class="col-form-label">Descuento</label>
+          <base-input
+            class="mb-0"
+            placeholder="Descuento"
+            required
+            v-model="currentCode.descuento"
+            type="number"
+            v-on:keyup.enter="pickService()"
+          >
+          </base-input>
+          <base-button
+            type="success"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="pickService()"
+            >+</base-button
+          >
+          <base-button
+            type="primary"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="subgetModal()"
+            ><i class="fa-solid fa-magnifying-glass"></i
+          ></base-button>
+          <base-button
+            type="info"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="changeShowForm()"
+          >
+            Agregar Productos</base-button
+          >
         </form>
       </div>
     </card>
+    <!-- Table -->
     <div class="col-12">
       <card card-body-classes="table-full-width">
         <h4 slot="header" class="card-title">
@@ -137,35 +214,7 @@
         <div>
           <div
             class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-          >
-            <el-select
-              class="select-primary mb-3 pagination-select"
-              v-model="pagination.perPage"
-              placeholder="Per page"
-            >
-              <el-option
-                class="select-primary"
-                v-for="item in pagination.perPageOptions"
-                :key="item"
-                :label="item"
-                :value="item"
-              >
-              </el-option>
-            </el-select>
-
-            <base-input>
-              <el-input
-                type="search"
-                class="mb-3 search-input"
-                clearable
-                prefix-icon="el-icon-search"
-                placeholder="Buscar"
-                v-model="searchQuery"
-                aria-controls="datatables"
-              >
-              </el-input>
-            </base-input>
-          </div>
+          ></div>
           <el-table :data="queriedData">
             <el-table-column
               v-for="column in tableColumns"
@@ -175,6 +224,19 @@
               :label="column.label"
             >
             </el-table-column>
+            <el-table-column :min-width="135" align="right" label="Actions">
+              <div slot-scope="props">
+                <base-button
+                  @click.native="handleDelete(props.$index, props.row)"
+                  class="remove btn-link"
+                  type="danger"
+                  size="sm"
+                  icon
+                >
+                  <i class="tim-icons icon-simple-remove"></i>
+                </base-button>
+              </div>
+            </el-table-column>
           </el-table>
         </div>
         <div
@@ -182,17 +244,8 @@
           class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
         >
           <div class="">
-            <p class="card-category">
-              Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
-            </p>
+            <p class="card-category">Total: {{ this.bill.total.toFixed(2) }}</p>
           </div>
-          <base-pagination
-            class="pagination-no-border"
-            v-model="pagination.currentPage"
-            :per-page="pagination.perPage"
-            :total="total"
-          >
-          </base-pagination>
         </div>
       </card>
     </div>
@@ -218,51 +271,34 @@ export default {
   },
   computed: {
     queriedData() {
-      let result = this.tableData
-      if (this.searchedData.length > 0) {
-        result = this.searchedData
-      }
-      return result.slice(this.from, this.to)
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage
-      if (this.total < highBound) {
-        highBound = this.total
-      }
-      return highBound
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1)
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length
+      return this.tableData
     }
   },
   data() {
     return {
+      formToAddProducts: true,
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
-      pagination: {
-        perPage: 5,
-        currentPage: 1,
-        perPageOptions: [5, 10, 25, 50],
-        total: 0
-      },
       office: '',
       selects: {
         sucursales: [],
         clientes: [],
         vendedores: [],
-        estadoFactura: []
+        tipoFactura: [
+          { id: 1, nombre: 'Contado' },
+          { id: 2, nombre: 'Credito' }
+        ]
       },
       currentCode: {
-        codigo: ''
+        codigo: '',
+        quanty: 1,
+        tax: 0,
+        descuento: 0
       },
       bill: {
-        codigo: ''
+        codigo: '',
+        total: 0
       },
       billtatus: {},
       searchQuery: '',
@@ -294,6 +330,11 @@ export default {
           minWidth: 70
         },
         {
+          prop: 'descuento',
+          label: 'Descuento',
+          minWidth: 70
+        },
+        {
           prop: 'total',
           label: 'Total',
           minWidth: 100
@@ -304,12 +345,127 @@ export default {
       fuseSearch: null
     }
   },
+  mounted() {
+    // this.isLoading = true
+    this.baseApiUrl = config.global.baseApiUrl
+    this.fillCatalogs(['sucursales', 'vendedores', 'clientes'])
+  },
   methods: {
+    changeShowForm() {
+      this.formToAddProducts = !this.formToAddProducts
+    },
+    validateQuanty(currentQuanty, storageQuanty) {
+      if (currentQuanty > storageQuanty)
+        return this.globalSweetMessage(
+          'Cantidad exede limite en almacen',
+          'error'
+        )
+
+      return true
+    },
+    globalValidations(obj, validQuanty = true) {
+      if (this.currentCode.codigo == '')
+        return this.globalSweetMessage('Favor digitar el codigo', 'error')
+      if (!obj) return this.globalSweetMessage('Codigo invalido', 'warning')
+      if (this.currentCode.quanty == 0 || this.currentCode.quanty == undefined)
+        return this.globalSweetMessage(
+          'Agregar un numero diferente a "0"',
+          'error'
+        )
+      if (validQuanty)
+        if (!this.validateQuanty(this.currentCode.quanty, obj.stock))
+          return false
+
+      if (
+        parseInt(obj.precio) - parseInt(this.currentCode.descuento) <
+        parseInt(obj.precioMinimo)
+      )
+        return this.globalSweetMessage(
+          'Precio por debajo del valor minimo permitido',
+          'error'
+        )
+      return true
+    },
+    pickProduct() {
+      axios
+        .get(
+          this.baseApiUrl +
+            'ProductosSucursales/bycodigoornombre?Nombre=' +
+            this.currentCode.codigo +
+            '&Codigo=' +
+            this.currentCode.codigo
+        )
+        .then((response) => {
+          console.log(response.data)
+          if (!this.globalValidations(response.data[0])) return false
+          this.currentCode.tax = response.data[0].productos.exento
+            ? 0
+            : response.data[0].productos.itbis
+          let AddedProduct = this.tableData.findIndex(
+            (p) => p.codigo == this.currentCode.codigo
+          )
+          let total = 0
+          let itbis = 0
+          let subTotal = 0
+          itbis =
+            response.data[0].precio *
+            this.currentCode.quanty *
+            this.currentCode.tax
+
+          total =
+            response.data[0].precio * this.currentCode.quanty +
+            itbis -
+            this.currentCode.descuento
+
+          if (AddedProduct >= 0) {
+            let quanty =
+              parseInt(this.tableData[AddedProduct].cantidad) +
+              parseInt(this.currentCode.quanty)
+
+            if (!this.validateQuanty(quanty, response.data[0].stock))
+              return false
+
+            if (quanty <= 0) {
+              this.handleDelete(AddedProduct)
+              return false
+            }
+            subTotal = parseInt(this.tableData[AddedProduct].precio) * quanty
+
+            itbis = subTotal * this.currentCode.tax
+            this.tableData[AddedProduct].cantidad = quanty
+            this.tableData[AddedProduct].itbis = itbis
+            this.tableData[AddedProduct].total =
+              subTotal + itbis - this.currentCode.descuento
+          } else {
+            if (this.currentCode.quanty < 0)
+              return this.globalSweetMessage(
+                'No puede agregar valores negativos',
+                'error'
+              )
+            let product = {
+              codigo: response.data[0].productos.codigo,
+              nombre: response.data[0].productos.nombre,
+              cantidad: this.currentCode.quanty,
+              precio: response.data[0].precio,
+              itbis: itbis,
+              descuento: this.currentCode.descuento,
+              total: total
+            }
+            this.tableData.push(product)
+            AddedProduct = -1
+          }
+          //totals
+          this.bill.total += total
+        })
+        .catch((error) => {
+          return this.globalSweetMessage('Error al agregar Producto', 'error')
+        })
+        .finally(() => {})
+    },
     handleDelete(index, row) {
       swal
         .fire({
-          title: 'Estas seguro?',
-          text: `Esta accion no se puede reversar!`,
+          title: 'Desa quitar de la lista?',
           icon: 'warning',
           showCancelButton: true,
           customClass: {
@@ -322,46 +478,12 @@ export default {
         })
         .then((result) => {
           if (result.value) {
-            this.deleteRow(row)
+            if (this.bill.total > 0)
+              this.bill.total -= this.tableData[index].total
+            this.tableData.splice(index, 1)
+            if (this.tableData.length == 0) this.bill.total = 0
           }
         })
-    },
-    deleteRow(row) {
-      this.isLoading = true
-      axios
-        .delete(this.baseApiUrl + 'productossucursales/' + row.id)
-        .then(() => {
-          this.globalSweetMessage()
-          let indexToDelete = this.tableData.findIndex(
-            (tableRow) => tableRow.id === row.id
-          )
-          if (indexToDelete >= 0) {
-            this.tableData.splice(indexToDelete, 1)
-          }
-        })
-        .catch((error) => {
-          this.globalSweetMessage(error.response.data.message, 'error')
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    fillTable(resource, clearFilters) {
-      this.tableData = []
-      if (clearFilters) this.office = ''
-      axios
-        .get(this.baseApiUrl + resource)
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-            //this.tableData[i]['estadoEntrada'] = 'Estado'
-          }
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-        .finally(() => (this.isLoading = false))
     },
     fillCatalogs(catalogs) {
       catalogs.forEach((catalog) => {
@@ -374,19 +496,8 @@ export default {
             this.globalSweetMessage('Error al cargar la pagina', 'error')
           })
       })
-    },
-    filterByOffice() {
-      this.tableData = []
-      this.fillTable('Entradas/bysuculsal/' + this.office)
     }
-  },
-  mounted() {
-    this.isLoading = true
-    this.baseApiUrl = config.global.baseApiUrl
-    this.fillCatalogs(['sucursales', 'vendedores', 'clientes', 'estadoFactura'])
-    this.fillTable('Entradas', true)
-  },
-  watch: {}
+  }
 }
 </script>
 <style>

@@ -1,5 +1,9 @@
 import DashboardLayout from 'src/pages/Layout/DashboardLayout.vue'
 import BillingLayout from 'src/pages/BillingLayout/Layout.vue'
+import AuthLayout from 'src/pages/AuthLayout/AuthLayout.vue'
+
+//Login
+const Login = () => import('src/pages/Auth/Login.vue')
 
 // GeneralViews
 import NotFound from 'src/pages/GeneralViews/NotFoundPage.vue'
@@ -111,16 +115,17 @@ const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
 const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
 // const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
 
-
-
 //SpendsType
 const SpendsTypeIndex = () => import('src/pages/SpendsType/Index.vue')
 const SpendsTypeCreate = () => import('src/pages/SpendsType/Create.vue')
 
 //inventoryadjustment
-const InventoryadjustmentIndex = () => import('src/pages/Inventoryadjustment/Index.vue')
-const InventoryadjustmentCreate = () => import('src/pages/Inventoryadjustment/Create.vue')
-const InventoryadjustmentDetail = () => import('src/pages/Inventoryadjustment/Details.vue')
+const InventoryadjustmentIndex = () =>
+  import('src/pages/Inventoryadjustment/Index.vue')
+const InventoryadjustmentCreate = () =>
+  import('src/pages/Inventoryadjustment/Create.vue')
+const InventoryadjustmentDetail = () =>
+  import('src/pages/Inventoryadjustment/Details.vue')
 //bill
 const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
 const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
@@ -135,7 +140,11 @@ let clientMenu = {
     {
       path: 'index',
       name: 'Administracion Clientes',
-      components: { default: ClientIndex }
+      components: { default: ClientIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'ADMIN, VENDEDOR'
+      }
     },
     {
       path: 'create/:id?',
@@ -458,7 +467,6 @@ let paymentMenu = {
       name: 'Detalle de pago',
       components: { default: PaymentDetail }
     }
-
   ]
 }
 let DeparturesMenu = {
@@ -469,17 +477,17 @@ let DeparturesMenu = {
   children: [
     {
       path: 'index',
-      name: 'Administracion Entradas',
+      name: 'Administracion Salidas',
       components: { default: DeparturesIndex }
     },
     {
       path: 'create/:id?',
-      name: 'Crear Entrada',
+      name: 'Crear Salida',
       components: { default: DeparturesCreate }
     },
     {
       path: 'details/:id',
-      name: 'Detalles Entrada',
+      name: 'Detalles Salida',
       components: { default: DeparturesDetail }
     }
   ]
@@ -546,7 +554,7 @@ let cashCloseMenu = {
   path: '/billDashboard/cashClose',
   component: BillingLayout,
   redirect: '/billDashboard/cashClose/index',
-  name: 'Turnos',
+  name: 'Cierre de Caja',
   children: [
     {
       path: 'index',
@@ -555,7 +563,7 @@ let cashCloseMenu = {
     },
     {
       path: 'create/:id?',
-      name: 'Cierre de Caja',
+      name: 'Crear Cierre de Caja',
       components: { default: cashCloseCreate }
     }
   ]
@@ -573,7 +581,7 @@ let billMenu = {
     },
     {
       path: 'create',
-      name: 'Facturacion',
+      name: 'Crear Factura',
       components: { default: billCreate }
     }
   ]
@@ -631,11 +639,24 @@ let InventoryadjustmentMenu = {
       name: 'Crear Ajuste',
       components: { default: InventoryadjustmentCreate }
     },
-    
+
     {
       path: 'details/:id',
       name: 'Detalles Ajuste de inventario',
       components: { default: InventoryadjustmentDetail }
+    }
+  ]
+}
+
+let authPages = {
+  path: '/',
+  component: AuthLayout,
+  name: 'Authentication',
+  children: [
+    {
+      path: '/login',
+      name: 'Login',
+      component: Login
     }
   ]
 }
@@ -670,10 +691,11 @@ const routes = [
   ReturnsMenu,
   cashCloseMenu,
   billMenu,
-  DeparturesMenu,
   deductionMenu,
   SpendsTypeMenu,
   InventoryadjustmentMenu,
+  //Auth
+  authPages,
   {
     path: '/',
     component: DashboardLayout,
@@ -683,7 +705,11 @@ const routes = [
       {
         path: 'dashboard',
         name: 'Dashboard',
-        components: { default: Dashboard }
+        components: { default: Dashboard },
+        meta: {
+          needsAuth: true,
+          validRols: '*'
+        }
       }
     ]
   },

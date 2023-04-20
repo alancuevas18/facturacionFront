@@ -40,10 +40,16 @@
     "global":{
       "cancel":"Cancelar",
       "add": "Agregar",
-      "create": "Crear"
+      "create": "Crear",
+      "wellcome": "Bienvenido",
+      "login" : "Iniciar Sesion",
+      "needHelp": "Necesitas Ayuda?"
     },
     "ConfigSide": {
       "title" : "Configuracion"
+    },
+    "Configuration" :{
+      "Configuration" : "Configuracion"
     },
     "clients": {
       "create" : "Crear",
