@@ -118,6 +118,8 @@ export default {
         .then((response) => {
           let rol = response.data.result.roles[0] ?? 'ADMIN'
           localStorage.setItem('token', response.data.result.token)
+          localStorage.setItem('usuario', this.user.usuario)
+          localStorage.setItem('isAuthenticated', 'true')
           this.$store.commit('setAuthenticated', true)
           this.$store.commit('setUsuario', this.user.usuario)
           this.$store.commit('setRol', rol)

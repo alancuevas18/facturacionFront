@@ -104,10 +104,7 @@
         </li> -->
         <div class="dropdown-divider"></div>
         <li class="nav-link">
-          <a
-            href="#"
-            @click="$store.commit('logOut')"
-            class="nav-item dropdown-item"
+          <a href="#" @click="logOut()" class="nav-item dropdown-item"
             >Log out</a
           >
         </li>
@@ -118,6 +115,7 @@
 <script>
 import { BaseNav, Modal } from '@/components'
 import SidebarToggleButton from './SidebarToggleButton'
+import swal from 'sweetalert2'
 
 export default {
   components: {
@@ -159,6 +157,27 @@ export default {
     },
     toggleMenu() {
       this.showMenu = !this.showMenu
+    },
+    logOut() {
+      swal
+        .fire({
+          title: 'Confirmacion',
+          text: `Seguro que deseas salir del sistema?`,
+          icon: 'warning',
+          showCancelButton: true,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill',
+            cancelButton: 'btn btn-danger btn-fill'
+          },
+          confirmButtonText: 'Salir!',
+          cancelButtonText: 'Cancelar',
+          buttonsStyling: false
+        })
+        .then((result) => {
+          if (result.value) {
+            this.$store.commit('logOut')
+          }
+        })
     }
   },
   computed: {

@@ -17,6 +17,22 @@ Vue.use(DashboardPlugin)
 Vue.use(VueRouter)
 Vue.use(RouterPrefetch)
 
+axios.interceptors.response.use(
+  function (response) {
+    return response
+  },
+  function (error) {
+    if (error.response.status == 401) {
+      swal.fire({
+        title: 'Su session a expirado',
+        icon: icon,
+        buttonsStyling: false
+      })
+      store.commit('logOut')
+    }
+  }
+)
+
 var token = localStorage.getItem('token')
 if (token) axios.defaults.headers.common['Authorization'] = 'Bearer ' + token
 Vue.mixin({
