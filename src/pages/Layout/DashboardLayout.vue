@@ -24,6 +24,7 @@
           }"
         >
           <sidebar-item
+            v-if="AbleToSee('Admin,Vendedor')"
             :link="{ name: $t('clients.index'), path: '/clients/index' }"
           ></sidebar-item>
         </sidebar-item>
@@ -35,7 +36,7 @@
           }"
         >
           <sidebar-item
-            v-if="noAbleToSee"
+            v-if="AbleToSee('*')"
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
           ></sidebar-item>
         </sidebar-item>
@@ -193,6 +194,20 @@
           ></sidebar-item>
         </sidebar-item>
 
+        <!-- Configuration -->
+        <sidebar-item
+          :link="{
+            name: $t('users.users'),
+            icon: 'fa-solid fa-users-gear'
+          }"
+        >
+          <sidebar-item
+            :link="{
+              name: $t('users.index'),
+              path: '/users/index'
+            }"
+          ></sidebar-item>
+        </sidebar-item>
         <!-- structureComprobantes Menu -->
         <sidebar-item
           :link="{
@@ -278,6 +293,14 @@ export default {
         this.$sidebar.displaySidebar(false)
       }
     },
+    AbleToSee(rols) {
+      var userRol = this.$store.state.rol
+      if (rols == '*') return true
+      else {
+        let arrayRols = rols.split(',')
+        if (arrayRols.find((e) => e == userRol)) return true
+      }
+    },
     initScrollbar() {
       let docClasses = document.body.classList
       let isWindows = navigator.platform.startsWith('Win')
@@ -296,11 +319,7 @@ export default {
   mounted() {
     this.initScrollbar()
   },
-  computed: {
-    noAbleToSee() {
-      return true
-    }
-  }
+  computed: {}
 }
 </script>
 <style lang="scss">

@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     isAuthenticated: false,
     token: '',
     usuario: '',
+    password: '',
     rol: ''
   },
   mutations: {

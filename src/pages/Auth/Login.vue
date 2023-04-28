@@ -116,17 +116,20 @@ export default {
       await axios
         .post('https://emacsoft.com/Authorization/Token', this.user)
         .then((response) => {
-          let rol = response.data.result.roles[0] ?? 'ADMIN'
+          let rol = response.data.result.roles[0] ?? 'Root'
           localStorage.setItem('token', response.data.result.token)
-          localStorage.setItem('usuario', this.user.usuario)
           localStorage.setItem('isAuthenticated', 'true')
           this.$store.commit('setAuthenticated', true)
+          this.$store.commit('setToken', response.data.result.token)
           this.$store.commit('setUsuario', this.user.usuario)
           this.$store.commit('setRol', rol)
-
           axios.defaults.headers.common['Authorization'] =
             'Bearer ' + response.data.result.token
-          this.$router.push({ path: '/' })
+          if (rol == 'Supervisor')
+            this.$router.push({ path: '/billDashboard/index' })
+          else if (rol == 'Vendedor')
+            this.$router.push({ path: '/billDashboard/bill/index' })
+          else this.$router.push({ path: '/' })
         })
         .catch((error) => {
           this.globalSweetMessage(error.response.data.message, 'error')

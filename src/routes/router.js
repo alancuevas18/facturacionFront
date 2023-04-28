@@ -1,6 +1,7 @@
 import VueRouter from 'vue-router'
 import routes from './routes'
 import store from '../storage'
+import axios from 'axios'
 
 // configure router
 const router = new VueRouter({
@@ -15,7 +16,18 @@ const router = new VueRouter({
     }
   }
 })
-
+function refreshToken() {
+  if (store.state.isAuthenticated)
+    axios
+      .post('https://emacsoft.com/Authorization/RefreshToken')
+      .then((response) => {
+        axios.defaults.headers.common['Authorization'] =
+          'Bearer ' + response.data.result
+      })
+      .catch((error) => {
+        this.globalSweetMessage(error.response.data.message, 'error')
+      })
+}
 router.beforeEach((to, from, next) => {
   var isAuthenticated = store.state.isAuthenticated
   var userRol = store.state.rol
@@ -25,17 +37,21 @@ router.beforeEach((to, from, next) => {
         to.meta.validRols == '*' ||
         to.meta.validRols == '' ||
         to.meta.validRols == undefined
-      )
+      ) {
+        refreshToken()
         next() //GLOBAL ACCESS
-      else {
+      } else {
         let ableRols = to.meta.validRols.split(',')
-        if (ableRols.find((e) => e == userRol)) next()
-        else next('/')
+        if (ableRols.find((e) => e == userRol)) {
+          refreshToken()
+          next()
+        } else next('/')
       }
     } else {
       next('/login') //NEED AUTHS
     }
   } else {
+    refreshToken()
     next() //NO AUth NEEDS
   }
 })

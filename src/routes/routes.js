@@ -91,6 +91,11 @@ const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
 const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
 const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
 
+//Users
+const UsersIndex = () => import('src/pages/Users/Index.vue')
+const UsersCreate = () => import('src/pages/Users/Create.vue')
+const UsersRols = () => import('src/pages/Users/Rols.vue')
+
 //Billing Menu
 const BillDashBoardIndex = () =>
   import('src/pages/BillMenu/BillDashboard/Index.vue')
@@ -492,6 +497,29 @@ let DeparturesMenu = {
     }
   ]
 }
+let UsersMenu = {
+  path: '/users',
+  component: DashboardLayout,
+  redirect: '/users/index',
+  name: 'Usuarios',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Usuarios',
+      components: { default: UsersIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Usuario',
+      components: { default: UsersCreate }
+    },
+    {
+      path: 'rols/:id',
+      name: 'Rol de Usuario',
+      components: { default: UsersRols }
+    }
+  ]
+}
 //Billing Menu
 let BillDashboard = {
   path: '/billDashboard',
@@ -586,7 +614,6 @@ let billMenu = {
     }
   ]
 }
-
 let deductionMenu = {
   path: '/deductions',
   component: DashboardLayout,
@@ -647,7 +674,6 @@ let InventoryadjustmentMenu = {
     }
   ]
 }
-
 let authPages = {
   path: '/',
   component: AuthLayout,
@@ -684,6 +710,7 @@ const routes = [
   ShoppingeMenu,
   paymentMenu,
   DeparturesMenu,
+  UsersMenu,
   //Billing
   BillDashboard,
   ShiftMenu,

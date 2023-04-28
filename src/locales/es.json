@@ -43,7 +43,8 @@
       "create": "Crear",
       "wellcome": "Bienvenido",
       "login" : "Iniciar Sesion",
-      "needHelp": "Necesitas Ayuda?"
+      "needHelp": "Necesitas Ayuda?",
+      "assing": "Asignar"
     },
     "ConfigSide": {
       "title" : "Configuracion"
@@ -191,5 +192,10 @@
   "bill": {
     "index" : "Facturacion",
     "bill": "Facturacion"
+  },
+  "users":{
+    "index" : "Administracion de Usuarios",
+    "users": "Usuarios",
+    "rols" : "Rol de Usuarios"
   }
 }

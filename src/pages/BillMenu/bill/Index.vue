@@ -69,13 +69,13 @@
             </el-select>
           </div>
           <div class="col-sm-3">
-            <label class="col-form-label">Estado</label>
+            <label class="col-form-label">Tipo Facturacion</label>
             <el-select
               required
               filterable
               class="select-primary"
               size="large"
-              placeholder="Estado"
+              placeholder="Tipo Facturacion"
               v-model="bill.status"
             >
               <el-option

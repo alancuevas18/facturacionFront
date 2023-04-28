@@ -12,35 +12,65 @@
       </div>
 
       <ul class="navbar-nav">
-        <router-link class="nav-item" tag="li" to="/dashboard">
+        <router-link
+          class="nav-item"
+          tag="li"
+          to="/dashboard"
+          v-if="AbleToSee('Admin,Root')"
+        >
           <a class="nav-link text-primary">
             <i class="tim-icons icon-minimal-left"></i> Back to Dashboard
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/billDashboard/index">
+        <router-link
+          class="nav-item"
+          tag="li"
+          to="/billDashboard/index"
+          v-if="AbleToSee('Admin,Root,Supervisor')"
+        >
           <a class="nav-link">
             <i class="tim-icons icon-chart-pie-36"></i> Inicio
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/billDashboard/shift">
+        <router-link
+          class="nav-item"
+          tag="li"
+          to="/billDashboard/shift"
+          v-if="AbleToSee('Admin,Root,Supervisor')"
+        >
           <a class="nav-link"> <i class="tim-icons icon-laptop"></i> Turnos </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/billDashboard/quotation">
+        <router-link
+          class="nav-item"
+          tag="li"
+          to="/billDashboard/quotation"
+          v-if="AbleToSee('Admin,Root,Supervisor')"
+        >
           <a class="nav-link">
             <i class="tim-icons icon-notes"></i> Cotizacion
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/billDashboard/returns">
+        <router-link
+          class="nav-item"
+          tag="li"
+          to="/billDashboard/returns"
+          v-if="AbleToSee('Admin,Root,Supervisor')"
+        >
           <a class="nav-link">
             <i class="tim-icons icon-coins"></i> Devoluciones
           </a>
         </router-link>
 
-        <router-link class="nav-item" tag="li" to="/billDashboard/cashClose">
+        <router-link
+          class="nav-item"
+          tag="li"
+          to="/billDashboard/cashClose"
+          v-if="AbleToSee('Admin,Root,Supervisor')"
+        >
           <a class="nav-link">
             <i class="tim-icons icon-money-coins"></i> Cuadre
           </a>
@@ -48,6 +78,11 @@
         <router-link class="nav-item" tag="li" to="/billDashboard/bill">
           <a class="nav-link">
             <i class="tim-icons icon-paper"></i> Facturacion
+          </a>
+        </router-link>
+        <router-link class="nav-item" tag="li" to="#">
+          <a class="nav-link" @click="logOut()">
+            <i class="tim-icons icon-minimal-right"></i> Salir del Sistema
           </a>
         </router-link>
       </ul>
@@ -89,6 +124,7 @@
 <script>
 import { BaseNav } from 'src/components'
 import { ZoomCenterTransition } from 'vue2-transitions'
+import swal from 'sweetalert2'
 
 export default {
   components: {
@@ -120,6 +156,35 @@ export default {
     toggleNavbar() {
       document.body.classList.toggle('nav-open')
       this.showMenu = !this.showMenu
+    },
+    AbleToSee(rols) {
+      var userRol = this.$store.state.rol
+      if (rols == '*') return true
+      else {
+        let arrayRols = rols.split(',')
+        if (arrayRols.find((e) => e == userRol)) return true
+      }
+    },
+    logOut() {
+      swal
+        .fire({
+          title: 'Confirmacion',
+          text: `Seguro que deseas salir del sistema?`,
+          icon: 'warning',
+          showCancelButton: true,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill',
+            cancelButton: 'btn btn-danger btn-fill'
+          },
+          confirmButtonText: 'Salir!',
+          cancelButtonText: 'Cancelar',
+          buttonsStyling: false
+        })
+        .then((result) => {
+          if (result.value) {
+            this.$store.commit('logOut')
+          }
+        })
     }
   },
   beforeRouteUpdate(to, from, next) {
