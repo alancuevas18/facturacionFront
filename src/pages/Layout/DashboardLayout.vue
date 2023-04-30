@@ -24,7 +24,7 @@
           }"
         >
           <sidebar-item
-            v-if="AbleToSee('Admin,Vendedor')"
+            v-if="AbleToSee('Admin,Root')"
             :link="{ name: $t('clients.index'), path: '/clients/index' }"
           ></sidebar-item>
         </sidebar-item>
