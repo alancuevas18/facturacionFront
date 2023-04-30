@@ -38,6 +38,7 @@ axios.interceptors.response.use(
         })
       store.commit('logOut')
     }
+    return Promise.reject(error)
   }
 )
 

@@ -2,6 +2,7 @@ import VueRouter from 'vue-router'
 import routes from './routes'
 import store from '../storage'
 import axios from 'axios'
+import swal from 'sweetalert2'
 
 // configure router
 const router = new VueRouter({

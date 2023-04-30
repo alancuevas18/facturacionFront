@@ -148,18 +148,26 @@ let clientMenu = {
       components: { default: ClientIndex },
       meta: {
         needsAuth: true,
-        validRols: 'ADMIN, VENDEDOR'
+        validRols: 'Admin,Root'
       }
     },
     {
       path: 'create/:id?',
       name: 'Crear Clientes',
-      components: { default: ClientCreate }
+      components: { default: ClientCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles Cliente',
-      components: { default: ClientDetail }
+      components: { default: ClientDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -172,17 +180,29 @@ let supplierMenu = {
     {
       path: 'index',
       name: 'Administracion Suplidores',
-      components: { default: SupplierIndex }
+      components: { default: SupplierIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Suplidor',
-      components: { default: SupplierCreate }
+      components: { default: SupplierCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles Suplidor',
-      components: { default: SupplierDetail }
+      components: { default: SupplierDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -195,17 +215,29 @@ let ProductsMenu = {
     {
       path: 'index',
       name: 'Administracion Productos',
-      components: { default: ProductIndex }
+      components: { default: ProductIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Productos',
-      components: { default: ProductCreate }
+      components: { default: ProductCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles Producto',
-      components: { default: ProductDetail }
+      components: { default: ProductDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -218,12 +250,20 @@ let ProductOfficesMenu = {
     {
       path: 'index',
       name: 'Administracion Productos Por Sucursal',
-      components: { default: ProductOfficeIndex }
+      components: { default: ProductOfficeIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Productos Por Sucursal',
-      components: { default: ProductOfficeCreate }
+      components: { default: ProductOfficeCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -236,12 +276,20 @@ let ServicesMenu = {
     {
       path: 'index',
       name: 'Administracion Servicios',
-      components: { default: ServiceIndex }
+      components: { default: ServiceIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Servicios',
-      components: { default: ServiceCreate }
+      components: { default: ServiceCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -254,12 +302,20 @@ let ServiceOfficesMenu = {
     {
       path: 'index',
       name: 'Administracion Servicios Por Sucursal',
-      components: { default: ServiceOfficeIndex }
+      components: { default: ServiceOfficeIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Servicios Por Sucursal',
-      components: { default: ServiceOfficeCreate }
+      components: { default: ServiceOfficeCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -272,17 +328,29 @@ let EntranceMenu = {
     {
       path: 'index',
       name: 'Administracion Entradas',
-      components: { default: EntranceIndex }
+      components: { default: EntranceIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Entrada',
-      components: { default: EntranceCreate }
+      components: { default: EntranceCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles Entrada',
-      components: { default: EntranceDetail }
+      components: { default: EntranceDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -295,23 +363,39 @@ let ShoppingeMenu = {
     {
       path: 'index',
       name: 'Administracion compras',
-      components: { default: ShoppingIndex }
+      components: { default: ShoppingIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'Shoppingpending',
       name: 'Compras Pendientes de pago',
-      components: { default: ShoppingPending }
+      components: { default: ShoppingPending },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
 
     {
       path: 'create/:id?',
       name: 'Crear compras',
-      components: { default: ShoppingCreate }
+      components: { default: ShoppingCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles compras',
-      components: { default: ShoppingDetail }
+      components: { default: ShoppingDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -324,17 +408,29 @@ let SpendMenu = {
     {
       path: 'index',
       name: 'Administracion Gastos',
-      components: { default: SpendIndex }
+      components: { default: SpendIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Gasto',
-      components: { default: SpendCreate }
+      components: { default: SpendCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles Gasto',
-      components: { default: SpendDetail }
+      components: { default: SpendDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -342,22 +438,34 @@ let SellerMenu = {
   path: '/sellers',
   component: DashboardLayout,
   redirect: '/sellers/index',
-  name: 'Vendedores',
+  name: 'Rootes',
   children: [
     {
       path: 'index',
-      name: 'Administracion Vendedores',
-      components: { default: SellerIndex }
+      name: 'AdministracionRootes',
+      components: { default: SellerIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
-      name: 'Crear Vendedor',
-      components: { default: SellerCreate }
+      name: 'CrearRoot',
+      components: { default: SellerCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
-      name: 'Detalles Vendedor',
-      components: { default: SellerDetail }
+      name: 'DetallesRoot',
+      components: { default: SellerDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -370,17 +478,29 @@ let DeliveryMenu = {
     {
       path: 'index',
       name: 'Administracion Mensajeros',
-      components: { default: DeliveryIndex }
+      components: { default: DeliveryIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Mensajero',
-      components: { default: DeliveryCreate }
+      components: { default: DeliveryCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles Mensajero',
-      components: { default: DeliveryDetail }
+      components: { default: DeliveryDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -393,12 +513,20 @@ let brandMenu = {
     {
       path: 'index',
       name: 'Administracion Marcas',
-      components: { default: BrandIndex }
+      components: { default: BrandIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Marca',
-      components: { default: BrandCreate }
+      components: { default: BrandCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -411,12 +539,20 @@ let officeMenu = {
     {
       path: 'index',
       name: 'Administracion Sucursales',
-      components: { default: OfficesIndex }
+      components: { default: OfficesIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Sucursal',
-      components: { default: OfficesCreate }
+      components: { default: OfficesCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -429,12 +565,20 @@ let structureComprobanteMenu = {
     {
       path: 'index',
       name: 'Administracion Comprobantes',
-      components: { default: StructureComprobantesIndex }
+      components: { default: StructureComprobantesIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Comprobante',
-      components: { default: StructureComprobantesCreate }
+      components: { default: StructureComprobantesCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -447,12 +591,20 @@ let productTypeMenu = {
     {
       path: 'index',
       name: 'Administracion Tipo de Productos',
-      components: { default: ProductTypeIndex }
+      components: { default: ProductTypeIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Tipo de Marca',
-      components: { default: ProductTypeCreate }
+      components: { default: ProductTypeCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -465,12 +617,20 @@ let paymentMenu = {
     {
       path: 'create/:id?',
       name: 'Crear Pago',
-      components: { default: PaymentCreate }
+      components: { default: PaymentCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id?',
       name: 'Detalle de pago',
-      components: { default: PaymentDetail }
+      components: { default: PaymentDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -483,17 +643,29 @@ let DeparturesMenu = {
     {
       path: 'index',
       name: 'Administracion Salidas',
-      components: { default: DeparturesIndex }
+      components: { default: DeparturesIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Salida',
-      components: { default: DeparturesCreate }
+      components: { default: DeparturesCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'details/:id',
       name: 'Detalles Salida',
-      components: { default: DeparturesDetail }
+      components: { default: DeparturesDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
@@ -506,17 +678,29 @@ let UsersMenu = {
     {
       path: 'index',
       name: 'Administracion Usuarios',
-      components: { default: UsersIndex }
+      components: { default: UsersIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'create/:id?',
       name: 'Crear Usuario',
-      components: { default: UsersCreate }
+      components: { default: UsersCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     },
     {
       path: 'rols/:id',
       name: 'Rol de Usuario',
-      components: { default: UsersRols }
+      components: { default: UsersRols },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
     }
   ]
 }
