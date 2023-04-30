@@ -197,5 +197,10 @@
     "index" : "Administracion de Usuarios",
     "users": "Usuarios",
     "rols" : "Rol de Usuarios"
+  },
+  "userOffices":{
+    "index" : "Administracion de Usuario Sucursal",
+    "userOffices": "Usuarios Sucursal",
+    "SelectOffice" : "Elige Una sucursal"
   }
 }

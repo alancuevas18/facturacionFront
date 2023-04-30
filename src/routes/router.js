@@ -22,7 +22,8 @@ function refreshToken() {
       .post('https://emacsoft.com/Authorization/RefreshToken')
       .then((response) => {
         axios.defaults.headers.common['Authorization'] =
-          'Bearer ' + response.data.result
+          'Bearer ' + response.data.result.token
+          store.state.office=response.data.result.sucursal
       })
       .catch((error) => {
         this.globalSweetMessage(error.response.data.message, 'error')

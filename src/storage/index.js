@@ -13,6 +13,7 @@ const store = new Vuex.Store({
     isAuthenticated: false,
     token: '',
     usuario: '',
+    office: '',
     password: '',
     rol: ''
   },
@@ -22,6 +23,9 @@ const store = new Vuex.Store({
     },
     setUsuario(state, userName) {
       state.usuario = userName
+    },
+    setSucursal(state,oficina) {
+      state.office=oficina
     },
     setToken(state, token) {
       state.token = token
