@@ -23,7 +23,7 @@ const router = new VueRouter({
 function refreshToken() {
   if (store.state.isAuthenticated)
     axios
-      .post('https://localhost:7004/Authorization/RefreshToken')
+      .post('https://emacsoft.com/Authorization/RefreshToken')
       .then((response) => {
         axios.defaults.headers.common['Authorization'] =
           'Bearer ' + response.data.result.token
