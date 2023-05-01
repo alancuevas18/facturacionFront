@@ -97,7 +97,7 @@
         </template>
         <li class="nav-link">
           <a href="#" class="nav-item dropdown-item">{{ userName }}</a>
-          <a href="/UserOffices/SelectOffices" class="nav-item dropdown-item">{{ office }}</a>
+          <router-link to="/UserOffices/SelectOffices" class="nav-item dropdown-item">{{ office }}</router-link>
           <!--   store.state.usuario -->
         </li>
         <!-- <li class="nav-link">

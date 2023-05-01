@@ -38,7 +38,6 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
-
 export default {
   components: {
     Loading,
@@ -59,10 +58,12 @@ export default {
     selectOffice(id){
       axios.put(this.baseApiUrl+'UsuarioSucursal/SelectSucursal?SucursalId='+id)
       .then(()=>{
-        this.$router.push({ path: '/dashboard' })
+        
+        this.$router.push(this.$store.state.routerHistory[this.$store.state.routerHistory.length-1])
       });
     }
   },
+
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl

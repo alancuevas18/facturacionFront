@@ -269,7 +269,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('AjusteInvetarios', true)
+    this.fillTable('AjusteInvetarios/bysuculsal', true)
   },
   watch: {}
 }

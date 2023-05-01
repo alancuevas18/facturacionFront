@@ -235,7 +235,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     axios
-      .get(this.baseApiUrl + 'Gastos')
+      .get(this.baseApiUrl + 'Gastos/BySuculsal')
       .then((response) => {
         for (let i = 0; i < response.data.length; i++)
           this.tableData.push(response.data[i])

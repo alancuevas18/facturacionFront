@@ -312,14 +312,14 @@ export default {
     },
     filterByOffice() {
       this.tableData = []
-      this.fillTable('productossucursales/bysuculsal/' + this.office)
+      this.fillTable('productossucursales/BySuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('productossucursales', true)
+    this.fillTable('productossucursales/BySuculsal', true)
   },
   watch: {}
 }

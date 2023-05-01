@@ -10,9 +10,12 @@ const router = new VueRouter({
   routes,
   linkActiveClass: 'active',
   scrollBehavior(to, from, savedPosition) {
+    console.log(from)
+    store.state.routerHistory.push(from.path)
     if (savedPosition) {
       return savedPosition
     } else {
+
       return { x: 0, y: 0 }
     }
   }
@@ -20,7 +23,7 @@ const router = new VueRouter({
 function refreshToken() {
   if (store.state.isAuthenticated)
     axios
-      .post('https://emacsoft.com/Authorization/RefreshToken')
+      .post('https://localhost:7004/Authorization/RefreshToken')
       .then((response) => {
         axios.defaults.headers.common['Authorization'] =
           'Bearer ' + response.data.result.token
