@@ -14,7 +14,7 @@ export default {
     purpleGradient: ['rgba(253,93,147,0.8)', 'rgba(253,93,147,0)']
   },
   global: {
-    // baseApiUrl: 'https://emacsoft.com/api/'
-    baseApiUrl : 'https://localhost:7004/api/',
+    baseApiUrl: 'https://emacsoft.com/api/'
+    // baseApiUrl : 'https://localhost:7004/api/',
   }
 }
