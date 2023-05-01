@@ -7,6 +7,7 @@ const Login = () => import('src/pages/Auth/Login.vue')
 
 // GeneralViews
 import NotFound from 'src/pages/GeneralViews/NotFoundPage.vue'
+import { select } from 'd3'
 
 // Dashboard pages
 const Dashboard = () => import('src/pages/Dashboard/Dashboard.vue')
@@ -90,6 +91,14 @@ const StructureComprobantesCreate = () =>
 const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
 const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
 const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
+
+
+//UserOffices
+const UserOfficesIndex = () => import('src/pages/UserOffices/Index.vue')
+const UserOfficesCreate = () => import('src/pages/UserOffices/Create.vue')
+const SelectOffices = () => import('src/pages/UserOffices/SelectOffices.vue')
+  
+
 
 //Users
 const UsersIndex = () => import('src/pages/Users/Index.vue')
@@ -669,6 +678,30 @@ let DeparturesMenu = {
     }
   ]
 }
+
+let UserOfficesMenu = {
+  path: '/userOffices',
+  component: DashboardLayout,
+  redirect: '/userOffices/index',
+  name: 'Usuarios',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Usuarios Sucursal',
+      components: { default: UserOfficesIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Usuario Sucursal',
+      components: { default: UserOfficesCreate }
+    },
+    {
+      path: 'SelectOffices/',
+      name: 'Seleccionar Sucursal',
+      components: { default: SelectOffices }
+    }
+  ]
+}
 let UsersMenu = {
   path: '/users',
   component: DashboardLayout,
@@ -894,6 +927,7 @@ const routes = [
   ShoppingeMenu,
   paymentMenu,
   DeparturesMenu,
+  UserOfficesMenu,
   UsersMenu,
   //Billing
   BillDashboard,

@@ -207,6 +207,14 @@
               path: '/users/index'
             }"
           ></sidebar-item>
+
+          <sidebar-item
+            :link="{
+              name: $t('userOffices.index'),
+              path: '/userOffices/index'
+            }"
+          ></sidebar-item>
+
         </sidebar-item>
         <!-- structureComprobantes Menu -->
         <sidebar-item

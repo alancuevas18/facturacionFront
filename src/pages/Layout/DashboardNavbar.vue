@@ -91,12 +91,13 @@
         menu-classes="dropdown-navbar"
       >
         <template slot="title">
-          <div class="photo"><img src="img/mike.jpg" /></div>
+          <div class="photo"></div>
           <b class="caret d-none d-lg-block d-xl-block"></b>
           <p class="d-lg-none">Log out</p>
         </template>
         <li class="nav-link">
           <a href="#" class="nav-item dropdown-item">{{ userName }}</a>
+          <router-link to="/UserOffices/SelectOffices" class="nav-item dropdown-item">{{ office }}</router-link>
           <!--   store.state.usuario -->
         </li>
         <!-- <li class="nav-link">
@@ -183,6 +184,9 @@ export default {
   computed: {
     userName() {
       return this.$store.state.usuario
+    },
+    office() {
+      return this.$store.state.office
     }
   }
 }

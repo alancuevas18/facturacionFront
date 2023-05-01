@@ -120,7 +120,8 @@ export default {
           localStorage.setItem('token', response.data.result.token)
           localStorage.setItem('isAuthenticated', 'true')
           this.$store.commit('setAuthenticated', true)
-          this.$store.commit('setToken', response.data.result.token)
+          this.$store.commit('setToken', response.data.result.token)          
+          this.$store.commit('setSucursal',response.data.result.sucursal)
           this.$store.commit('setUsuario', this.user.usuario)
           this.$store.commit('setRol', rol)
           axios.defaults.headers.common['Authorization'] =

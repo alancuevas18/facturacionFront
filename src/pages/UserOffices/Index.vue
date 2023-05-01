@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('inventoryadjustment.index') }}</h2>
+      <h2 class="text-center">{{ $t('userOffices.index') }}</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('inventoryadjustment.inventoryadjustment') }}
-            <router-link to="/inventoryadjustment/create">
+            {{ $t('userOffices.userOffices') }}
+            <router-link to="/userOffices/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,18 +62,26 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/inventoryadjustment/details/' + props.row.id">
+        
+                  <router-link :to="'/userOffices/create/' + props.row.id">
                     <base-button
-                      class="like btn-link"
-                      type="info"
+                      class="edit btn-link"
+                      type="warning"
                       size="sm"
                       icon
                     >
-                      <i class="tim-icons icon-notes"></i>
+                      <i class="tim-icons icon-pencil"></i>
                     </base-button>
                   </router-link>
-        
-       
+                  <base-button
+                    @click.native="handleDelete(props.$index, props.row)"
+                    class="remove btn-link"
+                    type="danger"
+                    size="sm"
+                    icon
+                  >
+                    <i class="tim-icons icon-simple-remove"></i>
+                  </base-button>
                 </div>
               </el-table-column>
             </el-table>
@@ -153,31 +161,19 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      office: '',
-      selects: {
-        simple: '',
-        offices: []
-      },
-      entrancetatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: [],
       tableColumns: [
         {
-          prop: 'sucursalesId',
-          label: 'Sucursal',
-          minWidth: 110
-        },
-        {
-          prop: 'fecha',
-          label: 'Fecha',
-          minWidth: 100
-        },
-        {
-          prop: 'nota',
-          label: 'Nota',
+          prop: 'nombreUsuario',
+          label: 'Usuario',
           minWidth: 70
-        }
-   
+        },
+        {
+          prop: 'sucursal',
+          label: 'Sucursal',
+          minWidth: 70
+        },
       ],
       tableData: [],
       searchedData: [],
@@ -209,7 +205,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'Compras/' + row.id)
+        .delete(this.baseApiUrl + 'UsuarioSucursal/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -223,53 +219,22 @@ export default {
           this.globalSweetMessage(error.response.data.message, 'error')
         })
         .finally(() => (this.isLoading = false))
-    },
-    fillTable(resource, clearFilters) {
-      this.tableData = []
-      if (clearFilters) this.office = ''
-      axios
-        .get(this.baseApiUrl + resource)
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] = response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-          //this.tableData[i]['estadoEntrada'] = 'Estado'
-          }
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/sucursales')
-        .then((response) => {
-          this.selects.offices = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-      axios
-        .get(this.baseApiUrl + 'catalogo/suplidores')
-        .then((response) => {
-          this.suppliers = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-    },
-    filterByOffice() {
-      this.tableData = []
-      this.fillTable('Compras/bysuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillCatalog()
-    this.fillTable('AjusteInvetarios/bysuculsal', true)
+    axios
+      .get(this.baseApiUrl + 'UsuarioSucursal/')
+      .then((response) => {
+        for (let i = 0; i < response.data.length; i++) {
+          this.tableData.push(response.data[i])
+        }
+      })
+      .catch((error) => {
+        this.errored = true
+      })
+      .finally(() => (this.isLoading = false))
   },
   watch: {}
 }

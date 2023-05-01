@@ -272,7 +272,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('Compras/ByEsdato/1', true)
+    this.fillTable('Compras/ByEsdatoAndSuculsal/1', true)
   },
   watch: {}
 }
