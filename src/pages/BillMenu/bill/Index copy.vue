@@ -5,237 +5,6 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <div class="col-12">
-      <card>
-        <div class="row">
-          <div class="col-4">
-             
-      <!-- Product -->
-      <div class="container">
-        <base-button
-            type="info"
-            :class="formToAddProducts?'btn animation-on-hover btn-info':'btn btn-link'"
-            size="sm"
-            @click.native="changeShowForm('Producto')"
-          >
-            Agregar Productos</base-button
-          >
-        <base-button
-            type="info"
-            :class="!formToAddProducts?'btn animation-on-hover btn-info':'btn btn-link'"
-            size="sm"
-            @click.native="changeShowForm('Servicio')"
-          >
-            Agregar Servicios</base-button
-          >
-      
-        <form class="row align-items-center" v-if="formToAddProducts">
-  
-         <div class="col-12">
-          <label class="col-form-label">Cantidad</label>
-          <base-input
-            class="mb-0"
-            size="4"
-            placeholder="0"
-            required
-            type="number"
-            v-model="currentCode.quanty"
-            v-on:keyup.enter="pickProduct()"
-          >
-          </base-input>
-        </div>
-       
-        <div class="col-12">
-
-          <label class="col-form-label">Descuento</label>
-          <base-input
-            class="mb-0"
-            placeholder="Descuento"
-            required
-            v-model="currentCode.descuento"
-            type="number"
-            v-on:keyup.enter="pickProduct()"
-          >
-          </base-input>
-        </div>
-        <div class="col-12">
-
-          <label class="col-form-label">Producto</label>
-          <base-input
-            class="mb-0"
-            placeholder="Producto"
-            required
-            v-model="currentCode.codigo"
-            v-on:keyup.enter="pickProduct()"
-          >
-          </base-input>
-        </div>
-       
-          <base-button
-            type="success"
-            class="animation-on-hover"
-            size="sm"
-            @click.native="pickProduct()"
-            >+</base-button
-          >
-          <base-button
-            type="primary"
-            class="animation-on-hover"
-            size="sm"
-            @click.native="subgetModal()"
-            ><i class="fa-solid fa-magnifying-glass"></i
-          ></base-button>
-         
-        </form>
-        <form class="row align-items-center" v-if="!formToAddProducts">
-        <div class="col-12">
-          <label class="col-form-label">Cantidad</label>
-          <base-input
-            class="mb-0"
-            size="4"
-            placeholder="0"
-            required
-            type="number"
-            v-model="currentCode.quanty"
-            v-on:keyup.enter="pickService()"
-          >
-          </base-input>
-        </div>
-        <div class="col-12">
-
-          <label class="col-form-label">Descuento</label>
-          <base-input
-            class="mb-0"
-            placeholder="Descuento"
-            required
-            v-model="currentCode.descuento"
-            type="number"
-            v-on:keyup.enter="pickService()"
-          >
-          </base-input>
-        </div>
-        <div class="col-12">
-          <label class="col-form-label">Servicio</label>
-          <base-input
-            class="mb-0"
-            placeholder="Servicio"
-            required
-            v-model="currentCode.codigo"
-            v-on:keyup.enter="pickService()"
-          >
-          </base-input>
-        </div>
-    
-          <base-button
-            type="success"
-            class="animation-on-hover"
-            size="sm"
-            @click.native="pickService()"
-            >+</base-button
-          >
-          <base-button
-            type="primary"
-            class="animation-on-hover"
-            size="sm"
-            @click.native="subgetModal()"
-            ><i class="fa-solid fa-magnifying-glass"></i
-          ></base-button>
-    
-        </form>
-      </div>
-          </div> 
-          
-          <div class="col-8">
-            <div class="row">
-            <div class="col-6">
-            <label class="col-form-label">Cliente</label>
-            <el-select
-              required
-              filterable
-              class="select-primary"
-              size="large"
-              placeholder="Cliente"
-              v-model="bill.clienteId"
-            >
-              <el-option
-                v-for="option in selects.clientes"
-                class="select-primary"
-                :value="option.id"
-                :label="option.nombre"
-                :key="option.id"
-              >
-              </el-option>
-            </el-select>
-          </div>
-          <div class="col-6">
-            <label class="col-form-label">Vendedor</label>
-            <el-select
-              required
-              filterable
-              class="select-primary"
-              size="large"
-              placeholder="Vendedor"
-              v-model="bill.vendedorId"
-            >
-              <el-option
-                v-for="option in selects.vendedores"
-                class="select-primary"
-                :value="option.id"
-                :label="option.nombre"
-                :key="option.id"
-              >
-              </el-option>
-            </el-select>
-          </div>
-
-          </div> 
-            <card card-body-classes="table-full-width">
-            <h4 slot="header" class="card-title">
-              {{ $t('products.products') }}
-            </h4>
-            <div>
-              <div
-                class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-              ></div>
-              <el-table :data="queriedData">
-                <el-table-column
-                  v-for="column in tableColumns"
-                  :key="column.label"
-                  :min-width="column.minWidth"
-                  :prop="column.prop"
-                  :label="column.label"
-                >
-                </el-table-column>
-                <el-table-column :min-width="135" align="right" label="Actions">
-                  <div slot-scope="props">
-                    <base-button
-                      @click.native="handleDelete(props.$index, props.row)"
-                      class="remove btn-link"
-                      type="danger"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-simple-remove"></i>
-                    </base-button>
-                  </div>
-                </el-table-column>
-              </el-table>
-            </div>
-            <div
-              slot="footer"
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-            >
-              <div class="">
-                <p class="card-category">Total: {{ this.bill.total.toFixed(2) }}</p>
-              </div>
-            </div>
-          </card>
-          </div> 
-        </div>
-      </card>
-
-    </div>
-
     <card>
       <div class="col-sm-12">
         <div class="row">
@@ -323,7 +92,119 @@
       </div>
     </card>
 
-  
+    <card>
+      <!-- Product -->
+      <div class="container">
+        <form class="row align-items-center" v-if="formToAddProducts">
+          <label class="col-form-label">Cantidad</label>
+          <base-input
+            class="mb-0"
+            size="4"
+            placeholder="0"
+            required
+            type="number"
+            v-model="currentCode.quanty"
+            v-on:keyup.enter="pickProduct()"
+          >
+          </base-input>
+          <label class="col-form-label">Producto</label>
+          <base-input
+            class="mb-0"
+            placeholder="Producto"
+            required
+            v-model="currentCode.codigo"
+            v-on:keyup.enter="pickProduct()"
+          >
+          </base-input>
+          <label class="col-form-label">Descuento</label>
+          <base-input
+            class="mb-0"
+            placeholder="Descuento"
+            required
+            v-model="currentCode.descuento"
+            type="number"
+            v-on:keyup.enter="pickProduct()"
+          >
+          </base-input>
+          <base-button
+            type="success"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="pickProduct()"
+            >+</base-button
+          >
+          <base-button
+            type="primary"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="subgetModal()"
+            ><i class="fa-solid fa-magnifying-glass"></i
+          ></base-button>
+          <base-button
+            type="info"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="changeShowForm()"
+          >
+            Agregar Servicios</base-button
+          >
+        </form>
+        <form class="row align-items-center" v-if="!formToAddProducts">
+          <label class="col-form-label">Cantidad</label>
+          <base-input
+            class="mb-0"
+            size="4"
+            placeholder="0"
+            required
+            type="number"
+            v-model="currentCode.quanty"
+            v-on:keyup.enter="pickService()"
+          >
+          </base-input>
+          <label class="col-form-label">Servicio</label>
+          <base-input
+            class="mb-0"
+            placeholder="Servicio"
+            required
+            v-model="currentCode.codigo"
+            v-on:keyup.enter="pickService()"
+          >
+          </base-input>
+          <label class="col-form-label">Descuento</label>
+          <base-input
+            class="mb-0"
+            placeholder="Descuento"
+            required
+            v-model="currentCode.descuento"
+            type="number"
+            v-on:keyup.enter="pickService()"
+          >
+          </base-input>
+          <base-button
+            type="success"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="pickService()"
+            >+</base-button
+          >
+          <base-button
+            type="primary"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="subgetModal()"
+            ><i class="fa-solid fa-magnifying-glass"></i
+          ></base-button>
+          <base-button
+            type="info"
+            class="animation-on-hover"
+            size="sm"
+            @click.native="changeShowForm()"
+          >
+            Agregar Productos</base-button
+          >
+        </form>
+      </div>
+    </card>
     <!-- Table -->
     <div class="col-12">
       <card card-body-classes="table-full-width">
@@ -470,12 +351,8 @@ export default {
     this.fillCatalogs(['sucursales', 'vendedores', 'clientes'])
   },
   methods: {
-    changeShowForm(item) {
-      this.currentCode.codigo=''
-      if(item=='Producto')
-      this.formToAddProducts = true
-      else
-      this.formToAddProducts=false
+    changeShowForm() {
+      this.formToAddProducts = !this.formToAddProducts
     },
     validateQuanty(currentQuanty, storageQuanty) {
       if (currentQuanty > storageQuanty)
@@ -579,7 +456,6 @@ export default {
           }
           //totals
           this.bill.total += total
-          
         })
         .catch((error) => {
           return this.globalSweetMessage('Error al agregar Producto', 'error')
@@ -634,8 +510,5 @@ export default {
 }
 .el-table th.el-table__cell {
   background-color: transparent;
-}
-.btn-link{
-  color: white !important;
 }
 </style>

@@ -13,7 +13,7 @@
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('quotation.quotation') }}
-            <router-link to="/quotation/create">
+            <router-link to="/billDashboard/quotation/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,7 +62,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/quotation/details/' + props.row.id">
+                  <router-link :to="'/billDashboard/quotation/Details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -154,30 +154,29 @@ export default {
       office: '',
       selects: {
         simple: '',
-        offices: []
       },
       quotationtatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: ['nombre','identificacion'],
       tableColumns: [
         {
-          prop: 'sucursalesId',
-          label: 'Sucursal',
+          prop: 'nombre',
+          label: 'Nombre',
           minWidth: 110
         },
         {
-          prop: 'suplidorId',
-          label: 'Suplidor',
+          prop: 'identificacion',
+          label: 'Identificación',
           minWidth: 100
         },
         {
-          prop: 'fecha',
-          label: 'Fecha',
+          prop: 'sucursales',
+          label: 'Sucursal',
           minWidth: 100
         },
         {
-          prop: 'nota',
-          label: 'Nota',
+          prop: 'vendedores',
+          label: 'Vendedores',
           minWidth: 70
         }
       ],
@@ -231,37 +230,13 @@ export default {
       if (clearFilters) this.office = ''
       axios
         .get(this.baseApiUrl + resource)
-        .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-            //this.tableData[i]['estadoEntrada'] = 'Estado'
-          }
+        .then((response) => {         
+          this.tableData=response.data
         })
         .catch((error) => {
           this.errored = true
         })
         .finally(() => (this.isLoading = false))
-    },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/sucursales')
-        .then((response) => {
-          this.selects.offices = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-      axios
-        .get(this.baseApiUrl + 'catalogo/suplidores')
-        .then((response) => {
-          this.suppliers = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
     },
     filterByOffice() {
       this.tableData = []
@@ -271,8 +246,7 @@ export default {
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillCatalog()
-    this.fillTable('Entradas', true)
+    this.fillTable('cotizaciones/BySuculsal', true)
   },
   watch: {}
 }

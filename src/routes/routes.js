@@ -116,8 +116,8 @@ const ShiftCreate = () => import('src/pages/BillMenu/Shift/Create.vue')
 
 //Quotation
 const QuotationIndex = () => import('src/pages/BillMenu/Quotation/Index.vue')
-// const QuotationCreate = () => import('src/pages/BillMenu/Quotation/Create.vue')
-// const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
+const QuotationCreate = () => import('src/pages/BillMenu/Quotation/Create.vue')
+const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
 
 //Returns
 const ReturnsIndex = () => import('src/pages/BillMenu/Returns/Index.vue')
@@ -779,7 +779,18 @@ let QuotationMenu = {
       path: 'index',
       name: 'Administracion de Cotizaciones',
       components: { default: QuotationIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Cotizacion',
+      components: { default: QuotationCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalle Cotizacion',
+      components: { default: QuotationDetail }
     }
+    
   ]
 }
 let ReturnsMenu = {

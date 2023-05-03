@@ -178,7 +178,8 @@
   "quotation": {
     "create" : "Crear",
     "index" : "Administracion de Cotizacion",
-    "quotation": "Cotizacion"
+    "quotation": "Cotización",
+    "details": "Detalle de la Cotización"
   },
   "returns": {
     "create" : "Crear",
