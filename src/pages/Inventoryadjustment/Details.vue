@@ -33,7 +33,7 @@
             <div class="row">
                 <label class="col-sm-3 col-form-label">Sucursal</label>
                 <div class="col-sm-9">
-                  <label class="col-form-label"> {{ ajusteInvetarios.sucursales.nombre}}</label>              
+                  <label class="col-form-label"> {{ ajusteInvetarios.sucursales}}</label>              
                 </div>           
             </div>
 

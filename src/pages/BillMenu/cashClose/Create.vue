@@ -212,7 +212,6 @@ export default {
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.cashClose.nationalID
     this.fillCatalog()
-    console.log(this.selects.shift)
   },
   methods: {
     checkId() {
@@ -308,7 +307,6 @@ export default {
       axios
         .get(this.baseApiUrl + 'Turnos/TurnoByUserOpen')
         .then((response) => {
-          console.log(response.data)
           this.selects.shift.push(response.data[i].usuarioId)
         })
         .catch((error) => {

@@ -520,7 +520,6 @@ export default {
       return this.tableData.find((product) => findProduct(product))
     },
     fillTable(obj) {
-      console.log(obj)
       let detalleTable = {
         productoId: obj.id,
         codigoProducto: this.product.code,
@@ -671,7 +670,6 @@ export default {
         }
         this.entrada.detalleEntradas.push(product)
       }
-      console.log(this.entrada)
 
       this.isLoading = true
       axios

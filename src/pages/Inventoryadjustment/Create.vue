@@ -529,7 +529,6 @@ export default {
           'Este producto a sido agregado!',
           'error'
         )
-        console.log(this.product.productQuantity*this.product.productPrice)
          this.fillTable(this.currentProduct.productos)
           this.cleanProduct()
     },
@@ -541,7 +540,6 @@ export default {
       return this.tableData.find((product) => findProduct(product))
     },
     fillTable(obj) {
-      console.log(obj)
       let detalleTable = {
         ajusteInvetariosId:0,
         productoId: obj.id,
@@ -700,7 +698,6 @@ export default {
 
         this.ajusteInvetarios.detalleajusteInvetarios.push(product)
       }
-      console.log(this.ajusteInvetarios)
 
       this.isLoading = true
       axios

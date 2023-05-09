@@ -248,7 +248,6 @@ components:{
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
      axios.get(this.baseApiUrl+'Cotizaciones/'+this.id)
         .then((reponse)=>{
-            console.log(reponse.data.detalleCotizaciones)
             this.cotizaciones=reponse.data
             this.tableData=reponse.data.detalleCotizaciones
             })

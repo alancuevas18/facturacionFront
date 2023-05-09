@@ -143,7 +143,8 @@ const InventoryadjustmentDetail = () =>
 //bill
 const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
 const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
-// const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
+const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
+const billPrint = () => import('src/pages/BillMenu/bill/Print.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -683,7 +684,7 @@ let UserOfficesMenu = {
   path: '/userOffices',
   component: DashboardLayout,
   redirect: '/userOffices/index',
-  name: 'Usuarios',
+  name: 'UsuariosSucursal',
   children: [
     {
       path: 'index',
@@ -839,6 +840,16 @@ let billMenu = {
       path: 'create',
       name: 'Crear Factura',
       components: { default: billCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles factura',
+      components: { default: billDetail }
+    },
+    {
+      path: 'print/:id',
+      name: 'imprrimir factura',
+      components: { default: billPrint }
     }
   ]
 }
@@ -943,7 +954,7 @@ const routes = [
   //Billing
   BillDashboard,
   ShiftMenu,
-  QuotationMenu,
+  QuotationMenu,  
   ReturnsMenu,
   cashCloseMenu,
   billMenu,

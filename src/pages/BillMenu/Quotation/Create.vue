@@ -501,7 +501,6 @@ export default {
       return this.tableData.find((product) => findProduct(product))
     },
     fillTable(obj) {
-      console.log(obj)
       let detalleTable = {
         CotizacionesId:0,
         productoId: obj.id,
@@ -632,8 +631,6 @@ export default {
 
         this.Cotizaciones.detalleCotizaciones.push(product)
       }
-      console.log(this.Cotizaciones)
-
       this.isLoading = true
       axios
           .post(this.baseApiUrl + 'Cotizaciones', this.Cotizaciones)

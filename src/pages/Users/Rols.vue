@@ -120,12 +120,10 @@ export default {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor seleccionar un rol!', 'error')
       } else {
-        console.log(this.user)
         this.isLoading = true
         axios
           .post(this.baseApiUrl + 'Usuario/Roles', this.user)
           .then((response) => {
-            console.log(response)
             this.globalSweetMessage(response.data.message)
             // this.$router.push({ path: '/users/index' })
           })

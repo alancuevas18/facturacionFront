@@ -252,7 +252,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.shift)
         axios
           .put(this.baseApiUrl + 'turnos/' + this.shift.id, this.shift)
           .then((response) => {
@@ -271,7 +270,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.shift)
         axios
           .post(this.baseApiUrl + 'turnos', this.shift)
           .then((response) => {

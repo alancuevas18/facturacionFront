@@ -160,7 +160,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.producttype)
         axios
           .post(this.baseApiUrl + 'TipoProductos', this.producttype)
           .then((response) => {

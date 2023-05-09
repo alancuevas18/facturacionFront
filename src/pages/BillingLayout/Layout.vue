@@ -1,5 +1,6 @@
 <template>
   <div>
+    <sidebar-share :background-color.sync="sidebarBackground"> </sidebar-share>
     <base-nav
       v-model="showMenu"
       type="white"
@@ -19,7 +20,7 @@
           v-if="AbleToSee('Admin,Root')"
         >
           <a class="nav-link text-primary">
-            <i class="tim-icons icon-minimal-left"></i> Back to Dashboard
+            <i class="tim-icons icon-minimal-left"></i>Dashboard
           </a>
         </router-link>
 
@@ -125,11 +126,12 @@
 import { BaseNav } from 'src/components'
 import { ZoomCenterTransition } from 'vue2-transitions'
 import swal from 'sweetalert2'
-
+import SidebarShare from 'src/pages/Layout/SidebarSharePlugin'
 export default {
   components: {
     BaseNav,
-    ZoomCenterTransition
+    ZoomCenterTransition,
+    SidebarShare
   },
   props: {
     backgroundColor: {
@@ -143,7 +145,8 @@ export default {
       menuTransitionDuration: 250,
       pageTransitionDuration: 200,
       year: new Date().getFullYear(),
-      pageClass: 'login-page'
+      pageClass: 'login-page',
+      sidebarBackground: 'vue'
     }
   },
   computed: {

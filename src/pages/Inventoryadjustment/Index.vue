@@ -163,7 +163,7 @@ export default {
       propsToSearch: ['codigo'],
       tableColumns: [
         {
-          prop: 'sucursalesId',
+          prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 110
         },
@@ -230,12 +230,7 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] = response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-          //this.tableData[i]['estadoEntrada'] = 'Estado'
-          }
+          this.tableData=response.data
         })
         .catch((error) => {
           this.errored = true
@@ -251,18 +246,11 @@ export default {
         .catch((error) => {
           this.error = error
         })
-      axios
-        .get(this.baseApiUrl + 'catalogo/suplidores')
-        .then((response) => {
-          this.suppliers = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
+
     },
     filterByOffice() {
       this.tableData = []
-      this.fillTable('Compras/bysuculsal/' + this.office)
+      this.fillTable('AjusteInvetarios/bysuculsal/' + this.office)
     }
   },
   mounted() {

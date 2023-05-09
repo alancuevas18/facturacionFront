@@ -160,7 +160,6 @@ export default {
             usuarioId: response.data.usuarioId,
             sucursalId: response.data.sucursalId
           }
-          console.log(this.userOffice)
 
         })
         .catch((error) => {
