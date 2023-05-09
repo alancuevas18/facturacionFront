@@ -49,6 +49,7 @@
          </div>
 
        </div>
+       <!-- end modal productos or servisico -->
       <card>
         <div class="row">
 
@@ -192,6 +193,8 @@
               </form>
             </div>
           </div>
+          <!-- end add Product and service -->
+
           <!--Select client, seller, typeBill and typeTax-->
           <div :class="pagodo?'col-md-12':'col-md-8 col-ms-12 '">
     
@@ -366,6 +369,7 @@
                   class="w-100"
                   size="lg"
                   @click.native="checkIn()"
+                  v-if="tableData.length>0"
                 ><i class="fa-solid fa-money-check-dollar display-4"></i> Facturar</base-button
                 >
             </div>
@@ -374,9 +378,11 @@
 
           </card>
           </div>
+
         </div>
         <div class="row">
 
+          <!-- methods pay -->
           <div class="col-12 row" v-if="pagodo && (pendiente>0 && bill.tipoFactura==1)">
             <div class="col-md-3">
               <base-button
@@ -418,8 +424,9 @@
                 >
             </div>
           </div>
+          <!-- print  -->
           <div class="col-12 row" v-if="pagodo &&( pendiente<=0 || bill.tipoFactura==2)">
-            <div class="col-md-12">
+            <div class="col-md-6 col-ms-12">
               <base-button
                   type="twitter"
                   class="w-100"
@@ -427,6 +434,13 @@
                   v-print="'#Print'"
                 ><i class="fa-solid fa-print display-4"></i> Imprimir</base-button
                 >
+            </div>
+            <div class="col-md-6 col-ms-12">
+              <router-link to="/billDashboard/bill/index"   @click.native="$router.go()">
+              <button class="btn  btn-lg btn-youtube w-100">
+                <i class="fa-solid fa-file-invoice display-4"></i> General nuevaa Factura
+              </button>
+            </router-link>
             </div>
           </div>
         </div>
@@ -461,6 +475,7 @@
               required
               id="inputpago"
               v-model="pay.total"
+              v-on:keyup.enter="paying()"
               >
            </base-input>
          </div>
@@ -481,6 +496,7 @@
                 >
             </div>
        </div>
+       <!-- end modal pay -->
        <!-- Report -->
          <div class="container d-none">
     <div id="Print" class="bg-white h-100">
