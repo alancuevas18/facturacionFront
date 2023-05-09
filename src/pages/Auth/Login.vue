@@ -114,7 +114,7 @@ export default {
         contrasena: this.user.contrasena
       }
       await axios
-        .post('https://localhost:7004/Authorization/Token', this.user)
+        .post('https://emacsoft.com/Authorization/Token', this.user)
         .then((response) => {
           let rol = response.data.result.roles[0] ?? 'Root'
           localStorage.setItem('token', response.data.result.token)
