@@ -567,7 +567,6 @@ export default {
       /* axios
         .get(this.baseApiUrl +'productos/'+this.product.productoId)
         .then((response) => {
-          console.log(response.data)
           this.currentProduct = response.data
           this.currentProduct['valor'] = this.product.productPrice
           this.currentProduct['cantidad'] = this.product.productQuantity
@@ -591,7 +590,6 @@ export default {
       return this.tableData.find((product) => findProduct(product))
     },
     fillTable(obj) {
-      console.log(obj)
       let detalleTable = {
         productoId: obj.id,
         codigoProducto:  this.product.code,
@@ -682,8 +680,7 @@ export default {
         ||(!this.product.code && this.showcode==true)  
       )
     },
-     validateCode:async function(productoId,code,sucursalEnviaId,productQuantity){   
-      console.log(productQuantity)   
+     validateCode:async function(productoId,code,sucursalEnviaId,productQuantity){    
      await  axios.get(this.baseApiUrl+'ProductosSucursales/ValidarProductoCodigoSucursal?ProductoId='+productoId+'&Codigo='+code+'&SucursalId='+sucursalEnviaId+'&Cantidad='+productQuantity)
      .then((response)=>{
           if (!response.data.result){   
@@ -815,7 +812,6 @@ export default {
         }
         this.salidas.detalleSalidas.push(product)
       }
-      console.log(this.salidas)
 
       this.isLoading = true
       axios

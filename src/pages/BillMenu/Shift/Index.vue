@@ -180,27 +180,17 @@ export default {
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [
-        {
-          prop: 'abiertoPor',
-          label: 'Abierto Por',
+      {
+          prop: 'usuarios',
+          label: 'Usuario',
           minWidth: 100
         },
         {
           prop: 'abiertoEn',
-          label: 'Abierto En',
-          minWidth: 70
-        },
-        {
-          prop: 'cerradoPor',
-          label: 'Cerrado Por',
+          label: 'Fecha de Apertura',
           minWidth: 100
         },
-        {
-          prop: 'cerradoEn',
-          label: 'Cerrado En',
-          minWidth: 70
-        },
-        {
+         {
           prop: 'montoInicial',
           label: 'Monto Inicial',
           minWidth: 70
@@ -211,7 +201,7 @@ export default {
           minWidth: 70
         },
         {
-          prop: 'sucursalId',
+          prop: 'sucursales',
           label: 'sucursal',
           minWidth: 100
         },
@@ -271,11 +261,7 @@ export default {
         .get(this.baseApiUrl + resource)
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            let sucursal = this.offices.find(
-              (offices) => offices.id == response.data[i].sucursalId
-            )
-            this.tableData[i]['sucursalId'] = sucursal.nombre
+            this.tableData.push(response.data[i])       
             this.tableData[i]['estadoTurno'] =
               this.shiftStatus[response.data[i].estadoTurno - 1].nombre
           }

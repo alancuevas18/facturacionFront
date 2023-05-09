@@ -1,10 +1,6 @@
 <template>
   <div class="content">
-    <loading
-      :active.sync="isLoading"
-      :can-cancel="true"
-      :is-full-page="fullPage"
-    />
+
     <div class="col-md-8 ml-auto mr-auto">
       <h2 class="text-center">Bienvenido a Facturaction</h2>
     </div>

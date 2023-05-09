@@ -505,7 +505,6 @@ export default {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
-       console.log(this.client)
         this.isLoading = true
         axios
           .post(this.baseApiUrl + 'clientes', this.client)

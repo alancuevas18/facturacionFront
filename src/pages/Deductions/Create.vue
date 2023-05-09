@@ -182,7 +182,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        console.log(deduction)
         axios
           .put(this.baseApiUrl + 'retenciones/' + this.deduction.id, deduction)
           .then((response) => {

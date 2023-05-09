@@ -21,90 +21,25 @@
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
-              <label class="col-sm-2 col-form-label">Abierto Por*</label>
+              <label class="col-sm-2 col-form-label">Usuario*</label>
               <div class="col-sm-10">
-                <ValidationProvider
-                  name="abiertoPor"
-                  rules="required|min:3"
-                  v-slot="{ passed, failed, errors }"
+                <el-select
+                  required
+                  filterable
+                  class="select-primary w-100"
+                  size="large"
+                  placeholder="Usuario"
+                  v-model="shift.usuarioId"
                 >
-                  <base-input
-                    required
-                    v-model="shift.abiertoPor"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                  <el-option
+                    v-for="option in selects.Users"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
                   >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Abierto En</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="abiertoEn"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input>
-                    <el-date-picker
-                      type="date"
-                      placeholder="Fecha de Apertura"
-                      v-model="shift.abiertoEn"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
-                    >
-                    </el-date-picker>
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Cerrado Por*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="cerradoPor"
-                  rules="min:3"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    v-model="shift.cerradoPor"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Cerrado En</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="cerradoEn"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input>
-                    <el-date-picker
-                      type="date"
-                      placeholder="Fecha de Cierre"
-                      v-model="shift.cerradoEn"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
-                    >
-                    </el-date-picker>
-                  </base-input>
-                </ValidationProvider>
+                  </el-option>
+                </el-select>
               </div>
             </div>
             <div class="row">
@@ -129,63 +64,20 @@
                 </ValidationProvider>
               </div>
             </div>
+    
             <div class="row">
-              <label class="col-sm-2 col-form-label">Monto Cierre*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="montoCierre"
-                  rules="required|min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    autofocus
-                    v-model="shift.montoCierre"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row mb-3">
               <label class="col-sm-2 col-form-label">Sucursal</label>
-              <div class="col-sm-4">
+              <div class="col-sm-10">
                 <el-select
                   required
                   filterable
-                  class="select-primary"
+                  class="select-primary w-100"
                   size="large"
                   placeholder="Sucursal"
                   v-model="shift.sucursalId"
                 >
                   <el-option
                     v-for="option in selects.offices"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Estado</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Sucursal"
-                  v-model="shift.estadoTurno"
-                >
-                  <el-option
-                    v-for="option in selects.shiftStatus"
                     class="select-primary"
                     :value="option.id"
                     :label="option.nombre"
@@ -255,22 +147,22 @@ export default {
       selects: {
         simple: '',
         shiftStatus: [],
-        offices: []
+        offices: [],
+        Users:[]
       },
       shift: {
-        id: 0,
+        id: 0,   
         abiertoPor: '',
         abiertoEn: '',
-        cerradoPor: '',
-        cerradoEn: '',
+        cerradoPor: null,
+        cerradoEn: null, 
         montoInicial: '',
-        montoCierre: '',
+        montoCierre: 0,
         sucursalId: '',
-        estadoTurno: '',
+        estadoTurno: 1,
+        usuarioId:'',
+        Usuarios:null,
         sucursales: null,
-        gastos: null,
-        facturas: null,
-        cuadreSucursal: null
       }
     }
   },
@@ -297,10 +189,9 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     validateFields() {
-      return (
-        !this.shift.abiertoPor ||
-        !this.shift.abiertoEn ||
+      return (    
         !this.shift.sucursalId ||
+        !this.shift.usuarioId ||
         !this.shift.montoInicial
       )
     },
@@ -310,10 +201,13 @@ export default {
         abiertoEn: obj.abiertoEn,
         cerradoPor: obj.cerradoPor,
         cerradoEn: obj.cerradoEn,
+        usuarioId: obj.usuarioId,
         montoInicial: obj.montoInicial,
         montoCierre: obj.montoCierre,
         sucursalId: obj.sucursalId,
         estadoTurno: obj.estadoTurno,
+        sucursales:null,
+        Usuarios:null,
         id: obj.id
       }
       if (obj.id != 0)
@@ -322,12 +216,13 @@ export default {
     clear() {
       this.shift.abiertoPor = ''
       this.shift.abiertoEn = ''
-      this.shift.cerradoPor = ''
-      this.shift.cerradoEn = ''
+      this.shift.cerradoPor = null
+      this.shift.cerradoEn = null
       this.shift.montoInicial = ''
-      this.shift.montoCierre = ''
+      this.shift.montoCierre = 0
       this.shift.sucursalId = ''
-      this.shift.estadoTurno = ''
+      this.shift.usuarioId = ''
+      this.shift.estadoTurno = 1
     },
     fillCatalog() {
       axios
@@ -338,6 +233,10 @@ export default {
         .catch((error) => {
           this.error = error
         })
+
+      axios.get(this.baseApiUrl + 'Usuario/GetUsuario').then((response) => {
+        this.selects.Users = response.data
+      })
 
       axios
         .get(this.baseApiUrl + 'catalogo/estadoturno')

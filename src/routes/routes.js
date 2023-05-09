@@ -116,8 +116,8 @@ const ShiftCreate = () => import('src/pages/BillMenu/Shift/Create.vue')
 
 //Quotation
 const QuotationIndex = () => import('src/pages/BillMenu/Quotation/Index.vue')
-// const QuotationCreate = () => import('src/pages/BillMenu/Quotation/Create.vue')
-// const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
+const QuotationCreate = () => import('src/pages/BillMenu/Quotation/Create.vue')
+const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
 
 //Returns
 const ReturnsIndex = () => import('src/pages/BillMenu/Returns/Index.vue')
@@ -143,7 +143,8 @@ const InventoryadjustmentDetail = () =>
 //bill
 const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
 const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
-// const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
+const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
+const billPrint = () => import('src/pages/BillMenu/bill/Print.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -683,7 +684,7 @@ let UserOfficesMenu = {
   path: '/userOffices',
   component: DashboardLayout,
   redirect: '/userOffices/index',
-  name: 'Usuarios',
+  name: 'UsuariosSucursal',
   children: [
     {
       path: 'index',
@@ -779,7 +780,18 @@ let QuotationMenu = {
       path: 'index',
       name: 'Administracion de Cotizaciones',
       components: { default: QuotationIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Cotizacion',
+      components: { default: QuotationCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalle Cotizacion',
+      components: { default: QuotationDetail }
     }
+    
   ]
 }
 let ReturnsMenu = {
@@ -828,6 +840,16 @@ let billMenu = {
       path: 'create',
       name: 'Crear Factura',
       components: { default: billCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles factura',
+      components: { default: billDetail }
+    },
+    {
+      path: 'print/:id',
+      name: 'imprrimir factura',
+      components: { default: billPrint }
     }
   ]
 }
@@ -932,7 +954,7 @@ const routes = [
   //Billing
   BillDashboard,
   ShiftMenu,
-  QuotationMenu,
+  QuotationMenu,  
   ReturnsMenu,
   cashCloseMenu,
   billMenu,

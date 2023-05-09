@@ -316,7 +316,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.user)
         axios
           .post(this.baseApiUrl + 'usuario/register', this.user)
           .then((response) => {

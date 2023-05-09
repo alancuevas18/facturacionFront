@@ -23,10 +23,15 @@ import 'src/assets/sass/black-dashboard-pro.scss';
 import 'src/assets/css/nucleo-icons.css';
 import 'src/assets/css/demo.css';
 
+//printer 
+import Print from 'vue-print-nb'
+
+
 export default {
   install(Vue) {
     Vue.use(GlobalComponents);
     Vue.use(GlobalDirectives);
+    Vue.use(Print)
     // Vue.use(RTLPlugin);
     Vue.use(SideBar);
     Vue.use(Notifications);
