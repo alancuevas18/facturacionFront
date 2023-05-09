@@ -41,7 +41,6 @@ components:{
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
      axios.get(this.baseApiUrl+'Facturas/'+this.id)
     .then((response)=>{
-      console.log(response)
        this.facturas=response.data
      })
 

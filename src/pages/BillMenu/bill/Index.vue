@@ -735,7 +735,6 @@ export default {
             this.pagodo=true
            this.pay.facturaId=response.data.result.id
            this.bill.facturaId=response.data.result.id
-           console.log(this.bill.tipoFactura)
            if (this.bill.tipoFactura==2){
              this.loadBill()
            }
@@ -747,7 +746,6 @@ export default {
 
     },
     loadBill(){
-      console.log('dasda')
       axios
           .get(this.baseApiUrl + 'Facturas/'+this.bill.facturaId)
           .then((response) => {
@@ -760,7 +758,6 @@ export default {
           .post(this.baseApiUrl + 'PagosFacturas', this.pay)
           .then((response) => {
             this.bill.abono=response.data.result.facturas.abono
-            console.log(this.bill.total<=this.bill.abono)
             if(this.bill.total<=this.bill.abono)
             this.loadBill()
           })
