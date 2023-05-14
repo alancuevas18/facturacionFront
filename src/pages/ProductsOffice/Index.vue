@@ -177,7 +177,6 @@ export default {
         simple: '',
         offices: []
       },
-      productStatus: {},
       searchQuery: '',
       propsToSearch: [
         'productoCodigo',
@@ -188,12 +187,12 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'productoCodigo',
+          prop: 'codigo',
           label: 'Codigo',
           minWidth: 100
         },
         {
-          prop: 'productoNombre',
+          prop: 'nombre',
           label: 'Nombre',
           minWidth: 100
         },
@@ -214,12 +213,12 @@ export default {
           minWidth: 100
         },
         {
-          prop: 'sucursalesId',
+          prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 110
         },
         {
-          prop: 'estadoProductos',
+          prop: 'estadoProductosName',
           label: 'Estado',
           minWidth: 100
         }
@@ -277,14 +276,6 @@ export default {
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['productoCodigo'] =
-              response.data[i].productos.codigo
-            this.tableData[i]['productoNombre'] =
-              response.data[i].productos.nombre
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['estadoProductos'] =
-              this.productStatus[response.data[i].estadoProductos - 1].nombre
           }
         })
         .catch((error) => {
@@ -302,14 +293,7 @@ export default {
           this.error = error
         })
         .finally(() => (this.isLoading = false))
-      axios
-        .get(this.baseApiUrl + 'catalogo/estadoproducto')
-        .then((response) => {
-          this.productStatus = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
+
     },
     filterByOffice() {
       this.tableData = []

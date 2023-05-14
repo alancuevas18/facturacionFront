@@ -37,9 +37,11 @@ export default {
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-    axios.get(this.baseApiUrl + 'Facturas/' + this.id).then((response) => {
-      this.facturas = response.data
-    })
+     axios.get(this.baseApiUrl+'Facturas/'+this.id)
+    .then((response)=>{
+       this.facturas=response.data
+     })
+
   }
 }
 </script>

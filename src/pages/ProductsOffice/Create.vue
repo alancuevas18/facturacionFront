@@ -114,17 +114,14 @@
             <div class="row">
               <label class="col-sm-2 col-form-label">Sucursal:</label>
               <div class="col-sm-10">
-                <label class="col-form-label"> {{ offices }}</label>
+                <label class="col-form-label"> {{ productByOffice.sucursales  }}</label>
               </div>
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Estado:</label>
               <div class="col-sm-10">
-                <label class="col-form-label">{{
-                  selects.statusProduct.filter(
-                    (c) => c.id == productByOffice.estadoProductos
-                  )[0].nombre
-                }}</label>
+                <label class="col-form-label"> {{ productByOffice.estadoProductosName  }}</label>
+
               </div>
             </div>
             <div class="row d-flex justify-content-center">
@@ -216,8 +213,6 @@ export default {
         .then((response) => {
           this.isLoading = true
           this.fillForm(response.data)
-          this.productByOffice.productoId = response.data.productoId
-          this.offices = response.data.sucursales.nombre
           this.readonly = false
         })
         .catch((error) => {
@@ -228,11 +223,8 @@ export default {
     validateFields() {
       return (
         !this.productByOffice.stock ||
-        !this.productByOffice.stockMinimo ||
         !this.productByOffice.precio ||
-        !this.productByOffice.precioMinimo ||
-        !this.productByOffice.sucursalesId ||
-        !this.productByOffice.estadoProductos
+        !this.productByOffice.sucursalesId 
       )
     },
     fillCatalog() {
@@ -262,10 +254,11 @@ export default {
         stockMinimo: obj.stockMinimo,
         precio: obj.precio,
         productos: null,
-        sucursales: null,
+        sucursales: obj.sucursales,
         precioMinimo: obj.precioMinimo,
         sucursalesId: obj.sucursalesId,
         estadoProductos: obj.estadoProductos,
+        estadoProductosName: obj.estadoProductosName,
         total: obj.total
       }
       this.productCode = obj.productos.codigo

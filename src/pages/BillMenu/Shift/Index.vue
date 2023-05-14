@@ -62,18 +62,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link
-                    :to="'/billDashboard/shift/details/' + props.row.id"
-                  >
-                    <base-button
-                      class="like btn-link"
-                      type="info"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-notes"></i>
-                    </base-button>
-                  </router-link>
+       
                   <router-link
                     :to="'/billDashboard/shift/create/' + props.row.id"
                   >

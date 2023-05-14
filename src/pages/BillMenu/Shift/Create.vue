@@ -268,10 +268,10 @@ export default {
     create() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
+      }  else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'turnos', this.shift)
+          .post(this.baseApiUrl + 'Turnos', this.shift)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

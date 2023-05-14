@@ -155,39 +155,19 @@
                     </el-select>
                   </div>
                 </div>
+
                 <div class="row">
-                  <label class="col-sm-3 col-form-label">Itbis</label>
-                  <div class="col-sm-9">
-                    <ValidationProvider
-                      name="itbis"
-                      v-slot="{ passed, failed, errors }"
-                    >
-                      <base-input
-                        required
-                        v-model="spend.itbis"
-                        :error="errors[0]"
-                        type="number"
-                        :class="[
-                          { 'has-success': passed },
-                          { 'has-danger': failed }
-                        ]"
-                      >
-                      </base-input>
-                    </ValidationProvider>
-                  </div>
-                </div>
-                <div class="row">
-                  <label class="col-sm-3 col-form-label">Total*</label>
+                  <label class="col-sm-3 col-form-label">Sub Total*</label>
                   <div class="col-sm-9">
                     <ValidationProvider
                       name="total"
-                      rules="required|min:3"
+                      rules="required"
                       v-slot="{ passed, failed, errors }"
                     >
                       <base-input
                        @keyup="reload()"
                         required
-                        v-model="spend.total"
+                        v-model="spend.subTotal"
                         :error="errors[0]"
                         type="number"
                         :class="[
@@ -198,7 +178,33 @@
                       </base-input>
                     </ValidationProvider>
                   </div>
-                </div>                
+                </div>  
+                <div class="row">
+                  <div class="col-10">
+                     <label class="col-sm-3 col-form-label">Itbis:</label>                 
+                     <label class="col-sm-6 col-form-label text-left">{{ spend.itbis }}</label>              
+                  </div>
+                  <div class="col-ms-2">
+                       <base-checkbox v-model="selectitbis" :check="addItbis()"> Itbis
+                      </base-checkbox>
+                    </div>
+                </div> 
+                <div class="row">
+                  <div class="col-12">
+                    <label class="col-sm-3 col-form-label">Total:</label>
+                    <label class="col-sm-9 col-form-label text-left">{{ SpendTotal }}</label>
+                  </div>
+                  <div class="col-12">
+                    <label class="col-sm-3 col-form-label">Total Retenciones:</label>
+                    <label class="col-sm-9 col-form-label text-left">{{ totalRetenciones }}</label>
+                  </div>
+                  <div class="col-12">
+                    <label class="col-sm-3 col-form-label">Total:</label>
+                    <label class="col-sm-9 col-form-label text-left">{{ totalpagar }}</label>
+                  </div>
+                </div>     
+             
+                 
               </div>
               <div class="col-ms-12 col-md-6">
 
@@ -334,7 +340,26 @@ export default {
       return this.searchedData.length > 0
         ? this.searchedData.length
         : this.tableData.length
+    },
+    SpendTotal(){
+      return parseFloat(this.spend.subTotal)+parseFloat(this.spend.itbis)
+    },
+    totalRetenciones(){
+      return this.spend.detalleRetenciones.map(c=>c.total).reduce((a, b) => a + b, 0)
+    },
+    totalpagar(){
+      return this.SpendTotal-this.totalRetenciones
     }
+    // itbis() {
+    //   if( this.selectitbis) {
+    //     console.log( this.selectitbis)
+    //     this.spend.itbis=this.spend.total*0.18
+    //   }
+    //   else{
+    //     this.itbis=0 
+    //   }
+    //   return 0
+    // }
   },
   data() {
     return {
@@ -345,6 +370,7 @@ export default {
       baseApiUrl: '',
       title: '',
       fixedCode: '',
+      selectitbis: false,
       selects: {
         offices: [],
         spendType:[],
@@ -357,7 +383,7 @@ export default {
         comprobante: '',
         fecha:new Date(),
         itbis:0,
-        total: 0,
+        subTotal: 0,
         sucursalId:'',
         tipoGastoId:'',
         subTipoGastoId:null,
@@ -419,7 +445,7 @@ export default {
         .finally(() => (this.isLoading = false))
     },
     validateFields() {
-      return !this.spend.descripcion || !this.spend.total
+      return !this.spend.descripcion || !this.spend.subTotal
     },
     fillForm(obj) {
       this.spend = {
@@ -427,7 +453,7 @@ export default {
         comprobante: obj.comprobante,
         fecha:obj.fecha,
         itbis:obj.itbis,
-        total: obj.total,
+        subTotal: obj.subTotal,
         sucursalId:obj.sucursalId,
         tipoGastoId:obj.tipoGastoId,
         subTipoGastoId:obj.subTipoGastoId,
@@ -435,9 +461,11 @@ export default {
         detalleRetenciones:obj.detalleRetenciones,
         id: obj.id
       }
+      this.fillSubspendtype()
       this.reload()
       if (obj.id != 0){
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.id : ''
+        addItbis()
       }
     },
     fillCatalog() {
@@ -481,7 +509,7 @@ export default {
     },
     clear() {
       this.spend.descripcion = ''
-      this.spend.total = ''
+      this.spend.subTotal = ''
     },
     edit() {
       if (this.validateFields()) {
@@ -502,7 +530,7 @@ export default {
           .finally(() => (this.isLoading = false))
       }
     },
-    create() {
+    create() {  
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
@@ -522,6 +550,7 @@ export default {
       }
     },
     addDedutions(){
+      console.log('')
       if(this.deductions.id!='')
       {
         if(this.spend.detalleRetenciones.find(c=>c.RetencionId===this.deductions.id)==null)
@@ -532,7 +561,7 @@ export default {
                 gastoId:0,
                 RetencionId:this.deductions.id,
                 retenciones:{descripcion:response.data.descripcion,porcentaje:response.data.porcentaje},   
-                total:this.spend.total*(response.data.porcentaje/100)
+                total:parseFloat((this.spend.subTotal*(response.data.porcentaje/100)).toFixed(2))
               })
               this.tableData= structuredClone(this.spend.detalleRetenciones)
               this.tableData.forEach(element=>element.retenciones.porcentaje+='%')
@@ -544,7 +573,7 @@ export default {
     },
     reload(){
      this.spend.detalleRetenciones.forEach(element => {
-      element.total=(element.retenciones.porcentaje/100)*this.spend.total      
+      element.total=parseFloat(((element.retenciones.porcentaje/100)*this.spend.subTotal).toFixed(2))    
      })
      this.tableData= structuredClone(this.spend.detalleRetenciones)
     this.tableData.forEach(element=>element.retenciones.porcentaje+='%')
@@ -571,6 +600,9 @@ export default {
           }
         })
     },
+    addItbis(){
+      this.spend.itbis =this.spend.subTotal * (this.selectitbis ? 0.18 : 0)
+    }
   }
 }
 </script>

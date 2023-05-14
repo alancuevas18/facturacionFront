@@ -2,12 +2,12 @@
   <div class="sidebar" :data="backgroundColor">
     <div class="sidebar-wrapper" ref="sidebarScrollArea">
       <div class="logo">
-        <a href="#" class="simple-text logo-mini">
+        <router-link :to="link" class="simple-text logo-mini">
           <img :src="logo" alt="app-logo" />
-        </a>
-        <a href="#" class="simple-text logo-normal">
+        </router-link>
+        <router-link :to="link" class="simple-text logo-normal">
           {{ title }}
-        </a>
+        </router-link>
       </div>
       <slot></slot>
       <ul class="nav">
@@ -77,6 +77,11 @@ export default {
       default: true,
       description:
         'Whether sidebar should autoclose on mobile when clicking an item'
+    },
+    link:{
+      type:String,
+      default:'/',
+      description:'link of main menu'
     }
   },
   provide() {

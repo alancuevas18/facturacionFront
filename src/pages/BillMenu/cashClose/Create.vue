@@ -25,14 +25,20 @@
             <div class="row">
               <label class="col-sm-2 col-form-label">Total Efectivo*</label>
               <div class="col-sm-10">
-                <ValidationProvider
-                  name="totalVendidoEfectivo"
-                  rules="required|numeric|min:3"
+                <!-- <ValidationProvider
+                  name="totalEfectivo"
+                  :rules="{required:true,valorMin:cashClose.totalVendidoEfectivo}"
+                 :custom-messages="{required: 'El valor debe ser mayor a '+cashClose.totalVendidoEfectivo}"
                   v-slot="{ passed, failed, errors }"
-                >
+                > -->
+                <ValidationProvider
+                  name="totalEfectivo"
+                  :rules="{required:true,valorMin:cashClose.totalVendidoEfectivo}"
+                  v-slot="{ passed, failed, errors }"
+                > 
                   <base-input
                     required
-                    v-model="cashClose.totalVendidoEfectivo"
+                    v-model="cashClose.totalEfectivo"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -49,13 +55,13 @@
               >
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="totalVendidoTransferencia"
-                  rules="required|numeric|min:3"
+                  name="totalTransferencia"
+                  :rules="{required:true,valorMin:cashClose.totalVendidoTransferencia}"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    v-model="cashClose.totalVendidoTransferencia"
+                    v-model="cashClose.totalTransferencia"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -70,13 +76,13 @@
               <label class="col-sm-2 col-form-label">Total Tarjeta*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="totalVendidoTarjeta"
-                  rules="required|numeric|min:3"
+                  name="totalTarjeta"
+                  :rules="{required:true,valorMin:cashClose.totalVendidoTarjeta}"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
                     required
-                    v-model="cashClose.totalVendidoTarjeta"
+                    v-model="cashClose.totalTarjeta"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -87,50 +93,29 @@
                 </ValidationProvider>
               </div>
             </div>
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Sucursal</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Sucursal"
-                  v-model="cashClose.sucursalId"
-                >
-                  <el-option
-                    v-for="option in selects.offices"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Turno</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Turno"
-                  v-model="cashClose.Turno"
+              <label class="col-sm-2 col-form-label">Total  Nota Credito*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="totalNotaCredito"
+                  :rules="{required:true,valorMin:cashClose.totalVendidoNotaCredito}"
+                  v-slot="{ passed, failed, errors }"
                 >
-                  <el-option
-                    v-for="option in selects.shifts"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
+                  <base-input
+                    required
+                    v-model="cashClose.totalNotaCredito"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
                   >
-                  </el-option>
-                </el-select>
+                  </base-input>
+                </ValidationProvider>
               </div>
             </div>
+
+          
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
@@ -169,6 +154,12 @@ extend('email', email)
 extend('required', required)
 extend('min', min)
 extend('numeric', numeric)
+extend('valorMin', {
+  validate(value, args) {
+    return value >= args[0] 
+  },
+  message: 'El valor no coincide con lo facturado'
+});
 
 export default {
   components: {
@@ -190,17 +181,21 @@ export default {
       title: '',
       fixedCode: '',
       selects: {
-        shift: [],
-        offices: []
+        
       },
       cashClose: {
         id: 0,
         totalVendidoEfectivo: 0,
         totalVendidoTarjeta: 0,
         totalVendidoTransferencia: 0,
+        totalVendidoNotaCredito: 0,
+        totalEfectivo: 0,
+        totalTarjeta: 0,
+        totalTransferencia: 0,
+        totalNotaCredito: 0,
         sucursalId: '',
         fecha: new Date(),
-        turnoid: ''
+        turnoId: ''
       }
     }
   },
@@ -209,9 +204,9 @@ export default {
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id) this.checkId()
+    else this.load()
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.cashClose.nationalID
-    this.fillCatalog()
   },
   methods: {
     checkId() {
@@ -226,24 +221,45 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
+    load() {
+      axios
+        .get(this.baseApiUrl + 'CuadreSucursal/BySucursalAndUser')
+        .then((response) => {
+          this.isLoading = true
+
+          if(response.data.turnoId==null){
+            this.globalSweetMessage("No tiene turno abierto", 'error')
+            this.$router.push({ path: '/billDashboard/cashClose/index' })
+           }
+          this.fillForm(response.data)
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    },
     validateFields() {
       return (
-        !this.cashClose.totalVendidoEfectivo ||
-        !this.cashClose.totalVendidoTarjeta ||
-        !this.cashClose.totalVendidoTransferencia ||
-        !this.cashClose.turnoid ||
-        !this.cashClose.sucursalId
+        !(this.cashClose.totalEfectivo>=this.cashClose.totalVendidoEfectivo)||
+        !(this.cashClose.totalTarjeta>=this.cashClose.totalVendidoTarjeta)||
+        !(this.cashClose.totalTransferencia>=this.cashClose.totalVendidoTransferencia)||
+        !(this.cashClose.totalNotaCredito>=this.cashClose.totalVendidoNotaCredito)
       )
     },
     fillForm(obj) {
       this.cashClose = {
         id: obj.id,
-        totalVendidoEfectivo: 0,
-        totalVendidoTarjeta: 0,
-        totalVendidoTransferencia: 0,
-        sucursalId: '',
+        totalVendidoEfectivo: obj.totalVendidoEfectivo,
+        totalVendidoTarjeta: obj.totalVendidoTarjeta,
+        totalVendidoTransferencia: obj.totalVendidoTransferencia,
+        totalVendidoNotaCredito: obj.totalVendidoNotaCredito,
+        totalEfectivo: obj.totalEfectivo,
+        totalTarjeta: obj.totalTarjeta,
+        totalTransferencia: obj.totalTransferencia,
+        totalNotaCredito: obj.totalNotaCredito,
+        sucursalId: obj.sucursalId,
         fecha: new Date(),
-        turnoid: ''
+        turnoId: obj.turnoId
       }
       if (obj.id != 0)
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
@@ -253,7 +269,7 @@ export default {
       this.cashClose.totalVendidoTarjeta = ''
       this.cashClose.totalVendidoTransferencia = ''
       this.cashClose.sucursalId = ''
-      this.cashClose.turnoid = ''
+      this.cashClose.turnoId = ''
     },
     edit() {
       if (this.validateFields()) {
@@ -294,25 +310,7 @@ export default {
           .finally(() => (this.isLoading = false))
       }
     },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/sucursales')
-        .then((response) => {
-          this.selects.offices = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
 
-      axios
-        .get(this.baseApiUrl + 'Turnos/TurnoByUserOpen')
-        .then((response) => {
-          this.selects.shift.push(response.data[i].usuarioId)
-        })
-        .catch((error) => {
-          this.error = error
-        })
-    }
   }
 }
 </script>

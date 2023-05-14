@@ -215,26 +215,7 @@ export default {
         nombreUsuario: '',
         contrasena: '',
         correo: '',
-        bloqueado: null,
-        sucursalId: '',
-        createdBy: null,
-        modifiedBy: null,
-        createdDate: null,
-        modifiedDate: null,
-        deleted: null,
-        sucursales: null
-        // usuarioSucursal: {
-        //     id: 0,
-        //     createdBy : null,
-        //     modifiedBy: null,
-        //     createdDate: null,
-        //     modifiedDate: null,
-        //     deleted: null,
-        //     sucursales: null,
-        //     sucursalId: null,
-        //     usuarioId: null,
-        //     nombreUsuario: null,
-        // }
+        sucursalId: ''
       }
     }
   },
@@ -316,6 +297,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
+        console.log(this.user)
         axios
           .post(this.baseApiUrl + 'usuario/register', this.user)
           .then((response) => {
