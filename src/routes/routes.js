@@ -93,13 +93,10 @@ const DeparturesIndex = () => import('src/pages/Departures/Index.vue')
 const DeparturesCreate = () => import('src/pages/Departures/Create.vue')
 const DeparturesDetail = () => import('src/pages/Departures/Details.vue')
 
-
 //UserOffices
 const UserOfficesIndex = () => import('src/pages/UserOffices/Index.vue')
 const UserOfficesCreate = () => import('src/pages/UserOffices/Create.vue')
 const SelectOffices = () => import('src/pages/UserOffices/SelectOffices.vue')
-  
-
 
 //Users
 const UsersIndex = () => import('src/pages/Users/Index.vue')
@@ -129,6 +126,10 @@ const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
 const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
 const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
 // const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
+
+//Sends
+const SendsIndex = () => import('src/pages/BillMenu/sends/Index.vue')
+const SendsCreate = () => import('src/pages/BillMenu/sends/Create.vue')
 
 //SpendsType
 const SpendsTypeIndex = () => import('src/pages/SpendsType/Index.vue')
@@ -792,7 +793,6 @@ let QuotationMenu = {
       name: 'Detalle Cotizacion',
       components: { default: QuotationDetail }
     }
-    
   ]
 }
 let ReturnsMenu = {
@@ -826,8 +826,32 @@ let cashCloseMenu = {
     },
     {
       path: 'create/:id?',
-      name: 'Crear Cierre de Caja',
+      name: 'Editar Cierre de Caja',
       components: { default: cashCloseCreate }
+    }
+  ]
+}
+
+let sendsMenu = {
+  path: '/billDashboard/sends',
+  component: BillingLayout,
+  redirect: '/billDashboard/sends/index',
+  name: 'Envios',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion de Envios',
+      components: { default: SendsIndex }
+    },
+    {
+      path: 'create',
+      name: 'Crear Envios',
+      components: { default: SendsCreate }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Edtiar Envios',
+      components: { default: SendsCreate }
     }
   ]
 }
@@ -960,10 +984,11 @@ const routes = [
   //Billing
   BillDashboard,
   ShiftMenu,
-  QuotationMenu,  
+  QuotationMenu,
   ReturnsMenu,
   cashCloseMenu,
   billMenu,
+  sendsMenu,
   deductionMenu,
   SpendsTypeMenu,
   InventoryadjustmentMenu,

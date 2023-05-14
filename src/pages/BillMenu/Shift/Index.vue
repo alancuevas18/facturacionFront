@@ -167,9 +167,16 @@ export default {
       offices: [],
       shifttatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: [
+        'usuarios',
+        'abiertoEn',
+        'montoInicial',
+        'montoCierre',
+        'sucursales',
+        'estadoTurno'
+      ],
       tableColumns: [
-      {
+        {
           prop: 'usuarios',
           label: 'Usuario',
           minWidth: 100
@@ -179,7 +186,7 @@ export default {
           label: 'Fecha de Apertura',
           minWidth: 100
         },
-         {
+        {
           prop: 'montoInicial',
           label: 'Monto Inicial',
           minWidth: 70
@@ -250,7 +257,7 @@ export default {
         .get(this.baseApiUrl + resource)
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])       
+            this.tableData.push(response.data[i])
             this.tableData[i]['estadoTurno'] =
               this.shiftStatus[response.data[i].estadoTurno - 1].nombre
           }
@@ -286,7 +293,19 @@ export default {
     this.fillCatalog()
     this.fillTable('turnos')
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

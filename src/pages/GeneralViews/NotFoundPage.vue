@@ -8,13 +8,25 @@
 </template>
 
 <script>
-import AuthLayout from 'src/pages/Pages/AuthLayout.vue';
+import AuthLayout from 'src/pages/AuthLayout/AuthLayout.vue'
 
 export default {
   components: {
     AuthLayout
+  },
+  mounted() {
+    if (this.$store.state.isAuthenticated) {
+      let rol = this.$store.state.rol
+      if (rol == 'Supervisor')
+        this.$router.push({ path: '/billDashboard/index' })
+      else if (rol == 'Vendedor')
+        this.$router.push({ path: '/billDashboard/bill/index' })
+      else this.$router.push({ path: '/' })
+    } else {
+      this.$router.push({ path: '/login' })
+    }
   }
-};
+}
 </script>
 <style lang="scss">
 .not-found-page {

@@ -113,6 +113,8 @@ export default {
     }
   },
   mounted() {
+    this.globalTry()
+
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'

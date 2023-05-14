@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('services.index') }}</h2>
+      <h2 class="text-center">{{ $t('sends.index') }}</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('services.services') }}
-            <router-link to="/services/create">
+            {{ $t('sends.sends') }}
+            <router-link to="/billDashboard/sends/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,7 +62,21 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/services/create/' + props.row.id">
+                  <!-- <router-link
+                    :to="'/billDashboard/sends/Details/' + props.row.id"
+                  >
+                    <base-button
+                      class="like btn-link"
+                      type="info"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-notes"></i>
+                    </base-button>
+                  </router-link> -->
+                  <router-link
+                    :to="'/billDashboard/sends/create/' + props.row.id"
+                  >
                     <base-button
                       class="edit btn-link"
                       type="warning"
@@ -72,15 +86,6 @@
                       <i class="tim-icons icon-pencil"></i>
                     </base-button>
                   </router-link>
-                  <base-button
-                    @click.native="handleDelete(props.$index, props.row)"
-                    class="remove btn-link"
-                    type="danger"
-                    size="sm"
-                    icon
-                  >
-                    <i class="tim-icons icon-simple-remove"></i>
-                  </base-button>
                 </div>
               </el-table-column>
             </el-table>
@@ -160,26 +165,57 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      brands: {},
       searchQuery: '',
-      propsToSearch: ['codigo', 'nombre', 'descripcion'],
+      propsToSearch: [
+        'cliente',
+        'numeroContacto',
+        'fechaEnvio',
+        'fechaEntrega',
+        'estadoEnvios'
+      ],
       tableColumns: [
         {
-          prop: 'codigo',
-          label: 'Codigo',
-          minWidth: 70
-        },
-        {
-          prop: 'nombre',
-          label: 'Nombre',
+          prop: 'cliente',
+          label: 'Cliente',
           minWidth: 100
         },
         {
-          prop: 'descripcion',
-          label: 'Descripcion',
-          minWidth: 200
+          prop: 'direccion',
+          label: 'Direccion',
+          minWidth: 100
+        },
+        {
+          prop: 'numeroContacto',
+          label: 'Numero contacto',
+          minWidth: 90
+        },
+        {
+          prop: 'fechaEnvio',
+          label: 'Fecha de Envio',
+          minWidth: 100
+        },
+        {
+          prop: 'fechaEntrega',
+          label: 'Fecha de Entrega',
+          minWidth: 100
+        },
+        {
+          prop: 'facturaId',
+          label: 'Factura',
+          minWidth: 70
+        },
+        {
+          prop: 'mensajeroId',
+          label: 'Mensajero',
+          minWidth: 70
+        },
+        {
+          prop: 'estadoEnvios',
+          label: 'Estado',
+          minWidth: 70
         }
       ],
+      selects: [],
       tableData: [],
       searchedData: [],
       fuseSearch: null
@@ -210,7 +246,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'servicios/' + row.id)
+        .delete(this.baseApiUrl + 'Envios/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -224,16 +260,34 @@ export default {
           this.globalSweetMessage(error.response.data.message, 'error')
         })
         .finally(() => (this.isLoading = false))
+    },
+    fillCatalogs(catalogs) {
+      catalogs.forEach((catalog) => {
+        axios
+          .get(this.baseApiUrl + 'catalogo/' + catalog)
+          .then((response) => {
+            this.selects[catalog] = response.data
+          })
+          .catch((error) => {
+            this.globalSweetMessage('Error al cargar la pagina', 'error')
+          })
+      })
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
+    this.fillCatalogs(['estadoEnvios', 'mensajeros'])
     axios
-      .get(this.baseApiUrl + 'servicios')
+      .get(this.baseApiUrl + 'envios')
       .then((response) => {
         for (let i = 0; i < response.data.length; i++) {
           this.tableData.push(response.data[i])
+          let mensajeroId = response.data[1].mensajeroId ?? 1
+          this.tableData[i]['mensajeroId'] =
+            this.selects.mensajeros[mensajeroId - 1].nombre
+          this.tableData[i]['estadoEnvios'] =
+            this.selects.estadoEnvios[response.data[i].estadoEnvios - 1].nombre
         }
       })
       .catch((error) => {

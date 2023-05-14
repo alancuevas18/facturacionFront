@@ -161,7 +161,7 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: [],
+      propsToSearch: ['descripcion', 'porcentaje'],
       tableColumns: [
         {
           prop: 'descripcion',
@@ -226,17 +226,29 @@ export default {
     axios
       .get(this.baseApiUrl + 'retenciones')
       .then((response) => {
-        response.data.forEach(element => {
-          element.porcentaje+='%'
-          this.tableData.push(element)          
-        });
+        response.data.forEach((element) => {
+          element.porcentaje += '%'
+          this.tableData.push(element)
+        })
       })
       .catch((error) => {
         this.errored = true
       })
       .finally(() => (this.isLoading = false))
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

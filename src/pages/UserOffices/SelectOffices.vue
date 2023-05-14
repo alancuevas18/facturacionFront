@@ -10,22 +10,26 @@
     </div>
     <div class="row mt-5">
       <div class="col-12">
-     
-          <div class="row justify-content-center d-flex">
-            <div class="col-md-4" v-for="item in Offices" :key="item.id" @click="selectOffice(item.id)" >
-              <div class="card tarjeta">
-                <div class="card-header">
-                  {{ item.nombre }}
-                </div>
-                <div class="card-body">
-                  <h5 class="card-title">Ubicación: {{item.ubicacion}}</h5>
-                  <p class="card-text">{{item.telefono}} / {{item.telefono2}}</p>
-                </div>
+        <div class="row justify-content-center d-flex">
+          <div
+            class="col-md-4"
+            v-for="item in Offices"
+            :key="item.id"
+            @click="selectOffice(item.id)"
+          >
+            <div class="card tarjeta">
+              <div class="card-header">
+                {{ item.nombre }}
+              </div>
+              <div class="card-body">
+                <h5 class="card-title">Ubicación: {{ item.ubicacion }}</h5>
+                <p class="card-text">
+                  {{ item.telefono }} / {{ item.telefono2 }}
+                </p>
               </div>
             </div>
-  
           </div>
-     
+        </div>
       </div>
     </div>
   </div>
@@ -43,7 +47,7 @@ export default {
     Loading,
     BasePagination,
     [Select.name]: Select,
-    [Option.name]: Option,
+    [Option.name]: Option
   },
   data() {
     return {
@@ -51,15 +55,22 @@ export default {
       fullPage: true,
       baseApiUrl: '',
       searchQuery: '',
-      Offices:[]
+      Offices: []
     }
   },
   methods: {
-    selectOffice(id){
-      axios.put(this.baseApiUrl+'UsuarioSucursal/SelectSucursal?SucursalId='+id)
-      .then(()=>{        
-        this.$router.push(this.$store.state.routerHistory[this.$store.state.routerHistory.length-1])
-      });
+    selectOffice(id) {
+      axios
+        .put(
+          this.baseApiUrl + 'UsuarioSucursal/SelectSucursal?SucursalId=' + id
+        )
+        .then(() => {
+          this.$router.push(
+            this.$store.state.routerHistory[
+              this.$store.state.routerHistory.length - 1
+            ]
+          )
+        })
     }
   },
 
@@ -69,14 +80,26 @@ export default {
     axios
       .get(this.baseApiUrl + 'UsuarioSucursal/GetSucursalesByUser')
       .then((response) => {
-         this.Offices=response.data
+        this.Offices = response.data
       })
       .catch((error) => {
         this.errored = true
       })
       .finally(() => (this.isLoading = false))
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>
@@ -90,7 +113,7 @@ export default {
 .el-table th.el-table__cell {
   background-color: transparent;
 }
-.tarjeta:hover{
-box-shadow: 0 0px 9px 6px rgb(241 241 241)
+.tarjeta:hover {
+  box-shadow: 0 0px 9px 6px rgb(241 241 241);
 }
 </style>

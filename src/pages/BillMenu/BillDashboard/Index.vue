@@ -1,6 +1,5 @@
 <template>
   <div class="content">
-
     <div class="col-md-8 ml-auto mr-auto">
       <h2 class="text-center">Bienvenido a Facturaction</h2>
     </div>
@@ -16,8 +15,7 @@ export default {
     return {}
   },
   methods: {},
-  mounted() {},
-  watch: {}
+  mounted() {}
 }
 </script>
 <style></style>

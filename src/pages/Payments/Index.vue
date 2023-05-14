@@ -182,8 +182,7 @@ export default {
           prop: 'total',
           label: 'Total',
           minWidth: 100
-        },     
-        
+        }
       ],
       tableData: [],
       searchedData: [],
@@ -245,7 +244,19 @@ export default {
       })
       .finally(() => (this.isLoading = false))
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

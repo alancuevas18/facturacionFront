@@ -62,7 +62,9 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/billDashboard/quotation/Details/' + props.row.id">
+                  <router-link
+                    :to="'/billDashboard/quotation/Details/' + props.row.id"
+                  >
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -153,11 +155,11 @@ export default {
       },
       office: '',
       selects: {
-        simple: '',
+        simple: ''
       },
       quotationtatus: {},
       searchQuery: '',
-      propsToSearch: ['nombre','identificacion'],
+      propsToSearch: ['nombre', 'identificacion', 'sucursales', 'vendedores'],
       tableColumns: [
         {
           prop: 'nombre',
@@ -230,8 +232,8 @@ export default {
       if (clearFilters) this.office = ''
       axios
         .get(this.baseApiUrl + resource)
-        .then((response) => {         
-          this.tableData=response.data
+        .then((response) => {
+          this.tableData = response.data
         })
         .catch((error) => {
           this.errored = true
@@ -248,7 +250,19 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.fillTable('cotizaciones/BySuculsal', true)
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

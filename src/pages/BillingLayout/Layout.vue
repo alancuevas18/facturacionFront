@@ -89,6 +89,7 @@
             <i class="tim-icons icon-paper"></i> Facturacion
           </a>
         </router-link>
+
         <router-link class="nav-item" tag="li" to="#">
           <a class="nav-link" @click="logOut()">
             <i class="tim-icons icon-minimal-right"></i> Salir del Sistema
@@ -210,7 +211,19 @@ export default {
     }
   },
   mounted() {},
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style lang="scss">
