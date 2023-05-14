@@ -172,7 +172,13 @@ export default {
       },
       brands: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: [
+        'codigo',
+        'nombre',
+        'descripcion',
+        'marcaProducto',
+        'tipoProducto'
+      ],
       tableColumns: [
         {
           prop: 'codigo',
@@ -274,7 +280,19 @@ export default {
       })
       .finally(() => (this.isLoading = false))
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

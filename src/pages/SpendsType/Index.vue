@@ -62,7 +62,6 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-       
                   <router-link :to="'/spendsType/create/' + props.row.id">
                     <base-button
                       class="edit btn-link"
@@ -168,8 +167,7 @@ export default {
           prop: 'descripcion',
           label: 'Descripción',
           minWidth: 70
-        }   
-        
+        }
       ],
       tableData: [],
       searchedData: [],
@@ -231,7 +229,19 @@ export default {
       })
       .finally(() => (this.isLoading = false))
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

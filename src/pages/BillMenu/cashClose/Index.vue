@@ -60,7 +60,7 @@
                 :label="column.label"
               >
               </el-table-column>
-              <el-table-column :min-width="135" align="right" label="Actions">
+              <!-- <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
                   <router-link :to="'/cashClose/details/' + props.row.id">
                     <base-button
@@ -73,7 +73,7 @@
                     </base-button>
                   </router-link>
                 </div>
-              </el-table-column>
+              </el-table-column> -->
             </el-table>
           </div>
           <div
@@ -158,7 +158,13 @@ export default {
       },
       cashClosetatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: [
+        'totalVendidoEfectivo',
+        'totalVendidoTarjeta',
+        'totalVendidoTransferencia',
+        'fecha',
+        'turno'
+      ],
       tableColumns: [
         {
           prop: 'totalVendidoEfectivo',
@@ -275,7 +281,19 @@ export default {
     this.fillCatalog()
     this.fillTable('cuadresucursal')
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

@@ -13,7 +13,6 @@
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('products.products') }}
-       
           </h4>
           <div>
             <div
@@ -83,7 +82,6 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-   
                   <router-link :to="'/productsoffice/create/' + props.row.id">
                     <base-button
                       class="edit btn-link"
@@ -94,7 +92,6 @@
                       <i class="tim-icons icon-pencil"></i>
                     </base-button>
                   </router-link>
-
                 </div>
               </el-table-column>
             </el-table>
@@ -182,9 +179,14 @@ export default {
       },
       productStatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: [
+        'productoCodigo',
+        'productoNombre',
+        'stock',
+        'precio',
+        'estadoProductos'
+      ],
       tableColumns: [
-    
         {
           prop: 'productoCodigo',
           label: 'Codigo',
@@ -220,8 +222,7 @@ export default {
           prop: 'estadoProductos',
           label: 'Estado',
           minWidth: 100
-        },
-   
+        }
       ],
       tableData: [],
       searchedData: [],
@@ -321,7 +322,19 @@ export default {
     this.fillCatalog()
     this.fillTable('productossucursales/BySuculsal', true)
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

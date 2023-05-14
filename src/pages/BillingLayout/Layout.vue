@@ -76,11 +76,22 @@
             <i class="tim-icons icon-money-coins"></i> Cuadre
           </a>
         </router-link>
+
+        <router-link
+          class="nav-item"
+          tag="li"
+          to="/billDashboard/sends"
+          v-if="AbleToSee('Admin,Root,Supervisor')"
+        >
+          <a class="nav-link"> <i class="fa-solid fa-truck"></i> Envios </a>
+        </router-link>
+
         <router-link class="nav-item" tag="li" to="/billDashboard/bill">
           <a class="nav-link">
             <i class="tim-icons icon-paper"></i> Facturacion
           </a>
         </router-link>
+
         <router-link class="nav-item" tag="li" to="#">
           <a class="nav-link" @click="logOut()">
             <i class="tim-icons icon-minimal-right"></i> Salir del Sistema
@@ -201,7 +212,19 @@ export default {
     }
   },
   mounted() {},
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style lang="scss">

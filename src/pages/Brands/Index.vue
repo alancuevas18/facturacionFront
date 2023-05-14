@@ -161,7 +161,7 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: [],
+      propsToSearch: ['descripcion'],
       tableColumns: [
         {
           prop: 'descripcion',
@@ -230,7 +230,19 @@ export default {
       })
       .finally(() => (this.isLoading = false))
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

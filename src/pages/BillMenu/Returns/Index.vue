@@ -158,7 +158,7 @@ export default {
       },
       returnstatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: ['sucursalesId', 'fecha', 'nota'],
       tableColumns: [
         {
           prop: 'sucursalesId',
@@ -274,7 +274,19 @@ export default {
     this.fillCatalog()
     this.fillTable('Entradas', true)
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

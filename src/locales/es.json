@@ -203,5 +203,9 @@
     "index" : "Administracion de Usuario Sucursal",
     "userOffices": "Usuarios Sucursal",
     "SelectOffice" : "Elige Una sucursal"
+  },
+  "sends":{
+    "index" : "Administracion de Envios",
+    "sends" : "Envios"
   }
 }

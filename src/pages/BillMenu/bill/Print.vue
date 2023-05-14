@@ -1,13 +1,14 @@
 <template>
-    <div class="col-md-12 bg-white">
+  <div class="col-md-12 bg-white">
     <loading
       :active.sync="isLoading"
       :can-cancel="false"
       :is-full-page="fullPage"
     />
-    <button v-print="'#Print'" class="btn"><i class="fa-solid fa-print"></i></button>
-
-      </div>
+    <button v-print="'#Print'" class="btn">
+      <i class="fa-solid fa-print"></i>
+    </button>
+  </div>
 </template>
 <script>
 import Loading from 'vue-loading-overlay'
@@ -15,55 +16,48 @@ import axios from 'axios'
 import config from '@/config'
 import { computed } from 'vue'
 import { select } from 'd3'
-export default ({
-components:{
-    Loading,
-}
-,computed: {
-
+export default {
+  components: {
+    Loading
   },
-  data(){
-    return{
+  computed: {},
+  data() {
+    return {
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
-      facturas:{
-        detalleFactura:[]
-    },
-      id:0,
-      title: '',
+      facturas: {
+        detalleFactura: []
+      },
+      id: 0,
+      title: ''
     }
-  }
-  ,methods:{
   },
-  mounted(){
-    this.baseApiUrl=config.global.baseApiUrl
+  methods: {},
+  mounted() {
+    this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-     axios.get(this.baseApiUrl+'Facturas/'+this.id)
-    .then((response)=>{
-      console.log(response)
-       this.facturas=response.data
-     })
-
+    axios.get(this.baseApiUrl + 'Facturas/' + this.id).then((response) => {
+      this.facturas = response.data
+    })
   }
-})
+}
 </script>
 <style>
-.mytable{
+.mytable {
   border-collapse: collapse;
-
 }
-#Print{
+#Print {
   color: black;
   font-size: 20pt;
 }
 
 tr {
-    color:black;
-    font-size: 20pt;
+  color: black;
+  font-size: 20pt;
 }
 
-body{
+body {
   background: white;
 }
 </style>

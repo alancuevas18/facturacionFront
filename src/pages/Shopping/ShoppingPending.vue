@@ -180,7 +180,6 @@ export default {
           label: 'Abono',
           minWidth: 70
         }
-   
       ],
       tableData: [],
       searchedData: [],
@@ -235,9 +234,10 @@ export default {
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] = response.data[i].sucursales.nombre
+            this.tableData[i]['sucursalesId'] =
+              response.data[i].sucursales.nombre
             this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-          //this.tableData[i]['estadoEntrada'] = 'Estado'
+            //this.tableData[i]['estadoEntrada'] = 'Estado'
           }
         })
         .catch((error) => {
@@ -274,7 +274,19 @@ export default {
     this.fillCatalog()
     this.fillTable('Compras/ByEsdatoAndSuculsal/1', true)
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

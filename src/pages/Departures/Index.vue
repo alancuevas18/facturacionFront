@@ -82,7 +82,6 @@
                       <i class="tim-icons icon-pencil"></i>
                     </base-button>
                   </router-link>
-       
                 </div>
               </el-table-column>
             </el-table>
@@ -164,21 +163,27 @@ export default {
       },
       office: '',
       selects: {
-        tipoSalida:[],
-        estadoSalida:[],
+        tipoSalida: [],
+        estadoSalida: [],
         simple: '',
         offices: []
       },
       departurestatus: {},
       searchQuery: '',
-      propsToSearch: ['suplidorId'],
-      tableColumns: [      
-       {
+      propsToSearch: [
+        'tipoSalida',
+        'concepto',
+        'sucursalrecibe',
+        'sucursalesenvia',
+        'estadoSalida'
+      ],
+      tableColumns: [
+        {
           prop: 'tipoSalida',
           label: 'Tipo de salida',
           minWidth: 100
-       },
-       {
+        },
+        {
           prop: 'suplidorId',
           label: 'SUplidor',
           minWidth: 100
@@ -203,11 +208,11 @@ export default {
           label: 'Concepto',
           minWidth: 70
         },
-       {
+        {
           prop: 'estadoSalida',
           label: 'Estado',
           minWidth: 100
-       }
+        }
       ],
       tableData: [],
       searchedData: [],
@@ -260,22 +265,27 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          response.data.forEach((element,index) => {
-          this.tableData.push(element)
-          element.tipoSalida=this.selects.tipoSalida.find(c=>c.id==element.tipoSalida).nombre
-          element.estadoSalida=this.selects.estadoSalida.find(c=>c.id==element.estadoSalida).nombre
-          this.tableData[index]['sucursalesenvia'] = element.sucursalesEnvia.nombre
-            this.tableData[index]['sucursalrecibe'] = element.sucursalesRecibe.nombre
+          response.data.forEach((element, index) => {
+            this.tableData.push(element)
+            element.tipoSalida = this.selects.tipoSalida.find(
+              (c) => c.id == element.tipoSalida
+            ).nombre
+            element.estadoSalida = this.selects.estadoSalida.find(
+              (c) => c.id == element.estadoSalida
+            ).nombre
+            this.tableData[index]['sucursalesenvia'] =
+              element.sucursalesEnvia.nombre
+            this.tableData[index]['sucursalrecibe'] =
+              element.sucursalesRecibe.nombre
             this.tableData[index]['suplidorId'] = element.suplidores.nombre
-           });
-    
+          })
         })
         .catch((error) => {
           this.errored = true
         })
         .finally(() => (this.isLoading = false))
     },
-    fillCatalog() { 
+    fillCatalog() {
       axios
         .get(this.baseApiUrl + 'catalogo/tipoSalida')
         .then((response) => {
@@ -284,8 +294,8 @@ export default {
         .catch((error) => {
           this.error = error
         })
-      
-        axios
+
+      axios
         .get(this.baseApiUrl + 'catalogo/estadoSalidas')
         .then((response) => {
           this.selects.estadoSalida = response.data
@@ -308,7 +318,8 @@ export default {
         })
         .catch((error) => {
           this.errored = true
-        }).finally(()=>{
+        })
+        .finally(() => {
           this.fillTable('Salidas', true)
         })
     },
@@ -322,7 +333,19 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

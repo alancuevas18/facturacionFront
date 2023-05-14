@@ -62,8 +62,8 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/Payments/details/' + props.row.id">                   
-                     Pagos
+                  <router-link :to="'/Payments/details/' + props.row.id">
+                    Pagos
                   </router-link>
 
                   <router-link :to="'/shopping/details/' + props.row.id">
@@ -76,8 +76,6 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
-        
-       
                 </div>
               </el-table-column>
             </el-table>
@@ -164,7 +162,7 @@ export default {
       },
       entrancetatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: ['nota'],
       tableColumns: [
         {
           prop: 'sucursalesId',
@@ -186,7 +184,6 @@ export default {
           label: 'Nota',
           minWidth: 70
         }
-   
       ],
       tableData: [],
       searchedData: [],
@@ -241,9 +238,9 @@ export default {
         .then((response) => {
           for (let i = 0; i < response.data.length; i++) {
             this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] = response.data[i].sucursales.nombre
+            this.tableData[i]['sucursalesId'] =
+              response.data[i].sucursales.nombre
             this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-          //this.tableData[i]['estadoEntrada'] = 'Estado'
           }
         })
         .catch((error) => {
@@ -280,7 +277,19 @@ export default {
     this.fillCatalog()
     this.fillTable('Compras/bysuculsal', true)
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>

@@ -57,6 +57,9 @@ Vue.mixin({
           confirmButton: 'btn btn-success btn-fill'
         }
       })
+    },
+    globalTry: function () {
+      console.log('GLOBAL TRY')
     }
   }
 })

@@ -62,7 +62,9 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/inventoryadjustment/details/' + props.row.id">
+                  <router-link
+                    :to="'/inventoryadjustment/details/' + props.row.id"
+                  >
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -72,8 +74,6 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
-        
-       
                 </div>
               </el-table-column>
             </el-table>
@@ -160,7 +160,7 @@ export default {
       },
       entrancetatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: ['sucursales', 'fecha', 'nota'],
       tableColumns: [
         {
           prop: 'sucursales',
@@ -177,7 +177,6 @@ export default {
           label: 'Nota',
           minWidth: 70
         }
-   
       ],
       tableData: [],
       searchedData: [],
@@ -230,7 +229,7 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          this.tableData=response.data
+          this.tableData = response.data
         })
         .catch((error) => {
           this.errored = true
@@ -246,7 +245,6 @@ export default {
         .catch((error) => {
           this.error = error
         })
-
     },
     filterByOffice() {
       this.tableData = []
@@ -259,7 +257,19 @@ export default {
     this.fillCatalog()
     this.fillTable('AjusteInvetarios/bysuculsal', true)
   },
-  watch: {}
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name].toString().includes(this.searchQuery)
+          )
+        )
+      }
+      this.searchedData = result
+    }
+  }
 }
 </script>
 <style>
