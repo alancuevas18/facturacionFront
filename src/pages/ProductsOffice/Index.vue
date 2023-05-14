@@ -328,7 +328,10 @@ export default {
       if (value !== '') {
         result = this.tableData.filter((c) =>
           this.propsToSearch.some((name) =>
-            c[name].toString().includes(this.searchQuery)
+            c[name]
+              .toString()
+              .toLowerCase()
+              .includes(this.searchQuery.toLowerCase())
           )
         )
       }
