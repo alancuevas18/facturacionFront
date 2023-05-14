@@ -18,48 +18,49 @@
               
             </button>
           </router-link>
-          <router-link to="/Inventoryadjustment/print">
-            <button class="btn btn btn-twitter">
-                 Imprimir <i class="fa-solid fa-print"></i>
-            </button>
-          </router-link>
+          <base-button
+                  type="twitter"
+                  size="lg"
+                  v-print="'#Print'"
+                ><i class="fa-solid fa-print "></i> Imprimir</base-button
+                >
         </h4>
       </template>
         <div class="row">  
         <div class="col-ms-12 col-md-4">
             <h4 slot="header" class="card-title">
-                    Datos de la cotización
+                    Datos de la factura
                 </h4>
 
             <div class="row">
-                <label class="col-sm-3 col-form-label">Cliente</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ cotizaciones.nombre}}</label>              
+                <label class="col-sm-4 col-form-label">Cliente</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.nombre}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Identificación</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ cotizaciones.identificacion}}</label>              
+                <label class="col-sm-4 col-form-label">Identificación</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.identificacion}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Vendedor</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ cotizaciones.vendedores}}</label>              
+                <label class="col-sm-4 col-form-label">Vendedor</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.vendedores}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Sucursal</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ cotizaciones.sucursales}}</label>              
+                <label class="col-sm-4 col-form-label">Sucursal</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.sucursales.nombre}}</label>              
                 </div>           
             </div>
             
             <div class="row">
-                <label class="col-sm-3 col-form-label">Fecha</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ cotizaciones.fecha}}</label>              
+                <label class="col-sm-4 col-form-label">Fecha</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.fecha}}</label>              
                 </div>           
             </div>
 
@@ -72,75 +73,98 @@
                 <h4 slot="header" class="card-title text-center">
                     Detalle
                 </h4>
-                <div>
-                    <div
-                    class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-                    >
-                    <el-select
-                        class="select-primary mb-3 pagination-select"
-                        v-model="pagination.perPage"
-                        placeholder="Per page"
-                    >
-                        <el-option
-                        class="select-primary"
-                        v-for="item in pagination.perPageOptions"
-                        :key="item"
-                        :label="item"
-                        :value="item"
-                        >
-                        </el-option>
-                    </el-select>
+             <div class="col-12">
+              <table class="table">
+            <thead class="">
+              <tr class="border-bottom">
+                <th>Precio</th>
+                <th>Producto/Servicio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
 
-                    <base-input>
-                        <el-input
-                        type="search"
-                        class="mb-3 search-input"
-                        clearable
-                        prefix-icon="el-icon-search"
-                        placeholder="Buscar"
-                        v-model="searchQuery"
-                        aria-controls="datatables"
-                        >
-                        </el-input>
-                    </base-input>
-                    </div>
-                    <el-table :data="queriedData">
-                    <el-table-column
-                        v-for="column in tableColumns"
-                        :key="column.label"
-                        :min-width="column.minWidth"
-                        :prop="column.prop"
-                        :label="column.label"
-                    >
-                    </el-table-column>
-                    </el-table>
-                </div>
-                <div
-                    slot="footer"
-                    class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
-                >
-                    <div class="">
-                    <p class="card-category">
-                        Showing {{ from + 1 }} to {{ to }} of {{ total }} entries
-                    </p>
-                    </div>
-                    <base-pagination
-                    class="pagination-no-border"
-                    v-model="pagination.currentPage"
-                    :per-page="pagination.perPage"
-                    :total="total"
-                    >
-                    </base-pagination>
-                </div>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in facturas.detalleFactura" :key="item.id">
+                <td>{{item.precio.toFixed(2)}}</td>
+                <td>{{item.productos?.nombre}}{{ item.servicios?.nombre }}</td>
+                <td>{{item.cantidad}}</td>
+                <td>{{item.total.toFixed(2)}}</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+
+          <hr> <div class="col-12 text-right"> <label> Descuento: {{facturas.descuento.toFixed(2)}}</label></div>
+          <hr> <div class="col-12 text-right"><label> Sub Total: {{facturas.subTotal.toFixed(2)}}</label></div>
+          <hr> <div class="col-12 text-right"><label> Itbis: {{facturas.itbis.toFixed(2)}}</label></div>
+          <hr> <div class="col-12 text-right"><label> Total:{{facturas.total.toFixed(2)}}</label></div>
+          <hr> <div class="col-12 text-right"><label> Monto Pagado:{{facturas.abono.toFixed(2)}}</label></div>
+             </div>
             </div>
         </div>
     </div>
         </card>
+
+      <!-- Report -->
+      <div class="container d-none">
+    <div id="Print" class="bg-white h-100">
+       <div class="row">
+        <div class="col-2">
+          <img />
+        </div>
+        <div class="col-12 display-3">
+          {{ facturas.sucursales.nombre }}
+        </div>
+        <div class="col-12"> Ubicación: {{facturas.sucursales.ubicacion }}</div>
+        <div class="col-12"> Telefono: {{facturas.sucursales.telefono }}</div>
+        <div class="col-12"> Fecha: {{facturas.fecha}}</div>
+        <div class="col-12 text-center">Factura</div>        
+        <div class="col-12"> Codigo: {{facturas.id}}</div>
+        <div class="col-12"> NCF: {{facturas.comprobante}}</div>
+        <div class="col-12"> Cliente: {{facturas.nombre}}</div>
+        <div class="col-12"> Rnc: {{facturas.identificacion}}</div>
+        <div class="col-12"> vendedor: {{facturas.codigoVendedor}}</div>
+      <div class="col-12">
+          <table class="mytable w-100">
+            <thead class="">
+              <tr class="border-bottom">
+                <th>Precio</th>
+                <th>Producto/Servicio</th>
+                <th>Cantidad</th>
+                <th>Total</th>
+
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="item in facturas.detalleFactura" :key="item.id">
+                <td>{{item.precio.toFixed(2)}}</td>
+                <td>{{item.productos?.nombre}}{{ item.servicios?.nombre }}</td>
+                <td>{{item.cantidad}}</td>
+                <td>{{item.total.toFixed(2)}}</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+          <hr> <div class="col-12 text-right">Descuento: {{facturas.descuento.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Sub Total: {{facturas.subTotal.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Itbis: {{facturas.itbis.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Total:{{facturas.total.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Monto Pagado:{{facturas.abono.toFixed(2)}}</div>
+
+
+        </div>
+       </div>
+    </div>
+         </div>
+       <!-- End Report -->
+
+
       </div>
 </template>
 <script>
-import { Table, TableColumn ,Select, Option,} from 'element-ui'
-import { BasePagination } from 'src/components'
 import Loading from 'vue-loading-overlay'
 import axios from 'axios'
 import config from '@/config'
@@ -149,96 +173,18 @@ import { select } from 'd3'
 export default ({
 components:{
     Loading,
-    BasePagination,
-    [Table.name]: Table,
-    [TableColumn.name]: TableColumn,
-    [Select.name]: Select,
-    [Option.name]: Option,
 }
-,computed: {
-    queriedData() {
-      let result = this.tableData
-      if (this.searchedData.length > 0) {
-        result = this.searchedData
-      }
-      return result.slice(this.from, this.to)
-    },
-    to() {
-      let highBound = this.from + this.pagination.perPage
-      if (this.total < highBound) {
-        highBound = this.total
-      }
-      return highBound
-    },
-    from() {
-      return this.pagination.perPage * (this.pagination.currentPage - 1)
-    },
-    total() {
-      return this.searchedData.length > 0
-        ? this.searchedData.length
-        : this.tableData.length
-    }
-  },
+,
   data(){
     return{
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
-      cotizaciones:{
-        detallecotizaciones:[]
-    },
-    selects: {
-      tipoajuste:[]
+      facturas:{
+        detallefacturas:[]
       },
       id:0,
       title: '',
-      pagination: {
-        perPage: 25,
-        currentPage: 1,
-        perPageOptions: [5, 10, 25, 50],
-        total: 0
-      },
-      searchQuery: '',
-      propsToSearch: ['codigo'],
-      tableColumns: [
-      {
-          prop: 'productos.codigo',
-          label: 'Codigo',
-          minWidth: 100
-        },
-        {
-          prop: 'productos.nombre',
-          label: 'Nombre',
-          minWidth: 100
-        },
-        {
-          prop: 'productos.descripcion',
-          label: 'Descripcion',
-          minWidth: 200
-        },
-        {
-          prop: 'cantidad',
-          label: 'Cantidad',
-          minWidth: 100
-        },
-        {
-          prop: 'valorProducto',
-          label: 'Precio',
-          minWidth: 110
-        },
-      
-
-        {
-          prop: 'total',
-          label: 'Total',
-          minWidth: 100
-        },
-        
-   
-      ],
-      tableData: [],
-      searchedData: [],
-      fuseSearch: null
     }
   }
   ,methods:{
@@ -246,10 +192,10 @@ components:{
   mounted(){
     this.baseApiUrl=config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-     axios.get(this.baseApiUrl+'Cotizaciones/'+this.id)
+     axios.get(this.baseApiUrl+'Facturas/'+this.id)
         .then((reponse)=>{
-            this.cotizaciones=reponse.data
-            this.tableData=reponse.data.detalleCotizaciones
+            this.facturas=reponse.data
+            this.tableData=reponse.data.detalleFactura
             })
 
   }

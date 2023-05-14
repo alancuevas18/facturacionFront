@@ -57,8 +57,7 @@ export default {
   methods: {
     selectOffice(id){
       axios.put(this.baseApiUrl+'UsuarioSucursal/SelectSucursal?SucursalId='+id)
-      .then(()=>{
-        
+      .then(()=>{        
         this.$router.push(this.$store.state.routerHistory[this.$store.state.routerHistory.length-1])
       });
     }

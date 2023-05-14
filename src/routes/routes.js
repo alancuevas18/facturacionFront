@@ -1,5 +1,6 @@
 import DashboardLayout from 'src/pages/Layout/DashboardLayout.vue'
-import BillingLayout from 'src/pages/BillingLayout/Layout.vue'
+// import BillingLayout from 'src/pages/BillingLayout/Layout.vue'
+import BillingLayout from 'src/pages/Layout/Layout.vue'
 import AuthLayout from 'src/pages/AuthLayout/AuthLayout.vue'
 
 //Login
@@ -121,8 +122,8 @@ const QuotationDetail = () => import('src/pages/BillMenu/Quotation/Details.vue')
 
 //Returns
 const ReturnsIndex = () => import('src/pages/BillMenu/Returns/Index.vue')
-// const ReturnsCreate = () => import('src/pages/BillMenu/Returns/Create.vue')
-// const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
+const ReturnsCreate = () => import('src/pages/BillMenu/Returns/Create.vue')
+const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
 
 //cashClose
 const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
@@ -747,7 +748,7 @@ let BillDashboard = {
   children: [
     {
       path: 'index',
-      name: 'DashBoard Factura',
+      name: 'Facturaciones',
       components: { default: BillDashBoardIndex }
     }
   ]
@@ -756,11 +757,11 @@ let ShiftMenu = {
   path: '/billDashboard/shift',
   component: BillingLayout,
   redirect: '/billDashboard/shift/index',
-  name: 'Turnos',
+  name: 'Turno',
   children: [
     {
       path: 'index',
-      name: 'Administracion de Turnos',
+      name: 'Turnos',
       components: { default: ShiftIndex }
     },
     {
@@ -774,11 +775,11 @@ let QuotationMenu = {
   path: '/billDashboard/quotation',
   component: BillingLayout,
   redirect: '/billDashboard/quotation/index',
-  name: 'Cotizaciones',
+  name: 'Cotizacion',
   children: [
     {
       path: 'index',
-      name: 'Administracion de Cotizaciones',
+      name: 'Cotizaciones',
       components: { default: QuotationIndex }
     },
     {
@@ -798,13 +799,18 @@ let ReturnsMenu = {
   path: '/billDashboard/returns',
   component: BillingLayout,
   redirect: '/billDashboard/returns/index',
-  name: 'Devoluciones',
+  name: 'Devolucion',
   children: [
     {
       path: 'index',
-      name: 'Administracion de Devoluciones',
+      name: 'Devoluciones',
       components: { default: ReturnsIndex }
-    }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear devolucion',
+      components: { default: ReturnsCreate }
+    },
   ]
 }
 let cashCloseMenu = {
@@ -815,7 +821,7 @@ let cashCloseMenu = {
   children: [
     {
       path: 'index',
-      name: 'Administracion de Cierre de Caja',
+      name: 'Cuadre de Caja',
       components: { default: cashCloseIndex }
     },
     {
@@ -833,7 +839,7 @@ let billMenu = {
   children: [
     {
       path: 'index',
-      name: 'Administracion de Facturas',
+      name: 'Facturas',
       components: { default: billIndex }
     },
     {

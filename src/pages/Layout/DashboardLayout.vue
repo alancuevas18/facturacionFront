@@ -8,11 +8,20 @@
       :title="$t('sidebar.title')"
     >
       <template slot="links">
-        <sidebar-item
+        <!-- <sidebar-item
           :link="{
             name: $t('sidebar.dashboard'),
             icon: 'tim-icons icon-chart-pie-36',
             path: '/dashboard'
+          }"
+        >
+        
+        </sidebar-item> -->
+        <sidebar-item
+          :link="{
+            name: $t('billing.index'),
+            icon: 'fa-solid fa-file-invoice-dollar',
+            path: '/billDashboard/index'
           }"
         >
         </sidebar-item>
@@ -230,14 +239,7 @@
             }"
           ></sidebar-item>
         </sidebar-item>
-        <sidebar-item
-          :link="{
-            name: $t('billing.index'),
-            icon: 'fa-solid fa-file-invoice',
-            path: '/billDashboard/index'
-          }"
-        >
-        </sidebar-item>
+
         <hr />
       </template>
     </side-bar>

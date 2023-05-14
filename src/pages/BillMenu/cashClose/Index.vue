@@ -160,23 +160,29 @@ export default {
       searchQuery: '',
       propsToSearch: ['codigo'],
       tableColumns: [
+    
         {
-          prop: 'totalVendidoEfectivo',
-          label: 'Ventas en Efectivo',
+          prop: 'totalEfectivo',
+          label: 'Efectivo',
           minWidth: 110
         },
         {
-          prop: 'totalVendidoTarjeta',
-          label: 'Ventas en Tarjeta',
+          prop: 'totalTarjeta',
+          label: 'Tarjeta',
           minWidth: 110
         },
         {
-          prop: 'totalVendidoTransferencia',
-          label: 'Ventas en Transferencia',
+          prop: 'totalTransferencia',
+          label: 'Transferencia',
           minWidth: 110
         },
         {
-          prop: 'sucursalId',
+          prop: 'totalNotaCredito',
+          label: 'Nota Credito',
+          minWidth: 110
+        },
+        {
+          prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 100
         },
@@ -186,8 +192,13 @@ export default {
           minWidth: 100
         },
         {
-          prop: 'turno',
-          label: 'Turno',
+          prop: 'usuarios',
+          label: 'Usuario',
+          minWidth: 70
+        },
+        {
+          prop: 'turnoId',
+          label: 'Codigo Turno',
           minWidth: 70
         }
       ],
@@ -240,10 +251,7 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalId'] = response.data[i].offices.nombre
-          }
+          this.tableData=response.data
         })
         .catch((error) => {
           this.errored = true
@@ -259,21 +267,13 @@ export default {
         .catch((error) => {
           this.error = error
         })
-      axios
-        .get(this.baseApiUrl + 'catalogo/suplidores')
-        .then((response) => {
-          this.suppliers = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-    }
+      }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('cuadresucursal')
+    this.fillTable('cuadresucursal/BySuculsal')
   },
   watch: {}
 }

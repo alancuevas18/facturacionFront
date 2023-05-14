@@ -29,6 +29,8 @@
           tag="li"
           to="/billDashboard/index"
           v-if="AbleToSee('Admin,Root,Supervisor')"
+          @click.native="showMenu=!showMenu"
+
         >
           <a class="nav-link">
             <i class="tim-icons icon-chart-pie-36"></i> Inicio
@@ -40,6 +42,8 @@
           tag="li"
           to="/billDashboard/shift"
           v-if="AbleToSee('Admin,Root,Supervisor')"
+          @click.native="showMenu=!showMenu"
+
         >
           <a class="nav-link"> <i class="tim-icons icon-laptop"></i> Turnos </a>
         </router-link>
@@ -48,6 +52,7 @@
           class="nav-item"
           tag="li"
           to="/billDashboard/quotation"
+          @click.native="showMenu=!showMenu"
           v-if="AbleToSee('Admin,Root,Supervisor')"
         >
           <a class="nav-link">
@@ -59,6 +64,8 @@
           class="nav-item"
           tag="li"
           to="/billDashboard/returns"
+          @click.native="showMenu=!showMenu"
+
           v-if="AbleToSee('Admin,Root,Supervisor')"
         >
           <a class="nav-link">
@@ -70,13 +77,14 @@
           class="nav-item"
           tag="li"
           to="/billDashboard/cashClose"
+          @click.native="showMenu=!showMenu"
           v-if="AbleToSee('Admin,Root,Supervisor')"
         >
           <a class="nav-link">
             <i class="tim-icons icon-money-coins"></i> Cuadre
           </a>
         </router-link>
-        <router-link class="nav-item" tag="li" to="/billDashboard/bill">
+        <router-link class="nav-item" tag="li" to="/billDashboard/bill/create" @click.native="showMenu=!showMenu">
           <a class="nav-link">
             <i class="tim-icons icon-paper"></i> Facturacion
           </a>
@@ -86,6 +94,7 @@
             <i class="tim-icons icon-minimal-right"></i> Salir del Sistema
           </a>
         </router-link>
+        
       </ul>
     </base-nav>
 
