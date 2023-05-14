@@ -37,6 +37,7 @@ const store = new Vuex.Store({
     logOut(state) {
       router.push('/login')
       state.isAuthenticated = false
+      state.routerHistory=[]
       state.token = ''
       state.usuario = ''
       state.rol = ''

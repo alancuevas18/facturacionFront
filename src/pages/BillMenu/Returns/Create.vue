@@ -5,218 +5,154 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <h2 class="text-center">{{ $t('global.add') }} {{ $t('shift.shift') }}</h2>
     <card>
       <template slot="header">
         <h4 class="card-title">
-          {{ title }} {{ currentCode }}
-          <router-link to="/shift/index">
+          {{ title }} 
+          <router-link to="/billDashboard/bill/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
+              
             </button>
           </router-link>
         </h4>
       </template>
-      <div>
-        <ValidationObserver v-slot="{ handleSubmit }">
-          <form class="form-horizontal" @submit.prevent="handleSubmit()">
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Abierto Por*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="abiertoPor"
-                  rules="required|min:3"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
+    <div class="row">
+      <div class="col-md-6 col-ms-12 border-right">
+        <h2>Factura</h2>
+        <table class="table">
+<thead>
+  <tr>
+    <th>Codigo</th>
+    <th>Produto</th>
+    <th>Cantidad</th>
+    <th>Precio</th>
+    <th>Itbis</th>
+    <th>Total</th>
+  </tr>
+</thead>
+<tbody>
+  <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
+    <td>{{item.codigo }}</td>
+    <td>{{item.productoServicio}}</td>
+    <td>{{item.cantidad }}</td>
+    <td>{{item.precio }}</td>
+    <td>{{item.itbis }}</td>
+    <td>{{item.total }}</td>
+    <td><a @click="devolver(item,index)"><i class="fa-solid fa-arrow-right"></i></a></td>
+  </tr>
+</tbody>
+
+</table>
+      </div>
+      <div class="col-md-6 col-ms-12 border-left">
+        <h2>Devolucion</h2>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Motivo</label>
+                <div class="col-sm-10">   
+                  <el-select
                     required
-                    v-model="shift.abiertoPor"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                    filterable
+                    class="select-primary w-100"
+                    size="large"
+                    placeholder="Motivo"  
+                    v-model="devoluciones.motivoDevolucion"
                   >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Abierto En</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="abiertoEn"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input>
-                    <el-date-picker
-                      type="date"
-                      placeholder="Fecha de Apertura"
-                      v-model="shift.abiertoEn"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
+                    <el-option
+                      v-for="option in selects.motivoDevolucion"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
                     >
-                    </el-date-picker>
-                  </base-input>
-                </ValidationProvider>
+                    </el-option>
+                  </el-select>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Cerrado Por*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="cerradoPor"
-                  rules="min:3"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    v-model="shift.cerradoPor"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-10">
+                  <ValidationProvider
+                    name="fecha"
+                    v-slot="{ passed, failed, errors }"
                   >
-                  </base-input>
-                </ValidationProvider>
+                    <base-input>
+                      <el-date-picker
+                        type="date"
+                        placeholder="Fecha"
+                        v-model="devoluciones.fecha"
+                        :error="errors[0]"
+                        :class="[
+                          { 'has-success': passed },
+                          { 'has-danger': failed }
+                        ]"
+                      >
+                      </el-date-picker>
+                    </base-input>
+                  </ValidationProvider>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Cerrado En</label>
-              <div class="col-sm-4">
-                <ValidationProvider
-                  name="cerradoEn"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input>
-                    <el-date-picker
-                      type="date"
-                      placeholder="Fecha de Cierre"
-                      v-model="shift.cerradoEn"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
-                    >
-                    </el-date-picker>
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Monto Inicial*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="montoInicial"
-                  rules="required|min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Nota</label>
+                <div class="col-sm-10">
+                   <base-input
                     required
-                    autofocus
-                    v-model="shift.montoInicial"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                    v-model="devoluciones.Nota"
+                    type="text"
+                    placeholder="Nota"
                   >
                   </base-input>
-                </ValidationProvider>
+                </div>
               </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Monto Cierre*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="montoCierre"
-                  rules="required|min:1|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    autofocus
-                    v-model="shift.montoCierre"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row mb-3">
-              <label class="col-sm-2 col-form-label">Sucursal</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Sucursal"
-                  v-model="shift.sucursalId"
-                >
-                  <el-option
-                    v-for="option in selects.offices"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Estado</label>
-              <div class="col-sm-4">
-                <el-select
-                  required
-                  filterable
-                  class="select-primary"
-                  size="large"
-                  placeholder="Sucursal"
-                  v-model="shift.estadoTurno"
-                >
-                  <el-option
-                    v-for="option in selects.shiftStatus"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
-              </div>
-            </div>
-            <div class="row d-flex justify-content-center">
-              <base-button
+        <table class="table">
+          <thead>
+            <tr>
+              <th>Codigo</th>
+              <th>Produto</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Itbis</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item,index) in devoluciones.detalleDevoluciones" :key="index" :index="index">
+              <td><a @click="Cancelar(item)"><i class="fa-solid fa-arrow-left"></i></a></td>
+              <td>{{item.codigo }}</td>
+              <td>{{item.nombre }}</td>
+              <td>{{item.cantidad }}</td>
+              <td>{{item.precio }}</td>
+              <td>{{item.itbis }}</td>
+              <td>{{item.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row" v-if="devoluciones.detalleDevoluciones.length>0">
+          <div class="col-md-6 col-ms-12">
+          <base-button
                 type="success"
                 native-type="submit"
-                class="animation-on-hover"
-                @click.native="!id ? create() : edit()"
+                class="animation-on-hover w-100"
+                @click.native="create()"
+                :disabled="checkedID"
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
+            </div>
+            <div class="col-md-6 col-ms-12">
 
-              <router-link to="/shift/index">
-                <base-button type="danger" class="animation-on-hover"
+              <router-link to="/billDashboard/bill/index">
+                <base-button type="danger" class="animation-on-hover w-100"
                   ><i class="tim-icons icon-simple-remove"></i
                   >{{ $t('global.cancel') }}</base-button
                 >
               </router-link>
             </div>
-          </form>
-        </ValidationObserver>
+            </div>
       </div>
+    </div>
     </card>
-    <!-- end card -->
+
   </div>
 </template>
 <script>
@@ -256,10 +192,21 @@ export default {
       selects: {
         simple: '',
         shiftStatus: [],
+        motivoDevolucion:[],
         options: [
           { value: true, label: 'Activo' },
           { value: false, label: 'Inactivo' }
         ]
+      },
+      facturas:{
+      },
+      devoluciones:{
+        fecha:new Date(),
+        nota:'',
+        facturaId:'',
+        sucursalId:'',
+        motivoDevolucion:'',
+        detalleDevoluciones:[]
       },
       shift: {
         codigo: ''
@@ -269,23 +216,65 @@ export default {
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-    this.title = !this.id ? 'Crear' : 'Editar'
+    this.title = 'Crear'
+    this.fillCatalogs(['motivoDevolucion'])
     if (this.id) this.checkId()
-    this.currentCode = !this.id ? '' : this.currentCode
-    this.checkedID = !this.id && !this.shift.nationalID
   },
   methods: {
     checkId() {
-      axios
-        .get(this.baseApiUrl + 'Vendedores/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.fillForm(response.data)
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
+      console.log(this.id)
+      axios.get(this.baseApiUrl+'Facturas/'+this.id)
+        .then((response)=>{
+            this.facturas=response.data
+            this.devoluciones.facturaId=this.facturas.id
+            })
+
+    },
+    fillCatalogs(catalogs) {
+      catalogs.forEach((catalog) => {
+        axios
+          .get(this.baseApiUrl + 'catalogo/' + catalog)
+          .then((response) => {
+            this.selects[catalog] = response.data
+          })
+          .catch((error) => {
+            this.globalSweetMessage('Error al cargar la pagina', 'error')
+          })
+      })
+    },
+    devolver(item,index){
+      let detalleDevoluciones={
+        id:0,
+        detalleFacturaId:item.id,
+        productoId:item.productoId,
+        servicioId:item.servicioId,
+        nombre:item.productoServicio,
+        cantidad:item.cantidad,
+        precio:item.precio,
+        itbis:item.itbis,
+        total:item.total,
+        codigo:item.codigo,
+        devolucionId:0,
+        estadoDetalleDevoluciones:1
+      }
+      this.facturas.detalleFactura.splice(index,1)
+      this.devoluciones.detalleDevoluciones.push(detalleDevoluciones);
+    },
+    Cancelar(item,index){
+      let detalleFactura
+      ={
+        id:item.detalleFacturaId,
+        productoId:item.productoId,
+        servicioId:item.servicioId,
+        productoServicio:item.nombre,
+        cantidad:item.cantidad,
+        precio:item.precio,
+        itbis:item.itbis,
+        total:item.total,
+        codigo:item.codigo,
+      }
+      this.devoluciones.detalleDevoluciones.splice(index,1)
+      this.facturas.detalleFactura.push(detalleFactura);
     },
     validateFields() {
       return (
@@ -347,11 +336,11 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .post(this.baseApiUrl + 'Vendedores', this.shift)
+          .post(this.baseApiUrl + 'Devoluciones', this.devoluciones)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/shift/index' })
+            this.$router.push({ path: 'billDashboard/returns/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')

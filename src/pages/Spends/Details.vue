@@ -18,79 +18,80 @@
               
             </button>
           </router-link>
-          <router-link to="/Spends/print">
-            <button class="btn btn btn-twitter">
-                 Imprimir <i class="fa-solid fa-print"></i>
-            </button>
-          </router-link>
+          <base-button
+                  type="twitter"
+                  size="lg"
+                  v-print="'#Print'"
+                ><i class="fa-solid fa-print "></i> Imprimir</base-button
+                >
         </h4>
       </template>
         <div class="row">  
-        <div class="col-ms-12 col-md-4">
+        <div class="col-ms-12 col-md-5">
             <h4 slot="header" class="card-title">
                     Datos de la Compra
                 </h4>
           <div class="row">
-                <label class="col-sm-3 col-form-label">Descripción</label>
-                <div class="col-sm-9">
+                <label class="col-sm-4 col-form-label">Descripción</label>
+                <div class="col-sm-8">
                   <label class="col-form-label"> {{ gastos.descripcion}}</label>              
                 </div>           
           </div>     
            <div class="row">
-                <label class="col-sm-3 col-form-label">Sucursal</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.sucursales.nombre}}</label>              
+                <label class="col-sm-4 col-form-label">Sucursal</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ gastos.sucursales}}</label>              
                 </div>           
             </div>
 
             <div class="row">
-                <label class="col-sm-3 col-form-label">Tipo de Gastos</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.tipoGastos.descripcion}}</label>              
+                <label class="col-sm-4 col-form-label">Tipo de Gastos</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ gastos.tipoGastos}}</label>              
                 </div>           
             </div>
             
             <div class="row">
-                <label class="col-sm-3 col-form-label">Sub Tipo de Gastos</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.subTipoGastos.descripcion}}</label>              
+                <label class="col-sm-4 col-form-label">Sub Tipo de Gastos</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ gastos.subTipoGastos}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Fecha</label>
-                <div class="col-sm-9">
+                <label class="col-sm-4 col-form-label">Fecha</label>
+                <div class="col-sm-8">
                   <label class="col-form-label"> {{ gastos.fecha}}</label>              
                 </div>           
             </div>
             
             <div class="row">
-                <label class="col-sm-3 col-form-label">NFC</label>
-                <div class="col-sm-9">
+                <label class="col-sm-4 col-form-label">NCF</label>
+                <div class="col-sm-8">
                   <label class="col-form-label"> {{ gastos.comprobante}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Sub Total</label>
-                <div class="col-sm-9">
-                  <label class="col-form-label"> {{ gastos.total}}</label>              
+                <label class="col-sm-4 col-form-label">Sub Total</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ gastos.subTotal}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Itbis</label>
-                <div class="col-sm-9">
+                <label class="col-sm-4 col-form-label">Itbis</label>
+                <div class="col-sm-8">
                   <label class="col-form-label"> {{ gastos.itbis}}</label>              
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-3 col-form-label">Total</label>
-                <div class="col-sm-9">
+                <label class="col-sm-4 col-form-label">Total</label>
+                <div class="col-sm-8">
                   <label class="col-form-label"> {{ gastos.total}}</label>              
                 </div>           
             </div>
     
         </div>
         
-        <div class="row col-ms-12 col-md-8" style="border-left:solid; ">
+        <div class="row col-ms-12 col-md-7" style="border-left:solid; ">
             <div class="col-12">
                 <h4 slot="header" class="card-title text-center">
                     Detalle
@@ -159,6 +160,35 @@
         </div>
     </div>
         </card>
+      <!-- Report -->
+      <div class="container d-none bg-white">
+    <div id="Print" class="bg-white h-100 imprimir">
+       <div class="row">
+        <div class="col-2">
+          <img />
+        </div>
+        <div class="col-12 display-3">
+          {{ gastos.sucursales }}
+        </div>
+        <div class="col-12"> Fecha: {{gastos.fecha}}</div>
+        <div class="col-12 text-center">Gastos</div>
+        <div class="col-12"> Codigo: {{gastos.id}}</div>
+        <div class="col-12"> NCF: {{gastos.comprobante}}</div>
+      <div class="col-12">
+
+          <hr> <div class="col-12 text-right">Sub Total: {{gastos.subTotal.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Itbis: {{gastos.itbis.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Total:{{gastos.total.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">ISR:{{gastos.totalRetenciones.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Monto Pagado:{{gastos.montoPagar.toFixed(2)}}</div>
+
+
+        </div>
+       </div>
+    </div>
+         </div>
+       <!-- End Report -->
+
       </div>
 </template>
 <script>
@@ -206,11 +236,7 @@ components:{
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
-      gastos:{
-        sucursales:{nombre:''},
-        tipoGastos:{descripcion:''},
-        subTipoGastos:{descripcion:''},        
-    },
+      gastos:{},
     selects: {
       estadoCompra:[]
       },
@@ -266,6 +292,12 @@ components:{
 })
 </script>
 <style>
+body{
+  background: white;
+}
+.imprimir{
+  font-size:30pt;
+}
 .floatr {
   float: right;
 }

@@ -5,6 +5,8 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
+
+    
     <div class="col-md-8 ml-auto mr-auto">
       <h2 class="text-center">{{ $t('spends.index') }}s</h2>
     </div>
@@ -38,17 +40,13 @@
                 </el-option>
               </el-select>
 
-              <base-input>
-                <el-input
-                  type="search"
-                  class="mb-3 search-input"
-                  clearable
-                  prefix-icon="el-icon-search"
-                  placeholder="Buscar"
-                  v-model="searchQuery"
-                  aria-controls="datatables"
-                >
-                </el-input>
+
+              <base-input
+            class="mb-0 text-dark"
+            placeholder="Buscar"
+            v-model="searchQuery"
+            v-on:keyup="filtertabladata()"
+          >
               </base-input>
             </div>
             <el-table :data="queriedData">
@@ -143,6 +141,7 @@ export default {
       }
       return result.slice(this.from, this.to)
     },
+
     to() {
       let highBound = this.from + this.pagination.perPage
       if (this.total < highBound) {
@@ -170,8 +169,9 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
+      filtered:[],
       searchQuery: '',
-      propsToSearch: ['descripcion', 'total'],
+      propsToSearch: ['descripcion', 'subTotal'],
       tableColumns: [
         {
           prop: 'descripcion',
@@ -179,7 +179,7 @@ export default {
           minWidth: 70
         },
         {
-          prop: 'total',
+          prop: 'subTotal',
           label: 'Total',
           minWidth: 100
         }
@@ -190,6 +190,10 @@ export default {
     }
   },
   methods: {
+    filtertabladata(){
+      this.tableData=this.tableData.filter(c => this.propsToSearch.some(name=> c[name].toString().includes(this.searchQuery)) )
+
+    },
     handleDelete(index, row) {
       swal
         .fire({

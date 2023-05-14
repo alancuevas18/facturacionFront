@@ -152,6 +152,7 @@
     "billing": {
       "create" : "Crear",
       "index" : "Modulo de Facturacion",
+      "billingindex":"Administracion de Facturacion",
       "billing": "Facturacion"
     },
     "departures": {
@@ -188,7 +189,8 @@
   },
   "cashClose": {
     "index" : "Administracion de Cuadre de Caja",
-    "cashClose": "Cuadre de Caja"
+    "cashClose": "Cuadre de Caja",
+    "create" : "Crear"
   },
   "bill": {
     "index" : "Facturacion",

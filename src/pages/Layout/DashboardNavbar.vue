@@ -16,6 +16,9 @@
           <span class="navbar-toggler-bar bar2"></span>
           <span class="navbar-toggler-bar bar3"></span>
         </button>
+        <h5 class="mt-3">
+          Sucursal/{{ office }}
+        </h5> 
       </div>
       <!-- <a class="navbar-brand" href="#">{{ routeName }}</a> -->
     </div>
