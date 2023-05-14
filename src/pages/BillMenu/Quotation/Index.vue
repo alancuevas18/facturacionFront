@@ -159,7 +159,7 @@ export default {
       },
       quotationtatus: {},
       searchQuery: '',
-      propsToSearch: ['nombre', 'identificacion', 'sucursales', 'vendedores'],
+      propsToSearch: ['nombre', 'identificacion', 'sucursales', 'vendedores','fecha'],
       tableColumns: [
         {
           prop: 'nombre',
@@ -172,10 +172,16 @@ export default {
           minWidth: 100
         },
         {
+          prop: 'fecha',
+          label: 'Fecha',
+          minWidth: 110
+        },
+        {
           prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 100
         },
+        
         {
           prop: 'vendedores',
           label: 'Vendedores',
