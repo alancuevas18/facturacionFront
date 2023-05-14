@@ -163,17 +163,14 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      shiftStatus: [],
       offices: [],
       shifttatus: {},
       searchQuery: '',
       propsToSearch: [
         'usuarios',
         'abiertoEn',
-        'montoInicial',
-        'montoCierre',
         'sucursales',
-        'estadoTurno'
+        'estadoTurnoName'
       ],
       tableColumns: [
         {
@@ -202,8 +199,8 @@ export default {
           minWidth: 100
         },
         {
-          prop: 'estadoTurno',
-          label: 'estadoTurno',
+          prop: 'estadoTurnoName',
+          label: 'Estado',
           minWidth: 70
         }
       ],
@@ -256,11 +253,7 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['estadoTurno'] =
-              this.shiftStatus[response.data[i].estadoTurno - 1].nombre
-          }
+         this.tableData=response.data
         })
         .catch((error) => {
           this.errored = true
@@ -272,15 +265,6 @@ export default {
         .get(this.baseApiUrl + 'catalogo/sucursales')
         .then((response) => {
           this.offices = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-
-      axios
-        .get(this.baseApiUrl + 'catalogo/estadoturno')
-        .then((response) => {
-          this.shiftStatus = response.data
         })
         .catch((error) => {
           this.error = error
