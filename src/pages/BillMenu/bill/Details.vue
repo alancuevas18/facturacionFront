@@ -6,7 +6,7 @@
       :is-full-page="fullPage"
     />
     <h2 class="text-center">
-       {{ $t('quotation.details') }}
+       {{ $t('bill.details') }}
     </h2>
     <card>
       <template slot="header">
@@ -214,5 +214,8 @@ components:{
 }
 .el-table th.el-table__cell {
   background-color: transparent;
+}
+body{
+  background: white;
 }
 </style>

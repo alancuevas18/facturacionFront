@@ -86,14 +86,11 @@
         <sidebar-item
           :link="{
             name: $t('returns.returns'),
-            icon: 'tim-icons icon-coins'
+            icon: 'fa-solid fa-rotate-left'
           }"
         >
           <sidebar-item
             :link="{ name: $t('returns.index'), path: '/billDashboard/returns' }"
-          ></sidebar-item>
-          <sidebar-item
-            :link="{ name: $t('returns.create'), path: '/billDashboard/returns/create' }"
           ></sidebar-item>
         </sidebar-item>
         <!-- Cashclose Menu -->

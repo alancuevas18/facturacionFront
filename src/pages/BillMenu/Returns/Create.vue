@@ -107,6 +107,7 @@
         <table class="table">
           <thead>
             <tr>
+              <th></th>
               <th>Codigo</th>
               <th>Produto</th>
               <th>Cantidad</th>
@@ -134,7 +135,6 @@
                 native-type="submit"
                 class="animation-on-hover w-100"
                 @click.native="create()"
-                :disabled="checkedID"
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
@@ -204,7 +204,7 @@ export default {
         fecha:new Date(),
         nota:'',
         facturaId:'',
-        sucursalId:'',
+        sucursalId:9,
         motivoDevolucion:'',
         detalleDevoluciones:[]
       },
@@ -278,7 +278,7 @@ export default {
     },
     validateFields() {
       return (
-        !this.shift.nombre || !this.shift.apellido || !this.shift.identificacion
+        !this.devoluciones.fecha || !this.devoluciones.motivoDevolucion 
       )
     },
     fillForm(obj) {
@@ -340,7 +340,7 @@ export default {
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: 'billDashboard/returns/index' })
+            this.$router.push({ path: '/billDashboard/returns/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')

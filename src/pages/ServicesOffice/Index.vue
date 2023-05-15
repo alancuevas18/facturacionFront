@@ -201,17 +201,17 @@ export default {
       ],
       tableColumns: [
         {
-          prop: 'sucursalesId',
+          prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 110
         },
         {
-          prop: 'servicioCodigo',
+          prop: 'codigo',
           label: 'Codigo',
           minWidth: 100
         },
         {
-          prop: 'servicioNombre',
+          prop: 'nombre',
           label: 'Nombre',
           minWidth: 100
         },
@@ -226,7 +226,7 @@ export default {
           minWidth: 110
         },
         {
-          prop: 'estadoservicio',
+          prop: 'estadoServicioName',
           label: 'Estado',
           minWidth: 100
         }
@@ -282,17 +282,7 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['servicioCodigo'] =
-              response.data[i].servicios.codigo
-            this.tableData[i]['servicioNombre'] =
-              response.data[i].servicios.nombre
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['estadoservicio'] =
-              this.servicestatus[response.data[i].estadoServicio - 1].nombre
-          }
+          this.tableData=response.data
         })
         .catch((error) => {
           this.errored = true
@@ -320,14 +310,14 @@ export default {
     },
     filterByOffice() {
       this.tableData = []
-      this.fillTable('serviciossucursales/bysuculsal/' + this.office)
+      this.fillTable('serviciossucursales/BySuculsal/' + this.office)
     }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('serviciossucursales/bysuculsal', true)
+    this.fillTable('serviciossucursales/BySuculsal', true)
   },
   watch: {
     searchQuery(value) {

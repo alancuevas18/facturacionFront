@@ -17,7 +17,48 @@
           </router-link>
         </h4>
       </template>
-      <div>
+      <div class="row">
+        <div class="col-ms-12 col-md-4">
+            <h4 slot="header" class="card-title">
+                    Datos de la factura
+                </h4>
+
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Cliente</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.nombre}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Identificación</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.identificacion}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Vendedor</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas?.vendedores}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Sucursal</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.sucursales?.nombre}}</label>              
+                </div>           
+            </div>
+            
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Fecha</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.fecha}}</label>              
+                </div>           
+            </div>
+
+
+     
+        </div>       
+        <div class="col-ms-12 col-md-8">
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
@@ -248,6 +289,8 @@
           </form>
         </ValidationObserver>
       </div>
+      </div>
+
     </card>
     <!-- end card -->
   </div>
@@ -291,6 +334,9 @@ export default {
         clientes: [],
         vendedores: []
       },
+      facturas:{
+        sucursales:{nombre:''}
+      },
       send: {
         id: 0,
         cliente: null,
@@ -309,13 +355,13 @@ export default {
       }
     }
   },
-  mounted() {
+ async mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
-    if (this.id) this.checkId()
+    if (this.id) await this.checkId()
     this.checkedID = !this.id
-    this.fillCatalogs([
+     this.fillCatalogs([
       'sucursales',
       'vendedores',
       'clientes',
@@ -324,8 +370,8 @@ export default {
     ])
   },
   methods: {
-    checkId() {
-      axios
+   async checkId() {
+  await axios
         .get(this.baseApiUrl + 'envios/' + this.id)
         .then((response) => {
           this.isLoading = true
@@ -414,6 +460,13 @@ export default {
       }
     },
     fillCatalogs(catalogs) {
+      console.log(this.send)
+      axios
+        .get(this.baseApiUrl + 'facturas/' + this.send.facturaId)
+        .then((response) => {
+          console.log(response)
+          this.factura=response.data
+        })
       catalogs.forEach((catalog) => {
         axios
           .get(this.baseApiUrl + 'catalogo/' + catalog)

@@ -13,11 +13,7 @@
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('returns.returns') }}
-            <router-link to="/returns/create">
-              <button class="btn floatr btn-icon btn-twitter">
-                <i class="tim-icons icon-simple-add"></i>
-              </button>
-            </router-link>
+ 
           </h4>
           <div>
             <div
@@ -62,7 +58,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/returns/details/' + props.row.id">
+                  <router-link :to="'/billDashboard/returns/Details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -158,16 +154,21 @@ export default {
       },
       returnstatus: {},
       searchQuery: '',
-      propsToSearch: ['sucursalesId', 'fecha', 'nota'],
+      propsToSearch: ['sucursalesId','motivoDevolucionName','fecha', 'nota'],
       tableColumns: [
         {
-          prop: 'sucursalesId',
+          prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 110
         },
         {
-          prop: 'suplidorId',
-          label: 'Suplidor',
+          prop: 'facturaId',
+          label: 'Factura',
+          minWidth: 100
+        },
+        {
+          prop: 'motivoDevolucionName',
+          label: 'Motivo',
           minWidth: 100
         },
         {
@@ -232,13 +233,7 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-            //this.tableData[i]['estadoEntrada'] = 'Estado'
-          }
+           this.tableData=response.data          
         })
         .catch((error) => {
           this.errored = true
@@ -272,7 +267,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('Entradas', true)
+    this.fillTable('Devoluciones/bysuculsal', true)
   },
   watch: {
     searchQuery(value) {

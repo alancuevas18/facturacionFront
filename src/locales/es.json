@@ -185,7 +185,8 @@
   "returns": {
     "create" : "Crear",
     "index" : "Administracion de Devoluciones",
-    "returns": "Devoluciones"
+    "returns": "Devoluciones",
+    "details": "Detalle de la Devolución"
   },
   "cashClose": {
     "index" : "Administracion de Cuadre de Caja",
@@ -194,7 +195,9 @@
   },
   "bill": {
     "index" : "Facturacion",
-    "bill": "Facturacion"
+    "bill": "Facturacion",
+    "details": "Detalle de la Factura"
+
   },
   "users":{
     "index" : "Administracion de Usuarios",
