@@ -8,11 +8,10 @@
     <card>
       <template slot="header">
         <h4 class="card-title">
-          {{ title }} 
+          {{ title }}
           <router-link to="/billDashboard/bill/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
-              
             </button>
           </router-link>
         </h4>
@@ -21,29 +20,28 @@
       <div class="col-md-6 col-ms-12 border-right">
         <h2>Factura</h2>
         <table class="table">
-<thead>
-  <tr>
-    <th>Codigo</th>
-    <th>Produto</th>
-    <th>Cantidad</th>
-    <th>Precio</th>
-    <th>Itbis</th>
-    <th>Total</th>
-  </tr>
-</thead>
-<tbody>
-  <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
-    <td>{{item.codigo }}</td>
-    <td>{{item.productoServicio}}</td>
-    <td>{{item.cantidad }}</td>
-    <td>{{item.precio }}</td>
-    <td>{{item.itbis }}</td>
-    <td>{{item.total }}</td>
-    <td><a @click="devolver(item,index)"><i class="fa-solid fa-arrow-right"></i></a></td>
-  </tr>
-</tbody>
-
-</table>
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Itbis</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
+                <td>{{item.codigo }}</td>
+                <td>{{item.productoServicio}}</td>
+                <td>{{item.cantidad }}</td>
+                <td>{{item.precio }}</td>
+                <td>{{item.itbis }}</td>
+                <td>{{item.total }}</td>
+                <td><a @click="devolver(item,index)"><i class="fa-solid fa-arrow-right"></i></a></td>
+              </tr>
+            </tbody>
+        </table>
       </div>
       <div class="col-md-6 col-ms-12 border-left">
         <h2>Devolucion</h2>
@@ -140,7 +138,6 @@
               >
             </div>
             <div class="col-md-6 col-ms-12">
-
               <router-link to="/billDashboard/bill/index">
                 <base-button type="danger" class="animation-on-hover w-100"
                   ><i class="tim-icons icon-simple-remove"></i
@@ -148,11 +145,10 @@
                 >
               </router-link>
             </div>
-            </div>
+          </div>
+        </div>
       </div>
-    </div>
     </card>
-
   </div>
 </template>
 <script>
@@ -192,7 +188,7 @@ export default {
       selects: {
         simple: '',
         shiftStatus: [],
-        motivoDevolucion:[],
+        motivoDevolucion: [],
         options: [
           { value: true, label: 'Activo' },
           { value: false, label: 'Inactivo' }
@@ -222,13 +218,10 @@ export default {
   },
   methods: {
     checkId() {
-      console.log(this.id)
-      axios.get(this.baseApiUrl+'Facturas/'+this.id)
-        .then((response)=>{
-            this.facturas=response.data
-            this.devoluciones.facturaId=this.facturas.id
-            })
-
+      axios.get(this.baseApiUrl + 'Facturas/' + this.id).then((response) => {
+        this.facturas = response.data
+        this.devoluciones.facturaId = this.facturas.id
+      })
     },
     fillCatalogs(catalogs) {
       catalogs.forEach((catalog) => {
@@ -242,39 +235,38 @@ export default {
           })
       })
     },
-    devolver(item,index){
-      let detalleDevoluciones={
-        id:0,
-        detalleFacturaId:item.id,
-        productoId:item.productoId,
-        servicioId:item.servicioId,
-        nombre:item.productoServicio,
-        cantidad:item.cantidad,
-        precio:item.precio,
-        itbis:item.itbis,
-        total:item.total,
-        codigo:item.codigo,
-        devolucionId:0,
-        estadoDetalleDevoluciones:1
+    devolver(item, index) {
+      let detalleDevoluciones = {
+        id: 0,
+        detalleFacturaId: item.id,
+        productoId: item.productoId,
+        servicioId: item.servicioId,
+        nombre: item.productoServicio,
+        cantidad: item.cantidad,
+        precio: item.precio,
+        itbis: item.itbis,
+        total: item.total,
+        codigo: item.codigo,
+        devolucionId: 0,
+        estadoDetalleDevoluciones: 1
       }
-      this.facturas.detalleFactura.splice(index,1)
-      this.devoluciones.detalleDevoluciones.push(detalleDevoluciones);
+      this.facturas.detalleFactura.splice(index, 1)
+      this.devoluciones.detalleDevoluciones.push(detalleDevoluciones)
     },
-    Cancelar(item,index){
-      let detalleFactura
-      ={
-        id:item.detalleFacturaId,
-        productoId:item.productoId,
-        servicioId:item.servicioId,
-        productoServicio:item.nombre,
-        cantidad:item.cantidad,
-        precio:item.precio,
-        itbis:item.itbis,
-        total:item.total,
-        codigo:item.codigo,
+    Cancelar(item, index) {
+      let detalleFactura = {
+        id: item.detalleFacturaId,
+        productoId: item.productoId,
+        servicioId: item.servicioId,
+        productoServicio: item.nombre,
+        cantidad: item.cantidad,
+        precio: item.precio,
+        itbis: item.itbis,
+        total: item.total,
+        codigo: item.codigo
       }
-      this.devoluciones.detalleDevoluciones.splice(index,1)
-      this.facturas.detalleFactura.push(detalleFactura);
+      this.devoluciones.detalleDevoluciones.splice(index, 1)
+      this.facturas.detalleFactura.push(detalleFactura)
     },
     validateFields() {
       return (

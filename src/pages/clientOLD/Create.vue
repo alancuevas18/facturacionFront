@@ -9,7 +9,7 @@
     <card>
       <template slot="header">
         <h4 class="card-title">
-          {{ title }} / Cliente: <b>{{ currentCode }}</b>
+          {{ title }} {{ currentCode }}
           <router-link to="/clients/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
@@ -369,6 +369,7 @@ export default {
       currentCode: '',
       baseApiUrl: '',
       title: '',
+      fixedCode: '',
       selects: {
         simple: '',
         options: [
@@ -400,17 +401,23 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
-    if (this.id)
-      this.globalFind('clientes', this.id, this.client).then((response) => {
-        Object.keys(this.client).forEach((e) => {
-          this.client[e] = response[e]
-        })
-      })
-
-    this.currentCode = !this.id ? '' : this.id
-    this.checkedID = !this.id && !this.client.identificacion
+    if (this.id) this.checkId()
+    this.currentCode = !this.id ? '' : this.currentCode
+    this.checkedID = !this.id && !this.client.nationalID
   },
   methods: {
+    checkId() {
+      axios
+        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .then((response) => {
+          this.isLoading = true
+          this.fillForm(response.data)
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    },
     checkIdentification() {
       this.isLoading = true
       axios
@@ -424,11 +431,9 @@ export default {
             this.globalSweetMessage('Cliente existe!', 'warning')
             this.$router.push({ path: '/clients/index' })
           } else {
-            let identificacion = this.client.identificacion
             this.readOnly = response.data.personaId > 0
-            this.client = this.globalFillObject(response.data)
-            this.client.identificacion = identificacion
           }
+          this.fillForm(response.data)
         })
         .catch((error) => {
           this.globalSweetMessage('Error al consultar identificacion', 'error')
@@ -443,20 +448,75 @@ export default {
         !this.client.identificacion
       )
     },
+    fillForm(obj) {
+      this.client = {
+        estadoClientes: obj.estadoClientes,
+        personaId: obj.personaId,
+        codigo: obj.codigo,
+        nombre: obj.nombre,
+        apellido: obj.apellido,
+        identificacion: this.client.identificacion
+          ? this.client.identificacion
+          : obj.identificacion,
+        correo: obj.correo,
+        direccion: obj.direccion,
+        celular: obj.celular,
+        telefono: obj.telefono,
+        empresa: obj.empresa,
+        empresaRnc: obj.empresaRnc,
+        empresaTelefono: obj.empresaTelefono,
+        empresaDireccion: obj.empresaDireccion,
+        estadoPersona: obj.estadoPersona,
+        id: obj.id
+      }
+      if (obj.id != 0)
+        this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
+    },
+    clear() {
+      this.client.codigo = ''
+      this.client.nombre = ''
+      this.client.apellido = ''
+      this.client.identificacion = ''
+      this.client.correo = ''
+      this.client.direccion = ''
+      this.client.celular = ''
+      this.client.telefono = ''
+      this.client.estadoClientes = ''
+    },
     edit() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
-        this.globalEdit('clientes', this.id, this.client, '/clients/index')
-        this.client = this.globalClear(this.client)
+        this.isLoading = true
+        axios
+          .put(this.baseApiUrl + 'clientes/' + this.client.id, this.client)
+          .then((response) => {
+            this.globalSweetMessage(response.data.message)
+            this.clear()
+            this.$router.push({ path: '/clients/index' })
+          })
+          .catch((error) => {
+            this.globalSweetMessage(error.response.data.message, 'error')
+          })
+          .finally(() => (this.isLoading = false))
       }
     },
     create() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
-        this.globalPost('clientes', this.client, '/clients/index')
-        this.client = this.globalClear(this.client)
+        this.isLoading = true
+        axios
+          .post(this.baseApiUrl + 'clientes', this.client)
+          .then((response) => {
+            this.globalSweetMessage(response.data.message)
+            this.clear()
+            this.$router.push({ path: '/clients/index' })
+          })
+          .catch((error) => {
+            this.globalSweetMessage(error.response.data.message, 'error')
+          })
+          .finally(() => (this.isLoading = false))
       }
     }
   }

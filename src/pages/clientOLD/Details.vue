@@ -29,14 +29,11 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5
-                    class="title text-capitalize"
-                    :class="client.estadoClientes"
-                  >
-                    {{ client.estadoClientes }}
+                  <h5 class="title text-capitalize" :class="client.status">
+                    {{ client.status }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ client.nombre }} {{ client.apellido }}
+                    {{ client.name }} {{ client.lastName }}
                   </p>
                 </div>
                 <p></p>
@@ -44,7 +41,7 @@
                 <div slot="footer" class="button-container">
                   <a
                     :href="
-                      'https://api.whatsapp.com/send?phone=' + client.celular
+                      'https://api.whatsapp.com/send?phone=' + client.cellPhone
                     "
                   >
                     <base-button class="btn-whatsapp" icon round>
@@ -65,53 +62,53 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>identificacion:</b> {{ client.identificacion }}
+                    <b>NationalID:</b> {{ client.nationalID }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>correo:</b> {{ client.correo }}
+                    <b>Email:</b> {{ client.email }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>direccion:</b> {{ client.direccion }}
+                    <b>Address:</b> {{ client.address }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>celular:</b> {{ client.celular }}
+                    <b>CellPhone:</b> {{ client.cellPhone }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Telefono:</b> {{ client.telefono }}
+                    <b>Phone:</b> {{ client.phone }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Empresa:</b> {{ client.empresa }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>Telefono Empresa:</b> {{ client.empresaTelefono }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>Direccion Empresa:</b> {{ client.empresaDireccion }}
+                    <b>Nombre Empresa:</b> {{ client.empresa }}
                   </p>
                   <p class="description text-capitalize">
                     <b>Rnc:</b> {{ client.empresaRnc }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Dirreción:</b> {{ client.empresaDireccion }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Telefono Empresa:</b> {{ client.empresaTelefono }}
                   </p>
                 </div>
                 <p></p>
 
                 <div slot="footer" class="button-container">
-                  <a :href="'tel:' + client.celular">
+                  <a :href="'tel:' + client.cellPhone">
                     <base-button icon round>
                       <i class="fas fa-phone"></i>
                     </base-button>
                   </a>
-                  <a :href="'tel:' + client.telefono">
+                  <a :href="'tel:' + client.phone">
                     <base-button icon round>
                       <i class="fas fa-mobile"></i>
                     </base-button>
                   </a>
-                  <a :href="'mailto:' + client.correo">
+                  <a :href="'mailto:' + client.email">
                     <base-button icon round>
                       <i class="fas fa-envelope-open"></i>
                     </base-button>
                   </a>
                   <a
-                    :href="'http://maps.google.com/?q=' + client.direccion"
+                    :href="'http://maps.google.com/?q=' + client.address"
                     target="_blank"
                   >
                     <base-button icon round>
@@ -141,35 +138,59 @@ export default {
       isLoading: false,
       fullPage: true,
       id: '',
-      client: {
-        codigo: '',
-        nombre: '',
-        apellido: '',
-        identificacion: '',
-        correo: '',
-        direccion: '',
-        celular: '',
-        telefono: '',
-        empresa: '',
-        estadoClientes: '',
-        empresaTelefono: '',
-        empresaDireccion: '',
-        empresaRnc: ''
-      }
+      baseApiUrl: '',
+      client: [
+        {
+          code: '',
+          name: '',
+          lastName: '',
+          nationalID: '',
+          email: '',
+          address: '',
+          cellPhone: '',
+          phone: '',
+          status: '',
+          empresa: '',
+          empresaTelefono: '',
+          empresaDireccion: '',
+          empresaRnc: ''
+        }
+      ]
     }
   },
   mounted() {
     this.id = this.$route.params.id
-    this.globalFind('clientes', this.id, this.client).then((response) => {
-      Object.keys(this.client).forEach((e) => {
-        this.client[e] = response[e]
-        this.client.estadoClientes = this.client.estadoClientes
-          ? 'active'
-          : 'inactive'
-      })
-    })
+    this.baseApiUrl = config.global.baseApiUrl
+    this.find()
   },
-  methods: {}
+  methods: {
+    find() {
+      axios
+        .get(this.baseApiUrl + 'clientes/' + this.id)
+        .then((response) => {
+          this.isLoading = true
+          this.client = {
+            code: response.data.codigo,
+            name: response.data.nombre,
+            lastName: response.data.apellido,
+            nationalID: response.data.identificacion,
+            email: response.data.correo,
+            address: response.data.direccion,
+            cellPhone: response.data.celular,
+            phone: response.data.telefono,
+            empresa: response.data.empresa,
+            empresaTelefono: response.data.empresaTelefono,
+            empresaDireccion: response.data.empresaDireccion,
+            empresaRnc: response.data.empresaRnc,
+            status: response.data.estadoClientes ? 'active' : 'inactive'
+          }
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+    }
+  }
 }
 </script>
 <style>

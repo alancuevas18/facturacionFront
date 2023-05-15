@@ -771,7 +771,6 @@ export default {
       axios
           .get(this.baseApiUrl + 'Facturas/'+this.bill.facturaId)
           .then((response) => {
-            console.log(response)
            this.facturas= response.data
           })
     },

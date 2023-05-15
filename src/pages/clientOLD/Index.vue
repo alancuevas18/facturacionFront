@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('products.type') }}</h2>
+      <h2 class="text-center">{{ $t('clients.index') }}</h2>
     </div>
     <div class="row mt-5">
       <div class="col-12">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('products.type') }}
-            <router-link to="/productstype/create">
+            {{ $t('clients.clients') }}
+            <router-link to="/clients/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -62,7 +62,17 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/productstype/create/' + props.row.id">
+                  <router-link :to="'/clients/details/' + props.row.id">
+                    <base-button
+                      class="like btn-link"
+                      type="info"
+                      size="sm"
+                      icon
+                    >
+                      <i class="tim-icons icon-notes"></i>
+                    </base-button>
+                  </router-link>
+                  <router-link :to="'/clients/create/' + props.row.id">
                     <base-button
                       class="edit btn-link"
                       type="warning"
@@ -110,6 +120,7 @@
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui'
 import { BasePagination } from 'src/components'
+import Fuse from 'fuse.js'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import swal from 'sweetalert2'
@@ -161,12 +172,49 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['descripcion'],
+      propsToSearch: [
+        'codigo',
+        'nombre',
+        'identificacion',
+        'correo',
+        'celular',
+        'telefono'
+      ],
       tableColumns: [
         {
-          prop: 'descripcion',
-          label: 'Descripcion',
+          prop: 'codigo',
+          label: 'Codigo',
           minWidth: 70
+        },
+        {
+          prop: 'nombre',
+          label: 'Nombre',
+          minWidth: 100
+        },
+        {
+          prop: 'apellido',
+          label: 'apellido',
+          minWidth: 100
+        },
+        {
+          prop: 'identificacion',
+          label: 'identificacion',
+          minWidth: 120
+        },
+        {
+          prop: 'correo',
+          label: 'correo',
+          minWidth: 200
+        },
+        {
+          prop: 'celular',
+          label: 'celular',
+          minWidth: 120
+        },
+        {
+          prop: 'telefono',
+          label: 'telefono',
+          minWidth: 120
         }
       ],
       tableData: [],
@@ -199,7 +247,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'tipoproductos/' + row.id)
+        .delete(this.baseApiUrl + 'clientes/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -219,11 +267,11 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     axios
-      .get(this.baseApiUrl + 'tipoproductos')
+      .get(this.baseApiUrl + 'clientes')
       .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push(response.data[i])
-        }
+        this.tableData = response.data
+        // for (let i = 0; i < response.data.length; i++)
+        //   this.tableData.push(response.data[i])
       })
       .catch((error) => {
         this.errored = true
