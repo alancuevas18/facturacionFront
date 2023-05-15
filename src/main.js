@@ -6,6 +6,7 @@ import DashboardPlugin from './plugins/dashboard-plugin'
 import App from './App.vue'
 import swal from 'sweetalert2'
 import axios from 'axios'
+import config from '@/config'
 
 // router setup
 import router from './routes/router'
@@ -44,7 +45,7 @@ axios.interceptors.response.use(
 
 Vue.mixin({
   methods: {
-    globalSweetMessage: function (message, icon = 'success') {
+    globalSweetMessage(message, icon = 'success') {
       if (message == '' || message == undefined) {
         if (icon == 'success') message = 'Realizado con exito'
         else if (icon == 'error') message = 'No se pudo realizar la accion'
@@ -58,8 +59,118 @@ Vue.mixin({
         }
       })
     },
-    globalTry: function () {
-      console.log('GLOBAL TRY')
+    globalHandleDelete(index, row, tableData, page) {
+      swal
+        .fire({
+          title: 'Estas seguro?',
+          text: `Esta accion no se puede reversar!`,
+          icon: 'warning',
+          showCancelButton: true,
+          customClass: {
+            confirmButton: 'btn btn-success btn-fill',
+            cancelButton: 'btn btn-danger btn-fill'
+          },
+          confirmButtonText: 'Confimar!',
+          cancelButtonText: 'Cancelar',
+          buttonsStyling: false
+        })
+        .then((result) => {
+          if (result.value) {
+            let baseApiUrl = config.global.baseApiUrl
+            this.isLoading = true
+            axios
+              .delete(baseApiUrl + page + '/' + row.id)
+              .then(() => {
+                this.globalSweetMessage()
+                let indexToDelete = tableData.findIndex(
+                  (tableRow) => tableRow.id === row.id
+                )
+                if (indexToDelete >= 0) {
+                  tableData.splice(indexToDelete, 1)
+                }
+              })
+              .catch((error) => {
+                this.globalSweetMessage(error.response.data.message, 'error')
+              })
+              .finally(() => (this.isLoading = false))
+          }
+        })
+
+      return tableData
+    },
+    globalFillTable(page) {
+      let baseApiUrl = config.global.baseApiUrl
+      this.isLoading = true
+      return axios
+        .get(baseApiUrl + page)
+        .then((response) => {
+          return response.data
+        })
+        .catch((error) => {
+          this.globalSweetMessage('Error al obtener los datos', 'error')
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    globalFilter(tableData, propsToSearch, value) {
+      return tableData.filter((c) =>
+        propsToSearch.some((name) =>
+          c[name].toString().toLowerCase().includes(value.toLowerCase())
+        )
+      )
+    },
+    globalFind(page, id, obj) {
+      let baseApiUrl = config.global.baseApiUrl
+      this.isLoading = true
+      let result = {}
+      return axios
+        .get(baseApiUrl + page + '/' + id)
+        .then((response) => {
+          Object.keys(obj).forEach((e) => {
+            result[e] = response.data[e]
+          })
+          return result
+        })
+        .catch((error) => {
+          return []
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    globalClear(obj) {
+      obj = {}
+      return obj
+    },
+    globalFillObject(obj) {
+      let result = {}
+      Object.keys(obj).forEach((e) => {
+        result[e] = obj[e]
+      })
+      return result
+    },
+    globalEdit(page, id, obj, redirect = null) {
+      this.isLoading = true
+      axios
+        .put(this.baseApiUrl + page + '/' + id, obj)
+        .then((response) => {
+          this.globalSweetMessage(response.data.message)
+          if (redirect) this.$router.push({ path: redirect })
+        })
+        .catch((error) => {
+          this.globalSweetMessage(error.response.data.message, 'error')
+        })
+        .finally(() => (this.isLoading = false))
+    },
+    globalPost(page, obj, redirect = null) {
+      this.isLoading = true
+      axios
+        .post(this.baseApiUrl + page, obj)
+        .then((response) => {
+          this.globalSweetMessage(response.data.message)
+          if (redirect) this.$router.push({ path: redirect })
+        })
+        .catch((error) => {
+          this.globalSweetMessage(error.response.data.message, 'error')
+        })
+        .finally(() => (this.isLoading = false))
     }
   }
 })

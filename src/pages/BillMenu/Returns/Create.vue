@@ -8,128 +8,142 @@
     <card>
       <template slot="header">
         <h4 class="card-title">
-          {{ title }} 
+          {{ title }}
           <router-link to="/billDashboard/bill/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
-              
             </button>
           </router-link>
         </h4>
       </template>
-    <div class="row">
-      <div class="col-md-6 col-ms-12 border-right">
-        <h2>Factura</h2>
-        <table class="table">
-<thead>
-  <tr>
-    <th>Codigo</th>
-    <th>Produto</th>
-    <th>Cantidad</th>
-    <th>Precio</th>
-    <th>Itbis</th>
-    <th>Total</th>
-  </tr>
-</thead>
-<tbody>
-  <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
-    <td>{{item.codigo }}</td>
-    <td>{{item.productoServicio}}</td>
-    <td>{{item.cantidad }}</td>
-    <td>{{item.precio }}</td>
-    <td>{{item.itbis }}</td>
-    <td>{{item.total }}</td>
-    <td><a @click="devolver(item,index)"><i class="fa-solid fa-arrow-right"></i></a></td>
-  </tr>
-</tbody>
-
-</table>
-      </div>
-      <div class="col-md-6 col-ms-12 border-left">
-        <h2>Devolucion</h2>
-              <div class="row">
-                <label class="col-sm-2 col-form-label">Motivo</label>
-                <div class="col-sm-10">   
-                  <el-select
-                    required
-                    filterable
-                    class="select-primary w-100"
-                    size="large"
-                    placeholder="Motivo"  
-                    v-model="devoluciones.motivoDevolucion"
+      <div class="row">
+        <div class="col-md-6 col-ms-12 border-right">
+          <h2>Factura</h2>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Itbis</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(item, index) in facturas.detalleFactura"
+                :key="item.id"
+                :index="index"
+              >
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.productoServicio }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>{{ item.precio }}</td>
+                <td>{{ item.itbis }}</td>
+                <td>{{ item.total }}</td>
+                <td>
+                  <a @click="devolver(item, index)"
+                    ><i class="fa-solid fa-arrow-right"></i
+                  ></a>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="col-md-6 col-ms-12 border-left">
+          <h2>Devolucion</h2>
+          <div class="row">
+            <label class="col-sm-2 col-form-label">Motivo</label>
+            <div class="col-sm-10">
+              <el-select
+                required
+                filterable
+                class="select-primary w-100"
+                size="large"
+                placeholder="Motivo"
+                v-model="devoluciones.motivoDevolucion"
+              >
+                <el-option
+                  v-for="option in selects.motivoDevolucion"
+                  class="select-primary"
+                  :value="option.id"
+                  :label="option.nombre"
+                  :key="option.id"
+                >
+                </el-option>
+              </el-select>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-2 col-form-label">Fecha</label>
+            <div class="col-sm-10">
+              <ValidationProvider
+                name="fecha"
+                v-slot="{ passed, failed, errors }"
+              >
+                <base-input>
+                  <el-date-picker
+                    type="date"
+                    placeholder="Fecha"
+                    v-model="devoluciones.fecha"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
                   >
-                    <el-option
-                      v-for="option in selects.motivoDevolucion"
-                      class="select-primary"
-                      :value="option.id"
-                      :label="option.nombre"
-                      :key="option.id"
-                    >
-                    </el-option>
-                  </el-select>
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-sm-2 col-form-label">Fecha</label>
-                <div class="col-sm-10">
-                  <ValidationProvider
-                    name="fecha"
-                    v-slot="{ passed, failed, errors }"
-                  >
-                    <base-input>
-                      <el-date-picker
-                        type="date"
-                        placeholder="Fecha"
-                        v-model="devoluciones.fecha"
-                        :error="errors[0]"
-                        :class="[
-                          { 'has-success': passed },
-                          { 'has-danger': failed }
-                        ]"
-                      >
-                      </el-date-picker>
-                    </base-input>
-                  </ValidationProvider>
-                </div>
-              </div>
-              <div class="row">
-                <label class="col-sm-2 col-form-label">Nota</label>
-                <div class="col-sm-10">
-                   <base-input
-                    required
-                    v-model="devoluciones.Nota"
-                    type="text"
-                    placeholder="Nota"
-                  >
-                  </base-input>
-                </div>
-              </div>
-        <table class="table">
-          <thead>
-            <tr>
-              <th>Codigo</th>
-              <th>Produto</th>
-              <th>Cantidad</th>
-              <th>Precio</th>
-              <th>Itbis</th>
-              <th>Total</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="(item,index) in devoluciones.detalleDevoluciones" :key="index" :index="index">
-              <td><a @click="Cancelar(item)"><i class="fa-solid fa-arrow-left"></i></a></td>
-              <td>{{item.codigo }}</td>
-              <td>{{item.nombre }}</td>
-              <td>{{item.cantidad }}</td>
-              <td>{{item.precio }}</td>
-              <td>{{item.itbis }}</td>
-              <td>{{item.total }}</td>
-            </tr>
-          </tbody>
-        </table>
-        <div class="row" v-if="devoluciones.detalleDevoluciones.length>0">
-          <div class="col-md-6 col-ms-12">
-          <base-button
+                  </el-date-picker>
+                </base-input>
+              </ValidationProvider>
+            </div>
+          </div>
+          <div class="row">
+            <label class="col-sm-2 col-form-label">Nota</label>
+            <div class="col-sm-10">
+              <base-input
+                required
+                v-model="devoluciones.Nota"
+                type="text"
+                placeholder="Nota"
+              >
+              </base-input>
+            </div>
+          </div>
+          <table class="table">
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Itbis</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                v-for="(item, index) in devoluciones.detalleDevoluciones"
+                :key="index"
+                :index="index"
+              >
+                <td>
+                  <a @click="Cancelar(item)"
+                    ><i class="fa-solid fa-arrow-left"></i
+                  ></a>
+                </td>
+                <td>{{ item.codigo }}</td>
+                <td>{{ item.nombre }}</td>
+                <td>{{ item.cantidad }}</td>
+                <td>{{ item.precio }}</td>
+                <td>{{ item.itbis }}</td>
+                <td>{{ item.total }}</td>
+              </tr>
+            </tbody>
+          </table>
+          <div class="row" v-if="devoluciones.detalleDevoluciones.length > 0">
+            <div class="col-md-6 col-ms-12">
+              <base-button
                 type="success"
                 native-type="submit"
                 class="animation-on-hover w-100"
@@ -140,7 +154,6 @@
               >
             </div>
             <div class="col-md-6 col-ms-12">
-
               <router-link to="/billDashboard/bill/index">
                 <base-button type="danger" class="animation-on-hover w-100"
                   ><i class="tim-icons icon-simple-remove"></i
@@ -148,11 +161,10 @@
                 >
               </router-link>
             </div>
-            </div>
+          </div>
+        </div>
       </div>
-    </div>
     </card>
-
   </div>
 </template>
 <script>
@@ -192,21 +204,20 @@ export default {
       selects: {
         simple: '',
         shiftStatus: [],
-        motivoDevolucion:[],
+        motivoDevolucion: [],
         options: [
           { value: true, label: 'Activo' },
           { value: false, label: 'Inactivo' }
         ]
       },
-      facturas:{
-      },
-      devoluciones:{
-        fecha:new Date(),
-        nota:'',
-        facturaId:'',
-        sucursalId:'',
-        motivoDevolucion:'',
-        detalleDevoluciones:[]
+      facturas: {},
+      devoluciones: {
+        fecha: new Date(),
+        nota: '',
+        facturaId: '',
+        sucursalId: '',
+        motivoDevolucion: '',
+        detalleDevoluciones: []
       },
       shift: {
         codigo: ''
@@ -222,13 +233,10 @@ export default {
   },
   methods: {
     checkId() {
-      console.log(this.id)
-      axios.get(this.baseApiUrl+'Facturas/'+this.id)
-        .then((response)=>{
-            this.facturas=response.data
-            this.devoluciones.facturaId=this.facturas.id
-            })
-
+      axios.get(this.baseApiUrl + 'Facturas/' + this.id).then((response) => {
+        this.facturas = response.data
+        this.devoluciones.facturaId = this.facturas.id
+      })
     },
     fillCatalogs(catalogs) {
       catalogs.forEach((catalog) => {
@@ -242,39 +250,38 @@ export default {
           })
       })
     },
-    devolver(item,index){
-      let detalleDevoluciones={
-        id:0,
-        detalleFacturaId:item.id,
-        productoId:item.productoId,
-        servicioId:item.servicioId,
-        nombre:item.productoServicio,
-        cantidad:item.cantidad,
-        precio:item.precio,
-        itbis:item.itbis,
-        total:item.total,
-        codigo:item.codigo,
-        devolucionId:0,
-        estadoDetalleDevoluciones:1
+    devolver(item, index) {
+      let detalleDevoluciones = {
+        id: 0,
+        detalleFacturaId: item.id,
+        productoId: item.productoId,
+        servicioId: item.servicioId,
+        nombre: item.productoServicio,
+        cantidad: item.cantidad,
+        precio: item.precio,
+        itbis: item.itbis,
+        total: item.total,
+        codigo: item.codigo,
+        devolucionId: 0,
+        estadoDetalleDevoluciones: 1
       }
-      this.facturas.detalleFactura.splice(index,1)
-      this.devoluciones.detalleDevoluciones.push(detalleDevoluciones);
+      this.facturas.detalleFactura.splice(index, 1)
+      this.devoluciones.detalleDevoluciones.push(detalleDevoluciones)
     },
-    Cancelar(item,index){
-      let detalleFactura
-      ={
-        id:item.detalleFacturaId,
-        productoId:item.productoId,
-        servicioId:item.servicioId,
-        productoServicio:item.nombre,
-        cantidad:item.cantidad,
-        precio:item.precio,
-        itbis:item.itbis,
-        total:item.total,
-        codigo:item.codigo,
+    Cancelar(item, index) {
+      let detalleFactura = {
+        id: item.detalleFacturaId,
+        productoId: item.productoId,
+        servicioId: item.servicioId,
+        productoServicio: item.nombre,
+        cantidad: item.cantidad,
+        precio: item.precio,
+        itbis: item.itbis,
+        total: item.total,
+        codigo: item.codigo
       }
-      this.devoluciones.detalleDevoluciones.splice(index,1)
-      this.facturas.detalleFactura.push(detalleFactura);
+      this.devoluciones.detalleDevoluciones.splice(index, 1)
+      this.facturas.detalleFactura.push(detalleFactura)
     },
     validateFields() {
       return (

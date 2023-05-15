@@ -19,31 +19,31 @@
       </template>
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
-          <form class="form-horizontal" @submit.prevent="handleSubmit()">          
+          <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
               <div class="col-ms-12 col-md-6">
                 <div class="row">
-                    <label class="col-sm-3 col-form-label">Fecha</label>
-                    <div class="col-sm-9">
-                      <ValidationProvider
-                        name="fecha"
-                        v-slot="{ passed, failed, errors }"
-                      >
-                        <base-input >
-                          <el-date-picker
-                            type="date"
-                            placeholder="Fecha"
-                            v-model="spend.fecha"
-                            :error="errors[0]"
-                            :class="[
-                              { 'has-success': passed },
-                              { 'has-danger': failed }
-                            ]"
-                          >
-                          </el-date-picker>
-                        </base-input>
-                      </ValidationProvider>
-                    </div>
+                  <label class="col-sm-3 col-form-label">Fecha</label>
+                  <div class="col-sm-9">
+                    <ValidationProvider
+                      name="fecha"
+                      v-slot="{ passed, failed, errors }"
+                    >
+                      <base-input>
+                        <el-date-picker
+                          type="date"
+                          placeholder="Fecha"
+                          v-model="spend.fecha"
+                          :error="errors[0]"
+                          :class="[
+                            { 'has-success': passed },
+                            { 'has-danger': failed }
+                          ]"
+                        >
+                        </el-date-picker>
+                      </base-input>
+                    </ValidationProvider>
+                  </div>
                 </div>
                 <div class="row">
                   <label class="col-sm-3 col-form-label">Comprobante</label>
@@ -133,7 +133,9 @@
                   </div>
                 </div>
                 <div class="row">
-                  <label class="col-sm-3 col-form-label">Sub Tipo Gastos*</label>
+                  <label class="col-sm-3 col-form-label"
+                    >Sub Tipo Gastos*</label
+                  >
                   <div class="col-sm-9">
                     <el-select
                       required
@@ -165,7 +167,7 @@
                       v-slot="{ passed, failed, errors }"
                     >
                       <base-input
-                       @keyup="reload()"
+                        @keyup="reload()"
                         required
                         v-model="spend.subTotal"
                         :error="errors[0]"
@@ -178,36 +180,44 @@
                       </base-input>
                     </ValidationProvider>
                   </div>
-                </div>  
+                </div>
                 <div class="row">
                   <div class="col-10">
-                     <label class="col-sm-3 col-form-label">Itbis:</label>                 
-                     <label class="col-sm-6 col-form-label text-left">{{ spend.itbis }}</label>              
+                    <label class="col-sm-3 col-form-label">Itbis:</label>
+                    <label class="col-sm-6 col-form-label text-left">{{
+                      spend.itbis
+                    }}</label>
                   </div>
                   <div class="col-ms-2">
-                       <base-checkbox v-model="selectitbis" :check="addItbis()"> Itbis
-                      </base-checkbox>
-                    </div>
-                </div> 
+                    <base-checkbox v-model="selectitbis" :check="addItbis()">
+                      Itbis
+                    </base-checkbox>
+                  </div>
+                </div>
                 <div class="row">
                   <div class="col-12">
                     <label class="col-sm-3 col-form-label">Total:</label>
-                    <label class="col-sm-9 col-form-label text-left">{{ SpendTotal }}</label>
+                    <label class="col-sm-9 col-form-label text-left">{{
+                      SpendTotal
+                    }}</label>
                   </div>
                   <div class="col-12">
-                    <label class="col-sm-3 col-form-label">Total Retenciones:</label>
-                    <label class="col-sm-9 col-form-label text-left">{{ totalRetenciones }}</label>
+                    <label class="col-sm-3 col-form-label"
+                      >Total Retenciones:</label
+                    >
+                    <label class="col-sm-9 col-form-label text-left">{{
+                      totalRetenciones
+                    }}</label>
                   </div>
                   <div class="col-12">
                     <label class="col-sm-3 col-form-label">Total:</label>
-                    <label class="col-sm-9 col-form-label text-left">{{ totalpagar }}</label>
+                    <label class="col-sm-9 col-form-label text-left">{{
+                      totalpagar
+                    }}</label>
                   </div>
-                </div>     
-             
-                 
+                </div>
               </div>
               <div class="col-ms-12 col-md-6">
-
                 <div class="row">
                   <label class="col-sm-2 col-form-label">Retenciones</label>
                   <div class="col-sm-10">
@@ -217,7 +227,8 @@
                       class="select-primary w-100"
                       size="large"
                       placeholder="Retenciones"
-                      v-model="deductions.id" >
+                      v-model="deductions.id"
+                    >
                       <el-option
                         v-for="option in selects.deductions"
                         class="select-primary"
@@ -229,14 +240,15 @@
                     </el-select>
                   </div>
                 </div>
-              <div class="row col-11 m-auto">
+                <div class="row col-11 m-auto">
                   <base-button
-                  type="warning"
-                  class="animation-on-hover w-100"
-                  @click.native="addDedutions()"
-                  ><i class="tim-icons icon-check-2 mr-2"></i>
-                  Agregar</base-button>
-              </div>
+                    type="warning"
+                    class="animation-on-hover w-100"
+                    @click.native="addDedutions()"
+                    ><i class="tim-icons icon-check-2 mr-2"></i>
+                    Agregar</base-button
+                  >
+                </div>
 
                 <el-table :data="queriedData">
                   <el-table-column
@@ -246,8 +258,12 @@
                     :prop="column.prop"
                     :label="column.label"
                   >
-                  </el-table-column> 
-                  <el-table-column :min-width="135" align="right" label="Actions">
+                  </el-table-column>
+                  <el-table-column
+                    :min-width="135"
+                    align="right"
+                    label="Actions"
+                  >
                     <div slot-scope="props">
                       <base-button
                         @click.native="handleDelete(props.$index, props.row)"
@@ -257,14 +273,13 @@
                         icon
                       >
                         <i class="tim-icons icon-simple-remove"></i>
-                  </base-button>
+                      </base-button>
                     </div>
-                  </el-table-column>         
-                 </el-table>
-             </div>
+                  </el-table-column>
+                </el-table>
+              </div>
+            </div>
 
-          </div>
-          
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
@@ -290,7 +305,7 @@
   </div>
 </template>
 <script>
-import {BaseCheckbox, BaseRadio,BasePagination } from 'src/components/index'
+import { BaseCheckbox, BaseRadio, BasePagination } from 'src/components/index'
 import { Table, TableColumn, DatePicker, Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
 import { required, email, min, numeric } from 'vee-validate/dist/rules'
@@ -314,7 +329,7 @@ export default {
     BasePagination,
     [DatePicker.name]: DatePicker,
     [Select.name]: Select,
-    [Option.name]: Option,    
+    [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn
   },
@@ -341,14 +356,16 @@ export default {
         ? this.searchedData.length
         : this.tableData.length
     },
-    SpendTotal(){
-      return parseFloat(this.spend.subTotal)+parseFloat(this.spend.itbis)
+    SpendTotal() {
+      return parseFloat(this.spend.subTotal) + parseFloat(this.spend.itbis)
     },
-    totalRetenciones(){
-      return this.spend.detalleRetenciones.map(c=>c.total).reduce((a, b) => a + b, 0)
+    totalRetenciones() {
+      return this.spend.detalleRetenciones
+        .map((c) => c.total)
+        .reduce((a, b) => a + b, 0)
     },
-    totalpagar(){
-      return this.SpendTotal-this.totalRetenciones
+    totalpagar() {
+      return this.SpendTotal - this.totalRetenciones
     }
     // itbis() {
     //   if( this.selectitbis) {
@@ -356,7 +373,7 @@ export default {
     //     this.spend.itbis=this.spend.total*0.18
     //   }
     //   else{
-    //     this.itbis=0 
+    //     this.itbis=0
     //   }
     //   return 0
     // }
@@ -373,26 +390,26 @@ export default {
       selectitbis: false,
       selects: {
         offices: [],
-        spendType:[],
-        subSpendType:[],
+        spendType: [],
+        subSpendType: [],
         simple: '',
-        deductions:[],
+        deductions: []
       },
       spend: {
         descripcion: '',
         comprobante: '',
-        fecha:new Date(),
-        itbis:0,
+        fecha: new Date(),
+        itbis: 0,
         subTotal: 0,
-        sucursalId:'',
-        tipoGastoId:'',
-        subTipoGastoId:null,
-        turnoId:null,
-        detalleRetenciones:[],
+        sucursalId: '',
+        tipoGastoId: '',
+        subTipoGastoId: null,
+        turnoId: null,
+        detalleRetenciones: [],
         id: 0
       },
-      deductions:{
-       id:''
+      deductions: {
+        id: ''
       },
       pagination: {
         perPage: 30,
@@ -415,8 +432,7 @@ export default {
           prop: 'total',
           label: 'Total',
           minWidth: 100
-        },     
-        
+        }
       ],
       tableData: [],
       searchedData: [],
@@ -449,21 +465,21 @@ export default {
     },
     fillForm(obj) {
       this.spend = {
-        descripcion:obj.descripcion,
+        descripcion: obj.descripcion,
         comprobante: obj.comprobante,
-        fecha:obj.fecha,
-        itbis:obj.itbis,
+        fecha: obj.fecha,
+        itbis: obj.itbis,
         subTotal: obj.subTotal,
-        sucursalId:obj.sucursalId,
-        tipoGastoId:obj.tipoGastoId,
-        subTipoGastoId:obj.subTipoGastoId,
-        turnoId:obj.turnoId,
-        detalleRetenciones:obj.detalleRetenciones,
+        sucursalId: obj.sucursalId,
+        tipoGastoId: obj.tipoGastoId,
+        subTipoGastoId: obj.subTipoGastoId,
+        turnoId: obj.turnoId,
+        detalleRetenciones: obj.detalleRetenciones,
         id: obj.id
       }
       this.fillSubspendtype()
       this.reload()
-      if (obj.id != 0){
+      if (obj.id != 0) {
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.id : ''
         addItbis()
       }
@@ -478,7 +494,7 @@ export default {
           this.error = error
         })
 
-        axios
+      axios
         .get(this.baseApiUrl + 'catalogo/tipogastos')
         .then((response) => {
           this.selects.spendType = response.data
@@ -486,7 +502,7 @@ export default {
         .catch((error) => {
           this.error = error
         })
-        axios
+      axios
         .get(this.baseApiUrl + 'catalogo/retenciones')
         .then((response) => {
           this.selects.deductions = response.data
@@ -494,12 +510,14 @@ export default {
         .catch((error) => {
           this.error = error
         })
-        
-
     },
-    fillSubspendtype(){
+    fillSubspendtype() {
       axios
-        .get(this.baseApiUrl + 'catalogo/subtipogastos?padreId='+this.spend.tipoGastoId)
+        .get(
+          this.baseApiUrl +
+            'catalogo/subtipogastos?padreId=' +
+            this.spend.tipoGastoId
+        )
         .then((response) => {
           this.selects.subSpendType = response.data
         })
@@ -516,7 +534,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        this.spend.detalleRetenciones.forEach(e=>e.retenciones=null)
+        this.spend.detalleRetenciones.forEach((e) => (e.retenciones = null))
         axios
           .put(this.baseApiUrl + 'Gastos/' + this.spend.id, this.spend)
           .then((response) => {
@@ -530,12 +548,12 @@ export default {
           .finally(() => (this.isLoading = false))
       }
     },
-    create() {  
+    create() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        this.spend.detalleRetenciones.forEach(e=>e.retenciones=null)
+        this.spend.detalleRetenciones.forEach((e) => (e.retenciones = null))
         axios
           .post(this.baseApiUrl + 'Gastos', this.spend)
           .then((response) => {
@@ -549,34 +567,50 @@ export default {
           .finally(() => (this.isLoading = false))
       }
     },
-    addDedutions(){
-      console.log('')
-      if(this.deductions.id!='')
-      {
-        if(this.spend.detalleRetenciones.find(c=>c.RetencionId===this.deductions.id)==null)
+    addDedutions() {
+      if (this.deductions.id != '') {
+        if (
+          this.spend.detalleRetenciones.find(
+            (c) => c.RetencionId === this.deductions.id
+          ) == null
+        )
           axios
-            .get(this.baseApiUrl + 'Retenciones/'+this.deductions.id)
+            .get(this.baseApiUrl + 'Retenciones/' + this.deductions.id)
             .then((response) => {
               this.spend.detalleRetenciones.push({
-                gastoId:0,
-                RetencionId:this.deductions.id,
-                retenciones:{descripcion:response.data.descripcion,porcentaje:response.data.porcentaje},   
-                total:parseFloat((this.spend.subTotal*(response.data.porcentaje/100)).toFixed(2))
+                gastoId: 0,
+                RetencionId: this.deductions.id,
+                retenciones: {
+                  descripcion: response.data.descripcion,
+                  porcentaje: response.data.porcentaje
+                },
+                total: parseFloat(
+                  (
+                    this.spend.subTotal *
+                    (response.data.porcentaje / 100)
+                  ).toFixed(2)
+                )
               })
-              this.tableData= structuredClone(this.spend.detalleRetenciones)
-              this.tableData.forEach(element=>element.retenciones.porcentaje+='%')
-            }) 
-      }
-      else
-       this.globalSweetMessage('Debe Selecionar una retencion','error')
-
+              this.tableData = structuredClone(this.spend.detalleRetenciones)
+              this.tableData.forEach(
+                (element) => (element.retenciones.porcentaje += '%')
+              )
+            })
+      } else this.globalSweetMessage('Debe Selecionar una retencion', 'error')
     },
-    reload(){
-     this.spend.detalleRetenciones.forEach(element => {
-      element.total=parseFloat(((element.retenciones.porcentaje/100)*this.spend.subTotal).toFixed(2))    
-     })
-     this.tableData= structuredClone(this.spend.detalleRetenciones)
-    this.tableData.forEach(element=>element.retenciones.porcentaje+='%')
+    reload() {
+      this.spend.detalleRetenciones.forEach((element) => {
+        element.total = parseFloat(
+          (
+            (element.retenciones.porcentaje / 100) *
+            this.spend.subTotal
+          ).toFixed(2)
+        )
+      })
+      this.tableData = structuredClone(this.spend.detalleRetenciones)
+      this.tableData.forEach(
+        (element) => (element.retenciones.porcentaje += '%')
+      )
     },
     handleDelete(index, row) {
       swal
@@ -595,13 +629,13 @@ export default {
         })
         .then((result) => {
           if (result.value) {
-            this.spend.detalleRetenciones.splice(row,1)
-            this.tableData.splice(index,1)
+            this.spend.detalleRetenciones.splice(row, 1)
+            this.tableData.splice(index, 1)
           }
         })
     },
-    addItbis(){
-      this.spend.itbis =this.spend.subTotal * (this.selectitbis ? 0.18 : 0)
+    addItbis() {
+      this.spend.itbis = this.spend.subTotal * (this.selectitbis ? 0.18 : 0)
     }
   }
 }
@@ -645,4 +679,3 @@ export default {
   background-color: transparent;
 }
 </style>
-

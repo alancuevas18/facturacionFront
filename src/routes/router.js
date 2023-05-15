@@ -19,7 +19,7 @@ const router = new VueRouter({
 })
 async function refreshToken() {
   if (store.state.isAuthenticated)
- await   axios
+    await axios
       .post('https://emacsoft.com/Authorization/RefreshToken')
       .then((response) => {
         axios.defaults.headers.common['Authorization'] =
@@ -32,7 +32,6 @@ async function refreshToken() {
 }
 router.beforeEach(async (to, from, next) => {
   var isAuthenticated = store.state.isAuthenticated
-  console.log(from)
   var userRol = store.state.rol
   if (to.meta.needsAuth) {
     if (isAuthenticated) {
@@ -41,7 +40,7 @@ router.beforeEach(async (to, from, next) => {
         to.meta.validRols == '' ||
         to.meta.validRols == undefined
       ) {
-      await  refreshToken()
+        await refreshToken()
         next() //GLOBAL ACCESS
       } else {
         let ableRols = to.meta.validRols.split(',')
