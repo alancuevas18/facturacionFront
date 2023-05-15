@@ -16,10 +16,10 @@
           </router-link>
         </h4>
       </template>
-      <div class="row">
-        <div class="col-md-6 col-ms-12 border-right">
-          <h2>Factura</h2>
-          <table class="table">
+    <div class="row">
+      <div class="col-md-6 col-ms-12 border-right">
+        <h2>Factura</h2>
+        <table class="table">
             <thead>
               <tr>
                 <th>Codigo</th>
@@ -31,124 +31,108 @@
               </tr>
             </thead>
             <tbody>
-              <tr
-                v-for="(item, index) in facturas.detalleFactura"
-                :key="item.id"
-                :index="index"
-              >
-                <td>{{ item.codigo }}</td>
-                <td>{{ item.productoServicio }}</td>
-                <td>{{ item.cantidad }}</td>
-                <td>{{ item.precio }}</td>
-                <td>{{ item.itbis }}</td>
-                <td>{{ item.total }}</td>
-                <td>
-                  <a @click="devolver(item, index)"
-                    ><i class="fa-solid fa-arrow-right"></i
-                  ></a>
-                </td>
+              <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
+                <td>{{item.codigo }}</td>
+                <td>{{item.productoServicio}}</td>
+                <td>{{item.cantidad }}</td>
+                <td>{{item.precio }}</td>
+                <td>{{item.itbis }}</td>
+                <td>{{item.total }}</td>
+                <td><a @click="devolver(item,index)"><i class="fa-solid fa-arrow-right"></i></a></td>
               </tr>
             </tbody>
-          </table>
-        </div>
-        <div class="col-md-6 col-ms-12 border-left">
-          <h2>Devolucion</h2>
-          <div class="row">
-            <label class="col-sm-2 col-form-label">Motivo</label>
-            <div class="col-sm-10">
-              <el-select
-                required
-                filterable
-                class="select-primary w-100"
-                size="large"
-                placeholder="Motivo"
-                v-model="devoluciones.motivoDevolucion"
-              >
-                <el-option
-                  v-for="option in selects.motivoDevolucion"
-                  class="select-primary"
-                  :value="option.id"
-                  :label="option.nombre"
-                  :key="option.id"
-                >
-                </el-option>
-              </el-select>
-            </div>
-          </div>
-          <div class="row">
-            <label class="col-sm-2 col-form-label">Fecha</label>
-            <div class="col-sm-10">
-              <ValidationProvider
-                name="fecha"
-                v-slot="{ passed, failed, errors }"
-              >
-                <base-input>
-                  <el-date-picker
-                    type="date"
-                    placeholder="Fecha"
-                    v-model="devoluciones.fecha"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+        </table>
+      </div>
+      <div class="col-md-6 col-ms-12 border-left">
+        <h2>Devolucion</h2>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Motivo</label>
+                <div class="col-sm-10">   
+                  <el-select
+                    required
+                    filterable
+                    class="select-primary w-100"
+                    size="large"
+                    placeholder="Motivo"  
+                    v-model="devoluciones.motivoDevolucion"
                   >
-                  </el-date-picker>
-                </base-input>
-              </ValidationProvider>
-            </div>
-          </div>
-          <div class="row">
-            <label class="col-sm-2 col-form-label">Nota</label>
-            <div class="col-sm-10">
-              <base-input
-                required
-                v-model="devoluciones.Nota"
-                type="text"
-                placeholder="Nota"
-              >
-              </base-input>
-            </div>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th>Codigo</th>
-                <th>Produto</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Itbis</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr
-                v-for="(item, index) in devoluciones.detalleDevoluciones"
-                :key="index"
-                :index="index"
-              >
-                <td>
-                  <a @click="Cancelar(item)"
-                    ><i class="fa-solid fa-arrow-left"></i
-                  ></a>
-                </td>
-                <td>{{ item.codigo }}</td>
-                <td>{{ item.nombre }}</td>
-                <td>{{ item.cantidad }}</td>
-                <td>{{ item.precio }}</td>
-                <td>{{ item.itbis }}</td>
-                <td>{{ item.total }}</td>
-              </tr>
-            </tbody>
-          </table>
-          <div class="row" v-if="devoluciones.detalleDevoluciones.length > 0">
-            <div class="col-md-6 col-ms-12">
-              <base-button
+                    <el-option
+                      v-for="option in selects.motivoDevolucion"
+                      class="select-primary"
+                      :value="option.id"
+                      :label="option.nombre"
+                      :key="option.id"
+                    >
+                    </el-option>
+                  </el-select>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-10">
+                  <ValidationProvider
+                    name="fecha"
+                    v-slot="{ passed, failed, errors }"
+                  >
+                    <base-input>
+                      <el-date-picker
+                        type="date"
+                        placeholder="Fecha"
+                        v-model="devoluciones.fecha"
+                        :error="errors[0]"
+                        :class="[
+                          { 'has-success': passed },
+                          { 'has-danger': failed }
+                        ]"
+                      >
+                      </el-date-picker>
+                    </base-input>
+                  </ValidationProvider>
+                </div>
+              </div>
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Nota</label>
+                <div class="col-sm-10">
+                   <base-input
+                    required
+                    v-model="devoluciones.Nota"
+                    type="text"
+                    placeholder="Nota"
+                  >
+                  </base-input>
+                </div>
+              </div>
+        <table class="table">
+          <thead>
+            <tr>
+              <th></th>
+              <th>Codigo</th>
+              <th>Produto</th>
+              <th>Cantidad</th>
+              <th>Precio</th>
+              <th>Itbis</th>
+              <th>Total</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr v-for="(item,index) in devoluciones.detalleDevoluciones" :key="index" :index="index">
+              <td><a @click="Cancelar(item)"><i class="fa-solid fa-arrow-left"></i></a></td>
+              <td>{{item.codigo }}</td>
+              <td>{{item.nombre }}</td>
+              <td>{{item.cantidad }}</td>
+              <td>{{item.precio }}</td>
+              <td>{{item.itbis }}</td>
+              <td>{{item.total }}</td>
+            </tr>
+          </tbody>
+        </table>
+        <div class="row" v-if="devoluciones.detalleDevoluciones.length>0">
+          <div class="col-md-6 col-ms-12">
+          <base-button
                 type="success"
                 native-type="submit"
                 class="animation-on-hover w-100"
                 @click.native="create()"
-                :disabled="checkedID"
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
@@ -210,14 +194,15 @@ export default {
           { value: false, label: 'Inactivo' }
         ]
       },
-      facturas: {},
-      devoluciones: {
-        fecha: new Date(),
-        nota: '',
-        facturaId: '',
-        sucursalId: '',
-        motivoDevolucion: '',
-        detalleDevoluciones: []
+      facturas:{
+      },
+      devoluciones:{
+        fecha:new Date(),
+        nota:'',
+        facturaId:'',
+        sucursalId:9,
+        motivoDevolucion:'',
+        detalleDevoluciones:[]
       },
       shift: {
         codigo: ''
@@ -285,7 +270,7 @@ export default {
     },
     validateFields() {
       return (
-        !this.shift.nombre || !this.shift.apellido || !this.shift.identificacion
+        !this.devoluciones.fecha || !this.devoluciones.motivoDevolucion 
       )
     },
     fillForm(obj) {
@@ -347,7 +332,7 @@ export default {
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: 'billDashboard/returns/index' })
+            this.$router.push({ path: '/billDashboard/returns/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')

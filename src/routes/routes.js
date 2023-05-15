@@ -811,6 +811,11 @@ let ReturnsMenu = {
       name: 'Crear devolucion',
       components: { default: ReturnsCreate }
     },
+    {
+      path: 'Details/:id?',
+      name: 'Detallle devolucion',
+      components: { default: ReturnsDetail }
+    },
   ]
 }
 let cashCloseMenu = {

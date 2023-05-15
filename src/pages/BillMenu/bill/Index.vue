@@ -83,7 +83,7 @@
                     title-classes="btn btn-link btn-icon"
                   >
                     <i slot="title" class="fa-solid fa-bars"></i>
-                    <a class="dropdown-item" :href="'/billDashboard/returns/create/'+props.row.id"> Devolucion </a>
+                    <a class="dropdown-item" :href="'#/billDashboard/returns/create/'+props.row.id"> Devolucion </a>
                     <a class="dropdown-item" href="#"> Nota Credito</a>
                   </base-dropdown>
                 </div>     
