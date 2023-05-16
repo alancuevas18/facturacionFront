@@ -355,8 +355,8 @@ export default {
       fixedCode: '',
       selects: {
         sucursales: [],
-        clientes: [],
-        vendedores: []
+        mensajeros:[],
+        estadoEnvios:[]
       },
       facturas:{
         sucursales:{nombre:''}
@@ -388,10 +388,8 @@ export default {
     if (this.id) await this.checkId()
     this.checkedID = !this.id
      this.fillCatalogs([
-      'sucursales',
-      'vendedores',
-      'clientes',
       'mensajeros',
+      'sucursales',
       'estadoEnvios'
     ])
 
@@ -487,11 +485,7 @@ export default {
       }
     },
     fillCatalogs(catalogs) {
-      axios
-        .get(this.baseApiUrl + 'facturas/' + this.send.facturaId)
-        .then((response) => {
-          this.facturas=response.data
-        })
+    this.isLoading=true;
       catalogs.forEach((catalog) => {
         axios
           .get(this.baseApiUrl + 'catalogo/' + catalog)
@@ -502,6 +496,14 @@ export default {
             this.globalSweetMessage('Error al cargar la pagina', 'error')
           })
       })
+      axios
+        .get(this.baseApiUrl + 'facturas/' + this.send.facturaId)
+        .then((response) => {
+          this.facturas=response.data
+        })
+        .finally(() => (this.isLoading = false))
+
+
     },
     validateInvoice() {
       return axios
