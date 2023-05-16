@@ -854,7 +854,7 @@ let sendsMenu = {
       components: { default: SendsCreate }
     },
     {
-      path: 'create/:id?',
+      path: 'create/:factaraId?/:id?',
       name: 'Edtiar Envios',
       components: { default: SendsCreate }
     }

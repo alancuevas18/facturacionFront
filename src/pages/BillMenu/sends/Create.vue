@@ -54,7 +54,31 @@
                   <label class="col-form-label"> {{ facturas.fecha}}</label>              
                 </div>           
             </div>
+          <div>
 
+            <table class="table">
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Itbis</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
+                <td>{{item.codigo }}</td>
+                <td>{{item.productoServicio}}</td>
+                <td>{{item.cantidad }}</td>
+                <td>{{item.precio }}</td>
+                <td>{{item.itbis }}</td>
+                <td>{{item.total }}</td>
+              </tr>
+            </tbody>
+        </table>
+          </div>
 
      
         </div>       
@@ -358,6 +382,8 @@ export default {
  async mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
+    this.send.facturaId=this.$route.params.factaraId
+    this.send.sucursalId=this.$store.state.officeId
     this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id) await this.checkId()
     this.checkedID = !this.id
@@ -368,6 +394,7 @@ export default {
       'mensajeros',
       'estadoEnvios'
     ])
+
   },
   methods: {
    async checkId() {
@@ -460,12 +487,10 @@ export default {
       }
     },
     fillCatalogs(catalogs) {
-      console.log(this.send)
       axios
         .get(this.baseApiUrl + 'facturas/' + this.send.facturaId)
         .then((response) => {
-          console.log(response)
-          this.factura=response.data
+          this.facturas=response.data
         })
       catalogs.forEach((catalog) => {
         axios

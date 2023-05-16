@@ -15,7 +15,7 @@
             class="col-md-4"
             v-for="item in Offices"
             :key="item.id"
-            @click="selectOffice(item.id)"
+            @click="selectOffice(item.id,item.nombre)"
           >
             <div class="card tarjeta">
               <div class="card-header">
@@ -59,18 +59,22 @@ export default {
     }
   },
   methods: {
-    selectOffice(id) {
+    selectOffice(id,nombre) {
+      this.isLoading = true
       axios
         .put(
           this.baseApiUrl + 'UsuarioSucursal/SelectSucursal?SucursalId=' + id
         )
         .then(() => {
+          this.$store.state.office=nombre
+         this.$store.state.officeId=id
           this.$router.push(
             this.$store.state.routerHistory[
               this.$store.state.routerHistory.length - 1
             ]
           )
-        })
+        })     
+        .finally(() => (this.isLoading = false))
     }
   },
 
@@ -87,22 +91,6 @@ export default {
       })
       .finally(() => (this.isLoading = false))
   },
-  watch: {
-    searchQuery(value) {
-      let result = this.tableData
-      if (value !== '') {
-        result = this.tableData.filter((c) =>
-          this.propsToSearch.some((name) =>
-            c[name]
-              .toString()
-              .toLowerCase()
-              .includes(this.searchQuery.toLowerCase())
-          )
-        )
-      }
-      this.searchedData = result
-    }
-  }
 }
 </script>
 <style>

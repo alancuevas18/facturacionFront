@@ -107,7 +107,17 @@
             :link="{ name: $t('cashClose.create'), path: '/billDashboard/cashClose/create' }"
           ></sidebar-item>
         </sidebar-item>
-       
+          <!-- returns Menu -->
+          <sidebar-item
+          :link="{
+            name: $t('sends.sends'),
+            icon: 'fa-solid fa-paper-plane'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('sends.index'), path: '/billDashboard/sends' }"
+          ></sidebar-item>
+        </sidebar-item>
         <hr />
       </template>
     </side-bar>

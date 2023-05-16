@@ -75,7 +75,7 @@
                     </base-button>
                   </router-link> -->
                   <router-link
-                    :to="'/billDashboard/sends/create/' + props.row.id"
+                    :to="'/billDashboard/sends/create/' + props.row.facturaId+'/'+props.row.id"
                   >
                     <base-button
                       class="edit btn-link"

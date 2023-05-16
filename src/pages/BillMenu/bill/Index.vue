@@ -83,7 +83,8 @@
                     title-classes="btn btn-link btn-icon"
                   >
                     <i slot="title" class="fa-solid fa-bars"></i>
-                    <a class="dropdown-item" :href="'#/billDashboard/returns/create/'+props.row.id"> Devolucion </a>
+                    <a class="dropdown-item" :href="'#/billDashboard/returns/create/'+props.row.id"><i class="fa-solid fa-rotate-left"></i>  Devolucion </a>
+                    <a class="dropdown-item" :href="'#/billDashboard/sends/create/'+props.row.id"><i class="fa-solid fa-paper-plane"></i> Enviar </a>
                     <a class="dropdown-item" href="#"> Nota Credito</a>
                   </base-dropdown>
                 </div>     
@@ -267,7 +268,7 @@ export default {
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillTable('Facturas/BySuculsal', true)
+    this.fillTable('Facturas/BySuculsal/'+this.$store.state.officeId, true)
   },
   watch: {
     searchQuery(value) {

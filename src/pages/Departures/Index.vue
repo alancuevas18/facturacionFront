@@ -325,7 +325,7 @@ export default {
     },
     filterByOffice() {
       this.tableData = []
-      this.fillTable('Salidas/bysuculsal/' + this.office)
+      this.fillTable('Salidas/bysuculsal/'+ this.office)
     }
   },
   mounted() {
