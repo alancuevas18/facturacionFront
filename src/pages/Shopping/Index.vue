@@ -275,7 +275,7 @@ export default {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('Compras/bysuculsal', true)
+    this.fillTable('Compras/bysuculsal/'+this.$store.state.officeId, true)
   },
   watch: {
     searchQuery(value) {

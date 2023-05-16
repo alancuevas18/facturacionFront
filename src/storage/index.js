@@ -14,6 +14,7 @@ const store = new Vuex.Store({
     token: '',
     usuario: '',
     office: '',
+    officeId: '',
     routerHistory:[],
     password: '',
     rol: ''
@@ -27,6 +28,9 @@ const store = new Vuex.Store({
     },
     setSucursal(state,oficina) {
       state.office=oficina
+    },
+    setSucursalId(state,oficinaId) {
+      state.officeId=oficinaId
     },
     setToken(state, token) {
       state.token = token
