@@ -151,22 +151,12 @@
               <div class="row mb-3">
                 <label class="col-sm-3 col-form-label">Nota</label>
                 <div class="col-sm-9">
-                  <ValidationProvider
-                    name="nota"
-                    v-slot="{ passed, failed, errors }"
-                  >
                     <textarea
                       rows="4"
                       class="form-control"
                       required
                       v-model="compra.nota"
-                      :error="errors[0]"
-                      :class="[
-                        { 'has-success': passed },
-                        { 'has-danger': failed }
-                      ]"
                     ></textarea>
-                  </ValidationProvider>
                 </div>
               </div>             
             </div>
@@ -463,7 +453,7 @@ export default {
         subtotal:0,
         abono:0,
         estadoCompra:1,
-        sucursalId: '',
+        sucursalId: this.$store.state.officeId,
         Suplidores:null,
         Sucursales:null,
         detallecompras: []

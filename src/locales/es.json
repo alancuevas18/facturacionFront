@@ -156,7 +156,7 @@
       "billing": "Facturacion"
     },
     "departures": {
-      "departures" : "Salidas",
+      "departures" : "Mover invetario",
       "create" : "Crear",
       "index" : "Administracion de salida"
   },

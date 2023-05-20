@@ -21,7 +21,29 @@
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
-              <label class="col-sm-2 col-form-label">Nombre*</label>
+              <label class="col-sm-2 col-form-label">Empresa*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="Empresa"
+                  rules="required|min:3"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="office.empresa"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+       
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Sucursal Nombre*</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Nombre"
@@ -89,7 +111,7 @@
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Telefono2"
-                  rules="required|numeric"
+                  rules="numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
@@ -177,6 +199,7 @@ export default {
         telefono: '',
         telefono2: '',
         imagen: '',
+        empresa: '',
         id: 0
       }
     }
@@ -213,6 +236,8 @@ export default {
         ubicacion: obj.ubicacion,
         telefono: obj.telefono,
         telefono2: obj.telefono2,
+        imagen:obj.imagen,
+        empresa:obj.empresa,
         id: obj.id
       }
       if (obj.id != 0) this.currentCode = obj.id ? ' / Codigo: ' + obj.id : ''

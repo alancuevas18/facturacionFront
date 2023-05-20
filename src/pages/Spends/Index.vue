@@ -41,12 +41,17 @@
               </el-select>
 
 
-              <base-input
-            class="mb-0 text-dark"
-            placeholder="Buscar"
-            v-model="searchQuery"
-            v-on:keyup="filtertabladata()"
-          >
+              <base-input>
+                <el-input
+                  type="search"
+                  class="mb-3 search-input"
+                  clearable
+                  prefix-icon="el-icon-search"
+                  placeholder="Buscar"
+                  v-model="searchQuery"
+                  aria-controls="datatables"
+                >
+                </el-input>
               </base-input>
             </div>
             <el-table :data="queriedData">
@@ -58,7 +63,7 @@
                 :label="column.label"
               >
               </el-table-column>
-              <el-table-column :min-width="135" align="right" label="Actions">
+              <el-table-column :min-width="135" align="center" label="Actions">
                 <div slot-scope="props">
                   <router-link :to="'/spends/details/' + props.row.id">
                     <base-button
@@ -171,15 +176,30 @@ export default {
       },
       filtered:[],
       searchQuery: '',
-      propsToSearch: ['descripcion', 'subTotal'],
+      propsToSearch: ['descripcion','sucursales','comprobante', 'tipoGastos','subTotal'],
       tableColumns: [
+        {
+          prop: 'sucursales',
+          label: 'Sucursal',
+          minWidth: 70
+        },
         {
           prop: 'descripcion',
           label: 'Descripción',
           minWidth: 70
         },
         {
-          prop: 'subTotal',
+          prop: 'comprobante',
+          label: 'Comprobante',
+          minWidth: 100
+        },
+        {
+          prop: 'tipoGastos',
+          label: 'Tipo',
+          minWidth: 100
+        },         
+        {
+          prop: 'total',
           label: 'Total',
           minWidth: 100
         }
@@ -190,10 +210,6 @@ export default {
     }
   },
   methods: {
-    filtertabladata(){
-      this.tableData=this.tableData.filter(c => this.propsToSearch.some(name=> c[name].toString().includes(this.searchQuery)) )
-
-    },
     handleDelete(index, row) {
       swal
         .fire({
@@ -240,8 +256,7 @@ export default {
     axios
       .get(this.baseApiUrl + 'Gastos/BySuculsal/'+this.$store.state.officeId)
       .then((response) => {
-        for (let i = 0; i < response.data.length; i++)
-          this.tableData.push(response.data[i])
+          this.tableData=response.data
       })
       .catch((error) => {
         this.errored = true

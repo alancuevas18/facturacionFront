@@ -110,7 +110,7 @@
       <!-- Report -->
       <div class="container d-none">
     <div id="Print" class="bg-white h-100">
-       <div class="row">
+       <div class="row textprint w-30">
         <div class="col-2">
           <img />
         </div>
@@ -120,7 +120,7 @@
         <div class="col-12"> Ubicación: {{facturas.sucursales.ubicacion }}</div>
         <div class="col-12"> Telefono: {{facturas.sucursales.telefono }}</div>
         <div class="col-12"> Fecha: {{facturas.fecha}}</div>
-        <div class="col-12 text-center">Factura</div>        
+        <div class="col-12">Factura</div>        
         <div class="col-12"> Codigo: {{facturas.id}}</div>
         <div class="col-12"> NCF: {{facturas.comprobante}}</div>
         <div class="col-12"> Cliente: {{facturas.nombre}}</div>
@@ -130,18 +130,27 @@
           <table class="mytable w-100">
             <thead class="">
               <tr class="border-bottom">
-                <th>Precio</th>
-                <th>Producto/Servicio</th>
-                <th>Cantidad</th>
+        
+                <th>Descripcion</th>
+                <th>Itbis</th>
                 <th>Total</th>
 
               </tr>
             </thead>
-            <tbody>
-              <tr v-for="item in facturas.detalleFactura" :key="item.id">
-                <td>{{item.precio.toFixed(2)}}</td>
-                <td>{{item.productos?.nombre}}{{ item.servicios?.nombre }}</td>
-                <td>{{item.cantidad}}</td>
+            <tbody v-for="item in facturas.detalleFactura" :key="item.id">        
+              <tr>
+                <td colspan="2">        
+                    {{item.productos?.nombre}}{{ item.servicios?.nombre }}
+            
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr >
+                <td>
+                    {{item.cantidad}}X{{item.precio.toFixed(2)}}                
+                </td>
+                <td>{{item.itbis.toFixed(2)}}</td>
                 <td>{{item.total.toFixed(2)}}</td>
               </tr>
 
@@ -217,5 +226,12 @@ components:{
 }
 body{
   background: white;
+}
+.textprint{
+  font-size: 12pt;
+  color: black;
+}
+.w-30{
+width: 38%;
 }
 </style>

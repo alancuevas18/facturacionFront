@@ -177,17 +177,7 @@ export default {
         'sucursalesenvia',
         'estadoSalida'
       ],
-      tableColumns: [
-        {
-          prop: 'tipoSalida',
-          label: 'Tipo de salida',
-          minWidth: 100
-        },
-        {
-          prop: 'suplidorId',
-          label: 'SUplidor',
-          minWidth: 100
-        },
+      tableColumns: [ 
         {
           prop: 'sucursalesenvia',
           label: 'Sucursal Envia',

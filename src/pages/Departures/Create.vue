@@ -81,7 +81,7 @@
                     v-model="salidas.sucursalRecibeId"
                   >
                     <el-option
-                      v-for="option in selects.offices"
+                      v-for="option in selects.offices.filter((x) => x.id !== salidas.sucursalEnviaId)"
                       class="select-primary"
                       :value="option.id"
                       :label="option.nombre"
@@ -506,7 +506,7 @@ export default {
         tipoSalida:1,
         estadoSalida:1,
         suplidorId: null,
-        sucursalEnviaId: 1,
+        sucursalEnviaId: this.$store.state.officeId,
         sucursalRecibeId: null,
         Suplidores:null,
         sucursalesEnvia:null,
