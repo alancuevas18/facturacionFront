@@ -158,26 +158,26 @@ export default {
       },
       entrancetatus: {},
       searchQuery: '',
-      propsToSearch: ['codigo'],
+      propsToSearch: ['sucursales','fecha','suplidores'],
       tableColumns: [
-        {
-          prop: 'sucursalesId',
+      {
+          prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 110
         },
         {
-          prop: 'suplidorId',
+          prop: 'suplidores',
           label: 'Suplidor',
           minWidth: 100
         },
         {
-          prop: 'total',
-          label: 'Total',
+          prop: 'fecha',
+          label: 'Fecha',
           minWidth: 100
         },
         {
-          prop: 'abono',
-          label: 'Abono',
+          prop: 'nota',
+          label: 'Nota',
           minWidth: 70
         }
       ],

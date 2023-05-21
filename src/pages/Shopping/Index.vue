@@ -158,19 +158,18 @@ export default {
       office: '',
       selects: {
         simple: '',
-        offices: []
       },
       entrancetatus: {},
       searchQuery: '',
-      propsToSearch: ['nota'],
+      propsToSearch: ['sucursales','fecha','suplidores'],
       tableColumns: [
         {
-          prop: 'sucursalesId',
+          prop: 'sucursales',
           label: 'Sucursal',
           minWidth: 110
         },
         {
-          prop: 'suplidorId',
+          prop: 'suplidores',
           label: 'Suplidor',
           minWidth: 100
         },
@@ -236,37 +235,15 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          for (let i = 0; i < response.data.length; i++) {
-            this.tableData.push(response.data[i])
-            this.tableData[i]['sucursalesId'] =
-              response.data[i].sucursales.nombre
-            this.tableData[i]['suplidorId'] = response.data[i].suplidores.nombre
-          }
+          console.log(response.data)
+          this.tableData=response.data
         })
         .catch((error) => {
           this.errored = true
         })
         .finally(() => (this.isLoading = false))
     },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/sucursales')
-        .then((response) => {
-          this.selects.offices = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-      axios
-        .get(this.baseApiUrl + 'catalogo/suplidores')
-        .then((response) => {
-          this.suppliers = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
-    },
-    filterByOffice() {
+     filterByOffice() {
       this.tableData = []
       this.fillTable('Compras/bysuculsal/' + this.office)
     }
@@ -274,7 +251,6 @@ export default {
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillCatalog()
     this.fillTable('Compras/bysuculsal/'+this.$store.state.officeId, true)
   },
   watch: {

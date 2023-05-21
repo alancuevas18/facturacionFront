@@ -223,7 +223,7 @@ export default {
     },
     load() {
       axios
-        .get(this.baseApiUrl + 'CuadreSucursal/BySucursalAndUser')
+        .get(this.baseApiUrl + 'CuadreSucursal/BySucursalAndUser/'+this.$store.state.officeId)
         .then((response) => {
           this.isLoading = true
 

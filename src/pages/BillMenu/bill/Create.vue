@@ -726,7 +726,7 @@ export default {
     // this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalogs(['sucursales', 'vendedores', 'clientes'])
-    axios.get(this.baseApiUrl+'Turnos/TurnoByUserOpen')
+    axios.get(this.baseApiUrl+'Turnos/TurnoByUserOpen/'+this.$store.state.officeId)
     .then((response)=> {
       if(response.data.id!=0){
         this.bill.turnoId=response.data.id

@@ -277,6 +277,7 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
     this.fillTable('cuadresucursal/BySuculsal/'+this.$store.state.officeId)
+    console.log(this.$store.state.officeId)
   },
   watch: {
     searchQuery(value) {

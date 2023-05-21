@@ -65,6 +65,28 @@
               </div>
             </div>
             <div class="row">
+              <label class="col-sm-2 col-form-label">Limite*</label>
+              <div class="col-sm-10">
+                <ValidationProvider
+                  name="Limite"
+                  rules="required"
+                  v-slot="{ passed, failed, errors }"
+                >
+                  <base-input
+                    required
+                    v-model="structureComprobante.limite"
+                    type="number"
+                    :error="errors[0]"
+                    :class="[
+                      { 'has-success': passed },
+                      { 'has-danger': failed }
+                    ]"
+                  >
+                  </base-input>
+                </ValidationProvider>
+              </div>
+            </div>
+            <div class="row">
               <label class="col-sm-2 col-form-label">Tipo Comprobante</label>
               <div class="col-sm-10">
                 <el-select
@@ -75,7 +97,7 @@
                   v-model="structureComprobante.tipoComprobante"
                 >
                   <el-option
-                    v-for="option in selects.options"
+                    v-for="option in selects.tipocomprobante"
                     class="select-primary"
                     :value="option.id"
                     :label="option.nombre"
@@ -85,7 +107,27 @@
                 </el-select>
               </div>
             </div>
-
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Estado</label>
+              <div class="col-sm-10">
+                <el-select
+                  required
+                  class="select-primary"
+                  size="large"
+                  placeholder="Status"
+                  v-model="structureComprobante.estadoComprobante"
+                >
+                  <el-option
+                    v-for="option in selects.estadocomprobante"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.nombre"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
+            </div>
             <div class="row d-flex justify-content-center">
               <base-button
                 type="success"
@@ -146,13 +188,17 @@ export default {
       mandatoryFields: ['name', 'lastName', 'nationalID'],
       selects: {
         simple: '',
-        options: []
+        options: [],
+        tipocomprobante:[],
+        estadocomprobante:[],
       },
 
       structureComprobante: {
         secuencia: '',
         base: '',
-        tipoComprobante: '01',
+        limite:'',
+        tipoComprobante: '',
+        estadoComprobante:1,
         id: 0
       }
     }
@@ -163,16 +209,8 @@ export default {
     this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id) this.checkId()
     this.currentCode = !this.id ? '' : this.currentCode
-    axios
-      .get(this.baseApiUrl + 'catalogo/tipocomprobante')
-      .then((response) => {
-        this.isLoading = true
-        this.selects.options = response.data.filter((c) => c.id != 0)
-      })
-      .catch((error) => {
-        this.error = error
-      })
-      .finally(() => (this.isLoading = false))
+    this.fillCatalogs(['tipocomprobante','estadocomprobante'])
+      
   },
   methods: {
     checkId() {
@@ -187,10 +225,21 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
-
+    fillCatalogs(catalogs) {
+      catalogs.forEach((catalog) => {
+        axios
+          .get(this.baseApiUrl + 'catalogo/' + catalog)
+          .then((response) => {
+            this.selects[catalog] = response.data
+          })
+          .catch((error) => {
+            this.globalSweetMessage('Error al cargar la pagina', 'error')
+          })
+      })
+    },
     validateFields() {
       return (
-        !this.structureComprobante.secuencia || !this.structureComprobante.base
+        !this.structureComprobante.secuencia || !this.structureComprobante.base||!this.structureComprobante.limite 
       )
     },
     fillForm(obj) {
@@ -198,6 +247,8 @@ export default {
         secuencia: obj.secuencia,
         base: obj.base,
         tipoComprobante: obj.tipoComprobante,
+        limite: obj.limite,
+        estadoComprobante: obj.estadoComprobante,
         id: obj.id
       }
       if (obj.id != 0) this.currentCode = obj.id ? ' / Codigo: ' + obj.id : ''
