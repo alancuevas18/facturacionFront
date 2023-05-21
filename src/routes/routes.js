@@ -810,7 +810,7 @@ let ReturnsMenu = {
       path: 'create/:id?',
       name: 'Crear devolucion',
       components: { default: ReturnsCreate }
-    },
+    }
   ]
 }
 let cashCloseMenu = {
@@ -951,7 +951,10 @@ let authPages = {
     {
       path: '/login',
       name: 'Login',
-      component: Login
+      component: Login,
+      meta: {
+        needsAuth: false
+      }
     }
   ]
 }

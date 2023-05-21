@@ -83,7 +83,9 @@
                     </base-button>
                   </router-link>
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row)"
+                    @click.native="
+                      handleDelete(props.$index, props.row, tableData)
+                    "
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -122,9 +124,6 @@ import { Table, TableColumn, Select, Option } from 'element-ui'
 import { BasePagination } from 'src/components'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import swal from 'sweetalert2'
-import axios from 'axios'
-import config from '@/config'
 
 export default {
   components: {
@@ -163,14 +162,12 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
-      baseApiUrl: '',
       pagination: {
         perPage: 5,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
-      brands: {},
       searchQuery: '',
       propsToSearch: [
         'codigo',
@@ -207,93 +204,38 @@ export default {
         }
       ],
       tableData: [],
-      searchedData: [],
-      fuseSearch: null
+      searchedData: []
     }
   },
   methods: {
-    handleDelete(index, row) {
-      swal
-        .fire({
-          title: 'Estas seguro?',
-          text: `Esta accion no se puede reversar!`,
-          icon: 'warning',
-          showCancelButton: true,
-          customClass: {
-            confirmButton: 'btn btn-success btn-fill',
-            cancelButton: 'btn btn-danger btn-fill'
-          },
-          confirmButtonText: 'Confimar!',
-          cancelButtonText: 'Cancelar',
-          buttonsStyling: false
-        })
-        .then((result) => {
-          if (result.value) {
-            this.deleteRow(row)
-          }
-        })
-    },
-    deleteRow(row) {
-      this.isLoading = true
-      axios
-        .delete(this.baseApiUrl + 'productos/' + row.id)
-        .then(() => {
-          this.globalSweetMessage()
-          let indexToDelete = this.tableData.findIndex(
-            (tableRow) => tableRow.id === row.id
-          )
-          if (indexToDelete >= 0) {
-            this.tableData.splice(indexToDelete, 1)
-          }
-        })
-        .catch((error) => {
-          this.globalSweetMessage(error.response.data.message, 'error')
-        })
-        .finally(() => (this.isLoading = false))
+    handleDelete(index, row, tableData, page) {
+      this.tableData = this.globalHandleDelete(
+        index,
+        row,
+        tableData,
+        'productos'
+      )
     }
   },
   mounted() {
-    this.isLoading = true
-    this.baseApiUrl = config.global.baseApiUrl
-    axios
-      .get(this.baseApiUrl + 'catalogo/marcas')
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++)
-          this.brands.push(response.data[i])
-      })
-      .catch((error) => {
-        this.errored = true
-      })
-    axios
-      .get(this.baseApiUrl + 'productos')
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push(response.data[i])
-          this.tableData[i]['marcaProducto'] =
-            response.data[i].marcas.descripcion
-          this.tableData[i]['tipoProducto'] =
-            response.data[i].tipoProductos.descripcion
-        }
-      })
-      .catch((error) => {
-        this.errored = true
-      })
-      .finally(() => (this.isLoading = false))
+    this.globalFillTable('productos').then((response) => {
+      for (let i = 0; i < response.length; i++) {
+        this.tableData.push(response[i])
+        this.tableData[i]['marcaProducto'] = response[i].marcas.descripcion
+        this.tableData[i]['tipoProducto'] =
+          response[i].tipoProductos.descripcion
+      }
+    })
   },
   watch: {
     searchQuery(value) {
-      let result = this.tableData
       if (value !== '') {
-        result = this.tableData.filter((c) =>
-          this.propsToSearch.some((name) =>
-            c[name]
-              .toString()
-              .toLowerCase()
-              .includes(this.searchQuery.toLowerCase())
-          )
+        this.searchedData = this.globalFilter(
+          this.tableData,
+          this.propsToSearch,
+          value
         )
       }
-      this.searchedData = result
     }
   }
 }

@@ -84,12 +84,7 @@
                   </router-link>
                   <base-button
                     @click.native="
-                      handleDelete(
-                        props.$index,
-                        props.row,
-                        tableData,
-                        'clientes'
-                      )
+                      handleDelete(props.$index, props.row, tableData)
                     "
                     class="remove btn-link"
                     type="danger"
@@ -224,8 +219,13 @@ export default {
     }
   },
   methods: {
-    handleDelete(index, row, tableData, page) {
-      this.tableData = this.globalHandleDelete(index, row, tableData, page)
+    handleDelete(index, row, tableData) {
+      this.tableData = this.globalHandleDelete(
+        index,
+        row,
+        tableData,
+        'clientes'
+      )
     }
   },
   mounted() {

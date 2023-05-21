@@ -9,7 +9,8 @@
     <card>
       <template slot="header">
         <h4 class="card-title">
-          {{ title }} {{ currentCode }}
+          {{ title }} <span v-if="product.codigo"> / Codigo: </span>
+          {{ product.codigo }}
           <router-link to="/products/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
@@ -115,19 +116,19 @@
                 >
                 </BaseCheckbox>
               </div>
-            </div>     
+            </div>
             <div class="row mb-2">
-            <label class="col-sm-2 col-form-label">Exento</label>
-              <div class="col-sm-10">           
+              <label class="col-sm-2 col-form-label">Exento</label>
+              <div class="col-sm-10">
                 <BaseCheckbox
-                v-model="product.exento"
+                  v-model="product.exento"
                   :checked="product.exento"
-                  class="m-0 p-0  "
-                  >
-                  </BaseCheckbox>
+                  class="m-0 p-0"
+                >
+                </BaseCheckbox>
               </div>
             </div>
-            
+
             <div class="row">
               <label class="col-sm-2 col-form-label">Porcentaje Itbis</label>
               <div class="col-sm-10">
@@ -140,8 +141,11 @@
                     v-model="product.itbis"
                     :error="errors[0]"
                     type="number"
-                    @input="if(product.itbis > 1){product.itbis = 1}"
-
+                    @input="
+                      if (product.itbis > 1) {
+                        product.itbis = 1
+                      }
+                    "
                     step="0.01"
                     :class="[
                       { 'has-success': passed },
@@ -156,8 +160,6 @@
               <label class="col-sm-2 col-form-label">Marca</label>
               <div class="col-sm-10">
                 <el-select
-                  :readonly="readOnly"
-                  :key="readOnly"
                   required
                   filterable
                   class="select-primary"
@@ -166,7 +168,7 @@
                   v-model="product.marcaId"
                 >
                   <el-option
-                    v-for="option in selects.brands"
+                    v-for="option in selects.marcas"
                     class="select-primary"
                     :value="option.id"
                     :label="option.nombre"
@@ -208,8 +210,6 @@
               <label class="col-sm-2 col-form-label">Tipo de Producto</label>
               <div class="col-sm-10">
                 <el-select
-                  :readonly="readOnly"
-                  :key="readOnly"
                   required
                   filterable
                   class="select-primary"
@@ -218,7 +218,7 @@
                   v-model="product.tipoProductoId"
                 >
                   <el-option
-                    v-for="option in selects.productType"
+                    v-for="option in selects.tipoproductos"
                     class="select-primary"
                     :value="option.id"
                     :label="option.nombre"
@@ -307,15 +307,12 @@ export default {
     return {
       showInsertModalProductType: false,
       showInsertModalBrand: false,
-      readOnly: false,
       checkedID: false,
       isLoading: false,
       fullPage: true,
       id: '',
-      currentCode: '',
-      baseApiUrl: '',
       title: '',
-      fixedCode: '',
+      baseApiUrl: '',
       newproductType: {
         id: 0,
         descripcion: ''
@@ -326,8 +323,8 @@ export default {
       },
       selects: {
         simple: '',
-        brands: [],
-        productType: []
+        marcas: [],
+        tipoproductos: []
       },
       product: {
         nombre: '',
@@ -340,7 +337,7 @@ export default {
         tipoProductos: null,
         validarCodigo: false,
         exento: false,
-        itbis:0,
+        itbis: 0,
         id: 0
       }
     }
@@ -349,22 +346,21 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
-    if (this.id) this.checkId()
-    this.currentCode = !this.id ? '' : this.currentCode
-    this.fillCatalog()
+    if (this.id)
+      this.globalFind('productos', this.id, this.product).then((response) => {
+        Object.keys(this.product).forEach((e) => {
+          this.product[e] = response[e]
+        })
+      })
+    this.fillCatalog(['marcas', 'tipoproductos'])
   },
   methods: {
-    checkId() {
-      axios
-        .get(this.baseApiUrl + 'productos/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.fillForm(response.data)
+    fillCatalog(catalogs) {
+      catalogs.forEach((e) => {
+        this.globalFillCatalog(e).then((response) => {
+          this.selects[e] = response
         })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
+      })
     },
     validateFields() {
       return (
@@ -373,86 +369,22 @@ export default {
         !this.product.codigo
       )
     },
-    fillCatalog() {
-      axios
-        .get(this.baseApiUrl + 'catalogo/marcas')
-        .then((response) => {
-          this.selects.brands = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-
-      axios
-        .get(this.baseApiUrl + 'catalogo/tipoproductos')
-        .then((response) => {
-          this.isLoading = true
-          this.selects.productType = response.data
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    fillForm(obj) {
-      this.product = {
-        nombre: obj.nombre,
-        descripcion: obj.descripcion,
-        codigo: obj.codigo,
-        marcaId: obj.marcaId,
-        marcas: null,
-        imagen: obj.imagen,
-        tipoProductoId: obj.tipoProductoId,
-        tipoProductos: null,
-        validarCodigo: obj.validarCodigo,
-        exento: obj.exento,
-        itbis: obj.itbis,
-        id: obj.id
-      }
-      if (obj.id != 0)
-        this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
-    },
-    clear() {
-      this.product.codigo = ''
-      this.product.nombre = ''
-      this.product.imagen = ''
-      this.product.descripcion = ''
-    },
     edit() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
-        this.isLoading = true
-        axios
-          .put(this.baseApiUrl + 'productos/' + this.product.id, this.product)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/products/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+        this.product.marcas = null
+        this.product.tipoProductos = null
+        this.globalEdit('productos', this.id, this.product, '/products/index')
+        this.product = this.globalClear(this.product)
       }
     },
     create() {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
-        this.isLoading = true
-        axios
-          .post(this.baseApiUrl + 'productos', this.product)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/products/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+        this.globalPost('productos', this.product, '/products/index')
+        this.product = this.globalClear(this.product)
       }
     },
     insertNewProductType() {
@@ -460,8 +392,10 @@ export default {
       axios
         .post(this.baseApiUrl + 'tipoproductos', this.newproductType)
         .then((response) => {
-          this.fillCatalog()
+          this.globalSweetMessage(response.data.message)
+          this.fillCatalog(['tipoproductos'])
           this.newproductType.descripcion = ''
+          this.showInsertModalProductType = false
         })
         .catch((error) => {
           this.globalSweetMessage(error.response.data.message, 'error')
@@ -473,8 +407,10 @@ export default {
       axios
         .post(this.baseApiUrl + 'marcas', this.newBrand)
         .then((response) => {
-          this.fillCatalog()
+          this.globalSweetMessage(response.data.message)
+          this.fillCatalog(['marcas'])
           this.newBrand.descripcion = ''
+          this.showInsertModalBrand = false
         })
         .catch((error) => {
           this.globalSweetMessage(error.response.data.message, 'error')

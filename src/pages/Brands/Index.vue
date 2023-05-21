@@ -232,18 +232,13 @@ export default {
   },
   watch: {
     searchQuery(value) {
-      let result = this.tableData
       if (value !== '') {
-        result = this.tableData.filter((c) =>
-          this.propsToSearch.some((name) =>
-            c[name]
-              .toString()
-              .toLowerCase()
-              .includes(this.searchQuery.toLowerCase())
-          )
+        this.searchedData = this.globalFilter(
+          this.tableData,
+          this.propsToSearch,
+          value
         )
       }
-      this.searchedData = result
     }
   }
 }

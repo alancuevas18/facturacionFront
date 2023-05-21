@@ -124,32 +124,14 @@ export default {
   mounted() {
     this.id = this.$route.params.id
     this.baseApiUrl = config.global.baseApiUrl
-    this.find()
+    this.globalFind('productos', this.id, this.client).then((response) => {
+      Object.keys(this.product).forEach((e) => {
+        this.product[e] = response[e]
+        this.product.estado = this.product.estado ? 'active' : 'inactive'
+      })
+    })
   },
-  methods: {
-    find() {
-      axios
-        .get(this.baseApiUrl + 'productos/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.product = {
-            nombre: response.data.nombre,
-            descripcion: response.data.descripcion,
-            codigo: response.data.codigo,
-            marcaId: response.data.marcaId,
-            imagen: response.data.imagen,
-            tipoProductoId: response.data.tipoProductoId,
-            validarCodigo: true,
-            id: response.data.id,
-            estado: 'Activo'
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    }
-  }
+  methods: {}
 }
 </script>
 <style>

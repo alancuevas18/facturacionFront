@@ -147,9 +147,10 @@ Vue.mixin({
       return result
     },
     globalEdit(page, id, obj, redirect = null) {
+      let baseApiUrl = config.global.baseApiUrl
       this.isLoading = true
       axios
-        .put(this.baseApiUrl + page + '/' + id, obj)
+        .put(baseApiUrl + page + '/' + id, obj)
         .then((response) => {
           this.globalSweetMessage(response.data.message)
           if (redirect) this.$router.push({ path: redirect })
@@ -160,9 +161,9 @@ Vue.mixin({
         .finally(() => (this.isLoading = false))
     },
     globalPost(page, obj, redirect = null) {
-      this.isLoading = true
+      let baseApiUrl = config.global.baseApiUrl
       axios
-        .post(this.baseApiUrl + page, obj)
+        .post(baseApiUrl + page, obj)
         .then((response) => {
           this.globalSweetMessage(response.data.message)
           if (redirect) this.$router.push({ path: redirect })
@@ -171,6 +172,17 @@ Vue.mixin({
           this.globalSweetMessage(error.response.data.message, 'error')
         })
         .finally(() => (this.isLoading = false))
+    },
+    globalFillCatalog(catalog) {
+      let baseApiUrl = config.global.baseApiUrl
+      return axios
+        .get(baseApiUrl + 'catalogo/' + catalog)
+        .then((response) => {
+          return response.data
+        })
+        .catch((error) => {
+          this.globalSweetMessage('Error al cargar la pagina', 'error')
+        })
     }
   }
 })
