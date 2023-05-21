@@ -86,14 +86,11 @@
         <sidebar-item
           :link="{
             name: $t('returns.returns'),
-            icon: 'tim-icons icon-coins'
+            icon: 'fa-solid fa-rotate-left'
           }"
         >
           <sidebar-item
             :link="{ name: $t('returns.index'), path: '/billDashboard/returns' }"
-          ></sidebar-item>
-          <sidebar-item
-            :link="{ name: $t('returns.create'), path: '/billDashboard/returns/create' }"
           ></sidebar-item>
         </sidebar-item>
         <!-- Cashclose Menu -->
@@ -110,7 +107,17 @@
             :link="{ name: $t('cashClose.create'), path: '/billDashboard/cashClose/create' }"
           ></sidebar-item>
         </sidebar-item>
-       
+          <!-- returns Menu -->
+          <sidebar-item
+          :link="{
+            name: $t('sends.sends'),
+            icon: 'fa-solid fa-paper-plane'
+          }"
+        >
+          <sidebar-item
+            :link="{ name: $t('sends.index'), path: '/billDashboard/sends' }"
+          ></sidebar-item>
+        </sidebar-item>
         <hr />
       </template>
     </side-bar>

@@ -22,47 +22,28 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
+
             <div class="row">
-              <label class="col-sm-2 col-form-label">Codigo*</label>
-              <div class="col-sm-8 p-0">
-                <ValidationProvider
-                  name="codigo"
-                  rules="required|min:1"
-                  v-slot="{ passed, failed, errors }"
+              <label class="col-sm-2 col-form-label">Servicio*</label>
+              <div class="col-sm-10">
+                <el-select
+                  required
+                  :readonly="readonly"
+                  filterable
+                  class="select-primary w-100"
+                  size="large"
+                  placeholder="Servicio"
+                  v-model="serviceByOffice.servicioId"
                 >
-                  <base-input
-                    required
-                    autofocus
-                    :readonly="id"
-                    v-model="serviceCode"
-                    class="mr-1"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                  <el-option
+                    v-for="option in selects.services"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
                   >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-              <div class="col-sm-1">
-                <base-button
-                  :type="readonly ? 'success' : 'danger'"
-                  class="animation-on-hover ml-0 p-2"
-                  size="md"
-                  @click.native="readonly ? checkCode() : resetCode()"
-                  ><i v-if="readonly" class="tim-icons icon-check-2"></i>
-                  <i v-else class="tim-icons icon-simple-remove"></i
-                ></base-button>
-              </div>
-              <div class="col-sm-1">
-                <base-button
-                  type="info"
-                  class="animation-on-hover ml-0 p-2"
-                  size="md"
-                  @click.native="suggestCode()"
-                  ><i class="tim-icons icon-zoom-split"></i
-                ></base-button>
+                  </el-option>
+                </el-select>
               </div>
             </div>
             <div class="row">
@@ -88,7 +69,7 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">PrecioMinimo*</label>
+              <label class="col-sm-2 col-form-label">Precio Minimo*</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="PrecioMinimo"
@@ -116,7 +97,7 @@
                   required
                   :readonly="readonly"
                   filterable
-                  class="select-primary"
+                  class="select-primary w-100"
                   size="large"
                   placeholder="Sucursal"
                   v-model="serviceByOffice.sucursalesId"
@@ -133,13 +114,13 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">estadoServicios*</label>
+              <label class="col-sm-2 col-form-label">Estado*</label>
               <div class="col-sm-10">
                 <el-select
                   required
                   :readonly="readonly"
                   filterable
-                  class="select-primary mt-2"
+                  class="select-primary mt-2 w-100"
                   size="large"
                   placeholder="Estado servicio"
                   v-model="serviceByOffice.estadoServicio"
@@ -202,7 +183,7 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
-      readonly: true,
+      readonly: false,
       id: '',
       currentCode: '',
       baseApiUrl: '',
@@ -210,7 +191,8 @@ export default {
       selects: {
         simple: '',
         offices: [],
-        statusProduct: []
+        statusProduct: [],
+        services:[]
       },
       serviceCode: '',
       serviceByOffice: {
@@ -234,29 +216,7 @@ export default {
     this.fillCatalog()
   },
   methods: {
-    checkCode() {
-      axios
-        .get(
-          this.baseApiUrl +
-            'Servicios/ByCodigoOrNombre?Nombre=' +
-            this.serviceCode +
-            '&Codigo=' +
-            this.serviceCode
-        )
-        .then((response) => {
-          this.serviceByOffice.servicioId = response.data[0].id
-          this.readonly = !response.data[0].id > 0
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Codigo invalido', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    resetCode() {
-      this.serviceByOffice.servicioId = 0
-      this.serviceCode = ''
-      this.readonly = !this.readonly
-    },
+
     checkId() {
       axios
         .get(this.baseApiUrl + 'serviciossucursales/' + this.id)
@@ -280,15 +240,16 @@ export default {
       )
     },
     fillCatalog() {
+
       axios
-        .get(this.baseApiUrl + 'catalogo/sucursales')
+        .get(this.baseApiUrl + 'catalogo/servicios') //check
         .then((response) => {
-          this.selects.offices = response.data
+          this.selects.services = response.data
         })
         .catch((error) => {
-          this.error = error
+          this.errored = true
         })
-        .finally(() => (this.isLoading = false))
+
       axios
         .get(this.baseApiUrl + 'catalogo/estadoproducto') //check
         .then((response) => {
@@ -297,6 +258,17 @@ export default {
         .catch((error) => {
           this.errored = true
         })
+
+        axios
+        .get(this.baseApiUrl + 'catalogo/sucursales')
+        .then((response) => {
+          this.selects.offices = response.data
+        })
+        .catch((error) => {
+          this.error = error
+        })
+        .finally(() => (this.isLoading = false))
+
     },
     fillForm(obj) {
       this.serviceByOffice = {
@@ -324,8 +296,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        if (!this.serviceByOffice.id) this.checkCode()
-        else {
           axios
             .put(
               this.baseApiUrl +
@@ -341,8 +311,7 @@ export default {
             .catch((error) => {
               this.globalSweetMessage(error.response.data.message, 'error')
             })
-            .finally(() => (this.isLoading = false))
-        }
+            .finally(() => (this.isLoading = false))        
       }
     },
     create() {
@@ -350,8 +319,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        if (!this.serviceByOffice.servicioId) this.checkCode()
-        else {
+     
           axios
             .post(this.baseApiUrl + 'serviciossucursales', this.serviceByOffice)
             .then((response) => {
@@ -362,8 +330,7 @@ export default {
             .catch((error) => {
               this.globalSweetMessage(error.response.data.message, 'error')
             })
-            .finally(() => (this.isLoading = false))
-        }
+            .finally(() => (this.isLoading = false))        
       }
     }
   }

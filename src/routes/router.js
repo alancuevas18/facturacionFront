@@ -22,9 +22,11 @@ async function refreshToken() {
     await axios
       .post('https://emacsoft.com/Authorization/RefreshToken')
       .then((response) => {
-        axios.defaults.headers.common['Authorization'] =
-          'Bearer ' + response.data.result.token
+        axios.defaults.headers.common['Authorization'] ='Bearer ' + response.data.result.token
+        localStorage.setItem('token', response.data.result.token)
         store.state.office = response.data.result.sucursal
+        store.state.officeId = response.data.result.sucursalId
+
       })
       .catch((error) => {
         this.globalSweetMessage(error.response.data.message, 'error')

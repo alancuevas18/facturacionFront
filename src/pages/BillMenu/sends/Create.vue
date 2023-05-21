@@ -17,7 +17,72 @@
           </router-link>
         </h4>
       </template>
-      <div>
+      <div class="row">
+        <div class="col-ms-12 col-md-4">
+            <h4 slot="header" class="card-title">
+                    Datos de la factura
+                </h4>
+
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Cliente</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.nombre}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Identificación</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.identificacion}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Vendedor</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas?.vendedores}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Sucursal</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.sucursales?.nombre}}</label>              
+                </div>           
+            </div>
+            
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Fecha</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.fecha}}</label>              
+                </div>           
+            </div>
+          <div>
+
+            <table class="table">
+            <thead>
+              <tr>
+                <th>Codigo</th>
+                <th>Produto</th>
+                <th>Cantidad</th>
+                <th>Precio</th>
+                <th>Itbis</th>
+                <th>Total</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
+                <td>{{item.codigo }}</td>
+                <td>{{item.productoServicio}}</td>
+                <td>{{item.cantidad }}</td>
+                <td>{{item.precio }}</td>
+                <td>{{item.itbis }}</td>
+                <td>{{item.total }}</td>
+              </tr>
+            </tbody>
+        </table>
+          </div>
+
+     
+        </div>       
+        <div class="col-ms-12 col-md-8">
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
@@ -248,6 +313,8 @@
           </form>
         </ValidationObserver>
       </div>
+      </div>
+
     </card>
     <!-- end card -->
   </div>
@@ -288,8 +355,11 @@ export default {
       fixedCode: '',
       selects: {
         sucursales: [],
-        clientes: [],
-        vendedores: []
+        mensajeros:[],
+        estadoEnvios:[]
+      },
+      facturas:{
+        sucursales:{nombre:''}
       },
       send: {
         id: 0,
@@ -309,23 +379,24 @@ export default {
       }
     }
   },
-  mounted() {
+ async mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
+    this.send.facturaId=this.$route.params.factaraId
+    this.send.sucursalId=this.$store.state.officeId
     this.title = !this.id ? 'Crear' : 'Editar'
-    if (this.id) this.checkId()
+    if (this.id) await this.checkId()
     this.checkedID = !this.id
-    this.fillCatalogs([
-      'sucursales',
-      'vendedores',
-      'clientes',
+     this.fillCatalogs([
       'mensajeros',
+      'sucursales',
       'estadoEnvios'
     ])
+
   },
   methods: {
-    checkId() {
-      axios
+   async checkId() {
+  await axios
         .get(this.baseApiUrl + 'envios/' + this.id)
         .then((response) => {
           this.isLoading = true
@@ -414,6 +485,7 @@ export default {
       }
     },
     fillCatalogs(catalogs) {
+    this.isLoading=true;
       catalogs.forEach((catalog) => {
         axios
           .get(this.baseApiUrl + 'catalogo/' + catalog)
@@ -424,6 +496,14 @@ export default {
             this.globalSweetMessage('Error al cargar la pagina', 'error')
           })
       })
+      axios
+        .get(this.baseApiUrl + 'facturas/' + this.send.facturaId)
+        .then((response) => {
+          this.facturas=response.data
+        })
+        .finally(() => (this.isLoading = false))
+
+
     },
     validateInvoice() {
       return axios
