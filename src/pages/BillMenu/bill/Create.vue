@@ -75,17 +75,31 @@
               <form class="row align-items-center" v-if="formToAddProducts">
                   <div class="col-12">
 
-                    <label class="col-form-label">Producto</label>
-                    <base-input
-                      class="mb-0"
-                      placeholder="Producto"
-                      required
-                      :readonly="readOnly"
-                      :key="readOnly"
-                      v-model="currentCode.codigo"
-                      v-on:keyup.enter="pickProduct()"
-                    >
-                    </base-input>
+                    <label class="col-form-label">Producto</label>           
+                    <div class="input-group mb-3">
+                  <input type="text" 
+                    class="form-control" 
+                    placeholder="Escriba el codigo y presione 'Enter'" 
+                    autofocus
+                    v-model="currentCode.codigo"
+                    v-on:keyup.enter="pickProduct()">
+                  <div class="input-group-append">
+                    <button 
+                    class="btn btn-outline-secondary m-0" 
+                    type="button" 
+                    @click="pickProduct()"><i class="fa-solid fa-check"></i></button>
+                  </div>
+                </div>
+                  </div>
+                  <div class="row col-12">
+                   <label class="col-form-label col-12">Precio</label>
+
+                    <div class="col-6">
+                      <base-radio v-model="typePrice" name="precio" :value="'precio'" @input="cambioPrecio()">Detalle</base-radio>
+                    </div>
+                    <div class="col-6">
+                      <base-radio v-model="typePrice" name="precioMinimo" :value="'precioMinimo'" @input="cambioPrecio()">Por mayor</base-radio>
+                    </div>
                   </div>
                   <div class="col-12">
                     <label class="col-form-label">Cantidad</label>
@@ -95,11 +109,14 @@
                       placeholder="0"
                       required
                       type="number"
+                      id="ProductoCantidad"
                       v-model="currentCode.quanty"
                       v-on:keyup.enter="pickProduct()"
                     >
                     </base-input>
                   </div>
+            
+     
                   <div class="col-12">
                     <label class="col-form-label">Descuento</label>
                     <base-input
@@ -426,14 +443,30 @@
           </div>
           <!-- print  -->
           <div class="col-12 row" v-if="pagodo &&( pendiente<=0 || bill.tipoFactura==2)">
-            <div class="col-md-6 col-ms-12">
-              <base-button
-                  type="twitter"
-                  class="w-100"
-                  size="lg"
-                  v-print="'#Print'"
-                ><i class="fa-solid fa-print display-4"></i> Imprimir</base-button
-                >
+            <div class="col-md-6 col-ms-12 ">
+       
+                <div class="input-group"> 
+                <el-select
+                      class="select-primary impresora" 
+                      size="large"
+                      v-model="impresora"
+                    >
+                      <el-option
+                        v-for="option in selects.impresoras"
+                        class="select-primary"
+                        :value="option.id"
+                        :label="option.nombre"
+                        :key="option.id"
+                      >
+                      </el-option>
+                </el-select>
+                <div class="input-group-append">
+                  <base-button
+                  type="twitter m-0 btn-lg"
+                  v-print="'#Print'">
+                  <i class="fa-solid fa-print display-4"></i> Imprimir</base-button>
+                </div>
+          </div>
             </div>
             <div class="col-md-6 col-ms-12">
               <router-link to="/billDashboard/bill/create"   @click.native="$router.go()">
@@ -500,7 +533,7 @@
        <!-- Report -->
          <div class="container d-none">
     <div id="Print" class="bg-white h-100">
-       <div class="row">
+      <div :class="'row textprint '+ impresora">
         <div class="col-2">
           <img />
         </div>
@@ -554,7 +587,7 @@
 </template>
 <script>
 import { Table, TableColumn, Select, Option } from 'element-ui'
-import { BasePagination,BaseCheckbox } from 'src/components'
+import { BasePagination,BaseCheckbox,BaseRadio } from 'src/components'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 import swal from 'sweetalert2'
@@ -565,6 +598,7 @@ export default {
     Loading,
     BasePagination,
     BaseCheckbox,
+    BaseRadio,
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
@@ -596,6 +630,7 @@ export default {
   },
   data() {
     return {
+      impresora:'w-30',
       ver_popup_search:false,
       pagodo:false,
       ver_popup_pay:false,
@@ -605,6 +640,7 @@ export default {
       menuOption:false,
       Vendedor:false,
       Comprobante:false,
+      typePrice:'precio',
       search:'',
       tableDataProducFilter:[],
       tableDataProduc:[],
@@ -625,13 +661,23 @@ export default {
           { id: 0, nombre: 'ninguno' },
           { id: 1, nombre: 'Credito Fiscal (01)' },
           { id: 2, nombre: 'Consumidor Final (02)' }
+        ],
+        impresoras: [
+          { id: 'w-30', nombre: '58mm' },
+          { id: 'w-100', nombre: 'A4' }
         ]
       },
       currentCode: {
         codigo: '',
         quanty: 1,
         tax: 0,
-        descuento: 0
+        descuento: 0,
+        price:null,
+        productoSucursal:{
+          precio:0,
+          precioMinimo:0
+        },
+        servicioSucursal:null,
       },
       bill: {
         clienteId:null,
@@ -746,6 +792,9 @@ export default {
       else
       this.formToAddProducts=false
     },
+    cambioPrecio(){
+    this.currentCode.price=this.currentCode.productoSucursal[this.typePrice]
+    },
     checkIn(){
       this.readOnly=true
       this.pagodo=true
@@ -815,15 +864,27 @@ export default {
         if (!this.validateQuanty(this.currentCode.quanty, obj.stock))
           return false
 
-      if (
-        parseInt(obj.precio) - parseInt(this.currentCode.descuento) <
-        parseInt(obj.precioMinimo)
-      )
-        return this.globalSweetMessage(
-          'Precio por debajo del valor minimo permitido',
-          'error'
-        )
+      // if (
+      //   parseInt(obj.precio) - parseInt(this.currentCode.descuento) <
+      //   parseInt(obj.precioMinimo)
+      // )
+      //   return this.globalSweetMessage(
+      //     'Precio por debajo del valor minimo permitido',
+      //     'error'
+      //   )
       return true
+    },
+    verificarPrecio(){
+      axios
+        .get(
+          this.baseApiUrl +
+            'ProductosSucursales/ByCodigo/'+this.currentCode.codigo
+        )
+        .then((response) => {
+          this.currentCode.price=response.data[this.typePrice]
+          this.currentCode.productoSucursal=response.data
+        })
+      document.getElementById("ProductoCantidad").focus();
     },
     pickProduct() {
       document.getElementById("tableProducto").scrollTo(100,100);
@@ -843,15 +904,16 @@ export default {
           let itbis = 0
           let subTotal = 0
           let descuento=0
+          let precio=response.data[this.typePrice]
           descuento=toFixedNumber(this.currentCode.descuento,2)
           itbis =
-          toFixedNumber((response.data.precio *
+          toFixedNumber((precio *
             this.currentCode.quanty- descuento) *
             this.currentCode.tax,2)
           total =
-          toFixedNumber(response.data.precio * this.currentCode.quanty +
+          toFixedNumber(precio * this.currentCode.quanty +
             itbis -descuento,2)
-          subTotal= toFixedNumber(response.data.precio * this.currentCode.quanty-descuento,2)
+          subTotal= toFixedNumber(precio * this.currentCode.quanty-descuento,2)
           if (AddedProduct >= 0) {
             let quanty =
             parseInt(this.tableData[AddedProduct].cantidad) +
@@ -864,7 +926,7 @@ export default {
               this.handleDelete(AddedProduct)
               return false
             }
-
+            this.tableData[AddedProduct].precio = precio
             subTotal = toFixedNumber(this.tableData[AddedProduct].precio*quanty,2)
             itbis = toFixedNumber((subTotal-descuento)* this.currentCode.tax,2)
             this.tableData[AddedProduct].cantidad = quanty
@@ -888,7 +950,7 @@ export default {
               servicioId:null,
               nombre: response.data.nombre,
               cantidad: this.currentCode.quanty,
-              precio: response.data.precio,
+              precio: precio,
               itbis: itbis,
               subTotal:subTotal-descuento,
               descuento:descuento,
@@ -1181,5 +1243,15 @@ body{
 .btn-link{
   color:#929191 !important
 }
-
+.textprint{
+  font-size: 12pt;
+  color: black;
+}
+.w-30{
+  width: 38%;
+  margin-left: 0.01px;
+}
+.impresora>.el-input>.el-input__inner{
+  height: 60px;
+}
 </style>

@@ -202,8 +202,8 @@ export default {
         servicios: null,
         sucursales: null,
         precioMinimo: '',
-        sucursalesId: '',
-        estadoServicio: ''
+        sucursalesId: this.$store.state.officeId,
+        estadoServicio: 1
       }
     }
   },

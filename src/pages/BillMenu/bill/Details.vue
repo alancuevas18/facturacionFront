@@ -18,12 +18,31 @@
               
             </button>
           </router-link>
-          <base-button
-                  type="twitter"
-                  size="lg"
-                  v-print="'#Print'"
-                ><i class="fa-solid fa-print "></i> Imprimir</base-button
+          <div class="input-group mb-3">
+             <el-select
+                  class="select-primary"
+                  size="large"
+                  v-model="impresora"
                 >
+                  <el-option
+                    v-for="option in selects.impresoras"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
+                  >
+                  </el-option>
+             </el-select>
+             <div class="input-group-append">
+              <base-button
+               type="twitter m-0"
+               v-print="'#Print'">
+              <i class="fa-solid fa-print m-0 "></i> Imprimir</base-button>
+            </div>
+          </div>
+
+                
+            
         </h4>
       </template>
         <div class="row">  
@@ -105,14 +124,16 @@
             </div>
         </div>
     </div>
+
         </card>
 
       <!-- Report -->
       <div class="container d-none">
     <div id="Print" class="bg-white h-100">
-       <div class="row textprint w-30">
+      <img src="/logo.png"  class="img-fluid w-25" style="height: 150px;" alt="Responsive image"/>
+
+       <div :class="'row textprint '+ impresora">
         <div class="col-2">
-          <img />
         </div>
         <div class="col-12 display-3">
           {{ facturas.sucursales.nombre }}
@@ -174,6 +195,7 @@
       </div>
 </template>
 <script>
+import {Select, Option } from 'element-ui'
 import Loading from 'vue-loading-overlay'
 import axios from 'axios'
 import config from '@/config'
@@ -182,15 +204,31 @@ import { select } from 'd3'
 export default ({
 components:{
     Loading,
+    [Select.name]: Select,
+    [Option.name]: Option,
 }
 ,
   data(){
     return{
+      impresora:'w-30',
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
+      selects: {
+        simple: '',
+        impresoras: [
+          { id: 'w-30', nombre: '58mm' },
+          { id: 'w-100', nombre: 'A4' }
+        ]
+      },
       facturas:{
-        detallefacturas:[]
+        sucursales:{nombre:''},
+        detallefacturas:[],
+        descuento:0,
+        subTotal:0,
+        itbis:0,
+        total:0,
+        abono:0,
       },
       id:0,
       title: '',
@@ -232,6 +270,7 @@ body{
   color: black;
 }
 .w-30{
-width: 38%;
+  width: 38%;
+  margin-left: 0.01px;
 }
 </style>

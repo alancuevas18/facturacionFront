@@ -173,8 +173,7 @@ export default {
     validateFields() {
       return (
         !this.service.nombre ||
-        !this.service.descripcion ||
-        !this.service.codigo
+        !this.service.descripcion 
       )
     },
     fillForm(obj) {
