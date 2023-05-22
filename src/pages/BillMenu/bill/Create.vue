@@ -95,10 +95,10 @@
                    <label class="col-form-label col-12">Precio</label>
 
                     <div class="col-6">
-                      <base-radio v-model="typePrice" name="precio" :value="'precio'" @input="cambioPrecio()">Detalle</base-radio>
+                      <base-radio v-model="typePrice" name="precio" :value="'precio'">Detalle</base-radio>
                     </div>
                     <div class="col-6">
-                      <base-radio v-model="typePrice" name="precioMinimo" :value="'precioMinimo'" @input="cambioPrecio()">Por mayor</base-radio>
+                      <base-radio v-model="typePrice" name="precioMinimo" :value="'precioMinimo'">Por mayor</base-radio>
                     </div>
                   </div>
                   <div class="col-12">
@@ -151,13 +151,36 @@
                     </div>
               </form>
               <form class="row align-items-center" v-if="!formToAddProducts">
+         
                   <div class="col-12">
-                      <label class="col-form-label">Servicio</label>
+                    <label class="col-form-label">Servicio</label>           
+                    <div class="input-group mb-3">
+                    <input type="text" 
+                    class="form-control" 
+                    placeholder="Escriba el codigo y presione 'Enter'" 
+                    id="sercivioCodigo"
+                    autofocus
+                    v-model="currentCode.codigo"
+                    v-on:keyup.enter="verificarPrecio()">
+                    <div class="input-group-append">
+                    <button 
+                    class="btn btn-outline-secondary m-0" 
+                    type="button" 
+                    @click="verificarPrecio()"><i class="fa-solid fa-check"></i></button>
+                    </div>
+                    </div>
+                  </div>
+                  
+                  <div class="col-12">
+                      <label class="col-form-label">Precio</label>
                       <base-input
                         class="mb-0"
-                        placeholder="Servicio"
+                        size="4"
+                        placeholder="0"
                         required
-                        v-model="currentCode.codigo"
+                        type="number"
+                        id="ServicioCantidad"
+                        v-model="currentCode.price"
                         v-on:keyup.enter="pickService()"
                       >
                       </base-input>
@@ -672,11 +695,7 @@ export default {
         quanty: 1,
         tax: 0,
         descuento: 0,
-        price:null,
-        productoSucursal:{
-          precio:0,
-          precioMinimo:0
-        },
+        price:0,
         servicioSucursal:null,
       },
       bill: {
@@ -792,9 +811,6 @@ export default {
       else
       this.formToAddProducts=false
     },
-    cambioPrecio(){
-    this.currentCode.price=this.currentCode.productoSucursal[this.typePrice]
-    },
     checkIn(){
       this.readOnly=true
       this.pagodo=true
@@ -878,13 +894,14 @@ export default {
       axios
         .get(
           this.baseApiUrl +
-            'ProductosSucursales/ByCodigo/'+this.currentCode.codigo
+            'ServiciosSucursales/ByCodigo/'+this.currentCode.codigo
         )
         .then((response) => {
-          this.currentCode.price=response.data[this.typePrice]
-          this.currentCode.productoSucursal=response.data
+          if (!this.globalValidations(response.data)) return false
+          this.currentCode.price=response.data.precio
+          document.getElementById("ServicioCantidad").focus()
+
         })
-      document.getElementById("ProductoCantidad").focus();
     },
     pickProduct() {
       document.getElementById("tableProducto").scrollTo(100,100);
@@ -982,15 +999,17 @@ export default {
           let itbis = 0
           let subTotal = 0
           let descuento=0
+          let precio=this.currentCode.price
           descuento=this.currentCode.descuento
           itbis =
-          toFixedNumber((response.data.precio *
+          toFixedNumber((precio *
             this.currentCode.quanty-descuento) *
             this.currentCode.tax,2)
           total =
-          toFixedNumber(response.data.precio * this.currentCode.quanty +
+          toFixedNumber(precio * this.currentCode.quanty +
             itbis -descuento,2)
-          subTotal= toFixedNumber(response.data.precio * this.currentCode.quanty-descuento,2)
+          subTotal= toFixedNumber(precio * this.currentCode.quanty-descuento,2)
+          document.getElementById("sercivioCodigo").focus()
           if (AddedProduct >= 0) {
             let quanty =
               parseInt(this.tableData[AddedProduct].cantidad) +
@@ -1022,7 +1041,7 @@ export default {
               productoId:null,
               servicioId: response.data.servicioId,
               cantidad: this.currentCode.quanty,
-              precio: response.data.precio,
+              precio: precio,
               itbis: itbis,
               descuento:descuento,
               subTotal:subTotal-descuento,
