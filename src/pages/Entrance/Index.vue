@@ -265,7 +265,7 @@ export default {
     },
     filterByOffice() {
       this.tableData = []
-      this.fillTable('Entradas/bysuculsal/'+this.$store.state.officeId + this.office)
+      this.fillTable('Entradas/bysuculsal/'+ this.office)
     }
   },
   mounted() {

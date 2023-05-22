@@ -163,7 +163,7 @@ export default {
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['secuencia', 'tipocomprobantetext'],
+      propsToSearch: ['secuencia', 'tipocomprobanteName','estadoComprobanteName'],
       tableColumns: [
         {
           prop: 'secuencia',
@@ -176,8 +176,13 @@ export default {
           minWidth: 100
         },
         {
-          prop: 'tipocomprobantetext',
+          prop: 'tipocomprobanteName',
           label: 'TipoComprobante',
+          minWidth: 100
+        },
+        {
+          prop: 'estadoComprobanteName',
+          label: 'Estado',
           minWidth: 100
         }
       ],

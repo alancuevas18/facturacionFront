@@ -401,7 +401,7 @@ export default {
         fecha: new Date(),
         itbis: 0,
         subTotal: 0,
-        sucursalId: '',
+        sucursalId: this.$store.state.officeId,
         tipoGastoId: '',
         subTipoGastoId: null,
         turnoId: null,

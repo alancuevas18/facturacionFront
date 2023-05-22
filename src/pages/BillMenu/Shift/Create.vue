@@ -158,7 +158,7 @@ export default {
         cerradoEn: null, 
         montoInicial: '',
         montoCierre: 0,
-        sucursalId: '',
+        sucursalId:this.$store.state.officeId,
         estadoTurno: 1,
         usuarioId:'',
         Usuarios:null,

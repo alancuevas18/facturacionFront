@@ -419,7 +419,7 @@ export default {
         nombre:'',
         identificacion:'',
         clienteId:'',
-        sucursalId: '',
+        sucursalId: this.$store.state.officeId,
         vendedorId: '',
         clientes:null,
         vendedores:null,
