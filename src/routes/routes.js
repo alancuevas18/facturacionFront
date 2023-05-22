@@ -816,7 +816,6 @@ let ReturnsMenu = {
       name: 'Detallle devolucion',
       components: { default: ReturnsDetail }
     },
->>>>>>> 15392c2db2c3e8db5e9d736a6e900cf16b9398ca
   ]
 }
 let cashCloseMenu = {
