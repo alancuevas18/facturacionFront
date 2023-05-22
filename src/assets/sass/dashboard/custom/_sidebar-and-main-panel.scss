@@ -348,7 +348,7 @@
             display: block;
             white-space: nowrap;
             font-size: $font-size-base;
-            color: $white;
+            color: $white !important;
             text-decoration: none;
             font-weight: $font-weight-normal;
             line-height: 30px;

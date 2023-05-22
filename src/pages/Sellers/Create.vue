@@ -21,20 +21,38 @@
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
-              <label class="col-sm-2 col-form-label">Identificacion*</label>
+              <label class="col-sm-2 col-form-label">Celular*</label>
+              <div class="col-sm-10">
+                <div class="input-group mb-3">
+                  <input type="number" 
+                    class="form-control" 
+                    placeholder="Escriba la celular y presione 'Enter'" 
+                    autofocus
+                    v-model="seller.celular"
+                    v-on:keyup.enter="checkCelular()">
+                  <div class="input-group-append">
+                    <button 
+                    class="btn btn-outline-secondary m-0" 
+                    type="button" 
+                    @click="checkCelular()">Verificar</button>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <div class="row">
+              <label class="col-sm-2 col-form-label">Identificación</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="Identificacion"
-                  rules="required|min:3"
+                  name="identificacion"
+                  rules="min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    title="Escriba la identificaion y presione 'Enter'"
-                    placeholder="Escriba la identificaion y presione 'Enter'"
                     required
-                    autofocus
-                    v-on:keyup.enter="checkIdentification()"
+                    :disabled="checkedID"
                     v-model="seller.identificacion"
+                    :readonly="readOnly"
+                    :key="readOnly"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -131,30 +149,6 @@
                     :readonly="readOnly"
                     :key="readOnly"
                     v-model="seller.direccion"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
-              </div>
-            </div>
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Celular*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Celular"
-                  rules="required|numeric"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    :disabled="checkedID"
-                    :readonly="readOnly"
-                    :key="readOnly"
-                    v-model="seller.celular"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -337,6 +331,27 @@ export default {
         })
         .catch((error) => {
           this.globalSweetMessage('Error al consultar identificacion', 'error')
+        })
+        .finally(() => (this.isLoading = false))
+      this.checkedID = false
+    },
+    checkCelular() {
+      this.isLoading = true
+      axios
+        .get(
+          this.baseApiUrl +
+            'Vendedores/byCelular/' +
+            this.seller.celular
+        )
+        .then((response) => {
+          if (response.data.id > 0) {
+            this.globalSweetMessage('Vendedor existe!', 'warning')
+            this.$router.push({ path: '/sellers/index' })
+          } 
+          this.fillForm(response.data)
+        })
+        .catch((error) => {
+          this.globalSweetMessage('Error al consultar celular', 'error')
         })
         .finally(() => (this.isLoading = false))
       this.checkedID = false

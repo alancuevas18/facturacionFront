@@ -33,9 +33,14 @@
           }"
         >
           <sidebar-item
+            v-if="AbleToSee('*')"
+            :link="{ name: $t('clients.create'), path: '/clients/create' }"
+          ></sidebar-item>
+          <sidebar-item
             v-if="AbleToSee('Admin,Root')"
             :link="{ name: $t('clients.index'), path: '/clients/index' }"
           ></sidebar-item>
+  
         </sidebar-item>
         <!-- Suppliers Menu -->
         <sidebar-item
@@ -44,10 +49,15 @@
             icon: 'tim-icons icon-delivery-fast'
           }"
         >
+         <sidebar-item
+            v-if="AbleToSee('*')"
+            :link="{ name: $t('suppliers.create'), path: '/suppliers/create' }"
+          ></sidebar-item>
           <sidebar-item
             v-if="AbleToSee('*')"
             :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
           ></sidebar-item>
+    
         </sidebar-item>
         <!-- spends Menu -->
         <sidebar-item
@@ -56,9 +66,13 @@
             icon: 'fas fa-dollar-sign'
           }"
         >
+         <sidebar-item
+            :link="{ name: $t('spends.create'), path: '/spends/create' }"
+          ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('spends.index'), path: '/spends/index' }"
           ></sidebar-item>
+    
         </sidebar-item>
         <!-- invetory Menu -->
         <sidebar-item
@@ -96,6 +110,10 @@
             icon: 'fa-solid fa-bag-shopping'
           }"
         >
+        <sidebar-item
+            :link="{ name: $t('shopping.create'), path: '/shopping/create' }"
+          ></sidebar-item>
+
           <sidebar-item
             :link="{
               name: $t('shopping.index'),
@@ -117,6 +135,10 @@
             icon: 'fa-solid fa-dolly'
           }"
         >
+                
+        <sidebar-item
+            :link="{ name: $t('departures.create'), path: '/Departures/create' }"
+          ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('departures.index'), path: '/Departures/index' }"
           ></sidebar-item>
@@ -128,6 +150,10 @@
             icon: 'tim-icons icon-cart'
           }"
         >
+                
+        <sidebar-item
+            :link="{ name: $t('products.create'), path: '/products/create' }"
+          ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('products.index'), path: '/products/index' }"
           ></sidebar-item>
@@ -145,6 +171,9 @@
             icon: 'fa-solid fa-people-carry-box'
           }"
         >
+        <sidebar-item
+            :link="{ name: $t('services.create'), path: '/services/create' }"
+          ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('services.index'), path: '/services/index' }"
           ></sidebar-item>
@@ -157,6 +186,9 @@
           }"
         >
           <sidebar-item
+            :link="{ name: $t('offices.create'), path: '/offices/create' }"
+          ></sidebar-item>
+          <sidebar-item
             :link="{ name: $t('offices.index'), path: '/offices/index' }"
           ></sidebar-item>
         </sidebar-item>
@@ -167,6 +199,9 @@
             icon: 'fa-solid fa-handshake'
           }"
         >
+        <sidebar-item
+            :link="{ name: $t('sellers.create'), path: '/sellers/create' }"
+          ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('sellers.index'), path: '/sellers/index' }"
           ></sidebar-item>
@@ -178,6 +213,9 @@
             icon: 'tim-icons icon-email-85'
           }"
         >
+        <sidebar-item
+            :link="{ name: $t('deliveries.create'), path: '/deliveries/create' }"
+          ></sidebar-item>
           <sidebar-item
             :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
           ></sidebar-item>
