@@ -62,7 +62,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <!-- <router-link
+                  <router-link
                     :to="'/billDashboard/sends/Details/' + props.row.id"
                   >
                     <base-button
@@ -73,7 +73,7 @@
                     >
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
-                  </router-link> -->
+                  </router-link>
                   <router-link
                     :to="'/billDashboard/sends/create/' + props.row.facturaId+'/'+props.row.id"
                   >

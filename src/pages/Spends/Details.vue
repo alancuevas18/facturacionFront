@@ -163,10 +163,10 @@
       <!-- Report -->
       <div class="container d-none bg-white">
     <div id="Print" class="bg-white h-100 imprimir">
-       <div class="row">
+       <div class="row w-100">
+      <img src="/logo.png"  class="img-fluid w-25" style="height: 150px; margin-left:5%;" alt="Responsive image"/>
         <div class="col-2">
-          <img />
-        </div>
+       </div>
         <div class="col-12 display-3">
           {{ gastos.sucursales }}
         </div>
@@ -174,6 +174,7 @@
         <div class="col-12 text-center">Gastos</div>
         <div class="col-12"> Codigo: {{gastos.id}}</div>
         <div class="col-12"> NCF: {{gastos.comprobante}}</div>
+        <div class="col-12"> Descripción: {{gastos.descripcion}}</div>
       <div class="col-12">
 
           <hr> <div class="col-12 text-right">Sub Total: {{gastos.subTotal.toFixed(2)}}</div>
@@ -249,15 +250,15 @@ components:{
         total: 0
       },
       searchQuery: '',
-      propsToSearch: ['retenciones.descripcion'],
+      propsToSearch: ['retenciones'],
       tableColumns: [
         {
-          prop: 'retenciones.descripcion',
+          prop: 'retenciones',
           label: 'Retencion',
           minWidth: 110
         },
         {
-          prop: 'retenciones.porcentaje',
+          prop: 'porcentaje',
           label: 'Porcentaje',
           minWidth: 110
         },
@@ -281,13 +282,30 @@ components:{
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     axios.get(this.baseApiUrl+'gastos/'+this.id)
         .then((reponse)=>{
+console.log(reponse.data)
             this.gastos=reponse.data
             reponse.data.detalleRetenciones.forEach(element => {
               this.tableData.push(element)            
-              element.retenciones.porcentaje+='%'
+              element.porcentaje+='%'
               });   
             })
 
+  },
+  watch: {
+    searchQuery(value) {
+      let result = this.tableData
+      if (value !== '') {
+        result = this.tableData.filter((c) =>
+          this.propsToSearch.some((name) =>
+            c[name]
+              .toString()
+              .toLowerCase()
+              .includes(this.searchQuery.toLowerCase())
+          )
+        )
+      }
+      this.searchedData = result
+    }
   }
 })
 </script>

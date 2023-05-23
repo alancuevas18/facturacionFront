@@ -191,7 +191,6 @@ export default {
         simple: '',
         offices: []
       },
-      servicestatus: {},
       searchQuery: '',
       propsToSearch: [
         'servicioCodigo',
@@ -299,14 +298,7 @@ export default {
           this.error = error
         })
         .finally(() => (this.isLoading = false))
-      axios
-        .get(this.baseApiUrl + 'catalogo/estadoproducto')
-        .then((response) => {
-          this.servicestatus = response.data
-        })
-        .catch((error) => {
-          this.errored = true
-        })
+
     },
     filterByOffice() {
       this.tableData = []

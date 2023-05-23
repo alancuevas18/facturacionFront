@@ -125,11 +125,12 @@ const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
 //cashClose
 const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
 const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
-// const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
+const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
 
 //Sends
 const SendsIndex = () => import('src/pages/BillMenu/sends/Index.vue')
 const SendsCreate = () => import('src/pages/BillMenu/sends/Create.vue')
+const SendsDetails= () => import('src/pages/BillMenu/sends/Details.vue')
 
 //SpendsType
 const SpendsTypeIndex = () => import('src/pages/SpendsType/Index.vue')
@@ -833,6 +834,11 @@ let cashCloseMenu = {
       path: 'create/:id?',
       name: 'Editar Cierre de Caja',
       components: { default: cashCloseCreate }
+    },
+    {
+      path: 'details/:id?',
+      name: 'Detalle Cierre de Caja',
+      components: { default: cashCloseDetail }
     }
   ]
 }
@@ -857,6 +863,11 @@ let sendsMenu = {
       path: 'create/:factaraId?/:id?',
       name: 'Edtiar Envios',
       components: { default: SendsCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles envio',
+      components: { default: SendsDetails }
     }
   ]
 }

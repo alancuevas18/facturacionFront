@@ -62,7 +62,7 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
-                  <router-link :to="'/cashClose/details/' + props.row.id">
+                  <router-link :to="'/billDashboard/cashClose/Details/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
@@ -72,7 +72,7 @@
                       <i class="tim-icons icon-notes"></i>
                     </base-button>
                   </router-link>
-                </div>
+               </div>
               </el-table-column>
             </el-table>
           </div>
@@ -106,7 +106,6 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
-
 export default {
   components: {
     Loading,

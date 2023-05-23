@@ -419,12 +419,12 @@ export default {
       },
       tableColumns: [
         {
-          prop: 'retenciones.descripcion',
+          prop: 'retenciones',
           label: 'Retencion',
           minWidth: 70
         },
         {
-          prop: 'retenciones.porcentaje',
+          prop: 'porcentaje',
           label: 'Porcentaje',
           minWidth: 70
         },
@@ -449,6 +449,7 @@ export default {
   },
   methods: {
     checkId() {
+      this.isLoading = true
       axios
         .get(this.baseApiUrl + 'Gastos/' + this.id)
         .then((response) => {
@@ -534,7 +535,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        this.spend.detalleRetenciones.forEach((e) => (e.retenciones = null))
         axios
           .put(this.baseApiUrl + 'Gastos/' + this.spend.id, this.spend)
           .then((response) => {
@@ -553,7 +553,6 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
-        this.spend.detalleRetenciones.forEach((e) => (e.retenciones = null))
         axios
           .post(this.baseApiUrl + 'Gastos', this.spend)
           .then((response) => {
@@ -580,10 +579,8 @@ export default {
               this.spend.detalleRetenciones.push({
                 gastoId: 0,
                 RetencionId: this.deductions.id,
-                retenciones: {
-                  descripcion: response.data.descripcion,
-                  porcentaje: response.data.porcentaje
-                },
+                retenciones:response.data.descripcion,
+                porcentaje: response.data.porcentaje,
                 total: parseFloat(
                   (
                     this.spend.subTotal *
@@ -593,7 +590,7 @@ export default {
               })
               this.tableData = structuredClone(this.spend.detalleRetenciones)
               this.tableData.forEach(
-                (element) => (element.retenciones.porcentaje += '%')
+                (element) => (element.porcentaje += '%')
               )
             })
       } else this.globalSweetMessage('Debe Selecionar una retencion', 'error')
@@ -602,14 +599,14 @@ export default {
       this.spend.detalleRetenciones.forEach((element) => {
         element.total = parseFloat(
           (
-            (element.retenciones.porcentaje / 100) *
+            (element.porcentaje / 100) *
             this.spend.subTotal
           ).toFixed(2)
         )
       })
       this.tableData = structuredClone(this.spend.detalleRetenciones)
       this.tableData.forEach(
-        (element) => (element.retenciones.porcentaje += '%')
+        (element) => (element.porcentaje += '%')
       )
     },
     handleDelete(index, row) {
@@ -629,8 +626,21 @@ export default {
         })
         .then((result) => {
           if (result.value) {
-            this.spend.detalleRetenciones.splice(row, 1)
-            this.tableData.splice(index, 1)
+            if(!this.id){
+              this.spend.detalleRetenciones.splice(row, 1)
+              this.tableData.splice(index, 1)
+            }else{ 
+              this.isLoading = true
+              axios
+              .delete(this.baseApiUrl + 'DetalleRetenciones/' + row.id)
+              .then(() => {
+                this.spend.detalleRetenciones.splice(row, 1)
+                this.tableData.splice(index, 1)
+              })
+              .finally(() => (this.isLoading = false))
+
+            }
+ 
           }
         })
     },

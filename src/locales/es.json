@@ -158,7 +158,8 @@
     "departures": {
       "departures" : "Mover invetario",
       "create" : "Crear",
-      "index" : "Administracion de salida"
+      "index" : "Administracion de salida",
+      "details":"Detalle Movimiento"
   },
 "deductions": {
     "deductions" : "Retenciones",
@@ -191,7 +192,9 @@
   "cashClose": {
     "index" : "Administracion de Cuadre de Caja",
     "cashClose": "Cuadre de Caja",
-    "create" : "Crear"
+    "create" : "Crear",
+    "details": "Detalle del Cuadre de caja"
+
   },
   "bill": {
     "index" : "Facturacion",
