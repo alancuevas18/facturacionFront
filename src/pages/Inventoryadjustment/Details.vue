@@ -18,11 +18,11 @@
               
             </button>
           </router-link>
-          <router-link to="/Inventoryadjustment/print">
+          <!-- <router-link to="/Inventoryadjustment/print">
             <button class="btn btn btn-twitter">
                  Imprimir <i class="fa-solid fa-print"></i>
             </button>
-          </router-link>
+          </router-link> -->
         </h4>
       </template>
         <div class="row">  

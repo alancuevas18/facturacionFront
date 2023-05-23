@@ -113,8 +113,8 @@
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Sucursal:</label>
-              <div class="col-sm-10">
-                <label class="col-form-label"> {{ productByOffice.sucursales  }}</label>
+              <div class="col-sm-10 pt-1">
+                <label class="p-2"> {{ productByOffice.sucursales  }}</label>
               </div>
             </div>
             <div class="row">
@@ -208,6 +208,7 @@ export default {
   },
   methods: {
     checkId() {
+      this.isLoading = true
       axios
         .get(this.baseApiUrl + 'productossucursales/' + this.id)
         .then((response) => {

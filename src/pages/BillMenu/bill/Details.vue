@@ -12,7 +12,7 @@
       <template slot="header">
         <h4 class="card-title">
           {{ title }} 
-          <router-link to="/Inventoryadjustment/index">
+          <router-link to="/billDashboard/bill/index">
             <button class="btn floatr btn-icon btn-youtube">
               <i class="tim-icons icon-double-left"></i>
               

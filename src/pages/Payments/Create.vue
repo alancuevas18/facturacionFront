@@ -141,13 +141,13 @@
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Sucursal</label>
                 <div class="col-sm-4">
-                <label class="col-form-label"> {{ compras.sucursales.nombre}}</label>              
+                <label class="pt-2"> {{ compras.sucursales}}</label>              
                 </div>
               </div>
               <div class="row mb-3">
                 <label class="col-sm-2 col-form-label">Suplidor</label>
                 <div class="col-sm-4">
-                <label class="col-form-label"> {{ compras.suplidores.nombre}}</label>  
+                <label class="col-form-label"> {{ compras.suplidores}}</label>  
                 </div>
               </div>
 

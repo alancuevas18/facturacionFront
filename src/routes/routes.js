@@ -125,7 +125,7 @@ const ReturnsDetail = () => import('src/pages/BillMenu/Returns/Details.vue')
 //cashClose
 const cashCloseIndex = () => import('src/pages/BillMenu/cashClose/Index.vue')
 const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
-// const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
+const cashCloseDetail = () => import('src/pages/BillMenu/cashClose/Details.vue')
 
 //Sends
 const SendsIndex = () => import('src/pages/BillMenu/sends/Index.vue')
@@ -834,6 +834,11 @@ let cashCloseMenu = {
       path: 'create/:id?',
       name: 'Editar Cierre de Caja',
       components: { default: cashCloseCreate }
+    },
+    {
+      path: 'details/:id?',
+      name: 'Detalle Cierre de Caja',
+      components: { default: cashCloseDetail }
     }
   ]
 }
