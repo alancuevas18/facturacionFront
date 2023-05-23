@@ -223,13 +223,20 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'
-    this.fillCatalog()
-    if (this.id) this.fillForm()
+    this.fillCatalog(['susursales'])
+    if (this.id)
+      this.globalFind('usuario', this.id, this.user).then((response) => {
+        Object.keys(this.user).forEach((e) => {
+          this.user[e] = response[e]
+        })
+      })
   },
   methods: {
-    fillCatalog() {
-      axios.get(this.baseApiUrl + 'catalogo/sucursales').then((response) => {
-        this.selects.offices = response.data
+    fillCatalog(catalogs) {
+      catalogs.forEach((e) => {
+        this.globalFillCatalog(e).then((response) => {
+          this.selects[e] = response
+        })
       })
     },
     validateFields() {
@@ -242,26 +249,26 @@ export default {
         !this.user.sucursalId
       )
     },
-    fillForm() {
-      this.isLoading = true
-      axios
-        .get(this.baseApiUrl + 'marcas/' + this.id)
-        .then((response) => {
-          this.brand = {
-            id: response.data.id,
-            nombre: response.data.nombre,
-            apellido: response.data.apellido,
-            nombreUsuario: response.data.nombreUsuario,
-            contrasena: response.data.contrasena,
-            correo: response.data.correo,
-            sucursalId: response.data.sucursalId
-          }
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Error al cargar la pagina', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-    },
+    // fillForm() {
+    //   this.isLoading = true
+    //   axios
+    //     .get(this.baseApiUrl + 'marcas/' + this.id)
+    //     .then((response) => {
+    //       this.brand = {
+    //         id: response.data.id,
+    //         nombre: response.data.nombre,
+    //         apellido: response.data.apellido,
+    //         nombreUsuario: response.data.nombreUsuario,
+    //         contrasena: response.data.contrasena,
+    //         correo: response.data.correo,
+    //         sucursalId: response.data.sucursalId
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       this.globalSweetMessage('Error al cargar la pagina', 'error')
+    //     })
+    //     .finally(() => (this.isLoading = false))
+    // },
     clear() {
       this.user.nombre = ''
       this.user.apellido = ''
@@ -280,7 +287,7 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'marcas/' + this.brand.id, brand)
+          .put(this.baseApiUrl + 'usuario/register' + this.brand.id, brand)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()

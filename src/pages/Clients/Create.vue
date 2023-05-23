@@ -24,17 +24,22 @@
               <label class="col-sm-2 col-form-label">Celular*</label>
               <div class="col-sm-10">
                 <div class="input-group mb-3">
-                  <input type="number" 
-                    class="form-control" 
-                    placeholder="Escriba la celular y presione 'Enter'" 
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Escriba la celular y presione 'Enter'"
                     autofocus
                     v-model="client.celular"
-                    v-on:keyup.enter="checkCelular()">
+                    v-on:keyup.enter="checkCelular()"
+                  />
                   <div class="input-group-append">
-                    <button 
-                    class="btn btn-outline-secondary m-0" 
-                    type="button" 
-                    @click="checkCelular()">Verificar</button>
+                    <button
+                      class="btn btn-outline-secondary m-0"
+                      type="button"
+                      @click="checkCelular()"
+                    >
+                      Verificar
+                    </button>
                   </div>
                 </div>
               </div>
@@ -433,19 +438,12 @@ export default {
     checkCelular() {
       this.isLoading = true
       axios
-        .get(
-          this.baseApiUrl +
-            'clientes/byCelular/' +
-            this.client.celular
-        )
+        .get(this.baseApiUrl + 'clientes/byCelular/' + this.client.celular)
         .then((response) => {
-          console.log(response.data.id)
           if (response.data.id > 0) {
-          console.log(response.data.id)
-          this.globalSweetMessage('Cliente existe!', 'warning')
+            this.globalSweetMessage('Cliente existe!', 'warning')
             this.$router.push({ path: '/clients/index' })
-          } 
-           else {
+          } else {
             let celular = this.client.celular
             this.client = this.globalFillObject(response.data)
             this.client.celular = celular

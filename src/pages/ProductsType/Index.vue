@@ -73,7 +73,9 @@
                     </base-button>
                   </router-link>
                   <base-button
-                    @click.native="handleDelete(props.$index, props.row)"
+                    @click.native="
+                      handleDelete(props.$index, props.row, tableData)
+                    "
                     class="remove btn-link"
                     type="danger"
                     size="sm"
@@ -112,9 +114,6 @@ import { Table, TableColumn, Select, Option } from 'element-ui'
 import { BasePagination } from 'src/components'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import swal from 'sweetalert2'
-import axios from 'axios'
-import config from '@/config'
 
 export default {
   components: {
@@ -153,7 +152,6 @@ export default {
     return {
       isLoading: false,
       fullPage: true,
-      baseApiUrl: '',
       pagination: {
         perPage: 5,
         currentPage: 1,
@@ -170,80 +168,33 @@ export default {
         }
       ],
       tableData: [],
-      searchedData: [],
-      fuseSearch: null
+      searchedData: []
     }
   },
   methods: {
-    handleDelete(index, row) {
-      swal
-        .fire({
-          title: 'Estas seguro?',
-          text: `Esta accion no se puede reversar!`,
-          icon: 'warning',
-          showCancelButton: true,
-          customClass: {
-            confirmButton: 'btn btn-success btn-fill',
-            cancelButton: 'btn btn-danger btn-fill'
-          },
-          confirmButtonText: 'Confimar!',
-          cancelButtonText: 'Cancelar',
-          buttonsStyling: false
-        })
-        .then((result) => {
-          if (result.value) {
-            this.deleteRow(row)
-          }
-        })
-    },
-    deleteRow(row) {
-      this.isLoading = true
-      axios
-        .delete(this.baseApiUrl + 'tipoproductos/' + row.id)
-        .then(() => {
-          this.globalSweetMessage()
-          let indexToDelete = this.tableData.findIndex(
-            (tableRow) => tableRow.id === row.id
-          )
-          if (indexToDelete >= 0) {
-            this.tableData.splice(indexToDelete, 1)
-          }
-        })
-        .catch((error) => {
-          this.globalSweetMessage(error.response.data.message, 'error')
-        })
-        .finally(() => (this.isLoading = false))
+    handleDelete(index, row, tableData) {
+      this.tableData = this.globalHandleDelete(
+        index,
+        row,
+        tableData,
+        'tipoproductos'
+      )
     }
   },
   mounted() {
-    this.isLoading = true
-    this.baseApiUrl = config.global.baseApiUrl
-    axios
-      .get(this.baseApiUrl + 'tipoproductos')
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push(response.data[i])
-        }
-      })
-      .catch((error) => {
-        this.errored = true
-      })
-      .finally(() => (this.isLoading = false))
+    this.globalFillTable('tipoproductos').then((response) => {
+      this.tableData = response
+    })
   },
   watch: {
     searchQuery(value) {
-      let result = this.tableData
       if (value !== '') {
-        result = this.tableData.filter((c) =>
-          this.propsToSearch.some((name) =>
-            c[name]
-              .toString()
-              .toLowerCase()
-              .includes(this.searchQuery.toLowerCase())
-          )
+        this.searchedData = this.globalFilter(
+          this.tableData,
+          this.propsToSearch,
+          value
         )
       }
-      this.searchedData = result
     }
   }
 }

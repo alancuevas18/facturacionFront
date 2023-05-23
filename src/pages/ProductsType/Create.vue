@@ -67,110 +67,69 @@
   </div>
 </template>
 <script>
-import { BaseCheckbox, BaseRadio } from 'src/components/index'
-import { DatePicker, Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
 import { required, min } from 'vee-validate/dist/rules'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import axios from 'axios'
-import config from '@/config'
 
 extend('required', required)
 extend('min', min)
 
 export default {
   components: {
-    Loading,
-    BaseCheckbox,
-    BaseRadio,
-    [DatePicker.name]: DatePicker,
-    [Select.name]: Select,
-    [Option.name]: Option
+    Loading
   },
   data() {
     return {
       isLoading: false,
       fullPage: true,
       id: '',
-      baseApiUrl: '',
       title: '',
-      selects: {
-        simple: '',
-        options: [
-          { value: 'active', label: 'Activar' },
-          { value: 'inactive', label: 'Inactivar' }
-        ]
-      },
-      producttype: 
-        {
-          descripcion: ''
-        }
-      
+      producttype: {
+        id: 0,
+        descripcion: ''
+      }
     }
   },
   mounted() {
-    this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
-    if (this.id) this.fillForm()
+    if (this.id)
+      this.globalFind('tipoproductos', this.id, this.producttype).then(
+        (response) => {
+          Object.keys(this.producttype).forEach((e) => {
+            this.producttype[e] = response[e]
+          })
+        }
+      )
   },
   methods: {
     validateFields() {
       return !this.producttype.descripcion
     },
-    fillForm() {
-      this.isLoading = true
-      axios
-        .get(this.baseApiUrl + 'tipoproductos/' + this.id)
-        .then((response) => {
-          this.producttype = {
-            id: response.data.id,
-            descripcion: response.data.descripcion
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    clear() {
-      this.producttype.descripcion = ''
-    },
     edit() {
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .put(this.baseApiUrl + 'tipoproductos/' + this.id, this.producttype)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/productstype/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalEdit(
+          'tipoproductos',
+          this.id,
+          this.producttype,
+          '/productstype/index'
+        )
+        this.producttype = this.globalClear(this.producttype)
       }
     },
     create() {
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .post(this.baseApiUrl + 'TipoProductos', this.producttype)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/productstype/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalPost(
+          'tipoproductos',
+          this.producttype,
+          '/productstype/index'
+        )
+        this.producttype = this.globalClear(this.producttype)
       }
     }
   }

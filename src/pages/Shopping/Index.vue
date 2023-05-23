@@ -157,11 +157,11 @@ export default {
       },
       office: '',
       selects: {
-        simple: '',
+        simple: ''
       },
       entrancetatus: {},
       searchQuery: '',
-      propsToSearch: ['sucursales','fecha','suplidores'],
+      propsToSearch: ['sucursales', 'fecha', 'suplidores'],
       tableColumns: [
         {
           prop: 'sucursales',
@@ -235,15 +235,14 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          console.log(response.data)
-          this.tableData=response.data
+          this.tableData = response.data
         })
         .catch((error) => {
           this.errored = true
         })
         .finally(() => (this.isLoading = false))
     },
-     filterByOffice() {
+    filterByOffice() {
       this.tableData = []
       this.fillTable('Compras/bysuculsal/' + this.office)
     }
@@ -251,7 +250,7 @@ export default {
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillTable('Compras/bysuculsal/'+this.$store.state.officeId, true)
+    this.fillTable('Compras/bysuculsal/' + this.$store.state.officeId, true)
   },
   watch: {
     searchQuery(value) {
