@@ -49,15 +49,8 @@ export default {
 .mytable {
   border-collapse: collapse;
 }
-#Print {
-  color: black;
-  font-size: 20pt;
-}
 
-tr {
-  color: black;
-  font-size: 20pt;
-}
+
 
 body {
   background: white;

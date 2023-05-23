@@ -48,6 +48,59 @@
         <div class="row">  
         <div class="col-ms-12 col-md-4">
             <h4 slot="header" class="card-title">
+                    Datos del envio
+                </h4>
+
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Codigo Factura</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ send.cliente}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Cliente</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ send.cliente}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Telefono</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ send.numeroContacto}}</label>              
+                </div>           
+            </div>
+      
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Sucursal</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ facturas.sucursales.nombre}}</label>              
+                </div>           
+            </div>
+            
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Fecha</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ send.fechaEnvio}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Mensajero</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ send.mensajeros}}</label>              
+                </div>           
+            </div>
+            <div class="row">
+                <label class="col-sm-4 col-form-label">Nota</label>
+                <div class="col-sm-8">
+                  <label class="col-form-label"> {{ send.nota}}</label>              
+                </div>           
+            </div>
+     
+        </div>
+        
+        <div class="row col-ms-12 col-md-8" style="border-left:solid; ">
+          <div class="col-ms-12">
+            <h4 slot="header" class="card-title">
                     Datos de la factura
                 </h4>
 
@@ -64,18 +117,11 @@
                 </div>           
             </div>
             <div class="row">
-                <label class="col-sm-4 col-form-label">Vendedor</label>
-                <div class="col-sm-8">
-                  <label class="col-form-label"> {{ facturas.vendedores}}</label>              
-                </div>           
-            </div>
-            <div class="row">
                 <label class="col-sm-4 col-form-label">Sucursal</label>
                 <div class="col-sm-8">
                   <label class="col-form-label"> {{ facturas.sucursales.nombre}}</label>              
                 </div>           
-            </div>
-            
+            </div>            
             <div class="row">
                 <label class="col-sm-4 col-form-label">Fecha</label>
                 <div class="col-sm-8">
@@ -86,8 +132,6 @@
 
      
         </div>
-        
-        <div class="row col-ms-12 col-md-8" style="border-left:solid; ">
             <div class="col-12">
                 <h4 slot="header" class="card-title text-center">
                     Detalle
@@ -130,61 +174,45 @@
       <!-- Report -->
       <div class="container d-none">
     <div id="Print" class="bg-white h-100">
-      <img src="/logo.png"  class="img-fluid w-25" style="height: 150px; margin-left:5%;" alt="Responsive image"/>
-
-       <div :class="'row textprint '+ impresora">
+      
+      <div :class="'row textprint '+ impresora">
+        <img src="/logo.png"  class="img-fluid w-50" style="height: 200px; margin-left:5%;" alt="Responsive image"/>
         <div class="col-2">
         </div>
         <div class="col-12 display-3">
-          {{ facturas.sucursales.nombre }}
-        </div>
-        <div class="col-12"> Ubicación: {{facturas.sucursales.ubicacion }}</div>
-        <div class="col-12"> Telefono: {{facturas.sucursales.telefono }}</div>
-        <div class="col-12"> Fecha: {{facturas.fecha}}</div>
-        <div class="col-12">Factura</div>        
-        <div class="col-12"> Codigo: {{facturas.id}}</div>
-        <div class="col-12"> NCF: {{facturas.comprobante}}</div>
-        <div class="col-12"> Cliente: {{facturas.nombre}}</div>
-        <div class="col-12"> Rnc: {{facturas.identificacion}}</div>
-        <div class="col-12"> vendedor: {{facturas.codigoVendedor}}</div>
+          {{ send.sucursales.nombre }}
+        </div>            
+        <div class="col-12"><b> Codigo Factura: </b>{{send.facturaId }}</div>
+        <div class="col-12"><b> Quien Recibe: </b>{{send.cliente }}</div>
+        <div class="col-12"><b> Contacto: </b>{{send.numeroContacto}}</div>    
+        <div class="col-12"><b> Dirección: </b>{{send.direccion}}</div>    
+        <div class="col-12"><b> Codigo envio: </b>{{send.id}}</div>
+        <div class="col-12"><b> Fecha:</b> {{send.fechaEnvio}}</div>
+        <div class="col-12"><b> Mensajero:</b> {{send.mensajeros}}</div>
+        <div class="col-12"><b> Nota:</b> {{send.nota}}</div>
       <div class="col-12">
+        <div class="text-center font-weight-bold">Lista de Producto</div> 
+        <hr/>
           <table class="mytable w-100">
             <thead class="">
               <tr class="border-bottom">
         
                 <th>Descripcion</th>
-                <th>Itbis</th>
-                <th>Total</th>
+                <th>Cantidad</th>
 
               </tr>
             </thead>
             <tbody v-for="item in facturas.detalleFactura" :key="item.id">        
               <tr>
-                <td colspan="2">        
+                <td>        
                     {{item.productos?.nombre}}{{ item.servicios?.nombre }}
             
                 </td>
-                <td></td>
-                <td></td>
+                <td> {{item.cantidad}} </td>
               </tr>
-              <tr >
-                <td>
-                    {{item.cantidad}}X{{item.precio.toFixed(2)}}                
-                </td>
-                <td>{{item.itbis.toFixed(2)}}</td>
-                <td>{{item.total.toFixed(2)}}</td>
-              </tr>
-
             </tbody>
 
           </table>
-          <hr> <div class="col-12 text-right">Descuento: {{facturas.descuento.toFixed(2)}}</div>
-          <hr> <div class="col-12 text-right">Sub Total: {{facturas.subTotal.toFixed(2)}}</div>
-          <hr> <div class="col-12 text-right">Itbis: {{facturas.itbis.toFixed(2)}}</div>
-          <hr> <div class="col-12 text-right">Total:{{facturas.total.toFixed(2)}}</div>
-          <hr> <div class="col-12 text-right">Monto Pagado:{{facturas.abono.toFixed(2)}}</div>
-
-
         </div>
        </div>
     </div>
@@ -210,16 +238,20 @@ components:{
 ,
   data(){
     return{
-      impresora:'w-30',
+      impresora:'w-57',
       isLoading: false,
       fullPage: true,
       baseApiUrl: '',
       selects: {
         simple: '',
         impresoras: [
+          { id: 'w-57', nombre: '4 in X 10 in' }  ,    
           { id: 'w-30', nombre: '58mm' },
-          { id: 'w-100', nombre: 'A4' }
+          { id: 'w-100', nombre: 'A4' },
         ]
+      },
+      send:{
+        sucursales:{nombre:''},
       },
       facturas:{
         sucursales:{nombre:''},
@@ -239,10 +271,10 @@ components:{
   mounted(){
     this.baseApiUrl=config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
-     axios.get(this.baseApiUrl+'Facturas/'+this.id)
-        .then((reponse)=>{
-            this.facturas=reponse.data
-            this.tableData=reponse.data.detalleFactura
+     axios.get(this.baseApiUrl+'Envios/'+this.id)
+        .then((response)=>{
+            this.send=response.data
+            this.facturas=response.data.facturas
             })
 
   }
@@ -266,11 +298,16 @@ body{
   background: white;
 }
 .textprint{
-  font-size: 12pt;
+  font-size: 16pt;
   color: black;
 }
 .w-30{
   width: 38%;
   margin-left: 0.01px;
+}
+.w-57{
+  width: 57%;
+  margin-left: 20px;
+  margin-top: 30px;
 }
 </style>

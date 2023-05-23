@@ -130,6 +130,7 @@ const cashCloseCreate = () => import('src/pages/BillMenu/cashClose/Create.vue')
 //Sends
 const SendsIndex = () => import('src/pages/BillMenu/sends/Index.vue')
 const SendsCreate = () => import('src/pages/BillMenu/sends/Create.vue')
+const SendsDetails= () => import('src/pages/BillMenu/sends/Details.vue')
 
 //SpendsType
 const SpendsTypeIndex = () => import('src/pages/SpendsType/Index.vue')
@@ -857,6 +858,11 @@ let sendsMenu = {
       path: 'create/:factaraId?/:id?',
       name: 'Edtiar Envios',
       components: { default: SendsCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles envio',
+      components: { default: SendsDetails }
     }
   ]
 }
