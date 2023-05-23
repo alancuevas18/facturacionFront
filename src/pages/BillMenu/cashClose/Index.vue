@@ -158,12 +158,8 @@ export default {
       },
       cashClosetatus: {},
       searchQuery: '',
-      propsToSearch: [
-        'usuarios',
-        'fecha'
-      ],
+      propsToSearch: ['usuarios', 'fecha'],
       tableColumns: [
-    
         {
           prop: 'totalEfectivo',
           label: 'Efectivo',
@@ -254,7 +250,7 @@ export default {
       axios
         .get(this.baseApiUrl + resource)
         .then((response) => {
-          this.tableData=response.data
+          this.tableData = response.data
         })
         .catch((error) => {
           this.errored = true
@@ -270,14 +266,13 @@ export default {
         .catch((error) => {
           this.error = error
         })
-      }
+    }
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
     this.fillCatalog()
-    this.fillTable('cuadresucursal/BySuculsal/'+this.$store.state.officeId)
-    console.log(this.$store.state.officeId)
+    this.fillTable('cuadresucursal/BySuculsal/' + this.$store.state.officeId)
   },
   watch: {
     searchQuery(value) {

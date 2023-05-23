@@ -31,7 +31,7 @@
                   <base-input
                     required
                     autofocus
-                    v-model="brand.description"
+                    v-model="brand.descripcion"
                     :error="errors[0]"
                     :class="[
                       { 'has-success': passed },
@@ -67,125 +67,58 @@
   </div>
 </template>
 <script>
-import { BaseCheckbox, BaseRadio } from 'src/components/index'
-import { DatePicker, Select, Option } from 'element-ui'
 import { extend } from 'vee-validate'
-import { required, email, min, numeric } from 'vee-validate/dist/rules'
+import { required, min } from 'vee-validate/dist/rules'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-import axios from 'axios'
-import config from '@/config'
 
-extend('email', email)
 extend('required', required)
 extend('min', min)
-extend('numeric', numeric)
 
 export default {
   components: {
-    Loading,
-    BaseCheckbox,
-    BaseRadio,
-    [DatePicker.name]: DatePicker,
-    [Select.name]: Select,
-    [Option.name]: Option
+    Loading
   },
   data() {
     return {
       isLoading: false,
       fullPage: true,
       id: '',
-      baseApiUrl: '',
       title: '',
-      selects: {
-        simple: '',
-        options: [
-          { value: 'active', label: 'Activar' },
-          { value: 'inactive', label: 'Inactivar' }
-        ]
-      },
-      brand: [
-        {
-          id: 0,
-          description: ''
-        }
-      ]
+      brand: {
+        id: 0,
+        descripcion: ''
+      }
     }
   },
   mounted() {
-    this.globalTry()
-
-    this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Cear' : 'Editar'
-    if (this.id) {
-      this.fillForm()
-    }
+    if (this.id)
+      this.globalFind('marcas', this.id, this.brand).then((response) => {
+        Object.keys(this.brand).forEach((e) => {
+          this.brand[e] = response[e]
+        })
+      })
   },
   methods: {
     validateFields() {
-      return !this.brand.description
-    },
-    fillForm() {
-      this.isLoading = true
-      axios
-        .get(this.baseApiUrl + 'marcas/' + this.id)
-        .then((response) => {
-          this.brand = {
-            id: response.data.id,
-            description: response.data.descripcion
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    clear() {
-      this.brand.description = ''
+      return !this.brand.descripcion
     },
     edit() {
-      let brand = {
-        id: this.brand.id,
-        descripcion: this.brand.description
-      }
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .put(this.baseApiUrl + 'marcas/' + this.brand.id, brand)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/brands/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalEdit('marcas', this.id, this.brand, '/brands/index')
+        this.brand = this.globalClear(this.brand)
       }
     },
     create() {
-      let brand = {
-        id: 0,
-        descripcion: this.brand.description
-      }
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .post(this.baseApiUrl + 'marcas', brand)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/brands/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalPost('marcas', this.brand, '/brands/index')
+        this.brand = this.globalClear(this.brand)
       }
     }
   }

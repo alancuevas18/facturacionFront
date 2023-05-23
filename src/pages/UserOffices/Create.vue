@@ -20,7 +20,6 @@
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
-       
             <div class="row">
               <label class="col-sm-2 col-form-label">Usuario*</label>
               <div class="col-sm-10">
@@ -43,7 +42,7 @@
                 </el-select>
               </div>
             </div>
-      
+
             <div class="row">
               <label class="col-sm-2 col-form-label">Sucursal*</label>
               <div class="col-sm-10">
@@ -120,11 +119,11 @@ export default {
       id: '',
       baseApiUrl: '',
       title: '',
-      selects: { offices: [], Users:[]},
+      selects: { offices: [], Users: [] },
       userOffice: {
-        id: 0,     
+        id: 0,
         sucursalId: '',
-        usuarioId: '',
+        usuarioId: ''
       }
     }
   },
@@ -145,10 +144,7 @@ export default {
       })
     },
     validateFields() {
-      return (
-        !this.userOffice.usuarioId ||
-        !this.userOffice.sucursalId
-      )
+      return !this.userOffice.usuarioId || !this.userOffice.sucursalId
     },
     fillForm() {
       this.isLoading = true
@@ -160,7 +156,6 @@ export default {
             usuarioId: response.data.usuarioId,
             sucursalId: response.data.sucursalId
           }
-
         })
         .catch((error) => {
           this.globalSweetMessage('Error al cargar la pagina', 'error')
@@ -177,7 +172,10 @@ export default {
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'UsuarioSucursal/' + this.userOffice.id, this.userOffice)
+          .put(
+            this.baseApiUrl + 'UsuarioSucursal/' + this.userOffice.id,
+            this.userOffice
+          )
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
