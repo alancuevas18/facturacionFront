@@ -24,17 +24,22 @@
               <label class="col-sm-2 col-form-label">Celular*</label>
               <div class="col-sm-10">
                 <div class="input-group mb-3">
-                  <input type="number" 
-                    class="form-control" 
-                    placeholder="Escriba la celular y presione 'Enter'" 
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Escriba la celular y presione 'Enter'"
                     autofocus
                     v-model="supplier.celular"
-                    v-on:keyup.enter="checkCelular()">
+                    v-on:keyup.enter="checkCelular()"
+                  />
                   <div class="input-group-append">
-                    <button 
-                    class="btn btn-outline-secondary m-0" 
-                    type="button" 
-                    @click="checkCelular()">Verificar</button>
+                    <button
+                      class="btn btn-outline-secondary m-0"
+                      type="button"
+                      @click="checkCelular()"
+                    >
+                      Verificar
+                    </button>
                   </div>
                 </div>
               </div>
@@ -363,10 +368,7 @@ export default {
       currentCode: '',
       baseApiUrl: '',
       title: '',
-      fixedCode: '',
-      mandatoryFields: ['name', 'lastName', 'nationalID'],
       selects: {
-        simple: '',
         options: [
           { value: true, label: 'Activo' },
           { value: false, label: 'Inactivo' }
@@ -385,10 +387,10 @@ export default {
         personaId: 0,
         id: 0,
         estadoPersona: '',
-        empresa:'',
-        empresaTelefono:'',
-        empresaDireccion:'',
-        empresaRnc:'',
+        empresa: '',
+        empresaTelefono: '',
+        empresaDireccion: '',
+        empresaRnc: ''
       }
     }
   },
@@ -396,58 +398,28 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
-    if (this.id) this.checkId()
+    if (this.id)
+      this.globalFind('suplidores', this.id, this.supplier).then((response) => {
+        Object.keys(this.supplier).forEach((e) => {
+          this.supplier[e] = response[e]
+        })
+      })
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.supplier.nationalID
   },
   methods: {
-    checkId() {
-      axios
-        .get(this.baseApiUrl + 'suplidores/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.fillForm(response.data)
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    checkIdentification() {
-      this.isLoading = true
-      axios
-        .get(
-          this.baseApiUrl +
-            'suplidores/byidentificacion/' +
-            this.supplier.identificacion
-        )
-        .then((response) => {
-          if (response.data.id > 0) {
-            this.globalSweetMessage('Suplidor existe!', 'warning')
-            this.$router.push({ path: '/suppliers/index' })
-          } 
-          this.fillForm(response.data)
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Error al consultar identificacion', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-      this.checkedID = false
-    },
     checkCelular() {
       this.isLoading = true
       axios
-        .get(
-          this.baseApiUrl +
-            'suplidores/byCelular/' +
-            this.supplier.celular
-        )
+        .get(this.baseApiUrl + 'suplidores/byCelular/' + this.supplier.celular)
         .then((response) => {
           if (response.data.id > 0) {
             this.globalSweetMessage('Suplidor existe!', 'warning')
             this.$router.push({ path: '/suppliers/index' })
-          } 
-          this.fillForm(response.data)
+          }
+          let celular = this.supplier.celular
+          this.supplier = this.globalFillObject(response.data)
+          this.supplier.celular = celular
         })
         .catch((error) => {
           this.globalSweetMessage('Error al consultar celular', 'error')
@@ -462,82 +434,25 @@ export default {
         !this.supplier.identificacion
       )
     },
-    fillForm(obj) {
-      this.supplier = {
-        estadoSuplidor: obj.estadoSuplidor,
-        personaId: obj.personaId,
-        codigo: obj.codigo,
-        nombre: obj.nombre,
-        apellido: obj.apellido,
-        identificacion: this.supplier.identificacion
-          ? this.supplier.identificacion
-          : obj.identificacion,
-        correo: obj.correo,
-        direccion: obj.direccion,
-        celular: obj.celular,
-        telefono: obj.telefono,
-        empresa: obj.empresa,
-        empresaRnc: obj.empresaRnc,
-        empresaTelefono: obj.empresaTelefono,
-        empresaDireccion: obj.empresaDireccion,
-        estadoPersona:  obj.estadoPersona,
-        id: obj.id
-      }
-      if (obj.id != 0)
-        this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
-    },
-    clear() {
-      this.supplier.codigo = ''
-      this.supplier.nombre = ''
-      this.supplier.apellido = ''
-      this.supplier.identificacion = ''
-      this.supplier.correo = ''
-      this.supplier.direccion = ''
-      this.supplier.celular = ''
-      this.supplier.telefono = ''
-      this.supplier.estadoSuplidor = ''
-      this.supplier.empresa = ''
-      this.supplier.empresaRnc = ''
-      this.supplier.empresaTelefono = ''
-      this.supplier.empresaDireccion = ''
-    },
     edit() {
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .put(
-            this.baseApiUrl + 'suplidores/' + this.supplier.id,
-            this.supplier
-          )
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/suppliers/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalEdit(
+          'suplidores',
+          this.id,
+          this.supplier,
+          '/suppliers/index'
+        )
+        this.supplier = this.globalClear(this.supplier)
       }
     },
     create() {
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .post(this.baseApiUrl + 'suplidores', this.supplier)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/suppliers/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalPost('suplidores', this.supplier, '/suppliers/index')
+        this.supplier = this.globalClear(this.supplier)
       }
     }
   }

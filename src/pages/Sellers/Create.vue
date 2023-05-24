@@ -24,17 +24,22 @@
               <label class="col-sm-2 col-form-label">Celular*</label>
               <div class="col-sm-10">
                 <div class="input-group mb-3">
-                  <input type="number" 
-                    class="form-control" 
-                    placeholder="Escriba la celular y presione 'Enter'" 
+                  <input
+                    type="number"
+                    class="form-control"
+                    placeholder="Escriba la celular y presione 'Enter'"
                     autofocus
                     v-model="seller.celular"
-                    v-on:keyup.enter="checkCelular()">
+                    v-on:keyup.enter="checkCelular()"
+                  />
                   <div class="input-group-append">
-                    <button 
-                    class="btn btn-outline-secondary m-0" 
-                    type="button" 
-                    @click="checkCelular()">Verificar</button>
+                    <button
+                      class="btn btn-outline-secondary m-0"
+                      type="button"
+                      @click="checkCelular()"
+                    >
+                      Verificar
+                    </button>
                   </div>
                 </div>
               </div>
@@ -266,10 +271,7 @@ export default {
       currentCode: '',
       baseApiUrl: '',
       title: '',
-      fixedCode: '',
-      mandatoryFields: ['name', 'lastName', 'nationalID'],
       selects: {
-        simple: '',
         options: [
           { value: true, label: 'Activo' },
           { value: false, label: 'Inactivo' }
@@ -295,62 +297,31 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
-    if (this.id) this.checkId()
+    if (this.id)
+      this.globalFind('vendedores', this.id, this.seller).then((response) => {
+        Object.keys(this.seller).forEach((e) => {
+          this.seller[e] = response[e]
+        })
+      })
+
     this.currentCode = !this.id ? '' : this.currentCode
     this.checkedID = !this.id && !this.seller.nationalID
   },
   methods: {
-    checkId() {
-      axios
-        .get(this.baseApiUrl + 'Vendedores/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.fillForm(response.data)
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    },
-    checkIdentification() {
-      this.isLoading = true
-      axios
-        .get(
-          this.baseApiUrl +
-            'Vendedores/byidentificacion/' +
-            this.seller.identificacion
-        )
-        .then((response) => {
-          if (response.data.id > 0) {
-            this.globalSweetMessage('Vendedor existe!', 'warning')
-            this.$router.push({ path: '/sellers/index' })
-          } else {
-            this.readOnly = response.data.personaId > 0
-          }
-          this.fillForm(response.data)
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Error al consultar identificacion', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-      this.checkedID = false
-    },
     checkCelular() {
       this.isLoading = true
       axios
-        .get(
-          this.baseApiUrl +
-            'Vendedores/byCelular/' +
-            this.seller.celular
-        )
+        .get(this.baseApiUrl + 'vendedores/byCelular/' + this.seller.celular)
         .then((response) => {
           if (response.data.id > 0) {
-            this.globalSweetMessage('Vendedor existe!', 'warning')
+            this.globalSweetMessage('Mensajero existe!', 'warning')
             this.$router.push({ path: '/sellers/index' })
-          } 
-          this.fillForm(response.data)
+          }
+          let celular = this.seller.celular
+          this.seller = this.globalFillObject(response.data)
+          this.seller.celular = celular
         })
-        .catch((error) => {
+        .catch(() => {
           this.globalSweetMessage('Error al consultar celular', 'error')
         })
         .finally(() => (this.isLoading = false))
@@ -363,71 +334,20 @@ export default {
         !this.seller.identificacion
       )
     },
-    fillForm(obj) {
-      this.seller = {
-        estadoVendedores: obj.estadoVendedores,
-        personaId: obj.personaId,
-        codigo: obj.codigo,
-        nombre: obj.nombre,
-        apellido: obj.apellido,
-        identificacion: this.seller.identificacion
-          ? this.seller.identificacion
-          : obj.identificacion,
-        correo: obj.correo,
-        direccion: obj.direccion,
-        celular: obj.celular,
-        telefono: obj.telefono,
-        estadoPersona: true,
-        id: obj.id
-      }
-      if (obj.id != 0)
-        this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
-    },
-    clear() {
-      this.seller.codigo = ''
-      this.seller.nombre = ''
-      this.seller.apellido = ''
-      this.seller.identificacion = ''
-      this.seller.correo = ''
-      this.seller.direccion = ''
-      this.seller.celular = ''
-      this.seller.telefono = ''
-      this.seller.estadoVendedores = ''
-    },
     edit() {
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .put(this.baseApiUrl + 'Vendedores/' + this.seller.id, this.seller)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/sellers/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalEdit('vendedores', this.id, this.seller, '/sellers/index')
+        this.seller = this.globalClear(this.seller)
       }
     },
     create() {
-      if (this.validateFields()) {
+      if (this.validateFields())
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else {
-        this.isLoading = true
-        axios
-          .post(this.baseApiUrl + 'Vendedores', this.seller)
-          .then((response) => {
-            this.globalSweetMessage(response.data.message)
-            this.clear()
-            this.$router.push({ path: '/sellers/index' })
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+      else {
+        this.globalPost('vendedores', this.seller, '/sellers/index')
+        this.seller = this.globalClear(this.seller)
       }
     }
   }
@@ -436,29 +356,5 @@ export default {
 <style>
 .floatr {
   float: right;
-}
-
-.tooltip {
-  position: relative;
-  display: inline-block;
-  border-bottom: 1px dotted black;
-}
-
-.tooltip .tooltiptext {
-  visibility: hidden;
-  width: 120px;
-  background-color: black;
-  color: #fff;
-  text-align: center;
-  border-radius: 6px;
-  padding: 5px 0;
-
-  /* Position the tooltip */
-  position: absolute;
-  z-index: 1;
-}
-
-.tooltip:hover .tooltiptext {
-  visibility: visible;
 }
 </style>

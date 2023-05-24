@@ -62,11 +62,9 @@
               <div class="pull-left"></div>
 
               <div class="pull-right">
-                <h6>
-                  <a href="#" class="link footer-link">{{
-                    $t('global.needHelp')
-                  }}</a>
-                </h6>
+                <h5>
+                  <a href="#">{{ $t('global.needHelp') }}</a>
+                </h5>
               </div>
             </div>
           </card>
@@ -145,5 +143,8 @@ export default {
 .navbar-nav .nav-item p {
   line-height: inherit;
   margin-left: 5px;
+}
+a {
+  color: #000;
 }
 </style>
