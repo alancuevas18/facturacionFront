@@ -2,7 +2,7 @@
   <div class="container">
     <div class="col-lg-4 col-md-6 ml-auto mr-auto">
       <card class="card-lock card-white text-center">
-        <img slot="header" src="img/emilyz.jpg" alt="..." />
+        <!-- <img slot="header" src="img/emilyz.jpg" alt="..." /> -->
 
         <h4 class="card-title">Joe Gardner</h4>
         <base-input
@@ -20,6 +20,6 @@
   </div>
 </template>
 <script>
-export default {};
+export default {}
 </script>
 <style></style>

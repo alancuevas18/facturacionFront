@@ -410,31 +410,31 @@ export default {
     this.checkedID = !this.id && !this.client.identificacion
   },
   methods: {
-    checkIdentification() {
-      this.isLoading = true
-      axios
-        .get(
-          this.baseApiUrl +
-            'clientes/byidentificacion/' +
-            this.client.identificacion
-        )
-        .then((response) => {
-          if (response.data.id > 0) {
-            this.globalSweetMessage('Cliente existe!', 'warning')
-            this.$router.push({ path: '/clients/index' })
-          } else {
-            let identificacion = this.client.identificacion
-            this.readOnly = response.data.personaId > 0
-            this.client = this.globalFillObject(response.data)
-            this.client.identificacion = identificacion
-          }
-        })
-        .catch((error) => {
-          this.globalSweetMessage('Error al consultar identificacion', 'error')
-        })
-        .finally(() => (this.isLoading = false))
-      this.checkedID = false
-    },
+    // checkIdentification() {
+    //   this.isLoading = true
+    //   axios
+    //     .get(
+    //       this.baseApiUrl +
+    //         'clientes/byidentificacion/' +
+    //         this.client.identificacion
+    //     )
+    //     .then((response) => {
+    //       if (response.data.id > 0) {
+    //         this.globalSweetMessage('Cliente existe!', 'warning')
+    //         this.$router.push({ path: '/clients/index' })
+    //       } else {
+    //         let identificacion = this.client.identificacion
+    //         this.readOnly = response.data.personaId > 0
+    //         this.client = this.globalFillObject(response.data)
+    //         this.client.identificacion = identificacion
+    //       }
+    //     })
+    //     .catch((error) => {
+    //       this.globalSweetMessage('Error al consultar identificacion', 'error')
+    //     })
+    //     .finally(() => (this.isLoading = false))
+    //   this.checkedID = false
+    // },
     checkCelular() {
       this.isLoading = true
       axios

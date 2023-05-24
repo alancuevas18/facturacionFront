@@ -29,11 +29,14 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5 class="title text-capitalize" :class="supplier.status">
-                    {{ supplier.status }}
+                  <h5
+                    class="title text-capitalize"
+                    :class="supplier.estadosupplieres"
+                  >
+                    {{ supplier.estadosupplieres }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ supplier.name }} {{ supplier.lastName }}
+                    {{ supplier.nombre }} {{ supplier.apellido }}
                   </p>
                 </div>
                 <p></p>
@@ -41,8 +44,7 @@
                 <div slot="footer" class="button-container">
                   <a
                     :href="
-                      'https://api.whatsapp.com/send?phone=' +
-                      supplier.cellPhone
+                      'https://api.whatsapp.com/send?phone=' + supplier.celular
                     "
                   >
                     <base-button class="btn-whatsapp" icon round>
@@ -63,53 +65,53 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>NationalID:</b> {{ supplier.nationalID }}
+                    <b>identificacion:</b> {{ supplier.identificacion }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Email:</b> {{ supplier.email }}
+                    <b>correo:</b> {{ supplier.correo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Address:</b> {{ supplier.address }}
+                    <b>direccion:</b> {{ supplier.direccion }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>CellPhone:</b> {{ supplier.cellPhone }}
+                    <b>celular:</b> {{ supplier.celular }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Phone:</b> {{ supplier.phone }}
+                    <b>Telefono:</b> {{ supplier.telefono }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Nombre Empresa:</b> {{ supplier.empresa }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>Rnc:</b> {{ supplier.empresaRnc }}
-                  </p>
-                  <p class="description text-capitalize">
-                    <b>Dirreción:</b> {{ supplier.empresaDireccion }}
+                    <b>Empresa:</b> {{ supplier.empresa }}
                   </p>
                   <p class="description text-capitalize">
                     <b>Telefono Empresa:</b> {{ supplier.empresaTelefono }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Direccion Empresa:</b> {{ supplier.empresaDireccion }}
+                  </p>
+                  <p class="description text-capitalize">
+                    <b>Rnc:</b> {{ supplier.empresaRnc }}
                   </p>
                 </div>
                 <p></p>
 
                 <div slot="footer" class="button-container">
-                  <a :href="'tel:' + supplier.cellPhone">
+                  <a :href="'tel:' + supplier.celular">
                     <base-button icon round>
                       <i class="fas fa-phone"></i>
                     </base-button>
                   </a>
-                  <a :href="'tel:' + supplier.phone">
+                  <a :href="'tel:' + supplier.telefono">
                     <base-button icon round>
                       <i class="fas fa-mobile"></i>
                     </base-button>
                   </a>
-                  <a :href="'mailto:' + supplier.email">
+                  <a :href="'mailto:' + supplier.correo">
                     <base-button icon round>
                       <i class="fas fa-envelope-open"></i>
                     </base-button>
                   </a>
                   <a
-                    :href="'http://maps.google.com/?q=' + supplier.address"
+                    :href="'http://maps.google.com/?q=' + supplier.direccion"
                     target="_blank"
                   >
                     <base-button icon round>
@@ -127,8 +129,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
-import config from '@/config'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
@@ -139,60 +139,35 @@ export default {
       isLoading: false,
       fullPage: true,
       id: '',
-      baseApiUrl: '',
-      supplier: [
-        {
-          code: '',
-          name: '',
-          lastName: '',
-          nationalID: '',
-          email: '',
-          address: '',
-          cellPhone: '',
-          phone: '',
-          status: '',
-          empresa: '',
-          empresaTelefono: '',
-          empresaDireccion: '',
-          empresaRnc: ''
-
-        }
-      ]
+      supplier: {
+        codigo: '',
+        nombre: '',
+        apellido: '',
+        identificacion: '',
+        correo: '',
+        direccion: '',
+        celular: '',
+        telefono: '',
+        empresa: '',
+        estadoSuplidor: '',
+        empresaTelefono: '',
+        empresaDireccion: '',
+        empresaRnc: ''
+      }
     }
   },
   mounted() {
     this.id = this.$route.params.id
-    this.baseApiUrl = config.global.baseApiUrl
-    this.find()
+    this.globalFind('suplidores', this.id, this.supplier).then((response) => {
+      Object.keys(this.supplier).forEach((e) => {
+        this.supplier[e] = response[e]
+        this.supplier.estadoSuplidor = this.supplier.estadoSuplidor
+          ? 'active'
+          : 'inactive'
+      })
+    })
   },
-  methods: {
-    find() {
-      axios
-        .get(this.baseApiUrl + 'suplidores/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.supplier = {
-            code: response.data.codigo,
-            name: response.data.nombre,
-            lastName: response.data.apellido,
-            nationalID: response.data.identificacion,
-            email: response.data.correo,
-            address: response.data.direccion,
-            cellPhone: response.data.celular,
-            phone: response.data.telefono,
-            empresa: response.data.empresa,
-            empresaTelefono: response.data.empresaTelefono,
-            empresaDireccion: response.data.empresaDireccion,
-            empresaRnc: response.data.empresaRnc,
-            status: response.data.estadoSuplidor ? 'active' : 'inactive'
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    }
-  }
+  methods: {}
 }
 </script>
 <style>

@@ -6,12 +6,12 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-12">
-      <h2 class="text-center">{{ $t('clients.index') }}</h2>
+      <h2 class="text-center">{{ $t('deliveries.index') }}</h2>
       <card>
         <template slot="header">
           <h4 class="card-title">
-            {{ $t('clients.details') }}
-            <router-link to="/clients/index">
+            {{ $t('deliveries.details') }}
+            <router-link to="/deliveries/index">
               <button class="btn floatr btn-icon btn-youtube">
                 <i class="tim-icons icon-double-left"></i>
               </button>
@@ -29,11 +29,14 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5 class="title text-capitalize" :class="client.status">
-                    {{ client.status }}
+                  <h5
+                    class="title text-capitalize"
+                    :class="delivery.estadoMensajero"
+                  >
+                    {{ delivery.estadoMensajero }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ client.name }} {{ client.lastName }}
+                    {{ delivery.nombre }} {{ delivery.apellido }}
                   </p>
                 </div>
                 <p></p>
@@ -41,7 +44,7 @@
                 <div slot="footer" class="button-container">
                   <a
                     :href="
-                      'https://api.whatsapp.com/send?phone=' + client.cellPhone
+                      'https://api.whatsapp.com/send?phone=' + delivery.celular
                     "
                   >
                     <base-button class="btn-whatsapp" icon round>
@@ -62,41 +65,41 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>NationalID:</b> {{ client.nationalID }}
+                    <b>identificacion:</b> {{ delivery.identificacion }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Email:</b> {{ client.email }}
+                    <b>correo:</b> {{ delivery.correo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Address:</b> {{ client.address }}
+                    <b>direccion:</b> {{ delivery.direccion }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>CellPhone:</b> {{ client.cellPhone }}
+                    <b>celular:</b> {{ delivery.celular }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Phone:</b> {{ client.phone }}
+                    <b>Telefono:</b> {{ delivery.telefono }}
                   </p>
                 </div>
                 <p></p>
 
                 <div slot="footer" class="button-container">
-                  <a :href="'tel:' + client.cellPhone">
+                  <a :href="'tel:' + delivery.celular">
                     <base-button icon round>
                       <i class="fas fa-phone"></i>
                     </base-button>
                   </a>
-                  <a :href="'tel:' + client.phone">
+                  <a :href="'tel:' + delivery.telefono">
                     <base-button icon round>
                       <i class="fas fa-mobile"></i>
                     </base-button>
                   </a>
-                  <a :href="'mailto:' + client.email">
+                  <a :href="'mailto:' + delivery.correo">
                     <base-button icon round>
                       <i class="fas fa-envelope-open"></i>
                     </base-button>
                   </a>
                   <a
-                    :href="'http://maps.google.com/?q=' + client.address"
+                    :href="'http://maps.google.com/?q=' + delivery.direccion"
                     target="_blank"
                   >
                     <base-button icon round>
@@ -114,8 +117,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
-import config from '@/config'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
@@ -126,51 +127,31 @@ export default {
       isLoading: false,
       fullPage: true,
       id: '',
-      baseApiUrl: '',
-      client: [
-        {
-          code: '',
-          name: '',
-          lastName: '',
-          nationalID: '',
-          email: '',
-          address: '',
-          cellPhone: '',
-          phone: '',
-          status: ''
-        }
-      ]
+      delivery: {
+        codigo: '',
+        nombre: '',
+        apellido: '',
+        identificacion: '',
+        correo: '',
+        direccion: '',
+        celular: '',
+        telefono: '',
+        estadoMensajero: ''
+      }
     }
   },
   mounted() {
     this.id = this.$route.params.id
-    this.baseApiUrl = config.global.baseApiUrl
-    this.find()
+    this.globalFind('mensajeros', this.id, this.delivery).then((response) => {
+      Object.keys(this.delivery).forEach((e) => {
+        this.delivery[e] = response[e]
+        this.delivery.estadoMensajero = this.delivery.estadoMensajero
+          ? 'active'
+          : 'inactive'
+      })
+    })
   },
-  methods: {
-    find() {
-      axios
-        .get(this.baseApiUrl + 'clientes/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.client = {
-            code: response.data.codigo,
-            name: response.data.nombre,
-            lastName: response.data.apellido,
-            nationalID: response.data.identificacion,
-            email: response.data.correo,
-            address: response.data.direccion,
-            cellPhone: response.data.celular,
-            phone: response.data.telefono,
-            status: response.data.estadoClientes ? 'active' : 'inactive'
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    }
-  }
+  methods: {}
 }
 </script>
 <style>

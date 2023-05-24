@@ -29,11 +29,14 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <img class="avatar" src="img/default-avatar.png" alt="..." />
-                  <h5 class="title text-capitalize" :class="seller.status">
-                    {{ seller.status }}
+                  <h5
+                    class="title text-capitalize"
+                    :class="seller.estadoVendedores"
+                  >
+                    {{ seller.estadoVendedores }}
                   </h5>
                   <p class="description text-capitalize">
-                    {{ seller.name }} {{ seller.lastName }}
+                    {{ seller.nombre }} {{ seller.apellido }}
                   </p>
                 </div>
                 <p></p>
@@ -41,7 +44,7 @@
                 <div slot="footer" class="button-container">
                   <a
                     :href="
-                      'https://api.whatsapp.com/send?phone=' + seller.cellPhone
+                      'https://api.whatsapp.com/send?phone=' + seller.celular
                     "
                   >
                     <base-button class="btn-whatsapp" icon round>
@@ -62,41 +65,41 @@
                   <div class="block block-three"></div>
                   <div class="block block-four"></div>
                   <p class="description text-capitalize">
-                    <b>NationalID:</b> {{ seller.nationalID }}
+                    <b>identificacion:</b> {{ seller.identificacion }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Email:</b> {{ seller.email }}
+                    <b>correo:</b> {{ seller.correo }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Address:</b> {{ seller.address }}
+                    <b>direccion:</b> {{ seller.direccion }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>CellPhone:</b> {{ seller.cellPhone }}
+                    <b>celular:</b> {{ seller.celular }}
                   </p>
                   <p class="description text-capitalize">
-                    <b>Phone:</b> {{ seller.phone }}
+                    <b>Telefono:</b> {{ seller.telefono }}
                   </p>
                 </div>
                 <p></p>
 
                 <div slot="footer" class="button-container">
-                  <a :href="'tel:' + seller.cellPhone">
+                  <a :href="'tel:' + seller.celular">
                     <base-button icon round>
                       <i class="fas fa-phone"></i>
                     </base-button>
                   </a>
-                  <a :href="'tel:' + seller.phone">
+                  <a :href="'tel:' + seller.telefono">
                     <base-button icon round>
                       <i class="fas fa-mobile"></i>
                     </base-button>
                   </a>
-                  <a :href="'mailto:' + seller.email">
+                  <a :href="'mailto:' + seller.correo">
                     <base-button icon round>
                       <i class="fas fa-envelope-open"></i>
                     </base-button>
                   </a>
                   <a
-                    :href="'http://maps.google.com/?q=' + seller.address"
+                    :href="'http://maps.google.com/?q=' + seller.direccion"
                     target="_blank"
                   >
                     <base-button icon round>
@@ -114,8 +117,6 @@
   </div>
 </template>
 <script>
-import axios from 'axios'
-import config from '@/config'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
 
@@ -126,51 +127,31 @@ export default {
       isLoading: false,
       fullPage: true,
       id: '',
-      baseApiUrl: '',
-      seller: [
-        {
-          code: '',
-          name: '',
-          lastName: '',
-          nationalID: '',
-          email: '',
-          address: '',
-          cellPhone: '',
-          phone: '',
-          status: ''
-        }
-      ]
+      seller: {
+        codigo: '',
+        nombre: '',
+        apellido: '',
+        identificacion: '',
+        correo: '',
+        direccion: '',
+        celular: '',
+        telefono: '',
+        estadoVendedores: ''
+      }
     }
   },
   mounted() {
     this.id = this.$route.params.id
-    this.baseApiUrl = config.global.baseApiUrl
-    this.find()
+    this.globalFind('vendedores', this.id, this.seller).then((response) => {
+      Object.keys(this.seller).forEach((e) => {
+        this.seller[e] = response[e]
+        this.seller.estadoVendedores = this.seller.estadoVendedores
+          ? 'active'
+          : 'inactive'
+      })
+    })
   },
-  methods: {
-    find() {
-      axios
-        .get(this.baseApiUrl + 'Vendedores/' + this.id)
-        .then((response) => {
-          this.isLoading = true
-          this.seller = {
-            code: response.data.codigo,
-            name: response.data.nombre,
-            lastName: response.data.apellido,
-            nationalID: response.data.identificacion,
-            email: response.data.correo,
-            address: response.data.direccion,
-            cellPhone: response.data.celular,
-            phone: response.data.telefono,
-            status: response.data.estadoClientes ? 'active' : 'inactive'
-          }
-        })
-        .catch((error) => {
-          this.error = error
-        })
-        .finally(() => (this.isLoading = false))
-    }
-  }
+  methods: {}
 }
 </script>
 <style>

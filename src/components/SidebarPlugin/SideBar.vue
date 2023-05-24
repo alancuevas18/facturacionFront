@@ -45,7 +45,7 @@ export default {
     },
     logo: {
       type: String,
-      default: 'img/icon-vue.png',
+      default: 'img/logof.png',
       description: 'Sidebar app logo'
     },
     backgroundColor: {

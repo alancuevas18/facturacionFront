@@ -579,7 +579,7 @@ export default {
               this.spend.detalleRetenciones.push({
                 gastoId: 0,
                 RetencionId: this.deductions.id,
-                retenciones:response.data.descripcion,
+                retenciones: response.data.descripcion,
                 porcentaje: response.data.porcentaje,
                 total: parseFloat(
                   (
@@ -589,25 +589,18 @@ export default {
                 )
               })
               this.tableData = structuredClone(this.spend.detalleRetenciones)
-              this.tableData.forEach(
-                (element) => (element.porcentaje += '%')
-              )
+              this.tableData.forEach((element) => (element.porcentaje += '%'))
             })
       } else this.globalSweetMessage('Debe Selecionar una retencion', 'error')
     },
     reload() {
       this.spend.detalleRetenciones.forEach((element) => {
         element.total = parseFloat(
-          (
-            (element.porcentaje / 100) *
-            this.spend.subTotal
-          ).toFixed(2)
+          ((element.porcentaje / 100) * this.spend.subTotal).toFixed(2)
         )
       })
       this.tableData = structuredClone(this.spend.detalleRetenciones)
-      this.tableData.forEach(
-        (element) => (element.porcentaje += '%')
-      )
+      this.tableData.forEach((element) => (element.porcentaje += '%'))
     },
     handleDelete(index, row) {
       swal
@@ -626,21 +619,19 @@ export default {
         })
         .then((result) => {
           if (result.value) {
-            if(!this.id){
+            if (!this.id) {
               this.spend.detalleRetenciones.splice(row, 1)
               this.tableData.splice(index, 1)
-            }else{ 
+            } else {
               this.isLoading = true
               axios
-              .delete(this.baseApiUrl + 'DetalleRetenciones/' + row.id)
-              .then(() => {
-                this.spend.detalleRetenciones.splice(row, 1)
-                this.tableData.splice(index, 1)
-              })
-              .finally(() => (this.isLoading = false))
-
+                .delete(this.baseApiUrl + 'DetalleRetenciones/' + row.id)
+                .then(() => {
+                  this.spend.detalleRetenciones.splice(row, 1)
+                  this.tableData.splice(index, 1)
+                })
+                .finally(() => (this.isLoading = false))
             }
- 
           }
         })
     },
