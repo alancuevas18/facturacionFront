@@ -1,20 +1,38 @@
 {
-  "name": "FacturacionEMAC",
-  "short_name": "FacturacionEMAC",
+  "name": "Facturacion Emac",
+  "short_name": "FacEMAC",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#000000",
+  "description": "Sistema de facturacion",
+  "orientation": "landscape",
   "icons": [
     {
-      "src": "./img/icons/android-chrome-192x192.png",
+      "src": "./img/icons/logo192x192.png",
       "sizes": "192x192",
       "type": "image/png"
     },
     {
-      "src": "./img/icons/android-chrome-512x512.png",
-      "sizes": "512x512",
+      "src": "./img/icons/logo144x144.png",
+      "sizes": "144x155",
+      "type": "image/png"
+    },
+    {
+      "src": "./img/icons/logo96x96.png",
+      "sizes": "96x96",
+      "type": "image/png"
+    },
+    {
+      "src": "./img/icons/logo72x72.png",
+      "sizes": "72x72",
+      "type": "image/png"
+    },
+    {
+      "src": "./img/icons/logo48x48.png",
+      "sizes": "48x48",
       "type": "image/png"
     }
   ],
-  "start_url": "./index.html",
-  "display": "standalone",
-  "background_color": "#000000",
-  "theme_color": "#4DBA87"
+  "id": "superracer",
+  "theme_color": "#4DBA87"  
 }

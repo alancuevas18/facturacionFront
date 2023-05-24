@@ -22,7 +22,7 @@ module.exports = {
     ]
   },
   pwa: {
-    name: 'FacturacionEMAC',
+    name: 'Facturacion Emac',
     themeColor: '#344675',
     msTileColor: '#344675',
     appleMobileWebAppCapable: 'yes',
