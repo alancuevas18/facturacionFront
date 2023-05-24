@@ -53,7 +53,7 @@
   </base-table>
 </template>
 <script>
-import { BaseTable, BaseProgress } from '@/components';
+import { BaseTable, BaseProgress } from '@/components'
 
 export default {
   components: {
@@ -112,8 +112,8 @@ export default {
           salary: '€ 99,201'
         }
       ]
-    };
+    }
   }
-};
+}
 </script>
 <style></style>
