@@ -55,7 +55,6 @@
 
           <!--add Product and service -->
           <div class="col-md-4 col-ms-12" v-if="!pagodo">
-            <div class="container">
               <base-button
                   type="info"
                   :class="formToAddProducts?'btn animation-on-hover btn-info':'btn btn-link'"
@@ -231,7 +230,6 @@
                   </div>
 
               </form>
-            </div>
           </div>
           <!-- end add Product and service -->
 
@@ -362,7 +360,7 @@
                       :label="column.label"
                     >
                     </el-table-column>
-                    <el-table-column :min-width="135" align="right" label="">
+                    <el-table-column :min-width="50" align="left" label="" v-if="!pagodo">
                       <div slot-scope="props">
                         <base-button
                           @click.native="handleDelete(props.$index, props.row)"
@@ -753,7 +751,7 @@ export default {
         {
           prop: 'codigo',
           label: 'Codigo',
-          minWidth: 100
+          minWidth: 85
         },
         {
           prop: 'nombre',
@@ -769,12 +767,12 @@ export default {
         {
           prop: 'cantidad',
           label: 'Cantidad',
-          minWidth: 130
+          minWidth: 100
         },
         {
           prop: 'descuento',
           label: 'Descuento',
-          minWidth: 130
+          minWidth: 110
         },
         {
           prop: 'subTotal',
@@ -1166,7 +1164,7 @@ body{
 .modalsearch{
   position: fixed;
     float: right;
-    z-index: 1;
+    z-index: 3;
     background: white;
     height: 300px;
     right: 0;
