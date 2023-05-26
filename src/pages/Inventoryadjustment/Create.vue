@@ -1,33 +1,20 @@
 <template>
-  <div class="col-md-12">
+  <div class="col-md-12 p-0">
     <loading
       :active.sync="isLoading"
       :can-cancel="false"
       :is-full-page="fullPage"
     />
-    <h2 class="text-center">
-      {{ $t('global.add') }} {{ $t('inventoryadjustment.inventoryadjustment') }}
+    <h2 class="text-center m-2">
+    Crear {{ $t('inventoryadjustment.inventoryadjustment') }}
     </h2>
-    <card>
-      <template slot="header">
-        <h4 class="card-title">
-          {{ title }} {{ currentCode }}
-          <router-link to="/Inventoryadjustment/index">
-            <button class="btn floatr btn-icon btn-youtube">
-              <i class="tim-icons icon-double-left"></i>
-            </button>
-          </router-link>
-        </h4>
-      </template>
+    <card >
+
       <div>
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
     
    
-          
-            <card card-body-classes="table-full-width">
-                <h4 slot="header" class="card-title">
-                </h4>
                 <div class="row">
                 <!-- Datos de la ajusteInvetarios -->
                   <div class="col-ms-12 col-md-4" >
@@ -91,7 +78,6 @@
                           <textarea
                             rows="4"
                             class="form-control"
-                            required
                             v-model="ajusteInvetarios.nota"
                             :error="errors[0]"
                             :class="[
@@ -135,7 +121,7 @@
                       <div class="col-sm-9">
                         <ValidationProvider
                           name="valor"
-                          rules="min:1|numeric"
+                          :rules="{required:true,valorMin:1}"
                           v-slot="{ passed, failed, errors }"
                         >
                           <base-input
@@ -197,8 +183,8 @@
                     </div>
                     <div class="row">
                       
-                      <div class="col-sm-12 col-md-9 m-auto">
-                        <table class="table borderless text-center">
+                      <div class="col-sm-12 col-md-9">
+                        <table class="table borderless m-0 text-center">
                           <thead>
                           <tr>
                         <td><label class="col-form-label">Cant. Actual</label></td>
@@ -210,6 +196,9 @@
                       <tr>
                         <td><label class="col-form-label"> {{product.productCurrentQuantity}} </label></td>
                         <td>     
+                          <div>
+                            
+                          </div>
                           <input type="number" v-model="product.productQuantity" class="form-control">
                         </td>
                         <td>
@@ -220,8 +209,7 @@
                       </tr>
                     </table>
                       </div>
-                    </div>
-                    <div class="row col-ms-12 col-md-12 d-flex justify-content-center">
+                      <div class="row col-ms-12 col-md-3 d-flex justify-content-center">
                       <base-button
                         type="primary"
                         native-type="submit"
@@ -237,11 +225,12 @@
                         >Limpiar</base-button
                       >
                     </div>
+                    </div>
+           
                   </div>
-                  <card card-body-classes="table-full-width">
-              <h4 slot="header" class="card-title">
-              </h4>
+           
               <!-- Table -->
+              <div class="col-12 pl-4 pr-4">
                 <div class="row">
                   <el-table :data="queriedData">
                     <el-table-column
@@ -254,7 +243,7 @@
                     >
                     </el-table-column>
                     <el-table-column
-                      :min-width="135"
+                      :min-width="85"
                       align="right"
                       label="Actions"
                     >
@@ -281,31 +270,29 @@
                     </el-table-column>
                   </el-table>
                 </div>
-            </card> 
-                </div>
-            </card>
-             
-            <div class="col-11 m-auto row">
-                <div class="col-ms-12 col-md-6">
-                  <base-button
-                type="success"
-                native-type="submit"
-                class="animation-on-hover w-100"
-                @click.native="create()"
-                ><i class="tim-icons icon-check-2 mr-2"></i
-                >{{ title }}</base-button>
-                </div>
-                <div class="col-ms-12 col-md-6">
-                  <router-link to="/productsoffice/index">
-                    <base-button type="danger" class="animation-on-hover w-100"
-                      ><i class="tim-icons icon-simple-remove"></i
-                      >{{ $t('global.cancel') }}</base-button>
-                  </router-link>
-                </div>
-         
-           
-            </div>
 
+                <div class="col-11 m-auto row">
+                  <div class="col-ms-12 col-md-6">
+                    <base-button
+                  type="success"
+                  native-type="submit"
+                  class="animation-on-hover w-100"
+                  @click.native="create()"
+                  ><i class="tim-icons icon-check-2 mr-2"></i
+                  >{{ title }}</base-button>
+                  </div>
+                  <div class="col-ms-12 col-md-6">
+                    <router-link to="/productsoffice/index">
+                      <base-button type="danger" class="animation-on-hover w-100"
+                        ><i class="tim-icons icon-simple-remove"></i
+                        >{{ $t('global.cancel') }}</base-button>
+                    </router-link>
+                  </div>   
+                </div>
+              </div>
+                </div>
+             
+       
       
           </form>
         </ValidationObserver>
@@ -327,6 +314,12 @@ import swal from 'sweetalert2'
 extend('required', required)
 extend('min', min)
 extend('numeric', numeric)
+extend('valorMin', {
+  validate(value, args) {
+    return value >= args[0] 
+  },
+  message: 'Debe ser Mayor a 1'
+});
 
 export default {
   components: {
@@ -359,18 +352,13 @@ export default {
           minWidth: 100
         },
         {
-          prop: 'descripcion',
-          label: 'Descripcion',
-          minWidth: 200
-        },
-        {
           prop: 'cantidadExistenciaActual',
-          label: 'Cant. Actual',
+          label: 'Actual',
           minWidth: 100
         },
         {
           prop: 'cantidadExistenciaNueva',
-          label: 'Cant. Nueva',
+          label: 'Nueva',
           minWidth: 100
         },
         {
@@ -443,7 +431,7 @@ export default {
       ajusteInvetarios: {
         id: 0,
         fecha: new Date(),
-        sucursalId: '',
+        sucursalId: this.$store.state.officeId,
         nota:'',
         Sucursales:null,
         detalleajusteInvetarios: []

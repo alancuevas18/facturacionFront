@@ -42,23 +42,7 @@
           ></sidebar-item>
   
         </sidebar-item>
-        <!-- Suppliers Menu -->
-        <sidebar-item
-          :link="{
-            name: $t('suppliers.suppliers'),
-            icon: 'tim-icons icon-delivery-fast'
-          }"
-        >
-         <sidebar-item
-            v-if="AbleToSee('*')"
-            :link="{ name: $t('suppliers.create'), path: '/suppliers/create' }"
-          ></sidebar-item>
-          <sidebar-item
-            v-if="AbleToSee('*')"
-            :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
-          ></sidebar-item>
-    
-        </sidebar-item>
+
         <!-- spends Menu -->
         <sidebar-item
           :link="{
@@ -191,6 +175,23 @@
           <sidebar-item
             :link="{ name: $t('offices.index'), path: '/offices/index' }"
           ></sidebar-item>
+        </sidebar-item>
+                <!-- Suppliers Menu -->
+                <sidebar-item
+          :link="{
+            name: $t('suppliers.suppliers'),
+            icon: 'tim-icons icon-delivery-fast'
+          }"
+        >
+         <sidebar-item
+            v-if="AbleToSee('*')"
+            :link="{ name: $t('suppliers.create'), path: '/suppliers/create' }"
+          ></sidebar-item>
+          <sidebar-item
+            v-if="AbleToSee('*')"
+            :link="{ name: $t('suppliers.index'), path: '/suppliers/index' }"
+          ></sidebar-item>
+    
         </sidebar-item>
         <!-- Sellers Menu -->
         <sidebar-item

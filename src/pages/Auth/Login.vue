@@ -5,7 +5,7 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
-    <div class="col-lg-4 col-md-6 ml-auto mr-auto">
+    <div class="col-lg-4 col-md-6 mt-5 ml-auto mr-auto">
       <ValidationObserver v-slot="{ handleSubmit }">
         <form @submit.prevent="handleSubmit(submit)">
           <card class="card-login card-white">
