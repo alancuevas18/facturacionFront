@@ -55,23 +55,34 @@
 
           <!--add Product and service -->
           <div class="col-md-4 col-ms-12" v-if="!pagodo">
-              <base-button
+            <div class="row">
+              <div class="col-ms-12 col-md-6">
+                <base-button
                   type="info"
                   :class="formToAddProducts?'btn animation-on-hover btn-info':'btn btn-link'"
-                  size="sm"
+                  class="w-100"
+                   size="sm"
                   @click.native="changeShowForm('Producto')"
                 >
                   Agregar Productos</base-button
                 >
-              <base-button
+              </div>
+              <div class="col-ms-12 col-md-6">
+                <base-button
                   type="info"
                   :class="!formToAddProducts?'btn animation-on-hover btn-info':'btn btn-link'"
+                  class="w-100"
                   size="sm"
                   @click.native="changeShowForm('Servicio')"
                 >
                   Agregar Servicios</base-button
                 >
-              <form class="row align-items-center" v-if="formToAddProducts">
+              </div>
+            
+         
+            </div>
+         
+              <form class="row align-items-center p-2" v-if="formToAddProducts">
                   <div class="col-12">
 
                     <label class="col-form-label">Producto</label>           
@@ -149,11 +160,11 @@
                     </div>
                     </div>
               </form>
-              <form class="row align-items-center" v-if="!formToAddProducts">
+              <form class="row align-items-center p-2" v-if="!formToAddProducts">
          
                   <div class="col-12">
                     <label class="col-form-label">Servicio</label>           
-                    <div class="input-group mb-3">
+                    <div class="input-group">
                     <input type="text" 
                     class="form-control" 
                     placeholder="Escriba el codigo y presione 'Enter'" 
