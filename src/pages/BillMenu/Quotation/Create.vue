@@ -637,7 +637,7 @@ export default {
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
-            this.$router.push({ path: '/quotation/index' })
+            this.$router.push({ path: '/billDashboard/quotation/index' })
           })
           .catch((error) => {
             this.globalSweetMessage(error.response.data.message, 'error')
