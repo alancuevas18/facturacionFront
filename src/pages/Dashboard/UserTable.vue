@@ -1,23 +1,22 @@
 <template>
-  <base-table :data="table" thead-classes="text-primary">
+  <base-table :data="listaProducto" thead-classes="text-primary">
     <template slot="columns">
-      <th>#</th>
-      <th>Name</th>
-      <th>Job Position</th>
-      <th>Salary</th>
-      <th class="text-right">Milestone</th>
-      <th class="text-right">Actions</th>
+      <th>Producto</th>
+      <th>Cantidad</th>
+      <th>Porcentaje</th>
+      <th>Minimo</th>
+      <th>Sucursal</th>
     </template>
 
-    <template slot-scope="{ row, index }">
-      <td class="text-center">
-        <div class="photo"><img :src="row.img" alt="photo" /></div>
-      </td>
-      <td>{{ row.name }}</td>
-      <td>{{ row.job }}</td>
-      <td class="text-center"><base-progress :value="row.progress" /></td>
-      <td class="text-right">€ 99,225</td>
-      <td class="text-right">
+    <template slot-scope="{ row}">
+
+      <td>{{ row.nombre }}</td>
+      <td>{{ row.stock }}</td>
+      <td class="text-center"><base-progress computedClasses="bg-warning" :value="((row.stock*100)/row.stockMinimo)"  /></td>
+      <td>{{ row.stockMinimo }}</td>
+      <td>{{ row.sucursales }}</td>
+      <!-- <td class="text-right">€ 99,225</td> -->
+      <!-- <td class="text-right">
         <el-tooltip
           content="Refresh"
           effect="light"
@@ -48,12 +47,15 @@
             <i class="tim-icons icon-simple-remove"></i>
           </base-button>
         </el-tooltip>
-      </td>
+      </td> -->
     </template>
   </base-table>
+
 </template>
 <script>
 import { BaseTable, BaseProgress } from '@/components'
+import config from '@/config'
+import axios from 'axios'
 
 export default {
   components: {
@@ -62,6 +64,8 @@ export default {
   },
   data() {
     return {
+      baseApiUrl: '',
+      listaProducto:[],
       table: [
         {
           id: 1,
@@ -112,6 +116,18 @@ export default {
           salary: '€ 99,201'
         }
       ]
+    }
+  },
+  mounted(){
+    this.baseApiUrl = config.global.baseApiUrl
+    this.getdata()
+  },
+  methods:{
+    getdata(){
+      axios.get(this.baseApiUrl+'ProductosSucursales/ProductoMinimo').then(
+        (response)=>{
+         this.listaProducto=response.data
+      })
     }
   }
 }

@@ -3,6 +3,7 @@ import routes from './routes'
 import store from '../storage'
 import axios from 'axios'
 import swal from 'sweetalert2'
+import config from '@/config'
 
 // configure router
 const router = new VueRouter({
@@ -20,7 +21,7 @@ const router = new VueRouter({
 async function refreshToken() {
   if (store.state.isAuthenticated)
     await axios
-      .post('https://emacsoft.com/Authorization/RefreshToken')
+      .post(config.global.baseUrl+'Authorization/RefreshToken')
       .then((response) => {
         axios.defaults.headers.common['Authorization'] ='Bearer ' + response.data.result.token
         localStorage.setItem('token', response.data.result.token)

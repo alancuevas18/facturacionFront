@@ -6,7 +6,7 @@
       :is-full-page="fullPage"
     />
 
-    <div class="col-12" >
+    <div class="col-12 p-0 m-1" >
        <!-- modal productos or servisico -->
       <div class="col-md-4 col-ms-12 modalsearch container" v-if="ver_popup_search" >
 
@@ -55,27 +55,38 @@
 
           <!--add Product and service -->
           <div class="col-md-4 col-ms-12" v-if="!pagodo">
-              <base-button
+            <div class="row">
+              <div class="col-ms-12 col-md-6">
+                <base-button
                   type="info"
                   :class="formToAddProducts?'btn animation-on-hover btn-info':'btn btn-link'"
-                  size="sm"
+                  class="w-100"
+                   size="sm"
                   @click.native="changeShowForm('Producto')"
                 >
                   Agregar Productos</base-button
                 >
-              <base-button
+              </div>
+              <div class="col-ms-12 col-md-6">
+                <base-button
                   type="info"
                   :class="!formToAddProducts?'btn animation-on-hover btn-info':'btn btn-link'"
+                  class="w-100"
                   size="sm"
                   @click.native="changeShowForm('Servicio')"
                 >
                   Agregar Servicios</base-button
                 >
-              <form class="row align-items-center" v-if="formToAddProducts">
+              </div>
+            
+         
+            </div>
+         
+              <form class="row align-items-center p-2" v-if="formToAddProducts">
                   <div class="col-12">
 
                     <label class="col-form-label">Producto</label>           
-                    <div class="input-group mb-3">
+                    <div class="input-group m-0">
                   <input type="text" 
                     class="form-control" 
                     placeholder="Escriba el codigo y presione 'Enter'" 
@@ -149,11 +160,12 @@
                     </div>
                     </div>
               </form>
-              <form class="row align-items-center" v-if="!formToAddProducts">
+              <form class="row align-items-center p-2" v-if="!formToAddProducts">
          
                   <div class="col-12">
                     <label class="col-form-label">Servicio</label>           
-                    <div class="input-group mb-3">
+                    
+                    <div class="input-group">
                     <input type="text" 
                     class="form-control" 
                     placeholder="Escriba el codigo y presione 'Enter'" 
@@ -234,7 +246,7 @@
           <!-- end add Product and service -->
 
           <!--Select client, seller, typeBill and typeTax-->
-          <div :class="pagodo?'col-md-12':'col-md-8 col-ms-12 '">
+          <div :class="pagodo?'col-md-12':'col-md-8 pr-1 col-ms-12 '">
     
             <div class="row">
               
@@ -345,7 +357,7 @@
 
           </div> 
 
-            <card card-body-classes="table-full-width">
+            <card card-body-classes="table-full-width" bodyClasses="p-1">
             <div>
               <div
                 class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
@@ -712,7 +724,7 @@ export default {
         identificacion:'',
         nota:'',
         fecha:new Date(),
-        sucursalId:9,
+        sucursalId:0,
         vendedorId:null,
         estadoFactura:1,
         turnoId:13,
@@ -751,7 +763,7 @@ export default {
         {
           prop: 'codigo',
           label: 'Codigo',
-          minWidth: 85
+          minWidth: 82
         },
         {
           prop: 'nombre',
@@ -762,12 +774,12 @@ export default {
         {
           prop: 'precio',
           label: 'Precio',
-          minWidth: 100
+          minWidth: 90
         },
         {
           prop: 'cantidad',
-          label: 'Cantidad',
-          minWidth: 100
+          label: 'Cant.',
+          minWidth: 75
         },
         {
           prop: 'descuento',
@@ -777,7 +789,7 @@ export default {
         {
           prop: 'subTotal',
           label: 'Sub Total',
-          minWidth: 120
+          minWidth: 110
         },
         {
           prop: 'itbis',
@@ -912,7 +924,6 @@ export default {
         })
     },
     pickProduct() {
-      document.getElementById("tableProducto").scrollTo(100,100);
       axios
         .get(
           this.baseApiUrl +
@@ -990,7 +1001,11 @@ export default {
         .catch((error) => {
           return this.globalSweetMessage('Error al agregar Producto', 'error')
         })
-        .finally(() => {})
+        .finally(() => {
+          document.getElementById("tableProducto").scrollTo(0,100);
+
+        })
+
     },
     pickService(){
       axios
@@ -1096,7 +1111,7 @@ export default {
     },
     subgetModal(item){
       axios
-          .get(this.baseApiUrl + item+'Sucursales')
+          .get(this.baseApiUrl + item+'Sucursales/BySuculsal/'+this.$store.state.officeId)
           .then((response) => {
             this.tableDataProducFilter= response.data
             this.tableDataProduc=response.data

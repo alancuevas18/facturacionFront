@@ -1,7 +1,7 @@
 <template>
-  <div class="row col-12">
+  <div class="row">
     <!-- Big Chart -->
-    <!-- <div class="col-12">
+    <div class="col-12">
       <card type="chart">
         <template slot="header">
           <div class="row">
@@ -35,10 +35,11 @@
           </div>
         </template>
         <div class="chart-area">
+          <!-- Linea de Chart -->
           <line-chart
             style="height: 100%"
             ref="bigChart"
-            :chart-data="chartData"
+            :chart-data="bigLineChart.chartData"
             :gradient-colors="bigLineChart.gradientColors"
             :gradient-stops="bigLineChart.gradientStops"
             :extra-options="bigLineChart.extraOptions"
@@ -46,9 +47,9 @@
           </line-chart>
         </div>
       </card>
-    </div> -->
+    </div>
     <!-- Stats Cards -->
-    <!-- <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.title">
+    <div class="col-lg-3 col-md-6" v-for="card in statsCards" :key="card.title">
       <stats-card
         :title="card.title"
         :sub-title="card.subTitle"
@@ -57,22 +58,21 @@
       >
         <div slot="footer" v-html="card.footer"></div>
       </stats-card>
-    </div> -->
+    </div>
 
     <!-- Small charts -->
-     <div class="col-lg-6">
+     <div class="col-lg-4">
       <card type="chart">
         <template slot="header">
-          <h5 class="card-category"></h5>
-          <i class="fa-solid fa-sack-dollar display-3"></i>
+          <h5 class="card-category">Total Shipments</h5>
           <h3 class="card-title">
-            Ventas Mensuales
+            <i class="tim-icons icon-bell-55 text-primary"></i> 763,215
           </h3>
         </template>
         <div class="chart-area">
           <line-chart
             style="height: 100%"
-            :chart-data="chartData"
+            :chart-data="purpleLineChart.chartData"
             :gradient-colors="purpleLineChart.gradientColors"
             :gradient-stops="purpleLineChart.gradientStops"
             :extra-options="purpleLineChart.extraOptions"
@@ -81,19 +81,18 @@
         </div>
       </card>
     </div>
-    <div class="col-lg-6">
+    <div class="col-lg-4">
       <card type="chart">
         <template slot="header">
-         <h5 class="card-category"></h5>
-         <i class="fa-solid fa-hand-holding-dollar display-3 "></i>
-         <h3 class="card-title">
-           Ventas Diarias
+          <h5 class="card-category">Daily Sales</h5>
+          <h3 class="card-title">
+            <i class="tim-icons icon-delivery-fast text-info"></i> 3,500€
           </h3>
         </template>
         <div class="chart-area">
           <bar-chart
             style="height: 100%"
-            :chart-data="chartDataDaily"
+            :chart-data="blueBarChart.chartData"
             :gradient-stops="blueBarChart.gradientStops"
             :extra-options="blueBarChart.extraOptions"
           >
@@ -101,7 +100,7 @@
         </div>
       </card>
     </div>
-    <!-- <div class="col-lg-4">
+    <div class="col-lg-4">
       <card type="chart">
         <template slot="header">
           <h5 class="card-category">Completed tasks</h5>
@@ -112,16 +111,16 @@
         <div class="chart-area">
           <line-chart
             style="height: 100%"
-            :chart-data="chartData"
+            :chart-data="greenLineChart.chartData"
             :gradient-stops="greenLineChart.gradientStops"
             :extra-options="greenLineChart.extraOptions"
           >
           </line-chart>
         </div>
       </card>
-    </div>  -->
+    </div> 
     <!--END Small charts -->
-    <!-- <div class="col-lg-5">
+    <div class="col-lg-5">
       <card type="tasks">
         <template slot="header">
           <h6 class="title d-inline">Tasks (5)</h6>
@@ -141,10 +140,10 @@
           <task-list></task-list>
         </div>
       </card>
-    </div> -->
-    <div class="col-lg-12">
+    </div>
+    <div class="col-lg-7">
       <card class="card">
-        <h3 slot="header" class="card-title">Producto Por debajo del minimo</h3>
+        <h5 slot="header" class="card-title">Producto Por debajo del minimo</h5>
         <div class="table-responsive"><user-table></user-table></div>
       </card>
     </div>
@@ -207,10 +206,7 @@ export default {
   data() {
     return {
       baseApiUrl: '',
-      Labels:[],
-      Data:[],
       listaFacturas:[],
-      listaFacturasDiaria:[],
       routeName: 'DashBoard',
       statsCards: [
         {
@@ -343,30 +339,6 @@ export default {
         { name: 'Sessions', icon: 'tim-icons icon-tap-02' },
         { name: 'allin', icon: 'tim-icons icon-tap-02' }
       ]
-    },
-    chartData(){
-    return  {
-          datasets: [
-            {
-              ...bigChartDatasetOptions,
-              data: this.listaFacturas.map(c=>c.total)
-            }
-          ],
-          labels: this.listaFacturas.map(c=>c.meses)
-        }
-
-    },
-    chartDataDaily(){
-    return  {
-          datasets: [
-            {
-              ...bigChartDatasetOptions,
-              data: this.listaFacturasDiaria.map(c=>c.total)
-            }
-          ],
-          labels: this.listaFacturasDiaria.map(c=>c.meses)
-        }
-
     }
   },
   methods: {
@@ -388,11 +360,10 @@ export default {
     getdata(){
       axios.get(this.baseApiUrl+'Estadisticas/Facturas')
       .then((response)=>{
-        this.listaFacturas=response.data
-      })
-      axios.get(this.baseApiUrl+'Estadisticas/FacturasDiarias')
-      .then((response)=>{
-        this.listaFacturasDiaria=response.data
+        this.bigLineChart.chartData.labels=response.data.map(c=>c.meses)
+        this.bigLineChart.chartData.datasets[0].data=response.data.map(c=>c.total)
+        console.log(this.bigLineChart.chartData)
+       this.$refs.bigChart.updateGradients(this.bigLineChart.chartData)
       })
     }
   },

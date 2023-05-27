@@ -91,12 +91,13 @@
         title-tag="a"
         class="nav-item"
         title-classes="nav-link"
+        menuOnRight
         menu-classes="dropdown-navbar"
       >
         <template slot="title">
           <div class="photo"></div>
           <b class="caret d-none d-lg-block d-xl-block"></b>
-          <p class="d-lg-none">Log out</p>
+          <p class="d-lg-none">Opciones</p>
         </template>
         <li class="nav-link">
           <a href="#" class="nav-item dropdown-item">{{ userName }}</a>

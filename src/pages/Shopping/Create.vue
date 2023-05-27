@@ -154,7 +154,6 @@
                     <textarea
                       rows="4"
                       class="form-control"
-                      required
                       v-model="compra.nota"
                     ></textarea>
                 </div>
