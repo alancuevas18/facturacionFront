@@ -1,5 +1,5 @@
 <template>
-  <div class="row">
+  <div class="row col-12">
     <!-- Big Chart -->
     <!-- <div class="col-12">
       <card type="chart">

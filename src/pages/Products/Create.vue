@@ -22,25 +22,25 @@
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
-              <label class="col-sm-2 col-form-label">Codigo*</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="codigo"
-                  rules="required|min:3"
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    autofocus
+              <label class="col-sm-2 col-form-label">Codigo</label>
+              <div class="col-sm-8">
+             
+                  <base-input                    
                     v-model="product.codigo"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                    class="w-100"
                   >
                   </base-input>
-                </ValidationProvider>
+          
+             </div>
+             <div class="col-ms-2 d-flex align-items-center" v-if="id==null">
+                <BaseCheckbox
+                  v-model="codigoAuto"
+                  :checked="codigoAuto"
+                  :input="product.codigo=codigoAuto==true&&id==null?'':product.codigo"
+                  class="m-0 p-0"
+                >Automanico
+                </BaseCheckbox>
+             
               </div>
             </div>
             <div class="row">
@@ -53,6 +53,7 @@
                 >
                   <base-input
                     required
+                    autofocus
                     v-model="product.nombre"
                     :error="errors[0]"
                     :class="[
@@ -106,7 +107,7 @@
                 </ValidationProvider>
               </div>
             </div>
-            <div class="row mb-2">
+            <!-- <div class="row mb-2">
               <label class="col-sm-2 col-form-label">Validar Codigo</label>
               <div class="col-sm-10">
                 <BaseCheckbox
@@ -116,13 +117,14 @@
                 >
                 </BaseCheckbox>
               </div>
-            </div>
+            </div> -->
             <div class="row mb-2">
               <label class="col-sm-2 col-form-label">Exento</label>
               <div class="col-sm-10">
                 <BaseCheckbox
                   v-model="product.exento"
                   :checked="product.exento"
+                  :input="product.itbis=product.exento==true?0:product.itbis"
                   class="m-0 p-0"
                 >
                 </BaseCheckbox>
@@ -158,11 +160,11 @@
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Marca</label>
-              <div class="col-sm-10">
+              <div class="col-sm-10 input-group">
                 <el-select
                   required
                   filterable
-                  class="select-primary"
+                  class="select-primary w-75"
                   size="large"
                   placeholder="marca"
                   v-model="product.marcaId"
@@ -176,43 +178,53 @@
                   >
                   </el-option>
                 </el-select>
-                <base-button
+                <div class="input-group-append"> 
+                  <base-button
                   :type="showInsertModalBrand ? 'danger' : 'success'"
-                  class="animation-on-hover"
-                  size="sm"
-                  @click.native="showModalInsertBrand()"
-                  >{{ showInsertModalBrand ? 'x' : '+' }}</base-button
+                  class="m-0 "
+                  @click.native="showModalInsertBrand()">                  
+                  <i class="fa-solid fa-xmark"  v-if="showInsertModalBrand"></i>
+                  <i class="fa-solid fa-plus" v-if="!showInsertModalBrand"></i>
+                  </base-button
                 >
+                  </div>
+           
                 <div class="container">
                   <form
-                    class="row align-items-center"
+                    class="row col-10 mt-2"
                     v-if="showInsertModalBrand"
+                    style=" border: #5b616b dotted;border-radius: 11px;"
                   >
+                  <label class="col-sm-12 col-form-label text-left" >Agregar Marca</label>
+                  <div class="col-12">
                     <base-input
-                      class=""
+                      class="w-100 mb-1"
                       placeholder="Descripcion"
                       required
                       v-model="newBrand.descripcion"
                     >
-                    </base-input>
-                    <base-button
-                      type="success"
-                      class="animation-on-hover"
-                      size="sm"
-                      @click.native="insertNewBrand()"
-                      ><i class="fas fa-paper-plane"></i
-                    ></base-button>
+                    </base-input>               
+                    </div>
+                    <div class="col-12">
+                      <base-button
+                          type="success"
+                          class="animation-on-hover w-100"
+                          @click.native="insertNewBrand()"
+                          ><i class="fas fa-paper-plane"></i
+                        >Agregar Marca</base-button>
+                      </div>
+               
                   </form>
                 </div>
               </div>
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Tipo de Producto</label>
-              <div class="col-sm-10">
+              <div class="col-sm-10 input-group">
                 <el-select
                   required
                   filterable
-                  class="select-primary"
+                  class="select-primary w-75"
                   size="large"
                   placeholder="Tipo de Producto"
                   v-model="product.tipoProductoId"
@@ -226,32 +238,43 @@
                   >
                   </el-option>
                 </el-select>
+                <div class="input-group-append">
                 <base-button
                   :type="showInsertModalProductType ? 'danger' : 'success'"
-                  class="animation-on-hover"
-                  size="sm"
-                  @click.native="showModalInsertProductType()"
-                  >{{ showInsertModalProductType ? 'x' : '+' }}</base-button
-                >
-                <div class="container">
+                  class="m-0"
+                  @click.native="showModalInsertProductType()">
+                  <i class="fa-solid fa-xmark"  v-if="showInsertModalProductType"></i>
+                  <i class="fa-solid fa-plus" v-if="!showInsertModalProductType"></i>
+                  </base-button>
+                </div>
+                <div class="container" >
                   <form
-                    class="row align-items-center"
+                    class="row col-10 mt-2"
                     v-if="showInsertModalProductType"
+                    style=" border: #5b616b dotted;border-radius: 11px;"
                   >
+
+                  <label class="col-sm-12 col-form-label text-left">Tipo de Producto</label>
+                  <div class="col-12">
                     <base-input
-                      class="mb-0"
+                      class="w-100 mb-1"
                       placeholder="Descripcion"
                       required
                       v-model="newproductType.descripcion"
                     >
                     </base-input>
-                    <base-button
-                      type="success"
-                      class="animation-on-hover"
-                      size="sm"
-                      @click.native="insertNewProductType()"
-                      ><i class="fas fa-paper-plane"></i
-                    ></base-button>
+                    
+                    </div>
+                    <div class="col-12">
+                          <base-button
+                          type="success"
+                          class="animation-on-hover w-100"
+                          @click.native="insertNewProductType()"
+                          ><i class="fas fa-paper-plane"></i
+                        >Agregar Tipo de producto</base-button>
+                      </div>
+               
+                  
                   </form>
                 </div>
               </div>
@@ -307,6 +330,7 @@ export default {
     return {
       showInsertModalProductType: false,
       showInsertModalBrand: false,
+      codigoAuto: false,
       checkedID: false,
       isLoading: false,
       fullPage: true,
@@ -346,6 +370,7 @@ export default {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
+    this.codigoAuto = !this.id ? true: false
     if (this.id)
       this.globalFind('productos', this.id, this.product).then((response) => {
         Object.keys(this.product).forEach((e) => {
