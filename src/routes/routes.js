@@ -102,6 +102,7 @@ const SelectOffices = () => import('src/pages/UserOffices/SelectOffices.vue')
 const UsersIndex = () => import('src/pages/Users/Index.vue')
 const UsersCreate = () => import('src/pages/Users/Create.vue')
 const UsersRols = () => import('src/pages/Users/Rols.vue')
+const Userschangepassword = () => import('src/pages/Users/Changepassword.vue')
 
 //Billing Menu
 const BillDashBoardIndex = () =>
@@ -734,6 +735,15 @@ let UsersMenu = {
       path: 'rols/:id',
       name: 'Rol de Usuario',
       components: { default: UsersRols },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root'
+      }
+    },
+    {
+      path: 'changepassword/:id',
+      name: 'Rol de Usuario',
+      components: { default: Userschangepassword },
       meta: {
         needsAuth: true,
         validRols: 'Admin,Root'

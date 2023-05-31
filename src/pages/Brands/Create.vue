@@ -93,7 +93,7 @@ export default {
   },
   mounted() {
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
-    this.title = !this.id ? 'Cear' : 'Editar'
+    this.title = !this.id ? 'Crear' : 'Editar'
     if (this.id)
       this.globalFind('marcas', this.id, this.brand).then((response) => {
         Object.keys(this.brand).forEach((e) => {

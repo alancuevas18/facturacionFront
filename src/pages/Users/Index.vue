@@ -62,6 +62,18 @@
               </el-table-column>
               <el-table-column :min-width="135" align="right" label="Actions">
                 <div slot-scope="props">
+                  <router-link :to="'/users/changepassword/' + props.row.id">
+                    <base-button
+                      class="edit btn-link"
+                      type="primary"
+                      size="sm"
+                      icon >             
+                     
+                      <i class="fa-solid fa-key"></i>
+
+                    </base-button>
+                  </router-link>
+
                   <router-link :to="'/users/rols/' + props.row.id">
                     <base-button
                       class="edit btn-link"
@@ -69,7 +81,7 @@
                       size="sm"
                       icon
                     >
-                      <i class="tim-icons icon-lock-circle"></i>
+                    <i class="fa-solid fa-user-gear"></i>
                     </base-button>
                   </router-link>
                   <router-link :to="'/users/create/' + props.row.id">

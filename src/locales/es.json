@@ -205,7 +205,8 @@
   "users":{
     "index" : "Administracion de Usuarios",
     "users": "Usuarios",
-    "rols" : "Rol de Usuarios"
+    "rols" : "Rol de Usuarios",
+    "changepassword":"Cambiar Contraseña"
   },
   "userOffices":{
     "index" : "Administracion de Usuario Sucursal",

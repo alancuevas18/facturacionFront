@@ -674,7 +674,7 @@ export default {
           productoId: this.tableData[i].productoId,
           cantidadExistenciaActual: this.tableData[i].cantidadExistenciaActual,
           cantidadExistenciaNueva: this.tableData[i].cantidadExistenciaNueva,
-          diferencias: this.tableData[i].diferencias,
+          diferencias: this.tableData[i].diferencia,
           precioCompra: this.tableData[i].precioCompra,
           precioVenta: this.tableData[i].precioVenta,
           nota: this.tableData[i].nota,

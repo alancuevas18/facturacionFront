@@ -86,7 +86,7 @@
                 </ValidationProvider>
               </div>
             </div>
-            <div class="row">
+          <!-- <div class="row">
               <label class="col-sm-2 col-form-label">Imagen*</label>
               <div class="col-sm-10">
                 <ValidationProvider
@@ -106,7 +106,7 @@
                   </base-input>
                 </ValidationProvider>
               </div>
-            </div>
+            </div>--> 
             <!-- <div class="row mb-2">
               <label class="col-sm-2 col-form-label">Validar Codigo</label>
               <div class="col-sm-10">
@@ -371,6 +371,7 @@ export default {
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
     this.codigoAuto = !this.id ? true: false
+    console.log(this.codigoAuto)
     if (this.id)
       this.globalFind('productos', this.id, this.product).then((response) => {
         Object.keys(this.product).forEach((e) => {
@@ -391,8 +392,8 @@ export default {
       return (
         !this.product.nombre ||
         !this.product.descripcion ||
-        !this.product.codigo
-      )
+         (this.codigoAuto !=true && !this.product.codigo)
+         )
     },
     edit() {
       if (this.validateFields()) {
@@ -408,6 +409,7 @@ export default {
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
+        this.isLoading = true
         this.globalPost('productos', this.product, '/products/index')
         this.product = this.globalClear(this.product)
       }

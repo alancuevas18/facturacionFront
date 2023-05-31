@@ -86,16 +86,16 @@
                 </ValidationProvider>
               </div>
             </div>
-            <div class="row">
+            <div class="row" v-if="!id">
               <label class="col-sm-2 col-form-label">Contraseña*</label>
               <div class="col-sm-10">
                 <ValidationProvider
-                  name="contrasena"
+                  name="password"
                   rules="required|min:3"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    type="password"
+                    type="text"
                     required
                     autofocus
                     v-model="user.contrasena"
@@ -143,7 +143,7 @@
                   v-model="user.sucursalId"
                 >
                   <el-option
-                    v-for="option in selects.offices"
+                    v-for="option in selects.sucursales"
                     class="select-primary"
                     :value="option.id"
                     :label="option.nombre"
@@ -207,7 +207,7 @@ export default {
       id: '',
       baseApiUrl: '',
       title: '',
-      selects: { offices: [] },
+      selects: { sucursales: [] },
       user: {
         id: 0,
         nombre: '',
@@ -222,8 +222,8 @@ export default {
   mounted() {
     this.baseApiUrl = config.global.baseApiUrl
     this.id = this.$route.params.id = '' ? '' : this.$route.params.id
-    this.title = !this.id ? 'Cear' : 'Editar'
-    this.fillCatalog(['susursales'])
+    this.title = !this.id ? 'Crear' : 'Editar'
+    this.fillCatalog(['sucursales'])
     if (this.id)
       this.globalFind('usuario', this.id, this.user).then((response) => {
         Object.keys(this.user).forEach((e) => {
@@ -235,6 +235,7 @@ export default {
     fillCatalog(catalogs) {
       catalogs.forEach((e) => {
         this.globalFillCatalog(e).then((response) => {
+          console.log(response)
           this.selects[e] = response
         })
       })
@@ -245,6 +246,15 @@ export default {
         !this.user.apellido ||
         !this.user.nombreUsuario ||
         !this.user.contrasena ||
+        !this.user.correo ||
+        !this.user.sucursalId
+      )
+    },
+    validateFieldsput() {
+      return (
+        !this.user.nombre ||
+        !this.user.apellido ||
+        !this.user.nombreUsuario ||
         !this.user.correo ||
         !this.user.sucursalId
       )
@@ -277,17 +287,13 @@ export default {
       this.user.correo = ''
       this.user.sucursalId = ''
     },
-    edit() {
-      let brand = {
-        id: this.brand.id,
-        descripcion: this.brand.description
-      }
-      if (this.validateFields()) {
+    edit(){
+      if (this.validateFieldsput()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true
         axios
-          .put(this.baseApiUrl + 'usuario/register' + this.brand.id, brand)
+          .put(this.baseApiUrl + 'usuario/'+this.id, this.user)
           .then((response) => {
             this.globalSweetMessage(response.data.message)
             this.clear()
