@@ -293,22 +293,26 @@
               </div>
             </div>
 
-            <div class="row d-flex justify-content-center">
-              <base-button
-                type="success"
-                native-type="submit"
-                class="animation-on-hover"
-                @click.native="!id ? create() : edit()"
-                ><i class="tim-icons icon-check-2 mr-2"></i
-                >{{ title }}</base-button
-              >
-
+            <div class="row">
+         
+            <div class="col-md-6 col-ms-12">
               <router-link to="/billDashboard/sends/index">
-                <base-button type="danger" class="animation-on-hover"
+                <base-button type="danger" class="animation-on-hover w-100"
                   ><i class="tim-icons icon-simple-remove"></i
                   >{{ $t('global.cancel') }}</base-button
                 >
               </router-link>
+            </div>
+            <div class="col-md-6 col-ms-12">            
+              <base-button
+                type="success"
+                native-type="submit"
+                class="animation-on-hover w-100"
+                @click.native="!id ? create() : edit()"
+                ><i class="tim-icons icon-check-2 mr-2"></i
+                >{{ title }}</base-button
+              >
+              </div>
             </div>
           </form>
         </ValidationObserver>

@@ -44,6 +44,13 @@
             </div>
 
             <div class="row d-flex justify-content-center">
+              <router-link to="/spendsType/index">
+                <base-button type="danger" class="animation-on-hover"
+                  ><i class="tim-icons icon-simple-remove"></i
+                  >{{ $t('global.cancel') }}</base-button
+                >
+              </router-link>
+
               <base-button
                 type="success"
                 native-type="submit"
@@ -53,12 +60,6 @@
                 >{{ title }}</base-button
               >
 
-              <router-link to="/spendsType/index">
-                <base-button type="danger" class="animation-on-hover"
-                  ><i class="tim-icons icon-simple-remove"></i
-                  >{{ $t('global.cancel') }}</base-button
-                >
-              </router-link>
             </div>
           </form>
         </ValidationObserver>
@@ -77,20 +78,20 @@
               <label class="col-sm-3 col-form-label">Descripción*</label>
                <base-input class="col-sm-9" v-model="SubSpendsType.descripcion"></base-input>              
              </div>
-             <div class="row col-11 m-auto">
-             <base-button
-                type="success"
-                native-type="submit"
-                class="animation-on-hover"
-                @click.native="SubSpendsType.id==0 ? createSubType() : editSubtype()"
-                ><i class="tim-icons icon-check-2"></i
-                >{{ SubSpendsType.id==0 ? 'Crear' : 'Editar' }}</base-button>
-               
+             <div class="row col-11 m-auto">        
                 <base-button type="danger" class="animation-on-hover"
                 @click="SubSpendsType.id=0, SubSpendsType.descripcion=''"
                   ><i class="tim-icons icon-simple-remove"></i
                   >{{ $t('global.cancel') }}</base-button
                 >
+                <base-button
+                type="success"
+                native-type="submit"
+                class="animation-on-hover"
+                @click.native="SubSpendsType.id==0 ? createSubType() : editSubtype()"
+                ><i class="tim-icons icon-check-2"></i
+                >{{ SubSpendsType.id==0 ? 'Crear' : 'Editar' }}
+              </base-button>
               </div>
           </form>
           </ValidationObserver>

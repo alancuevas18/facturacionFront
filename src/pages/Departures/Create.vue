@@ -255,20 +255,20 @@
                 </div>
               </div>
 
-              <div class="row col-ms-12 col-md-6 d-flex justify-content-center">
-                <base-button
-                  type="primary"
-                  native-type="submit"
-                  class="animation-on-hover"
-                  @click.native="!editingProduct ? addProduct() : editProduct()"
-                  >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
-                >
+              <div class="row col-ms-12 col-md-6 d-flex justify-content-center">          
                 <base-button
                   @click.native="cleanProducts()"
                   type="danger"
                   class="animation-on-hover"
                   ><i class="tim-icons icon-simple-remove"></i
                   >Limpiar</base-button
+                >
+                <base-button
+                  type="primary"
+                  native-type="submit"
+                  class="animation-on-hover"
+                  @click.native="!editingProduct ? addProduct() : editProduct()"
+                  >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
                 >
               </div>
               <hr />
@@ -332,6 +332,21 @@
               </div>
             </div>
             <div class="row d-flex justify-content-center">
+         
+              <base-button
+                v-if="showdepartures"
+                type="warning"
+                native-type="submit"
+                class="animation-on-hover"
+                @click.native="changeShow()"
+                ><i class="fa-solid fa-arrow-left"></i>Atras</base-button
+              >        
+              <router-link to="/departures/index">
+                <base-button type="danger" class="animation-on-hover"
+                  ><i class="tim-icons icon-simple-remove"></i
+                  >{{ $t('global.cancel') }}</base-button
+                >
+              </router-link>
               <base-button
                 v-if="!showdepartures"
                 type="success"
@@ -342,14 +357,6 @@
               >
               <base-button
                 v-if="showdepartures"
-                type="warning"
-                native-type="submit"
-                class="animation-on-hover"
-                @click.native="changeShow()"
-                ><i class="fa-solid fa-arrow-left"></i>Atras</base-button
-              >
-              <base-button
-                v-if="showdepartures"
                 type="success"
                 native-type="submit"
                 class="animation-on-hover"
@@ -357,12 +364,6 @@
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
-              <router-link to="/productsoffice/index">
-                <base-button type="danger" class="animation-on-hover"
-                  ><i class="tim-icons icon-simple-remove"></i
-                  >{{ $t('global.cancel') }}</base-button
-                >
-              </router-link>
             </div>
           </form>
         </ValidationObserver>

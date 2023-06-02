@@ -66,7 +66,14 @@
                 </ValidationProvider>
               </div>
             </div>
-            <div class="row d-flex justify-content-center">
+            <div class="row d-flex justify-content-center">         
+              <router-link to="/deductions/index">
+                <base-button type="danger" class="animation-on-hover"
+                  ><i class="tim-icons icon-simple-remove"></i
+                  >{{ $t('global.cancel') }}</base-button
+                >
+              </router-link>
+
               <base-button
                 type="success"
                 native-type="submit"
@@ -76,12 +83,6 @@
                 >{{ title }}</base-button
               >
 
-              <router-link to="/deductions/index">
-                <base-button type="danger" class="animation-on-hover"
-                  ><i class="tim-icons icon-simple-remove"></i
-                  >{{ $t('global.cancel') }}</base-button
-                >
-              </router-link>
             </div>
           </form>
         </ValidationObserver>

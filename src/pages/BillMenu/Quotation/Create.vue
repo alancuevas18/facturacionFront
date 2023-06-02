@@ -32,9 +32,9 @@
                 <!-- Datos de la Cotizaciones -->
                   <div class="col-ms-12 col-md-4" >
                   
-                     <div class="row mb-3">
-                      <label class="col-sm-3 col-form-label">Sucursal</label>
-                      <div class="col-sm-9">
+                     <div class="row ">
+                      <label class="col-sm-4 col-form-label">Sucursal</label>
+                      <div class="col-sm-8">
                         <el-select
                           required
                           :disabled="!readOnly"  
@@ -56,9 +56,9 @@
                         </el-select>
                       </div>
                     </div>
-                    <div class="row mb-3">
-                      <label class="col-sm-3 col-form-label">Cliente</label>
-                      <div class="col-sm-9">
+                    <div class="row">
+                      <label class="col-sm-4 col-form-label">Cliente</label>
+                      <div class="col-sm-8">
                         <el-select
                           required
                           :disabled="!readOnly"  
@@ -82,9 +82,9 @@
                       </div>
                     </div>
                     <div v-if="Cotizaciones.clienteId==''">
-                      <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">Nombre</label>
-                        <div class="col-sm-9">
+                      <div class="row">
+                        <label class="col-sm-4 col-form-label">Nombre</label>
+                        <div class="col-sm-8">
                           <ValidationProvider
                             name="Direccion"
                             rules="required"
@@ -104,9 +104,9 @@
                           </ValidationProvider>
                         </div>
                       </div>
-                      <div class="row mb-3">
-                        <label class="col-sm-3 col-form-label">Identificación</label>
-                        <div class="col-sm-9">
+                      <div class="row ">
+                        <label class="col-sm-4 col-form-label">Identificación</label>
+                        <div class="col-sm-8">
                           <ValidationProvider
                             name="Direccion"
                             rules="required"
@@ -226,19 +226,21 @@
                     </div>
                  
                     <div class="row col-ms-12 col-md-12 d-flex justify-content-center">
-                      <base-button
-                        type="primary"
-                        native-type="submit"
-                        class="animation-on-hover"
-                        @click.native="!editingProduct ? addProduct() : editProduct()"
-                        >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
-                      >
+                   
                       <base-button
                         @click.native="cleanProducts()"
                         type="danger"
                         class="animation-on-hover"
                         ><i class="tim-icons icon-simple-remove"></i
                         >Limpiar</base-button
+                      >
+                      
+                      <base-button
+                        type="primary"
+                        native-type="submit"
+                        class="animation-on-hover"
+                        @click.native="!editingProduct ? addProduct() : editProduct()"
+                        >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
                       >
                     </div>
                   </div>
@@ -290,21 +292,22 @@
             </card>
              
             <div class="col-11 m-auto row">
-                <div class="col-ms-12 col-md-6">
-                  <base-button
-                type="success"
-                native-type="submit"
-                class="animation-on-hover w-100"
-                @click.native="create()"
-                ><i class="tim-icons icon-check-2 mr-2"></i
-                >{{ title }}</base-button>
-                </div>
+          
                 <div class="col-ms-12 col-md-6">
                   <router-link to="/productsoffice/index">
                     <base-button type="danger" class="animation-on-hover w-100"
                       ><i class="tim-icons icon-simple-remove"></i
                       >{{ $t('global.cancel') }}</base-button>
                   </router-link>
+                </div>
+                <div class="col-ms-12 col-md-6">
+                  <base-button
+                    type="success"
+                    native-type="submit"
+                    class="animation-on-hover w-100"
+                    @click.native="create()"
+                    ><i class="tim-icons icon-check-2 mr-2"></i
+                    >{{ title }}</base-button>
                 </div>
          
            

@@ -114,6 +114,13 @@
             
 
             <div class="row d-flex justify-content-center">
+             <router-link to="/payments/index">
+                <base-button type="danger" class="animation-on-hover"
+                  ><i class="tim-icons icon-simple-remove"></i
+                  >{{ $t('global.cancel') }}</base-button
+                >
+              </router-link>
+              
               <base-button
                 type="success"
                 native-type="submit"
@@ -122,13 +129,6 @@
                 ><i class="tim-icons icon-check-2 mr-2"></i
                 >{{ title }}</base-button
               >
-
-              <router-link to="/payments/index">
-                <base-button type="danger" class="animation-on-hover"
-                  ><i class="tim-icons icon-simple-remove"></i
-                  >{{ $t('global.cancel') }}</base-button
-                >
-              </router-link>
             </div>
 
            </div>

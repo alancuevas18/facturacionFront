@@ -33,18 +33,20 @@
             icon: 'fa-solid fa-file-invoice-dollar'
           }"
         >
+        <sidebar-item
+            :link="{
+              name: $t('billing.create'),
+              path: '/billDashboard/bill/create'
+            }"
+          ></sidebar-item>
+
           <sidebar-item
             :link="{
               name: $t('billing.billingindex'),
               path: '/billDashboard/bill/index'
             }"
           ></sidebar-item>
-          <sidebar-item
-            :link="{
-              name: $t('billing.create'),
-              path: '/billDashboard/bill/create'
-            }"
-          ></sidebar-item>
+       
         </sidebar-item>
         <!-- shift Menu -->
         <sidebar-item
@@ -53,19 +55,19 @@
             icon: 'tim-icons icon-laptop'
           }"
         >
-          <sidebar-item
-            :link="{
-              name: $t('shift.index'),
-              path: '/billDashboard/shift/index'
-            }"
-          ></sidebar-item>
-
-          <sidebar-item
+        <sidebar-item
             :link="{
               name: $t('shift.create'),
               path: '/billDashboard/shift/create'
             }"
           ></sidebar-item>
+
+          <sidebar-item
+            :link="{
+              name: $t('shift.index'),
+              path: '/billDashboard/shift/index'
+            }"
+          ></sidebar-item>    
         </sidebar-item>
         <!-- quotation Menu -->
         <sidebar-item
@@ -75,11 +77,13 @@
           }"
         >
           <sidebar-item
-            :link="{ name: $t('quotation.index'), path: '/billDashboard/quotation' }"
-          ></sidebar-item>
-          <sidebar-item
             :link="{ name: $t('quotation.create'), path: '/billDashboard/quotation/create' }"
           ></sidebar-item>
+
+          <sidebar-item
+            :link="{ name: $t('quotation.index'), path: '/billDashboard/quotation' }"
+          ></sidebar-item>
+
         </sidebar-item>
         
        <!-- Cashclose Menu -->
@@ -89,12 +93,14 @@
             icon: 'tim-icons icon-money-coins'
           }"
         >
+        <sidebar-item
+            :link="{ name: $t('cashClose.create'), path: '/billDashboard/cashClose/create' }"
+          ></sidebar-item>
+
           <sidebar-item
             :link="{ name: $t('cashClose.index'), path: '/billDashboard/cashClose' }"
           ></sidebar-item>
-          <sidebar-item
-            :link="{ name: $t('cashClose.create'), path: '/billDashboard/cashClose/create' }"
-          ></sidebar-item>
+    
         </sidebar-item>
 
         <!-- returns Menu -->
@@ -110,12 +116,7 @@
         </sidebar-item>
  
           <!-- returns Menu -->
-          <sidebar-item
-          :link="{
-            name: $t('sends.sends'),
-            icon: 'fa-solid fa-paper-plane'
-          }"
-        >
+        <sidebar-item :link="{ name: $t('sends.sends'),icon: 'fa-solid fa-paper-plane'}">
           <sidebar-item
             :link="{ name: $t('sends.index'), path: '/billDashboard/sends' }"
           ></sidebar-item>

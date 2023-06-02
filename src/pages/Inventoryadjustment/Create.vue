@@ -271,7 +271,15 @@
                   </el-table>
                 </div>
 
-                <div class="col-11 m-auto row">
+                <div class="col-11 m-auto row">          
+                  <div class="col-ms-12 col-md-6">
+                    <router-link to="/productsoffice/index">
+                      <base-button type="danger" class="animation-on-hover w-100"
+                        ><i class="tim-icons icon-simple-remove"></i
+                        >{{ $t('global.cancel') }}</base-button>
+                    </router-link>
+                  </div>
+                  
                   <div class="col-ms-12 col-md-6">
                     <base-button
                   type="success"
@@ -281,13 +289,6 @@
                   ><i class="tim-icons icon-check-2 mr-2"></i
                   >{{ title }}</base-button>
                   </div>
-                  <div class="col-ms-12 col-md-6">
-                    <router-link to="/productsoffice/index">
-                      <base-button type="danger" class="animation-on-hover w-100"
-                        ><i class="tim-icons icon-simple-remove"></i
-                        >{{ $t('global.cancel') }}</base-button>
-                    </router-link>
-                  </div>   
                 </div>
               </div>
                 </div>

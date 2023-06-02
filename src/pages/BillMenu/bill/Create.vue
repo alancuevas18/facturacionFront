@@ -140,15 +140,7 @@
                     </base-input>
                   </div>
                   <div class="row col-12 mt-2">
-                    <div class="col-6">
-                    <base-button
-                      type="success"
-                      class="animation-on-hover w-100"
-                      size="md"
-                      @click.native="pickProduct()"
-                      ><i class="fa-solid fa-plus"></i></base-button
-                    >
-                    </div>
+                 
                     <div class="col-6">
                     <base-button
                       type="primary"
@@ -157,6 +149,15 @@
                       @click.native="subgetModal('Productos')"
                       ><i class="fa-solid fa-magnifying-glass"></i
                     ></base-button>
+                    </div>
+                    <div class="col-6">
+                    <base-button
+                      type="success"
+                      class="animation-on-hover w-100"
+                      size="md"
+                      @click.native="pickProduct()"
+                      ><i class="fa-solid fa-plus"></i></base-button
+                    >
                     </div>
                     </div>
               </form>
@@ -222,14 +223,7 @@
                       </base-input>
                   </div>
                   <div class="row col-12 mt-2">
-                    <div class="col-6">
-                      <base-button
-                      type="success"
-                      class="animation-on-hover w-100"
-                      size="md"
-                      @click.native="pickService()"
-                      ><i class="fa-solid fa-plus"></i></base-button>
-                    </div>
+             
                     <div class="col-6">
                       <base-button
                       type="primary"
@@ -238,6 +232,14 @@
                       @click.native="subgetModal('Servicios')"
                       ><i class="fa-solid fa-magnifying-glass"></i
                   ></base-button>
+                    </div>
+                    <div class="col-6">
+                      <base-button
+                      type="success"
+                      class="animation-on-hover w-100"
+                      size="md"
+                      @click.native="pickService()"
+                      ><i class="fa-solid fa-plus"></i></base-button>
                     </div>
                   </div>
 

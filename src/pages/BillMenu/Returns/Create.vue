@@ -127,16 +127,7 @@
           </tbody>
         </table>
         <div class="row" v-if="devoluciones.detalleDevoluciones.length>0">
-          <div class="col-md-6 col-ms-12">
-          <base-button
-                type="success"
-                native-type="submit"
-                class="animation-on-hover w-100"
-                @click.native="create()"
-                ><i class="tim-icons icon-check-2 mr-2"></i
-                >{{ title }}</base-button
-              >
-            </div>
+  
             <div class="col-md-6 col-ms-12">
               <router-link to="/billDashboard/bill/index">
                 <base-button type="danger" class="animation-on-hover w-100"
@@ -144,6 +135,17 @@
                   >{{ $t('global.cancel') }}</base-button
                 >
               </router-link>
+            </div>
+
+            <div class="col-md-6 col-ms-12">
+              <base-button
+                    type="success"
+                    native-type="submit"
+                    class="animation-on-hover w-100"
+                    @click.native="create()"
+                    ><i class="tim-icons icon-check-2 mr-2"></i
+                    >{{ title }}
+               </base-button >
             </div>
           </div>
         </div>
