@@ -27,6 +27,7 @@
         { 'dropdown-menu-right': menuOnRight },
         menuClasses
       ]"
+       :style="styleMenu"
     >
       <slot></slot>
     </ul>
@@ -70,6 +71,10 @@ export default {
     menuOnRight: {
       type: Boolean,
       description: 'Whether menu should appear on the right'
+    },
+    styleMenu:{
+      type: [String, Object],
+      description: 'Menu css classes'
     }
   },
   data() {

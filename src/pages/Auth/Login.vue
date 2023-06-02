@@ -61,11 +61,11 @@
               </base-button>
               <div class="pull-left"></div>
 
-              <div class="pull-right">
+              <!-- <div class="pull-right">
                 <h5>
                   <a href="#">{{ $t('global.needHelp') }}</a>
                 </h5>
-              </div>
+              </div> -->
             </div>
           </card>
         </form>

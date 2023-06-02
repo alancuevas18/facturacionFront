@@ -198,7 +198,7 @@ components:{
         {
           prop: 'productos.codigo',
           label: 'codigo',
-          minWidth: 70
+          minWidth: 80
         },
         {
           prop: 'productos.nombre',

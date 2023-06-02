@@ -7,6 +7,8 @@ import App from './App.vue'
 import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
+import * as Xlsx from 'xlsx'
+
 
 // router setup
 import router from './routes/router'
@@ -183,6 +185,12 @@ Vue.mixin({
         .catch((error) => {
           this.globalSweetMessage('Error al cargar la pagina', 'error')
         })
+    },
+    exportExcel(datos,file){
+      const data =   Xlsx.utils.json_to_sheet(datos)
+      const wb = Xlsx.utils.book_new()
+      Xlsx.utils.book_append_sheet(wb, data, 'data')
+      Xlsx.writeFile(wb,file+'.xlsx')
     }
   }
 })

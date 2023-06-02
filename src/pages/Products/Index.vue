@@ -5,6 +5,7 @@
       :can-cancel="true"
       :is-full-page="fullPage"
     />
+
     <div class="col-md-8 ml-auto mr-auto">
       <h2 class="text-center">{{ $t('products.index') }}</h2>
     </div>
@@ -50,6 +51,7 @@
                 >
                 </el-input>
               </base-input>
+              <a @click="crearExcel()"><i class="fa-solid fa-file-excel display-3" style="color:#0f850f;"></i></a>
             </div>
             <el-table :data="queriedData">
               <el-table-column
@@ -124,7 +126,6 @@ import { Table, TableColumn, Select, Option } from 'element-ui'
 import { BasePagination } from 'src/components'
 import Loading from 'vue-loading-overlay'
 import 'vue-loading-overlay/dist/vue-loading.css'
-
 export default {
   components: {
     Loading,
@@ -193,12 +194,12 @@ export default {
           minWidth: 200
         },
         {
-          prop: 'marcaProducto',
+          prop: 'marcas',
           label: 'Marca',
           minWidth: 120
         },
         {
-          prop: 'tipoProducto',
+          prop: 'tipoProductos',
           label: 'Tipo Producto',
           minWidth: 200
         }
@@ -215,16 +216,14 @@ export default {
         tableData,
         'productos'
       )
+    },
+    crearExcel(){   
+      this.exportExcel(this.tableData,'Lista de productos')
     }
   },
   mounted() {
     this.globalFillTable('productos').then((response) => {
-      for (let i = 0; i < response.length; i++) {
-        this.tableData.push(response[i])
-        this.tableData[i]['marcaProducto'] = response[i].marcas.descripcion
-        this.tableData[i]['tipoProducto'] =
-          response[i].tipoProductos.descripcion
-      }
+      this.tableData=response
     })
   },
   watch: {

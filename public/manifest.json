@@ -5,7 +5,7 @@
   "display": "standalone",
   "background_color": "#000000",
   "description": "Sistema de facturacion",
-  "orientation": "landscape",
+  "orientation": "natural",
   "icons": [
     {
       "src": "./img/icons/logo192x192.png",

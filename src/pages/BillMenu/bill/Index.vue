@@ -9,7 +9,7 @@
       <h2 class="text-center">{{ $t('billing.billingindex') }}</h2>
     </div>
     <div class="row mt-5">
-      <div class="col-12">
+      <div class="col-12 m-0 p-0">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('billing.billing') }}
@@ -79,6 +79,8 @@
                  <div class="position-absolute" style="margin-top: -10px;">
                   <base-dropdown
                     menu-on-right=""
+                    menuClasses="d-flex menuFactura"
+                    styleMenu="margin-top:-42px; margin-right:40px; padding: 0.5px;"
                     tag="div"
                     title-classes="btn btn-link btn-icon"
                   >
@@ -295,5 +297,13 @@ export default {
 }
 .el-table th.el-table__cell {
   background-color: transparent;
+}
+.menuFactura:before, .menuFactura:after{
+right: -8px !important;
+top: 22px !important;
+transform: rotateZ(94deg);
+}
+.menuFactura>a{
+  padding:  0.25rem 1.3rem;
 }
 </style>
