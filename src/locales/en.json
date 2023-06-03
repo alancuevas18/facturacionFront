@@ -40,12 +40,179 @@
   "global":{
     "cancel":"Cancel"
   },
+  "clients": {
+    "create" : "Add",
+    "index" : "Clients Administration",
+    "clients" : "Clients",
+    "details" : "Clients Details"
+  },
+  "suppliers": {
+    "create" : "Add",
+    "index" : "Suppliers Administration",
+    "suppliers" : "Suppliers",
+    "details" : "Suppliers Details"
+  },
+  "brands": {
+    "create" : "Add",
+    "index" : "Brands Administration",
+    "brands" : "Brands",
+    "details" : "Brands Details"
+  },
+  "sellers": {
+    "create" : "Add",
+    "index" : "Sellers Administration",
+    "sellers" : "Sellers",
+    "details" : "Sellers Details"
+  },
+  "deliveries": {
+    "create" : "Add",
+    "index" : "Deliveries Administration",
+    "deliveries" : "Deliveries",
+    "details" : "Deliveries Details"
+  },
+  "offices": {
+    "create" : "Add",
+    "index" : "Offices Administration",
+    "offices" : "Offices",
+    "details" : "Offices Details"
+  },
+  "structureComprobantes": {
+    "create" : "Add",
+    "index" : "Comprobantes Administration",
+    "structureComprobantes" : "Comprobantes",
+    "details" : "Comprobantes Details"
+  },
+  "spends": {
+    "create" : "Add",
+    "index" : "Spends Administration",
+    "spends" : "Spends",
+    "details" : "Spends Details"
+  },
   "products": {
-    "create" : "Crear",
-    "index" : "Administracion de Productos",
-    "products" : "Productos",
-    "details" : "Detalles",
-    "type" : "Products Type"
-  }
+    "create" : "Add",
+    "index" : "Products Administration",
+    "products" : "Products",
+    "details" : "Product Details",
+    "type" : "Product Type",
+    "byOffice" : "Products by Office"
+  },
+  "services": {
+    "create" : "Add",
+    "index" : "Services Administration",
+    "services": "Services",
+    "details" : "Service Details",
+    "byOffice" : "Services by Office"
+  },
+  "invetory": {
+    "create" : "Add",
+    "index" : "invetories Administration",
+    "invetory": "invetories"
+  },
+  "shopping": {
+    "create" : "Add",
+    "request" : "Purchese Request",
+    "pending" : "Purchese Pending Payment",
+    "index" : "Purcheses Administration",
+    "shopping": "Purcheses",
+    "details":"Purchese Detail"
+
+  },
+  "entrance": {
+    "create" : "Add",
+    "index" : "Administration de Entrada",
+    "entrance": "Entradas",
+    "details":"Detail entrada"
+  },
+  "payments": {
+    "create" : "Add",
+    "index" : "Payments Administration",
+    "shopping": "Payments",
+    "details":"Pay Detail"
+  },
+  "shift": {
+    "create" : "Add",
+    "index" : "Shifts Administration",
+    "shift": "Shifts"
+  },
+  "billing": {
+    "create" : "Add",
+    "index" : "Billing Module",
+    "billingindex":"Bills Administration",
+    "billing": "Billing"
+  },
+  "departures": {
+    "departures" : "Move Inventory",
+    "create" : "Add",
+    "index" : "Move Inventories Administration",
+    "details":"Detail Movimiento"
+  },
+  "deductions": {
+      "deductions" : "Deductions",
+      "create" : "Add",
+      "index" : "Deductions"
+  },
+  "inventoryadjustment": {
+    "inventoryadjustment" : "Inventory Adjustment ",
+    "create" : "Add",
+    "index" : "Inventories Adjustment",
+    "details" : "Inventory Adjustment Detail"
+  },
+  "spendsType": {
+    "spendsType" : "Spend Type",
+    "create" : "Add",
+    "index" : "Spends Type"
+  },
+  "quotation": {
+    "create" : "Add",
+    "index" : "Quotation Administration",
+    "quotation": "Quotation",
+    "details": "Quotation Detail"
+  },
+  "returns": {
+    "create" : "Add",
+    "index" : "Returns Administration",
+    "returns": "Returns",
+    "details": "Returns Detail"
+  },
+  "cashClose": {
+    "index" : "Cash close Administration",
+    "cashClose": "Cash close",
+    "create" : "Add",
+    "details": "Cash close Detail"
+
+  },
+  "bill": {
+    "index" : "Billing",
+    "bill": "Bills",
+    "details": "Bill Detail"
+
+  },
+  "users":{
+    "index" : "Users Administration",
+    "users": "Users",
+    "rols" : "User Rol",
+    "changepassword":"Change Password"
+  },
+  "userOffices":{
+    "index" : "Users Office Administration",
+    "userOffices": "Users Office ",
+    "SelectOffice" : "Choose an office"
+  },
+  "sends":{
+    "index" : "Sends Administration",
+    "sends" : "Sends"
+  },
+  "validate":{
+    "fields":{},
+    "names":{
+      "Correo": "E-mail Address",
+      "contras": "Password"
+    }
+,    
+  "messagers":{   
+    }
   
+
+  }
+
 }

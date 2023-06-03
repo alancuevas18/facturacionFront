@@ -8,7 +8,7 @@ import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
 import * as Xlsx from 'xlsx'
-
+import { localize } from"./vee-validate";
 
 // router setup
 import router from './routes/router'

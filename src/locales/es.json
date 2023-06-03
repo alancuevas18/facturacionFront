@@ -88,14 +88,12 @@
       "offices" : "Sucursales",
       "details" : "Detalles"
     },
-
     "structureComprobantes": {
       "create" : "Crear",
       "index" : "Administracion de Comprobantes",
       "structureComprobantes" : "Comprobantes",
       "details" : "Detalles"
     },
-
     "spends": {
       "create" : "Crear",
       "index" : "Administracion de Gastos",
@@ -122,7 +120,6 @@
       "index" : "Administracion de Inventario",
       "invetory": "Inventario"
     },
-
     "shopping": {
       "create" : "Crear",
       "request" : "Solicitudes de Compra",
@@ -160,61 +157,83 @@
       "create" : "Crear",
       "index" : "Administracion de salida",
       "details":"Detalle Movimiento"
-  },
-"deductions": {
-    "deductions" : "Retenciones",
-    "create" : "Crear",
-    "index" : "Retenciones"
-},
-"inventoryadjustment": {
-  "inventoryadjustment" : "Ajuste de invetario",
-  "create" : "Crear",
-  "index" : "Ajuste de inventario",
-  "details" : "Detalle de Ajuste de inventario"
-},
-"spendsType": {
-  "spendsType" : "Tipo de gastos",
-  "create" : "Crear",
-  "index" : "Tipo de gastos"
-},
-  "quotation": {
-    "create" : "Crear",
-    "index" : "Administracion de Cotizacion",
-    "quotation": "Cotización",
-    "details": "Detalle de la Cotización"
-  },
-  "returns": {
-    "create" : "Crear",
-    "index" : "Administracion de Devoluciones",
-    "returns": "Devoluciones",
-    "details": "Detalle de la Devolución"
-  },
-  "cashClose": {
-    "index" : "Administracion de Cuadre de Caja",
-    "cashClose": "Cuadre de Caja",
-    "create" : "Crear",
-    "details": "Detalle del Cuadre de caja"
+    },
+    "deductions": {
+        "deductions" : "Retenciones",
+        "create" : "Crear",
+        "index" : "Retenciones"
+    },
+    "inventoryadjustment": {
+      "inventoryadjustment" : "Ajuste de invetario",
+      "create" : "Crear",
+      "index" : "Ajuste de inventario",
+      "details" : "Detalle de Ajuste de inventario"
+    },
+    "spendsType": {
+      "spendsType" : "Tipo de gastos",
+      "create" : "Crear",
+      "index" : "Tipo de gastos"
+    },
+    "quotation": {
+      "create" : "Crear",
+      "index" : "Administracion de Cotizacion",
+      "quotation": "Cotización",
+      "details": "Detalle de la Cotización"
+    },
+    "returns": {
+      "create" : "Crear",
+      "index" : "Administracion de Devoluciones",
+      "returns": "Devoluciones",
+      "details": "Detalle de la Devolución"
+    },
+    "cashClose": {
+      "index" : "Administracion de Cuadre de Caja",
+      "cashClose": "Cuadre de Caja",
+      "create" : "Crear",
+      "details": "Detalle del Cuadre de caja"
 
-  },
-  "bill": {
-    "index" : "Facturacion",
-    "bill": "Facturacion",
-    "details": "Detalle de la Factura"
+    },
+    "bill": {
+      "index" : "Facturacion",
+      "bill": "Facturacion",
+      "details": "Detalle de la Factura"
 
-  },
-  "users":{
-    "index" : "Administracion de Usuarios",
-    "users": "Usuarios",
-    "rols" : "Rol de Usuarios",
-    "changepassword":"Cambiar Contraseña"
-  },
-  "userOffices":{
-    "index" : "Administracion de Usuario Sucursal",
-    "userOffices": "Usuarios Sucursal",
-    "SelectOffice" : "Elige Una sucursal"
-  },
-  "sends":{
-    "index" : "Administracion de Envios",
-    "sends" : "Envios"
+    },
+    "users":{
+      "index" : "Administracion de Usuarios",
+      "users": "Usuarios",
+      "rols" : "Rol de Usuarios",
+      "changepassword":"Cambiar Contraseña"
+    },
+    "userOffices":{
+      "index" : "Administracion de Usuario Sucursal",
+      "userOffices": "Usuarios Sucursal",
+      "SelectOffice" : "Elige Una sucursal"
+    },
+    "sends":{
+      "index" : "Administracion de Envios",
+      "sends" : "Envios"
+    },
+  "validate":{
+    "fields":{      
+    },
+    "names":{
+      "Correo": "Correo"
+    }
+,    "messagers":{   
+      "email": "El campo {_field_} debe ser un correo electrónico válido",
+      "max": "El campo {_field_} no debe ser mayor a {length} caracteres",
+      "min": "El campo {_field_} no debe ser menor a {length} caracteres",
+      "max_value": "El campo {_field_} debe de ser {max} o menor",
+      "min_value": "El campo {_field_} debe de ser {max} o mayor",
+      "numeric": "El campo {_field_} debe contener solo caracteres numéricos",
+      "regex": "El formato del campo {_field_} no es válido",
+      "required": "El campo {_field_} es obligatorio",
+      "required_if": "El campo {_field_} es obligatorio",
+      "size": "El campo {_field_} debe ser menor a {size}KB"
   }
+
+  }
+  
+  
 }
