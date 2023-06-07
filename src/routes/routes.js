@@ -742,7 +742,7 @@ let UsersMenu = {
     },
     {
       path: 'changepassword/:id',
-      name: 'Rol de Usuario',
+      name: 'cambiar clave',
       components: { default: Userschangepassword },
       meta: {
         needsAuth: true,

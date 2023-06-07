@@ -102,7 +102,9 @@
                           size="large"
                           placeholder="Producto"
                           v-model="product.productoId"
-                          @change="$event=>changeProduct()"                 
+                          @change="$event=>changeProduct()"  
+                          ref="ProductoSelect"
+
                         >
                           <el-option
                             v-for="option in selects.products"
@@ -121,7 +123,7 @@
                       <div class="col-sm-9">
                         <ValidationProvider
                           name="valor"
-                          :rules="{required:true,valorMin:1}"
+                          :rules="{valorMin:1}"
                           v-slot="{ passed, failed, errors }"
                         >
                           <base-input
@@ -143,7 +145,7 @@
                       <div class="col-sm-9">
                         <ValidationProvider
                           name="valor"
-                          rules="min:1|numeric"
+                          :rules="{valorMin:1}"
                           v-slot="{ passed, failed, errors }"
                         >
                           <base-input
@@ -181,8 +183,15 @@
                         </ValidationProvider>
                       </div>
                     </div>
+                    <base-alert  
+                    dismissible
+                    :visible="showAlert"
+                    type="success"
+                    @close="showAlert=false"
+                    message="Se agrego Exitosamente"
+                    />
                     <div class="row">
-                      
+              
                       <div class="col-sm-12 col-md-9">
                         <table class="table borderless m-0 text-center">
                           <thead>
@@ -208,6 +217,7 @@
 
                       </tr>
                     </table>
+                  
                       </div>
                       <div class="row col-ms-12 col-md-3 d-flex justify-content-center">
                       <base-button
@@ -218,7 +228,7 @@
                         >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
                       >
                       <base-button
-                        @click.native="cleanProducts()"
+                        @click.native="cleanProduct()"
                         type="danger"
                         class="animation-on-hover"
                         ><i class="tim-icons icon-simple-remove"></i
@@ -334,7 +344,8 @@ export default {
   },
   data() {
     return {
-      pagination: {
+        showAlert: false,
+        pagination: {
         perPage: 50 ,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
@@ -492,6 +503,12 @@ export default {
     this.fillCatalog()
   },
   methods: {
+    alertAutoClose() {
+        this.showAlert = true
+        setTimeout(() => {
+          this.showAlert = false
+        }, 2000);
+    },
     changeProduct(){
       axios
         .get(this.baseApiUrl +'ProductosSucursales/BySuculsalAndProductos?SucursalId='+this.ajusteInvetarios.sucursalId+'&ProductoId='+this.product.productoId)
@@ -518,6 +535,8 @@ export default {
           'Este producto a sido agregado!',
           'error'
         )
+      this.alertAutoClose()
+
          this.fillTable(this.currentProduct.productos)
           this.cleanProduct()
     },
@@ -550,7 +569,11 @@ export default {
     cleanProduct() {
       this.product.productName = ''
       this.product.productQuantity = ''
+      this.product.productCurrentQuantity = 0
       this.product.productPrice = ''
+      this.product.productSellPrice = ''
+      this.product.productoId = ''
+      this.$refs.ProductoSelect.focus()
     },
     cleanProducts() {
       this.tableData = []
@@ -567,8 +590,8 @@ export default {
         this.product.productSellPrice = row.precioVenta
         this.product.productPrice = row.precioCompra
         this.product.productName = row.nombre
-        this.product.productQuantity = row.cantidadExistenciaActual
-        this.product.productCurrentQuantity= row.cantidadExistenciaNueva
+        this.product.productQuantity = row.cantidadExistenciaNueva
+        this.product.productCurrentQuantity= row.cantidadExistenciaActual
         this.product.note= row.nota
 
       }
@@ -576,19 +599,17 @@ export default {
     editProduct() {
       this.editRow.precioCompra = this.product.productPrice
       this.editRow.precioVenta = this.product.productSellPrice
-      this.editRow.cantidad = this.product.productQuantity
-      this.editRow.productQuantity = this.product.productQuantity
-      this.editRow.productCurrentQuantity= this.product.productCurrentQuantity
+      this.editRow.cantidadExistenciaNueva = this.product.productQuantity
+      this.editRow.cantidadExistenciaActual= this.product.productCurrentQuantity
       this.editRow.nota= this.product.note
       this.editRow.diferencia= this.diferencia
       this.editRow.total = this.product.productQuantity*this.product.productPrice
       this.editingProduct = false
       this.editRow = ''
-      this.product.productQuantity=0
-      this.product.productCurrentQuantity=0
-      this.product.productoId=''
-      this.product.productPrice=''
-      this.product.productSellPrice=''
+      this.alertAutoClose()
+
+      this.cleanProduct()
+
     },
     handleDelete(index, row) {
       swal
@@ -656,9 +677,9 @@ export default {
     clear() {
       this.product.productName = ''
       this.product.productQuantity = ''
+      this.product.productCurrentQuantity = 0
       this.product.productPrice = ''
-      this.ajusteInvetarios.sucursalId = ''
-      this.ajusteInvetarios.nota = ''
+      this.product.productoId = ''
     },
 
     create() {

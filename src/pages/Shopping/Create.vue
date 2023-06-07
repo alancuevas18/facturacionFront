@@ -197,6 +197,7 @@
                     v-slot="{ passed, failed, errors }"
                   >
                     <base-input
+                      type="number"
                       required
                       v-model="product.productPrice"
                       :error="errors[0]"
@@ -218,6 +219,7 @@
                     v-slot="{ passed, failed, errors }"
                   >
                     <base-input
+                      type="number"
                       required
                       v-model="product.productSellPrice"
                       :error="errors[0]"
@@ -239,6 +241,7 @@
                     v-slot="{ passed, failed, errors }"
                   >
                     <base-input
+                      type="number"
                       required
                       v-model="product.productQuantity"
                       :error="errors[0]"
@@ -253,21 +256,36 @@
               </div>
 
 
-              <div class="row col-ms-12 col-md-6 d-flex justify-content-center">          
-                <base-button
-                  @click.native="cleanProducts()"
-                  type="danger"
-                  class="animation-on-hover"
-                  ><i class="tim-icons icon-simple-remove"></i
-                  >Limpiar</base-button
-                >
-                <base-button
-                  type="primary"
-                  native-type="submit"
-                  class="animation-on-hover"
-                  @click.native="!editingProduct ? addProduct() : editProduct()"
-                  >{{ !editingProduct ? '+ Agregar' : 'Editar' }}</base-button
-                >
+              <div class="row col-ms-12">   
+                <div class="col-12">
+                  <base-alert  
+                      dismissible
+                      :visible="showAlert"
+                      type="success"
+                      @close="showAlert=false"
+                      message="Se agrego Exitosamente"
+                      />
+                </div>
+                <div class="col-ms-12 col-md-6">
+                  <base-button
+                    @click.native="cleanProduct()"
+                    type="danger"
+                    class="animation-on-hover w-100"
+                    ><i class="tim-icons icon-simple-remove"></i
+                    >Limpiar
+                  </base-button>
+
+                </div>       
+                <div class="col-ms-12 col-md-6">
+                  <base-button
+                    type="primary"
+                    native-type="submit"
+                    class="animation-on-hover w-100"
+                    @click.native="!editingProduct ? addProduct() : editProduct()"
+                    >{{ !editingProduct ? '+ Agregar' : 'Editar' }}
+                    </base-button>
+
+              </div>       
               </div>
               <hr />
               <!-- Table -->
@@ -367,6 +385,7 @@ export default {
   },
   data() {
     return {
+      showAlert: false,
       pagination: {
         perPage: 50,
         currentPage: 1,
@@ -532,7 +551,8 @@ export default {
           'error'
         )
          this.fillTable(this.currentProduct.productos)
-          this.cleanProduct()
+         this.alertAutoClose() 
+         this.cleanProduct()
     },
     //valide product to add a table
     isAddedProduct(id) {
@@ -586,6 +606,7 @@ export default {
       this.editRow.cantidad = this.product.productQuantity
       this.editRow.total = this.product.productQuantity*this.product.productPrice
       this.editingProduct = false
+      this.alertAutoClose() 
       this.editRow = ''
       this.product = {}
     },
@@ -698,8 +719,15 @@ export default {
           })
           .finally(() => (this.isLoading = false))
 
-    }
-  }
+    },
+    alertAutoClose() {
+        this.showAlert = true
+        setTimeout(() => {
+          this.showAlert = false
+        }, 2000);
+    },
+  },
+
 }
 </script>
 <style>

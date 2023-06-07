@@ -169,7 +169,6 @@ export default {
         this.globalSweetMessage('Favor seleccionar un rol!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.user)
         axios
           .post(this.baseApiUrl + 'Usuario/Roles', this.user)
           .then((response) => {

@@ -29,6 +29,12 @@
               </div>
             </div>
             <div class="row">
+              <label class="col-sm-2 col-form-label">Producto:</label>
+              <div class="col-sm-10">
+                <label class="col-form-label"> {{ productNombre }}</label>
+              </div>
+            </div>
+            <div class="row">
               <label class="col-sm-2 col-form-label">Stock:</label>
               <div class="col-sm-10">
                 <label class="col-form-label">
@@ -183,6 +189,7 @@ export default {
       },
       offices: '',
       productCode: '',
+      productNombre: '',
       productByOffice: {
         id: 0,
         productoId: '',
@@ -263,6 +270,7 @@ export default {
         total: obj.total
       }
       this.productCode = obj.productos.codigo
+      this.productNombre= obj.productos.nombre
       if (obj.id != 0)
         this.currentCode = obj.codigo ? ' / Codigo: ' + obj.codigo : ''
     },

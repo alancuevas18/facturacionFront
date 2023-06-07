@@ -23,25 +23,27 @@
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
               <label class="col-sm-2 col-form-label">Codigo</label>
-              <div class="col-sm-8">
-             
+              <div class="col-10 row">
+                <div class="col-10">
                   <base-input                    
                     v-model="product.codigo"
                     class="w-100"
                   >
-                  </base-input>
-          
-             </div>
-             <div class="col-ms-2 d-flex align-items-center" v-if="id==null">
-                <BaseCheckbox
-                  v-model="codigoAuto"
-                  :checked="codigoAuto"
-                  :input="product.codigo=codigoAuto==true&&id==null?'':product.codigo"
-                  class="m-0 p-0"
-                >Automanico
-                </BaseCheckbox>
-             
+                  </base-input>    
+                </div>
+                <div class="col-2 d-flex align-items-center" v-if="id==null">
+                  <BaseCheckbox
+                    v-model="codigoAuto"
+                    :checked="codigoAuto"
+                    :input="product.codigo=codigoAuto==true&&id==null?'':product.codigo"
+                    class="m-0 p-0"
+                  >Automanico
+                  </BaseCheckbox>
+                
+                </div>
+
               </div>
+    
             </div>
             <div class="row">
               <label class="col-sm-2 col-form-label">Nombre*</label>
@@ -65,8 +67,10 @@
                 </ValidationProvider>
               </div>
             </div>
+
+            
             <div class="row">
-              <label class="col-sm-2 col-form-label">Descripcion*</label>
+              <label class="col-sm-2 col-form-label">Descripcion</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="descripcion"
@@ -372,7 +376,6 @@ export default {
     this.id = this.$route.params.id == '' ? '' : this.$route.params.id
     this.title = !this.id ? 'Crear' : 'Editar'
     this.codigoAuto = !this.id ? true: false
-    console.log(this.codigoAuto)
     if (this.id)
       this.globalFind('productos', this.id, this.product).then((response) => {
         Object.keys(this.product).forEach((e) => {
@@ -392,7 +395,6 @@ export default {
     validateFields() {
       return (
         !this.product.nombre ||
-        !this.product.descripcion ||
          (this.codigoAuto !=true && !this.product.codigo)
          )
     },

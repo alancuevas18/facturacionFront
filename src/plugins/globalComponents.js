@@ -2,6 +2,7 @@ import BaseInput from 'src/components/Inputs/BaseInput.vue';
 import BaseDropdown from 'src/components/BaseDropdown.vue';
 import Card from 'src/components/Cards/Card.vue';
 import BaseButton from 'src/components/BaseButton.vue';
+import BaseAlert from 'src/components/BaseAlert.vue';
 import BaseCheckbox from 'src/components/Inputs/BaseCheckbox.vue';
 import { Input, InputNumber, Tooltip, Popover } from 'element-ui';
 import { ValidationProvider } from "vee-validate";
@@ -17,6 +18,7 @@ const GlobalComponents = {
     Vue.component(Card.name, Card);
     Vue.component(BaseCheckbox.name, BaseCheckbox);
     Vue.component(BaseButton.name, BaseButton);
+    Vue.component(BaseAlert.name, BaseAlert);
     Vue.component(Input.name, Input);
     Vue.component(InputNumber.name, InputNumber);
     Vue.use(Tooltip);

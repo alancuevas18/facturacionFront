@@ -13,8 +13,7 @@
             type="button"
             class="close"
             aria-label="Close"
-            @click="dismissAlert"
-          >
+            @click="$emit('close')">
             <i class="tim-icons icon-simple-remove"></i>
           </button>
         </slot>
@@ -25,7 +24,7 @@
           </slot>
         </template>
 
-        <span data-notify="message"> <slot></slot> </span>
+        <span data-notify="message"> {{ message }}<slot></slot> </span>
       </template>
     </div>
   </fade-transition>
@@ -44,6 +43,16 @@ export default {
       default: 'default',
       description: 'Alert type'
     },
+    visible:{
+      type: Boolean,
+      default: false,
+      description: 'Whether alert is dismissible (show)'
+    },
+    message:{
+      type: String,
+      default: '',
+      description: 'Whether alert is message'
+    },
     dismissible: {
       type: Boolean,
       default: false,
@@ -55,15 +64,12 @@ export default {
       description: 'Alert icon to display'
     }
   },
+  emits:['close'],
   data() {
     return {
-      visible: true
     };
   },
   methods: {
-    dismissAlert() {
-      this.visible = false;
-    }
   }
 };
 </script>

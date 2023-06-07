@@ -284,7 +284,7 @@
     </side-bar>
     <!--Presentacion de Configuracion-->
     <sidebar-share :background-color.sync="sidebarBackground"> </sidebar-share>
-    <div class="main-panel" :data="sidebarBackground">
+    <div class="main-panel" id="mainpanel"  :data="sidebarBackground">
       <dashboard-navbar></dashboard-navbar>
       <router-view name="header"></router-view>
       <div

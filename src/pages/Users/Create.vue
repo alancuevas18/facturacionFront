@@ -235,7 +235,6 @@ export default {
     fillCatalog(catalogs) {
       catalogs.forEach((e) => {
         this.globalFillCatalog(e).then((response) => {
-          console.log(response)
           this.selects[e] = response
         })
       })

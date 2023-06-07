@@ -362,7 +362,6 @@ export default {
       .then((response)=>{
         this.bigLineChart.chartData.labels=response.data.map(c=>c.meses)
         this.bigLineChart.chartData.datasets[0].data=response.data.map(c=>c.total)
-        console.log(this.bigLineChart.chartData)
        this.$refs.bigChart.updateGradients(this.bigLineChart.chartData)
       })
     }

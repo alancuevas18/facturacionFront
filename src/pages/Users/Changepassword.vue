@@ -143,7 +143,6 @@ export default {
         this.globalSweetMessage('La contraseñas no coinciden!', 'error')
       } else {
         this.isLoading = true
-        console.log(this.user)
         axios
           .post(this.baseApiUrl + 'Usuario/ResetPassword', this.user)
           .then((response) => {

@@ -164,7 +164,7 @@ export default {
       isLoading: false,
       fullPage: true,
       pagination: {
-        perPage: 5,
+        perPage: 10,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
         total: 0
@@ -174,19 +174,19 @@ export default {
         'codigo',
         'nombre',
         'descripcion',
-        'marcaProducto',
-        'tipoProducto'
+        'marcas',
+        'tipoProductos'
       ],
       tableColumns: [
         {
           prop: 'codigo',
           label: 'Codigo',
-          minWidth: 70
+          minWidth: 60
         },
         {
           prop: 'nombre',
           label: 'Nombre',
-          minWidth: 100
+          minWidth: 150
         },
         {
           prop: 'descripcion',
@@ -201,7 +201,7 @@ export default {
         {
           prop: 'tipoProductos',
           label: 'Tipo Producto',
-          minWidth: 200
+          minWidth: 100
         }
       ],
       tableData: [],

@@ -70,6 +70,8 @@
                 >
                 </el-input>
               </base-input>
+              <a @click="crearExcel()"><i class="fa-solid fa-file-excel display-3" style="color:#0f850f;"></i></a>
+
             </div>
             <el-table :data="queriedData">
               <el-table-column
@@ -80,7 +82,7 @@
                 :label="column.label"
               >
               </el-table-column>
-              <el-table-column :min-width="135" align="right" label="Actions">
+              <el-table-column :min-width="75" align="right" label="Actions">
                 <div slot-scope="props">
                   <router-link :to="'/productsoffice/create/' + props.row.id">
                     <base-button
@@ -167,7 +169,7 @@ export default {
       fullPage: true,
       baseApiUrl: '',
       pagination: {
-        perPage: 5,
+        perPage: 10,
         currentPage: 1,
         perPageOptions: [5, 10, 25, 50],
         total: 0
@@ -179,11 +181,10 @@ export default {
       },
       searchQuery: '',
       propsToSearch: [
-        'productoCodigo',
-        'productoNombre',
+        'codigo',
+        'nombre',
         'stock',
-        'precio',
-        'estadoProductos'
+        'precio'
       ],
       tableColumns: [
         {
@@ -298,6 +299,9 @@ export default {
     filterByOffice() {
       this.tableData = []
       this.fillTable('productossucursales/BySuculsal/' + this.office)
+    },
+    crearExcel(){   
+      this.exportExcel(this.tableData,'Inventario'+this.$store.state.office)
     }
   },
   mounted() {

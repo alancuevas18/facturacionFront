@@ -28,18 +28,18 @@
           </div>
          <div class="tableFixHead scroll mt-2">
 
-         <table class="mytable">
+         <table class="mytable" >
            <thead>
-             <tr>
-               <th>{{ titleModal }}</th>
-               <th>Codigo</th>
-               <th>Precio</th>
-               <th>Eligir</th>
+             <tr style="border-bottom: 2px solid;">
+               <th style="background:white;">{{ titleModal }}</th>
+               <th style="background:white;">Codigo</th>
+               <th style="background:white;">Precio</th>
+               <th style="background:white;">Eligir</th>
              </tr>
            </thead>
            <tbody>
-            <tr v-for="item in tableDataProducFilter" :key="item.id">
-              <td>{{item.nombre}}</td>
+            <tr v-for="item in tableDataProducFilter" :key="item.id" style="border-bottom: 1px solid;">
+              <td style="width:250px;">{{item.nombre}}</td>
               <td>{{item.codigo}}</td>
               <td>{{item.precio}}</td>
               <td><i class="fa-solid fa-check" @click="ver_popup_search=false,currentCode.codigo=item.codigo"></i></td>
@@ -1183,14 +1183,25 @@ body{
     float: right;
     z-index: 3;
     background: white;
-    height: 300px;
+    height: 310px;
     right: 0;
     border-radius: 15px;
-    top:80px
+    top:80px;
 }
+
+@media (min-width:430px)  {
+  .modalsearch{
+    width: 427px;
+    top:33px;
+    left: 3px;
+}
+}
+
 @media (min-width:768px)  {
   .modalsearch{
-    left: 41px;
+    left: 100px;
+    width: 440px;
+    top:65px
 }
 .modalpay{
     right: 15px;

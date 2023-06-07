@@ -30,8 +30,12 @@ async function refreshToken() {
 
       })
       .catch((error) => {
-        this.globalSweetMessage(error.response.data.message, 'error')
+        // this.globalSweetMessage(error.response.data.message, 'error')
       })
+      const container = document.querySelector('#mainpanel')
+      if(container!=null){
+        container.scrollTop = 0
+      }
 }
 router.beforeEach(async (to, from, next) => {
   var isAuthenticated = store.state.isAuthenticated

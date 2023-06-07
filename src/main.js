@@ -30,15 +30,16 @@ axios.interceptors.response.use(
   },
   function (error) {
     if (error.response.status == 401) {
-      if (!store.state.isAuthenticated)
-        swal.fire({
-          title: 'Lo sentimos, la sesión ha expirado',
-          icon: 'error',
-          buttonsStyling: false,
-          customClass: {
-            confirmButton: 'btn btn-success btn-fill'
-          }
-        })
+      // if (!store.state.isAuthenticated){
+      //   swal.fire({
+      //     title: 'Lo sentimos, la sesión ha expirado',
+      //     icon: 'error',
+      //     buttonsStyling: false,
+      //     customClass: {
+      //       confirmButton: 'btn btn-success btn-fill'
+      //     }
+      //   })        
+      // }
       store.commit('logOut')
     }
     return Promise.reject(error)
