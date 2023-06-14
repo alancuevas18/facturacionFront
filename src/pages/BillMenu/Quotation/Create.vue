@@ -86,13 +86,13 @@
                         <label class="col-sm-4 col-form-label">Nombre</label>
                         <div class="col-sm-8">
                           <ValidationProvider
-                            name="Direccion"
+                            name="Nombre"
                             rules="required"
                             v-slot="{ passed, failed, errors }"
                           >
                             <base-input
                               required
-                              :disabled="checkedID"
+                              :disabled="!readOnly"  
                               v-model="Cotizaciones.nombre"
                               :error="errors[0]"
                               :class="[
@@ -108,13 +108,13 @@
                         <label class="col-sm-4 col-form-label">Identificación</label>
                         <div class="col-sm-8">
                           <ValidationProvider
-                            name="Direccion"
+                            name="Identificacion"
                             rules="required"
                             v-slot="{ passed, failed, errors }"
                           >
                             <base-input
                               required
-                              :disabled="checkedID"
+                              :disabled="!readOnly"  
                               v-model="Cotizaciones.identificacion"
                               :error="errors[0]"
                               :class="[
@@ -129,8 +129,8 @@
                     </div>
 
                     <div class="row mb-3">
-                      <label class="col-sm-3 col-form-label">vendedor</label>
-                      <div class="col-sm-9">
+                      <label class="col-sm-4 col-form-label">vendedor</label>
+                      <div class="col-sm-8">
                         <el-select
                           required
                           :disabled="!readOnly"  
@@ -423,7 +423,7 @@ export default {
         identificacion:'',
         clienteId:'',
         sucursalId: this.$store.state.officeId,
-        vendedorId: '',
+        vendedorId: null,
         clientes:null,
         vendedores:null,
         sucursales:null,

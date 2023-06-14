@@ -109,7 +109,7 @@ export default {
   },
   computed: {
     baseComponent() {
-      return this.isMenu || this.link.isRoute ? 'li' : 'router-link';
+      return 'li' ;
     },
     linkPrefix() {
       if (this.link.name) {

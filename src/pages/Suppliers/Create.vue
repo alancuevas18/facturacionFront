@@ -430,7 +430,7 @@ export default {
       return (
         !this.supplier.nombre ||
         !this.supplier.apellido ||
-        !this.supplier.identificacion
+        !this.supplier.celular
       )
     },
     edit() {

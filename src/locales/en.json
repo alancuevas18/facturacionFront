@@ -137,6 +137,7 @@
   "billing": {
     "create" : "Add",
     "index" : "Billing Module",
+    "pending" : "Bill Pending Payment",
     "billingindex":"Bills Administration",
     "billing": "Billing"
   },

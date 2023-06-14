@@ -54,56 +54,42 @@
                   <label class="col-form-label"> {{ facturas.fecha}}</label>              
                 </div>           
             </div>
-          <div>
-
-            <table class="table">
-            <thead>
-              <tr>
-                <th>Codigo</th>
-                <th>Produto</th>
-                <th>Cantidad</th>
-                <th>Precio</th>
-                <th>Itbis</th>
-                <th>Total</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
-                <td>{{item.codigo }}</td>
-                <td>{{item.productoServicio}}</td>
-                <td>{{item.cantidad }}</td>
-                <td>{{item.precio }}</td>
-                <td>{{item.itbis }}</td>
-                <td>{{item.total }}</td>
-              </tr>
-            </tbody>
-        </table>
+          <div class="row">
+              <table class="table">
+              <thead>
+                <tr>
+                  <th>Codigo</th>
+                  <th>Produto</th>
+                  <th>Cantidad</th>
+                  <th>Precio</th>
+                  <th>Itbis</th>
+                  <th>Total</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr v-for="(item, index) in facturas.detalleFactura" :key="item.id" :index="index">
+                  <td>{{item.codigo }}</td>
+                  <td>{{item.productoServicio}}</td>
+                  <td>{{item.cantidad }}</td>
+                  <td>{{item.precio }}</td>
+                  <td>{{item.itbis }}</td>
+                  <td>{{item.total }}</td>
+                </tr>
+              </tbody>
+              </table>
           </div>
 
      
         </div>       
-        <div class="col-ms-12 col-md-8">
+        <div class="col-ms-12 col-md-8 pl-3">
         <ValidationObserver v-slot="{ handleSubmit }">
           <form class="form-horizontal" @submit.prevent="handleSubmit()">
             <div class="row">
               <label class="col-sm-2 col-form-label">Codigo Factura</label>
               <div class="col-sm-10">
-                <ValidationProvider
-                  name="Codigo Factura"
-                  rules=""
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="send.facturaId"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
-                  >
-                  </base-input>
-                </ValidationProvider>
+
+                <label class="col-form-label"> {{ send.facturaId}}</label>              
+              
               </div>
             </div>
 
@@ -172,50 +158,53 @@
                 </ValidationProvider>
               </div>
             </div>
-
             <div class="row">
-              <label class="col-sm-2 col-form-label">Fecha Envio</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Fecha Envio"
-                  rules=""
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="send.fechaEnvio"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+                <label class="col-sm-2 col-form-label">Fecha</label>
+                <div class="col-sm-10">
+                  <ValidationProvider
+                    name="fechaEnvio"
+                    v-slot="{ passed, failed, errors }"
                   >
-                  </base-input>
-                </ValidationProvider>
+                    <base-input>
+                      <el-date-picker
+                        type="date"
+                        placeholder="Fecha"
+                        v-model="send.fechaEnvio"
+                        :error="errors[0]"
+                        :class="[
+                          { 'has-success': passed },
+                          { 'has-danger': failed }
+                        ]"
+                      >
+                      </el-date-picker>
+                    </base-input>
+                  </ValidationProvider>
+                </div>
               </div>
-            </div>
 
-            <div class="row">
-              <label class="col-sm-2 col-form-label">Fecha Entrega</label>
-              <div class="col-sm-10">
-                <ValidationProvider
-                  name="Fecha Entrega"
-                  rules=""
-                  v-slot="{ passed, failed, errors }"
-                >
-                  <base-input
-                    required
-                    v-model="send.fechaEntrega"
-                    :error="errors[0]"
-                    :class="[
-                      { 'has-success': passed },
-                      { 'has-danger': failed }
-                    ]"
+              <div class="row">
+                <label class="col-sm-2 col-form-label">Fecha Entrega</label>
+                <div class="col-sm-10">
+                  <ValidationProvider
+                    name="fechaEntrega"
+                    v-slot="{ passed, failed, errors }"
                   >
-                  </base-input>
-                </ValidationProvider>
+                    <base-input>
+                      <el-date-picker
+                        type="date"
+                        placeholder="Fecha"
+                        v-model="send.fechaEntrega"
+                        :error="errors[0]"
+                        :class="[
+                          { 'has-success': passed },
+                          { 'has-danger': failed }
+                        ]"
+                      >
+                      </el-date-picker>
+                    </base-input>
+                  </ValidationProvider>
+                </div>
               </div>
-            </div>
 
             <div class="row">
               <label class="col-sm-2 col-form-label mt-2">Sucursal</label>
@@ -370,9 +359,9 @@ export default {
         cliente: null,
         numeroContacto: null,
         direccion: null,
-        fechaEnvio: null,
+        fechaEnvio: new Date(),
         fechaEntrega: null,
-        nota: null,
+        nota: '',
         sucursalId: null,
         sucursales: null,
         facturaId: null,
@@ -447,12 +436,14 @@ export default {
       this.send.numeroContacto = ''
     },
     edit() {
-      this.validateInvoice()
+      // this.validateInvoice()
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else if (!this.validInvoice) {
-        this.globalSweetMessage('Favor insertar factura valida!', 'error')
-      } else {
+      } 
+      // else if (!this.validInvoice) {
+      //   this.globalSweetMessage('Favor insertar factura valida!', 'error')
+      // } 
+      else {
         this.isLoading = true
         axios
           .put(this.baseApiUrl + 'Envios/' + this.send.id, this.send)
@@ -468,12 +459,14 @@ export default {
       }
     },
     create() {
-      this.validateInvoice()
+      // this.validateInvoice()
       if (this.validateFields()) {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
-      } else if (!this.validInvoice) {
-        this.globalSweetMessage('Favor insertar factura valida!', 'error')
-      } else {
+      } 
+      // else if (!this.validInvoice) {
+      //   this.globalSweetMessage('Favor insertar factura valida!', 'error')
+      // } 
+      else {
         this.isLoading = true
         axios
           .post(this.baseApiUrl + 'Envios', this.send)
@@ -504,6 +497,12 @@ export default {
         .get(this.baseApiUrl + 'facturas/' + this.send.facturaId)
         .then((response) => {
           this.facturas=response.data
+          if( !this.id ){
+          this.send.cliente=response.data.nombre
+          this.send.direccion=response.data.direccion
+          this.send.numeroContacto=response.data.numero
+          }
+  
         })
         .finally(() => (this.isLoading = false))
 

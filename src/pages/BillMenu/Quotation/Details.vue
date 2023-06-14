@@ -18,11 +18,39 @@
               
             </button>
           </router-link>
-          <router-link to="/Inventoryadjustment/print">
-            <button class="btn btn btn-twitter">
-                 Imprimir <i class="fa-solid fa-print"></i>
-            </button>
-          </router-link>
+          <div class="row">
+            <div class="col-md-4 col-ms-12">
+              <div class="input-group mb-3">
+                <el-select
+                      class="select-primary"
+                      size="large"
+                      v-model="impresora"
+                    >
+                      <el-option
+                        v-for="option in selects.impresoras"
+                        class="select-primary"
+                        :value="option.id"
+                        :label="option.nombre"
+                        :key="option.id"
+                      >
+                      </el-option>
+                </el-select>
+                <div class="input-group-append">
+                  <base-button
+                  type="twitter m-0"
+                  v-print="'#Print'">
+                  <i class="fa-solid fa-print m-0 "></i> Imprimir</base-button>
+                </div>
+              </div>
+            </div>
+            <div class="col-md-3 col-ms-12">
+              <router-link :to="'/billDashboard/bill/create/'+this.id">
+                <button class="btn btn-primary ml-1">
+                    Generar Factura 
+                </button>
+              </router-link>
+            </div>
+        </div>
         </h4>
       </template>
         <div class="row">  
@@ -136,6 +164,60 @@
         </div>
     </div>
         </card>
+              <!-- Report -->
+      <div class="container d-none">
+    <div id="Print" class="bg-white h-100">
+      <img src="/logo.png"  class="img-fluid w-25" style="height: 150px; margin-left:5%;" alt="Responsive image"/>
+
+       <div :class="'row textprint '+ impresora">
+        <div class="col-2">
+        </div>
+        <div class="col-12 display-3">
+          {{ cotizaciones.sucursales }}
+        </div>
+        <div class="col-12">Cotizacion</div>        
+        <div class="col-12"> Codigo: {{cotizaciones.id}}</div>
+        <div class="col-12"> Cliente: {{cotizaciones.nombre}}</div>
+        <div class="col-12"> Rnc: {{cotizaciones.identificacion}}</div>
+      <div class="col-12">
+          <table class="mytable w-100">
+            <thead class="">
+              <tr class="border-bottom">
+        
+                <th>Descripcion</th>
+                <th>Total</th>
+
+              </tr>
+            </thead>
+            <tbody v-for="item in cotizaciones.detalleCotizaciones" :key="item.id">        
+              <tr>
+                <td colspan="2">        
+                    {{item.productos?.nombre}}{{ item.servicios?.nombre }}
+            
+                </td>
+                <td></td>
+                <td></td>
+              </tr>
+              <tr >
+                <td>
+                    {{item.cantidad}} X {{item.valorProducto}}                
+                </td>
+                <td>{{item.total}}</td>
+              </tr>
+
+            </tbody>
+
+          </table>
+          <hr> <div class="col-12 text-right">Total: {{cotizaciones.detalleCotizaciones.map(c=>c.total).reduce((a, b) => a + b, 0).toFixed(2)}}</div>
+
+          
+
+        </div>
+       </div>
+    </div>
+         </div>
+       <!-- End Report -->
+
       </div>
 </template>
 <script>
@@ -181,14 +263,19 @@ components:{
   },
   data(){
     return{
-      isLoading: false,
-      fullPage: true,
-      baseApiUrl: '',
-      cotizaciones:{
-        detallecotizaciones:[]
+    impresora:'w-100',
+    isLoading: false,
+    fullPage: true,
+    baseApiUrl: '',
+    cotizaciones:{
+     detalleCotizaciones:[{total:0}]
     },
     selects: {
-      tipoajuste:[]
+      tipoajuste:[],
+      impresoras: [
+          { id: 'w-30', nombre: '58mm' },
+          { id: 'w-100', nombre: 'A4' }
+        ]
       },
       id:0,
       title: '',
@@ -268,5 +355,16 @@ components:{
 }
 .el-table th.el-table__cell {
   background-color: transparent;
+}
+body{
+  background: white;
+}
+.textprint{
+  font-size: 12pt;
+  color: black;
+}
+.w-30{
+  width: 38%;
+  margin-left: 0.01px;
 }
 </style>

@@ -82,7 +82,9 @@ const ShoppingDetail = () => import('src/pages/Shopping/Details.vue')
 //Pyment
 const PaymentCreate = () => import('src/pages/Payments/Create.vue')
 const PaymentDetail = () => import('src/pages/Payments/Details.vue')
-
+//Pyment
+const BillPaymentCreate = () => import('src/pages/BillMenu/BillPayments/Create.vue')
+const BillPaymentDetail = () => import('src/pages/BillMenu/BillPayments/Details.vue')
 //StructureComprabante
 const StructureComprobantesIndex = () =>
   import('src/pages/StructureComprobantes/Index.vue')
@@ -149,6 +151,7 @@ const billIndex = () => import('src/pages/BillMenu/bill/Index.vue')
 const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
 const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
 const billPrint = () => import('src/pages/BillMenu/bill/Print.vue')
+const billPending = () => import('src/pages/BillMenu/bill/BillPending.vue')
 
 let clientMenu = {
   path: '/clients',
@@ -162,7 +165,7 @@ let clientMenu = {
       components: { default: ClientIndex },
       meta: {
         needsAuth: true,
-        validRols: 'Admin,Root'
+        validRols: 'Admin,Root,Vendedor'
       }
     },
     {
@@ -171,7 +174,7 @@ let clientMenu = {
       components: { default: ClientCreate },
       meta: {
         needsAuth: true,
-        validRols: 'Admin,Root'
+        validRols: 'Admin,Root,Vendedor'
       }
     },
     {
@@ -180,7 +183,7 @@ let clientMenu = {
       components: { default: ClientDetail },
       meta: {
         needsAuth: true,
-        validRols: 'Admin,Root'
+        validRols: 'Admin,Root,Vendedor'
       }
     }
   ]
@@ -495,7 +498,7 @@ let DeliveryMenu = {
       components: { default: DeliveryIndex },
       meta: {
         needsAuth: true,
-        validRols: 'Admin,Root'
+        validRols: 'Admin,Root,Vendedor'
       }
     },
     {
@@ -504,7 +507,7 @@ let DeliveryMenu = {
       components: { default: DeliveryCreate },
       meta: {
         needsAuth: true,
-        validRols: 'Admin,Root'
+        validRols: 'Admin,Root,Vendedor'
       }
     },
     {
@@ -513,7 +516,7 @@ let DeliveryMenu = {
       components: { default: DeliveryDetail },
       meta: {
         needsAuth: true,
-        validRols: 'Admin,Root'
+        validRols: 'Admin,Root,Vendedor'
       }
     }
   ]
@@ -765,6 +768,66 @@ let BillDashboard = {
     }
   ]
 }
+
+let billMenu = {
+  path: '/billDashboard/bill',
+  component: BillingLayout,
+  redirect: '/billDashboard/bill/index',
+  name: 'Factura',
+  children: [
+    {
+      path: 'index',
+      name: 'Facturas',
+      components: { default: billIndex }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Factura',
+      components: { default: billCreate }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles factura',
+      components: { default: billDetail }
+    },
+    {
+      path: 'print/:id',
+      name: 'imprrimir factura',
+      components: { default: billPrint }
+    },
+    {
+      path: 'billPending',
+      name: 'Facturas Pendientes',
+      components: { default: billPending }
+    },
+  ]
+}
+let BillpaymentMenu = {
+  path: '/billDashboard/BillPayments',
+  component: BillingLayout,
+  redirect: '/billDashboard/bill/index',
+  name: 'Pagos facturas',
+  children: [
+    {
+      path: 'create/:id?',
+      name: 'Crear Pago Factura',
+      components: { default: BillPaymentCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    },
+    {
+      path: 'details/:id?',
+      name: 'Detalle de pago factura',
+      components: { default: BillPaymentDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    }
+  ]
+}
 let ShiftMenu = {
   path: '/billDashboard/shift',
   component: BillingLayout,
@@ -852,7 +915,6 @@ let cashCloseMenu = {
     }
   ]
 }
-
 let sendsMenu = {
   path: '/billDashboard/sends',
   component: BillingLayout,
@@ -881,34 +943,7 @@ let sendsMenu = {
     }
   ]
 }
-let billMenu = {
-  path: '/billDashboard/bill',
-  component: BillingLayout,
-  redirect: '/billDashboard/bill/index',
-  name: 'Factura',
-  children: [
-    {
-      path: 'index',
-      name: 'Facturas',
-      components: { default: billIndex }
-    },
-    {
-      path: 'create',
-      name: 'Crear Factura',
-      components: { default: billCreate }
-    },
-    {
-      path: 'details/:id',
-      name: 'Detalles factura',
-      components: { default: billDetail }
-    },
-    {
-      path: 'print/:id',
-      name: 'imprrimir factura',
-      components: { default: billPrint }
-    }
-  ]
-}
+
 let deductionMenu = {
   path: '/deductions',
   component: DashboardLayout,
@@ -1017,6 +1052,7 @@ const routes = [
   ReturnsMenu,
   cashCloseMenu,
   billMenu,
+  BillpaymentMenu,
   sendsMenu,
   deductionMenu,
   SpendsTypeMenu,

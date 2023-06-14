@@ -331,7 +331,7 @@ export default {
       return (
         !this.seller.nombre ||
         !this.seller.apellido ||
-        !this.seller.identificacion
+        !this.seller.celular
       )
     },
     edit() {

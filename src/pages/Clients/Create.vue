@@ -380,11 +380,11 @@ export default {
         nombre: '',
         apellido: '',
         identificacion: '',
-        correo: '',
+        correo: 'theglamouronline@gmail.com',
         direccion: '',
         celular: '',
         telefono: '',
-        estadoClientes: '',
+        estadoClientes: true,
         personaId: 0,
         id: 0,
         estadoPersona: true,
@@ -445,6 +445,8 @@ export default {
             this.$router.push({ path: '/clients/index' })
           } else {
             let celular = this.client.celular
+            console.log(response.data)
+            if(response.data.celular!=null)
             this.client = this.globalFillObject(response.data)
             this.client.celular = celular
           }
@@ -459,7 +461,7 @@ export default {
       return (
         !this.client.nombre ||
         !this.client.apellido ||
-        !this.client.identificacion
+        !this.client.celular
       )
     },
     edit() {

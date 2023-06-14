@@ -46,8 +46,29 @@
               path: '/billDashboard/bill/index'
             }"
           ></sidebar-item>
-       
+          <sidebar-item
+            :link="{
+              name: $t('billing.pending'),
+              path: '/billDashboard/bill/BillPending'
+            }"
+          ></sidebar-item>
         </sidebar-item>
+               <!-- Clients Menu -->
+               <sidebar-item
+          :link="{
+            name: $t('clients.clients'),
+            icon: 'fas fa-users'
+          }"
+        >
+          <sidebar-item
+          :link="{ name: $t('clients.create'), path: '/clients/create' }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{ name: $t('clients.index'), path: '/clients/index' }"
+          ></sidebar-item>
+  
+        </sidebar-item>
+  
         <!-- shift Menu -->
         <sidebar-item
           :link="{
@@ -121,6 +142,20 @@
             :link="{ name: $t('sends.index'), path: '/billDashboard/sends' }"
           ></sidebar-item>
         </sidebar-item>
+              <!-- delivery Menu -->
+              <sidebar-item
+          :link="{
+            name: $t('deliveries.deliveries'),
+            icon: 'tim-icons icon-email-85'
+          }"
+        >
+        <sidebar-item
+            :link="{ name: $t('deliveries.create'), path: '/deliveries/create' }"
+          ></sidebar-item>
+          <sidebar-item
+            :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
+          ></sidebar-item>
+         </sidebar-item>
         <hr />
       </template>
     </side-bar>

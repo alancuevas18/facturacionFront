@@ -149,8 +149,15 @@
     "billing": {
       "create" : "Crear",
       "index" : "Modulo de Facturacion",
+      "pending":"Factura Pendiente de pago",
       "billingindex":"Administracion de Facturacion",
       "billing": "Facturacion"
+    },
+    "billpayments": {
+      "create" : "Crear",
+      "index" : "Administracion de pagos de factura",
+      "shopping": "Pagos",
+      "details":"Detalle pago"
     },
     "departures": {
       "departures" : "Mover invetario",

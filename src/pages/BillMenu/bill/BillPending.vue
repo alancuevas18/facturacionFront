@@ -6,14 +6,14 @@
       :is-full-page="fullPage"
     />
     <div class="col-md-8 ml-auto mr-auto">
-      <h2 class="text-center">{{ $t('sends.index') }}</h2>
+      <h2 class="text-center">{{ $t('billing.billingindex') }}</h2>
     </div>
     <div class="row mt-5">
-      <div class="col-12">
+      <div class="col-12 m-0 p-0">
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
-            {{ $t('sends.sends') }}
-            <router-link to="/billDashboard/sends/create">
+            {{ $t('billing.billing') }}
+            <router-link to="/billDashboard/bill/create">
               <button class="btn floatr btn-icon btn-twitter">
                 <i class="tim-icons icon-simple-add"></i>
               </button>
@@ -60,33 +60,19 @@
                 :label="column.label"
               >
               </el-table-column>
-              <el-table-column :min-width="135" align="right" label="Actions">
+              <el-table-column :min-width="50" align="right" label="">
                 <div slot-scope="props">
-                  <router-link
-                    :to="'/billDashboard/sends/Details/' + props.row.id"
-                  >
+                  <router-link :to="'/billDashboard/BillPayments/Create/' + props.row.id">
                     <base-button
                       class="like btn-link"
                       type="info"
                       size="sm"
                       icon
                     >
-                      <i class="tim-icons icon-notes"></i>
+                    <i class="fa-solid fa-coins"></i>
                     </base-button>
                   </router-link>
-                  <router-link
-                    :to="'/billDashboard/sends/create/' + props.row.facturaId+'/'+props.row.id"
-                  >
-                    <base-button
-                      class="edit btn-link"
-                      type="warning"
-                      size="sm"
-                      icon
-                    >
-                      <i class="tim-icons icon-pencil"></i>
-                    </base-button>
-                  </router-link>
-                </div>
+               </div>
               </el-table-column>
             </el-table>
           </div>
@@ -165,57 +151,44 @@ export default {
         perPageOptions: [5, 10, 25, 50],
         total: 0
       },
+      office: '',
+      selects: {
+        simple: '',
+      },
       searchQuery: '',
-      propsToSearch: [
-        'cliente',
-        'numeroContacto',
-        'fechaEnvio',
-        'fechaEntrega',
-        'estadoEnvios'
-      ],
+      propsToSearch: ['nombre','identificacion'],
       tableColumns: [
+       {
+          prop: 'id',
+          label: 'codigo',
+          minWidth: 85
+        },
         {
-          prop: 'cliente',
-          label: 'Cliente',
+          prop: 'nombre',
+          label: 'Nombre',
+          minWidth: 110
+        },
+        {
+          prop: 'identificacion',
+          label: 'Identificación',
           minWidth: 100
         },
         {
-          prop: 'direccion',
-          label: 'Direccion',
+          prop: 'fecha',
+          label: 'Fecha',
           minWidth: 100
         },
         {
-          prop: 'numeroContacto',
-          label: 'Numero contacto',
-          minWidth: 90
-        },
-        {
-          prop: 'fechaEnvio',
-          label: 'Fecha de Envio',
+          prop: 'sucursales.nombre',
+          label: 'Sucursal',
           minWidth: 100
         },
         {
-          prop: 'fechaEntrega',
-          label: 'Fecha de Entrega',
+          prop: 'pendiente',
+          label: 'Monto Pendiente',
           minWidth: 100
-        },
-        {
-          prop: 'facturaId',
-          label: 'Factura',
-          minWidth: 70
-        },
-        {
-          prop: 'mensajeros',
-          label: 'Mensajero',
-          minWidth: 70
-        },
-        {
-          prop: 'estadoEnviosName',
-          label: 'Estado',
-          minWidth: 70
         }
       ],
-      selects: [],
       tableData: [],
       searchedData: [],
       fuseSearch: null
@@ -246,7 +219,7 @@ export default {
     deleteRow(row) {
       this.isLoading = true
       axios
-        .delete(this.baseApiUrl + 'Envios/' + row.id)
+        .delete(this.baseApiUrl + 'productossucursales/' + row.id)
         .then(() => {
           this.globalSweetMessage()
           let indexToDelete = this.tableData.findIndex(
@@ -261,39 +234,25 @@ export default {
         })
         .finally(() => (this.isLoading = false))
     },
-    fillCatalogs(catalogs) {
-      catalogs.forEach((catalog) => {
-        axios
-          .get(this.baseApiUrl + 'catalogo/' + catalog)
-          .then((response) => {
-            this.selects[catalog] = response.data
-          })
-          .catch((error) => {
-            this.globalSweetMessage('Error al cargar la pagina', 'error')
-          })
-      })
-    }
+    fillTable(resource, clearFilters) {
+      this.tableData = []
+      if (clearFilters) this.office = ''
+      axios
+        .get(this.baseApiUrl + resource)
+        .then((response) => {         
+          this.tableData=response.data
+        })
+        .catch((error) => {
+          this.errored = true
+        })
+        .finally(() => (this.isLoading = false))
+    },
+
   },
   mounted() {
     this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
-    this.fillCatalogs(['estadoEnvios', 'mensajeros'])
-    axios
-      .get(this.baseApiUrl + 'envios')
-      .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push(response.data[i])
-          let mensajeroId = response.data[1].mensajeroId ?? 1
-          this.tableData[i]['mensajeroId'] =
-            this.selects.mensajeros[mensajeroId - 1].nombre
-          this.tableData[i]['estadoEnvios'] =
-            this.selects.estadoEnvios[response.data[i].estadoEnvios - 1].nombre
-        }
-      })
-      .catch((error) => {
-        this.errored = true
-      })
-      .finally(() => (this.isLoading = false))
+    this.fillTable('Facturas/BySuculsalPendiente/'+this.$store.state.officeId, true)
   },
   watch: {
     searchQuery(value) {
@@ -301,10 +260,7 @@ export default {
       if (value !== '') {
         result = this.tableData.filter((c) =>
           this.propsToSearch.some((name) =>
-            c[name]
-              .toString()
-              .toLowerCase()
-              .includes(this.searchQuery.toLowerCase())
+            c[name].toString().includes(this.searchQuery)
           )
         )
       }
@@ -323,5 +279,13 @@ export default {
 }
 .el-table th.el-table__cell {
   background-color: transparent;
+}
+.menuFactura:before, .menuFactura:after{
+right: -8px !important;
+top: 22px !important;
+transform: rotateZ(94deg);
+}
+.menuFactura>a{
+  padding:  0.25rem 1.3rem;
 }
 </style>

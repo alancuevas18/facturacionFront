@@ -675,6 +675,7 @@ export default {
   },
   data() {
     return {
+      id:'',
       impresora:'w-30',
       ver_popup_search:false,
       pagodo:false,
@@ -683,8 +684,8 @@ export default {
       titleModalPay:'',
       readOnly:false,
       menuOption:false,
-      Vendedor:false,
-      Comprobante:false,
+      Vendedor:true,
+      Comprobante:true,
       typePrice:'precio',
       search:'',
       tableDataProducFilter:[],
@@ -735,6 +736,7 @@ export default {
         abono:0,
         descuento:0,
         itbis:0,
+        gastos:0,
         total:0,
         tipoComprobante:0,
         detalleFactura:[],
@@ -812,6 +814,21 @@ export default {
   mounted() {
     // this.isLoading = true
     this.baseApiUrl = config.global.baseApiUrl
+    this.id = this.$route.params.id == '' ? '' : this.$route.params.id
+    if (this.id)
+     axios.get(this.baseApiUrl+'Cotizaciones/'+this.id).then((response) => {
+        response.data.detalleCotizaciones.forEach(element => {
+
+        this.currentCode={
+        codigo: element.productos.codigo,
+        quanty: element.cantidad,
+        tax:  element.productos.itbis,
+        descuento: 0,
+        servicioSucursal:null,
+      }
+      this.pickProduct()
+        });
+      })
     this.fillCatalogs(['sucursales', 'vendedores', 'clientes'])
     axios.get(this.baseApiUrl+'Turnos/TurnoByUserOpen/'+this.$store.state.officeId)
     .then((response)=> {
@@ -834,24 +851,32 @@ export default {
       this.formToAddProducts=false
     },
     checkIn(){
-      this.readOnly=true
+
+      console.log(this.bill)
+      if(this.bill.clienteId !=null){
+        this.readOnly=true
       this.pagodo=true
       this.bill.detalleFactura=this.tableData
       this.isLoading = true
-      axios
-          .post(this.baseApiUrl + 'Facturas', this.bill)
-          .then((response) => {
-            this.pagodo=true
-           this.pay.facturaId=response.data.result.id
-           this.bill.facturaId=response.data.result.id
-           if (this.bill.tipoFactura==2){
-             this.loadBill()
-           }
-          })
-          .catch((error) => {
-            this.globalSweetMessage(error.response.data.message, 'error')
-          })
-          .finally(() => (this.isLoading = false))
+        axios
+            .post(this.baseApiUrl + 'Facturas', this.bill)
+            .then((response) => {
+              this.pagodo=true
+             this.pay.facturaId=response.data.result.id
+             this.bill.facturaId=response.data.result.id
+             if (this.bill.tipoFactura==2){
+               this.loadBill()
+             }
+            })
+            .catch((error) => {
+              this.globalSweetMessage(error.response.data.message, 'error')
+            })
+            .finally(() => (this.isLoading = false))
+      }
+      else{
+        this.globalSweetMessage("Debe seleccionar un cliente", 'error')
+
+      }
 
     },
     loadBill(){

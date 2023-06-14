@@ -331,7 +331,7 @@ export default {
       return (
         !this.delivery.nombre ||
         !this.delivery.apellido ||
-        !this.delivery.identificacion
+        !this.delivery.celular
       )
     },
     edit() {
