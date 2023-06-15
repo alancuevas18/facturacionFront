@@ -163,9 +163,9 @@ Vue.mixin({
         })
         .finally(() => (this.isLoading = false))
     },
-    globalPost(page, obj, redirect = null) {
+    async globalPost(page, obj, redirect = null) {
       let baseApiUrl = config.global.baseApiUrl
-      axios
+     await  axios
         .post(baseApiUrl + page, obj)
         .then((response) => {
           this.globalSweetMessage(response.data.message)

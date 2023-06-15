@@ -118,7 +118,8 @@
           <hr> <div class="col-12 text-right"> <label> Descuento: {{facturas.descuento.toFixed(2)}}</label></div>
           <hr> <div class="col-12 text-right"><label> Sub Total: {{facturas.subTotal.toFixed(2)}}</label></div>
           <hr> <div class="col-12 text-right"><label> Itbis: {{facturas.itbis.toFixed(2)}}</label></div>
-          <hr> <div class="col-12 text-right"><label> Total:{{facturas.total.toFixed(2)}}</label></div>
+          <hr> <div class="col-12 text-right"><label> Envio: {{facturas.otroCostos.toFixed(2)}}</label></div>
+          <hr> <div class="col-12 text-right"><label> Total: {{(facturas.total+facturas.otroCostos).toFixed(2)}}</label></div>
           <hr> <div class="col-12 text-right"><label> Monto Pagado:{{facturas.abono.toFixed(2)}}</label></div>
              </div>
             </div>
@@ -180,8 +181,9 @@
           </table>
           <hr> <div class="col-12 text-right">Descuento: {{facturas.descuento.toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Sub Total: {{facturas.subTotal.toFixed(2)}}</div>
-          <hr> <div class="col-12 text-right">Itbis: {{facturas.itbis.toFixed(2)}}</div>
-          <hr> <div class="col-12 text-right">Total:{{facturas.total.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Itbis: {{(facturas.itbis+facturas.otroCostos).toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Envio: {{facturas.otroCostos.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Total:{{(facturas.total+facturas.otroCostos).toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Monto Pagado:{{facturas.abono.toFixed(2)}}</div>
 
 

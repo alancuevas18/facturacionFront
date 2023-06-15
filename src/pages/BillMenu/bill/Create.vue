@@ -8,44 +8,50 @@
 
     <div class="col-12 p-0 m-1" >
        <!-- modal productos or servisico -->
-      <div class="col-md-4 col-ms-12 modalsearch container" v-if="ver_popup_search" >
+      <div class="col-md-6 col-ms-10 modalsearch container" v-if="ver_popup_search" >
 
-         <div class="row m-1">
-           <div class="col-11 text-center"> {{ titleModal }} </div>
-           <div class="col-1"> <i class="fa-solid fa-xmark" @click="ver_popup_search=false"></i></div>
+         <div class="row mt-1">
+           <div class="col-10 text-center font-weight-bold text-dark h3"> {{ titleModal }} </div>
+           <div class="col-2 h3"> <i class="fa-solid fa-xmark" @click="ver_popup_search=false"></i></div>
          </div>
-         <div class="col-12">
-
-          <label class="col-form-label">Buscar</label>
-          <base-input
-            class="mb-0 text-dark"
-            placeholder="Producto"
-            required
-            v-model="search"
-            v-on:keyup="filterProduct()"
-          >
-          </base-input>
-          </div>
-         <div class="tableFixHead scroll mt-2">
-
-         <table class="mytable" >
-           <thead>
-             <tr style="border-bottom: 2px solid;">
-               <th style="background:white;">{{ titleModal }}</th>
-               <th style="background:white;">Codigo</th>
-               <th style="background:white;">Precio</th>
+         <div v-if="titleModal=='Productos'||titleModal=='Servicios'">
+  
+          <div class="col-12">
+ 
+           <label class="col-form-label">Buscar</label>
+           <base-input
+             class="mb-0 text-dark"
+             placeholder="Producto"
+             required
+             v-model="search"
+             v-on:keyup="filterProduct()"
+           >
+           </base-input>
+           </div>
+          <div class="tableFixHead">
+          <table class="mytable" >
+            <thead>
+              <tr style="border-bottom: 2px solid;">
                <th style="background:white;">Eligir</th>
+                <th style="background:white;">{{ titleModal }}</th>
+                <th style="background:white;">Codigo</th>
+                <th style="background:white;">Precio</th>
+              </tr>
+            </thead>
+            <tbody>
+             <tr v-for="item in tableDataProducFilter" :key="item.id" style="border-bottom: 1px solid;">
+               <td><i class="fa-solid fa-check" @click="ver_popup_search=false,currentCode.codigo=item.codigo"></i></td>
+               <td style="width:250px;">{{item.nombre}}</td>
+               <td>{{item.codigo}}</td>
+               <td>{{item.precio}}</td>
              </tr>
-           </thead>
-           <tbody>
-            <tr v-for="item in tableDataProducFilter" :key="item.id" style="border-bottom: 1px solid;">
-              <td style="width:250px;">{{item.nombre}}</td>
-              <td>{{item.codigo}}</td>
-              <td>{{item.precio}}</td>
-              <td><i class="fa-solid fa-check" @click="ver_popup_search=false,currentCode.codigo=item.codigo"></i></td>
-            </tr>
-           </tbody>
-         </table>
+            </tbody>
+          </table>
+          </div>
+        
+        </div>
+         <div v-if="titleModal=='Crear Cliente'" class="clientFixHead">
+          <clientForm @close="ver_popup_search=false" @reload="fillCatalogs(['clientes'])"></clientForm>
          </div>
 
        </div>
@@ -268,14 +274,15 @@
              </div>
             </div>
 
-              <div class="col-md-3 col-ms-12">
+              <div class="col-md-6 col-ms-12">
               <label class="col-form-label">Cliente</label>
+              <div class="input-group m-0">
               <el-select
                 required
                 filterable
                 :disabled="readOnly"
                 :key="readOnly"
-                class="select-primary w-100"
+                class="select-primary w-70"
                 size="large"
                 placeholder="Cliente"
                 v-model="bill.clienteId"
@@ -289,30 +296,16 @@
                 >
                 </el-option>
               </el-select>
+              <div class="input-group-append">
+                    <button 
+                    class="btn btn-outline-secondary m-0" 
+                    type="button" 
+                    @click="subclientmodal('Crear Cliente')"><i class="fa-solid fa-plus"></i></button>
+                  </div>
               </div>
-              <div class="col-md-3 col-ms-12" v-show="Vendedor">
-                <label class="col-form-label">Vendedor</label>
-                <el-select
-                  required
-                  filterable
-                  :disabled="readOnly"
-                  :key="readOnly"
-                  class="select-primary w-100"
-                  size="large"
-                  placeholder="Vendedor"
-                  v-model="bill.vendedorId"
-                >
-                  <el-option
-                    v-for="option in selects.vendedores"
-                    class="select-primary"
-                    :value="option.id"
-                    :label="option.nombre"
-                    :key="option.id"
-                  >
-                  </el-option>
-                </el-select>
               </div>
-              <div class="col-md-3 col-ms-12">
+           
+              <div class="col-md-6 col-ms-12">
               <label class="col-form-label">Tipo Factura</label>
               <el-select
                 required
@@ -334,7 +327,7 @@
                 </el-option>
               </el-select>
               </div>
-             <div class="col-md-3 col-ms-12"  v-show="Comprobante">
+             <div class="col-md-6 col-ms-12"  v-show="Comprobante">
               <label class="col-form-label">Comprobante</label>
               <el-select
                 required
@@ -356,6 +349,28 @@
                 </el-option>
               </el-select>
             </div>
+            <div class="col-md-6 col-ms-12" v-show="Vendedor">
+                <label class="col-form-label">Vendedor</label>
+                <el-select
+                  required
+                  filterable
+                  :disabled="readOnly"
+                  :key="readOnly"
+                  class="select-primary w-100"
+                  size="large"
+                  placeholder="Vendedor"
+                  v-model="bill.vendedorId"
+                >
+                  <el-option
+                    v-for="option in selects.vendedores"
+                    class="select-primary"
+                    :value="option.id"
+                    :label="option.nombre"
+                    :key="option.id"
+                  >
+                  </el-option>
+                </el-select>
+              </div>
 
           </div> 
 
@@ -364,7 +379,7 @@
               <div
                 class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
               ></div>
-            <div class="tableFixHead scroll scroll-white mt-2 tableFixHead2" id="tableProducto">
+            <div class="tableFixHead2 scroll scroll-white mt-2 " id="tableProducto">
                   <el-table :data="queriedData">
                     <el-table-column
                       v-for="column in tableColumns"
@@ -416,7 +431,13 @@
               </div>
               <div class="col-12 justify-content-center  align-items-centerm d-flex" v-if="!pagodo">
             <div class="col-12">
-              <base-button
+            <div class="row">
+              <label class="col-form-label col-3">Otros Costo</label>
+             <div class="col-9">
+               <input type="number" class="form-control" v-model="bill.otroCostos">
+             </div>
+            </div>
+            <base-button
                   type="google"
                   class="w-100"
                   size="lg"
@@ -619,7 +640,8 @@
           <hr> <div class="col-12 text-right">Descuento: {{facturas.descuento.toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Sub Total: {{facturas.subTotal.toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Itbis: {{facturas.itbis.toFixed(2)}}</div>
-          <hr> <div class="col-12 text-right">Total:{{facturas.total.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Envio: {{facturas.otroCostos.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Total:{{(facturas.total+facturas.otroCostos).toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Monto Pagado:{{facturas.abono.toFixed(2)}}</div>
 
 
@@ -638,6 +660,7 @@ import 'vue-loading-overlay/dist/vue-loading.css'
 import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
+import clientForm from '@/components/Form/Client.vue';
 export default {
   components: {
     Loading,
@@ -647,7 +670,8 @@ export default {
     [Select.name]: Select,
     [Option.name]: Option,
     [Table.name]: Table,
-    [TableColumn.name]: TableColumn
+    [TableColumn.name]: TableColumn,
+    clientForm
   },
   computed: {
     queriedData() {
@@ -684,8 +708,8 @@ export default {
       titleModalPay:'',
       readOnly:false,
       menuOption:false,
-      Vendedor:true,
-      Comprobante:true,
+      Vendedor:false,
+      Comprobante:false,
       typePrice:'precio',
       search:'',
       tableDataProducFilter:[],
@@ -736,7 +760,7 @@ export default {
         abono:0,
         descuento:0,
         itbis:0,
-        gastos:0,
+        otroCostos:0,
         total:0,
         tipoComprobante:0,
         detalleFactura:[],
@@ -757,6 +781,7 @@ export default {
         total:0,
         subTotal:0,
         descuento:0,
+        otroCostos:0,
         abono:0,
         itbis:0,
         detalleFactura:[]
@@ -808,7 +833,8 @@ export default {
       ],
       tableData: [],
       searchedData: [],
-      fuseSearch: null
+      fuseSearch: null,
+    
     }
   },
   mounted() {
@@ -1029,7 +1055,7 @@ export default {
           return this.globalSweetMessage('Error al agregar Producto', 'error')
         })
         .finally(() => {
-          document.getElementById("tableProducto").scrollTo(0,100);
+          document.getElementById("tableProducto").scrollTo(0,10000000);
 
         })
 
@@ -1145,6 +1171,10 @@ export default {
           })
       this.ver_popup_search=true
       this.titleModal=item
+    },
+    subclientmodal(item){
+      this.ver_popup_search=true
+      this.titleModal=item
     }
     ,filterProduct(){
       this.tableDataProducFilter=this.tableDataProduc.filter(c => c.nombre.toLowerCase().includes(this.search.toLowerCase()))
@@ -1160,8 +1190,12 @@ function toFixedNumber(num, digits, base){
 
 .mytable{
   border-collapse: collapse;
- color: #000;
- width: 100%;
+color:black;
+  width: 100%;
+}
+.mytable th,
+.mytable td {
+    padding: 12px 15px;
 }
 
 
@@ -1206,30 +1240,40 @@ body{
 .modalsearch{
   position: fixed;
     float: right;
-    z-index: 3;
+    z-index: 1052;
     background: white;
-    height: 310px;
+    height: 100%;
     right: 0;
-    border-radius: 15px;
-    top:80px;
+    border-top-left-radius:10px;
+    border-bottom-left-radius:10px;
+    top:0;
+}
+.clientFixHead{
+  overflow: auto;
+  height: 85% !important;
 }
 
-@media (min-width:430px)  {
-  .modalsearch{
-    width: 427px;
-    top:33px;
-    left: 3px;
+.tableFixHead2{
+  overflow: auto;
+  height: 250px !important;
+  width: 100%;
 }
+
+
+.tableFixHead{
+  overflow: auto;
+  height: 480px !important;
+  width: 100%;
 }
 
 @media (min-width:768px)  {
-  .modalsearch{
-    left: 100px;
-    width: 440px;
-    top:65px
-}
+
 .modalpay{
     right: 15px;
+}
+.clientFixHead{
+  overflow: auto;
+  height: 87% !important;
 }
 }
 .tableFixHead2{
@@ -1238,7 +1282,7 @@ body{
 }
 .tableFixHead {
   overflow: auto;
-  height: 185px;
+  height: 480px !important;
 }
 
 .tableFixHead thead th {
@@ -1326,6 +1370,10 @@ body{
 }
 .w-30{
   width: 38%;
+  margin-left: 0.01px;
+}
+.w-70{
+  width: 70%;
   margin-left: 0.01px;
 }
 .impresora>.el-input>.el-input__inner{

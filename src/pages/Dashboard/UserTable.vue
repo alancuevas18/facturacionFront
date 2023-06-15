@@ -12,7 +12,7 @@
 
       <td>{{ row.nombre }}</td>
       <td>{{ row.stock }}</td>
-      <td class="text-center"><base-progress computedClasses="bg-warning" :value="((row.stock*100)/row.stockMinimo)"  /></td>
+      <td class="text-center"><base-progress computedClasses="bg-warning" :value="((row.stock*100)/ row.stockMinimo==0?1:row.stockMinimo)"  /></td>
       <td>{{ row.stockMinimo }}</td>
       <td>{{ row.sucursales }}</td>
       <!-- <td class="text-right">€ 99,225</td> -->

@@ -17,10 +17,10 @@ export default {
     // baseApiUrl: 'https://emacsoft.com/api/',
     // baseUrl: 'https://emacsoft.com/'
     
-     baseApiUrl : 'https://localhost:7004/api/',
-     baseUrl: 'https://localhost:7004/'
+    //  baseApiUrl : 'https://localhost:7004/api/',
+    //  baseUrl: 'https://localhost:7004/'
     
-    // baseApiUrl: 'https://api.theglamouronlinestore.com/api/',
-    // baseUrl: 'https://api.theglamouronlinestore.com/'
+    baseApiUrl: 'https://api.theglamouronlinestore.com/api/',
+    baseUrl: 'https://api.theglamouronlinestore.com/'
   }
 }

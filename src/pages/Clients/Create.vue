@@ -445,7 +445,6 @@ export default {
             this.$router.push({ path: '/clients/index' })
           } else {
             let celular = this.client.celular
-            console.log(response.data)
             if(response.data.celular!=null)
             this.client = this.globalFillObject(response.data)
             this.client.celular = celular
