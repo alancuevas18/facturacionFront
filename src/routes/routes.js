@@ -152,6 +152,11 @@ const billCreate = () => import('src/pages/BillMenu/bill/Create.vue')
 const billDetail = () => import('src/pages/BillMenu/bill/Details.vue')
 const billPrint = () => import('src/pages/BillMenu/bill/Print.vue')
 const billPending = () => import('src/pages/BillMenu/bill/BillPending.vue')
+//Reports
+const ReportSellers = () => import('src/pages/Reports/ReportSellers.vue')
+const ReportBills = () => import('src/pages/Reports/ReportBills.vue')
+
+
 
 let clientMenu = {
   path: '/clients',
@@ -768,7 +773,6 @@ let BillDashboard = {
     }
   ]
 }
-
 let billMenu = {
   path: '/billDashboard/bill',
   component: BillingLayout,
@@ -943,7 +947,76 @@ let sendsMenu = {
     }
   ]
 }
-
+let clientMenulayout = {
+  path: '/billDashboard/clients',
+  component: BillingLayout,
+  redirect: '/billDashboard/clients/index',
+  name: 'Clientes factura',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Clientes factura',
+      components: { default: ClientIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Clientes factura',
+      components: { default: ClientCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Cliente factura',
+      components: { default: ClientDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    }
+  ]
+}
+let DeliveryMenulayout = {
+  path: '/billDashboard/deliveries',
+  component: BillingLayout,
+  redirect: '/billDashboard/deliveries/index',
+  name: 'Mensajeros factura',
+  children: [
+    {
+      path: 'index',
+      name: 'Administracion Mensajeros factura',
+      components: { default: DeliveryIndex },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    },
+    {
+      path: 'create/:id?',
+      name: 'Crear Mensajeros factura',
+      components: { default: DeliveryCreate },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    },
+    {
+      path: 'details/:id',
+      name: 'Detalles Mensajeros factura',
+      components: { default: DeliveryDetail },
+      meta: {
+        needsAuth: true,
+        validRols: 'Admin,Root,Vendedor'
+      }
+    }
+  ]
+}
 let deductionMenu = {
   path: '/deductions',
   component: DashboardLayout,
@@ -1019,7 +1092,24 @@ let authPages = {
     }
   ]
 }
-
+let Reports = {
+  path: '/Reports',
+  component: DashboardLayout,
+  redirect: '/Reports/index',
+  name: 'Reports',
+  children: [
+    {
+      path: 'ReportSellers',
+      name: 'ReportSellers',
+      components: { default: ReportSellers }
+    },
+    {
+      path: 'ReportBills',
+      name: 'ReportBills',
+      components: { default: ReportBills }
+    }
+  ]
+}
 const routes = [
   {
     path: '/',
@@ -1057,6 +1147,9 @@ const routes = [
   deductionMenu,
   SpendsTypeMenu,
   InventoryadjustmentMenu,
+  clientMenulayout,
+  DeliveryMenulayout,
+  Reports,
   //Auth
   authPages,
   {

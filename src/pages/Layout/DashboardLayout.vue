@@ -242,6 +242,26 @@
           ></sidebar-item>
         </sidebar-item>
 
+        <!-- Reports -->
+        <sidebar-item :link="{
+            name:$t('Reports.Reports'),
+            icon:'fa-solid fa-file-lines'}">
+
+           <sidebar-item
+            :link="{
+              name: $t('Reports.ReportBills'),
+              path: '/Reports/ReportBills'
+            }"
+          ></sidebar-item>
+
+
+          <sidebar-item
+            :link="{
+              name: $t('Reports.ReportSellers'),
+              path: '/Reports/ReportSellers'
+            }"
+          ></sidebar-item>
+        </sidebar-item>
         <!-- Configuration -->
         <sidebar-item
           :link="{
@@ -322,6 +342,7 @@ import DashboardNavbar from './DashboardNavbar.vue'
 import ContentFooter from './ContentFooter.vue'
 import SidebarFixedToggleButton from './SidebarFixedToggleButton.vue'
 import { ZoomCenterTransition } from 'vue2-transitions'
+import SidebarItem from '../../components/SidebarPlugin/SidebarItem.vue'
 
 export default {
   components: {
@@ -329,7 +350,8 @@ export default {
     ContentFooter,
     SidebarFixedToggleButton,
     ZoomCenterTransition,
-    SidebarShare
+    SidebarShare,
+    SidebarItem
   },
   data() {
     return {

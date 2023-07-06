@@ -117,15 +117,14 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Correo*</label>
+              <label class="col-sm-2 col-form-label">Correo</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Correo"
-                  rules="required|email"
+                  rules="email"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -169,11 +168,10 @@
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Telefono"
-                  rules="required|numeric"
+                  rules="numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -430,6 +428,7 @@ export default {
       return (
         !this.supplier.nombre ||
         !this.supplier.apellido ||
+        !this.supplier.direccion ||
         !this.supplier.celular
       )
     },
@@ -443,7 +442,7 @@ export default {
           this.supplier,
           '/suppliers/index'
         )
-        this.supplier = this.globalClear(this.supplier)
+        // this.supplier = this.globalClear(this.supplier)
       }
     },
     create() {
@@ -451,7 +450,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       else {
         this.globalPost('suplidores', this.supplier, '/suppliers/index')
-        this.supplier = this.globalClear(this.supplier)
+        // this.supplier = this.globalClear(this.supplier)
       }
     }
   }

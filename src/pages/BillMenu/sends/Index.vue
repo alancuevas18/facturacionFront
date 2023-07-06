@@ -13,11 +13,7 @@
         <card card-body-classes="table-full-width">
           <h4 slot="header" class="card-title">
             {{ $t('sends.sends') }}
-            <router-link to="/billDashboard/sends/create">
-              <button class="btn floatr btn-icon btn-twitter">
-                <i class="tim-icons icon-simple-add"></i>
-              </button>
-            </router-link>
+       
           </h4>
           <div>
             <div
@@ -281,14 +277,8 @@ export default {
     axios
       .get(this.baseApiUrl + 'envios')
       .then((response) => {
-        for (let i = 0; i < response.data.length; i++) {
-          this.tableData.push(response.data[i])
-          let mensajeroId = response.data[1].mensajeroId ?? 1
-          this.tableData[i]['mensajeroId'] =
-            this.selects.mensajeros[mensajeroId - 1].nombre
-          this.tableData[i]['estadoEnvios'] =
-            this.selects.estadoEnvios[response.data[i].estadoEnvios - 1].nombre
-        }
+        console.log(response.data)
+        this.tableData=response.data  
       })
       .catch((error) => {
         this.errored = true

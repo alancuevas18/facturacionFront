@@ -117,15 +117,14 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Correo*</label>
+              <label class="col-sm-2 col-form-label">Correo</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Correo"
-                  rules="required|email"
+                  rules="email"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -165,15 +164,14 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Telefono*</label>
+              <label class="col-sm-2 col-form-label">Telefono</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Telefono"
-                  rules="required|numeric"
+                  rules="numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -189,7 +187,7 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Status</label>
+              <label class="col-sm-2 col-form-label">Estado</label>
               <div class="col-sm-10">
                 <el-select
                   :disabled="checkedID"
@@ -331,6 +329,7 @@ export default {
       return (
         !this.delivery.nombre ||
         !this.delivery.apellido ||
+        !this.delivery.direccion ||
         !this.delivery.celular
       )
     },
@@ -344,7 +343,7 @@ export default {
           this.delivery,
           '/deliveries/index'
         )
-        this.delivery = this.globalClear(this.delivery)
+        // this.delivery = this.globalClear(this.delivery)
       }
     },
     create() {
@@ -352,7 +351,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       else {
         this.globalPost('mensajeros', this.delivery, '/deliveries/index')
-        this.delivery = this.globalClear(this.delivery)
+        // this.delivery = this.globalClear(this.delivery)
       }
     }
   }

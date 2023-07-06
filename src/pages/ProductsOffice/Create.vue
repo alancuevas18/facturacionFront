@@ -230,7 +230,6 @@ export default {
     },
     validateFields() {
       return (
-        !this.productByOffice.stock ||
         !this.productByOffice.precio ||
         !this.productByOffice.sucursalesId 
       )

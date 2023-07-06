@@ -61,10 +61,10 @@
           }"
         >
           <sidebar-item
-          :link="{ name: $t('clients.create'), path: '/clients/create' }"
+          :link="{ name: $t('clients.create'), path: '/billDashboard/clients/create' }"
           ></sidebar-item>
           <sidebar-item
-            :link="{ name: $t('clients.index'), path: '/clients/index' }"
+            :link="{ name: $t('clients.index'), path: '/billDashboard/clients/index' }"
           ></sidebar-item>
   
         </sidebar-item>
@@ -150,10 +150,10 @@
           }"
         >
         <sidebar-item
-            :link="{ name: $t('deliveries.create'), path: '/deliveries/create' }"
+            :link="{ name: $t('deliveries.index'), path: '/billDashboard/deliveries/index' }"
           ></sidebar-item>
           <sidebar-item
-            :link="{ name: $t('deliveries.index'), path: '/deliveries/index' }"
+          :link="{ name: $t('deliveries.create'), path: '/billDashboard/deliveries/create' }"
           ></sidebar-item>
          </sidebar-item>
         <hr />

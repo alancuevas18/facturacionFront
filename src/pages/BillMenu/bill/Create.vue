@@ -40,7 +40,7 @@
             </thead>
             <tbody>
              <tr v-for="item in tableDataProducFilter" :key="item.id" style="border-bottom: 1px solid;">
-               <td><i class="fa-solid fa-check" @click="ver_popup_search=false,currentCode.codigo=item.codigo"></i></td>
+               <td><i class="fa-solid fa-check" @click="ver_popup_search=false,currentCode.codigo=item.codigo,currentCode.price=item.precio"></i></td>
                <td style="width:250px;">{{item.nombre}}</td>
                <td>{{item.codigo}}</td>
                <td>{{item.precio}}</td>
@@ -54,9 +54,13 @@
           <clientForm @close="ver_popup_search=false" @reload="fillCatalogs(['clientes'])"></clientForm>
          </div>
 
+         <div v-if="titleModal=='Envio'" class="clientFixHead">
+          <sendForm @close="ver_popup_search=false" :facturaId="this.bill.facturaId"></sendForm>
+         </div>
+
        </div>
        <!-- end modal productos or servisico -->
-      <card>
+      <card card-body-classes="p-1" >
         <div class="row">
 
           <!--add Product and service -->
@@ -258,7 +262,7 @@
     
             <div class="row">
               
-              <div class="h3 col-12" style="margin-bottom: -10px;">
+              <div class="h3 col-12 d-none" style="margin-bottom: -10px;">
               <a @click="menuOption=!menuOption"> <i class="fa-solid fa-sliders text-white"></i></a>
              <div class="ml-2 h3 position-absolute rounded-lg row"  style="z-index: 15; background-color: #202840; margin:-34px 33px !important;"  v-if="menuOption">
               <div class="col-12">
@@ -408,32 +412,34 @@
             </div>
             <div
               slot="footer"
-              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap"
+              class="col-12 d-flex justify-content-center justify-content-sm-between flex-wrap p-1"
             >
-
-              <div class="col-4">
-                <p class="h4">Sub total: {{ subtotal.toFixed(2) }}</p>
+            <div class="row col-12">
+              <div class="col-ms-12 row" :class="!pagodo?'col-md-4':'col-12'">
+              <div :class="!pagodo?'col-12':'col-md-4 col-ms-12'">
+                <p class="h4 m-0">Sub total: {{ subtotal.toFixed(2) }}</p>
               </div>
-              <div class="col-4">
-                <p class="h4">Itbis: {{itbis.toFixed(2) }}</p>
+              <div  :class="!pagodo?'col-12':'col-md-4 col-ms-12'">
+                <p class="h4 m-0">Itbis: {{itbis.toFixed(2) }}</p>
               </div>
-              <div class="col-4">
-                <p class="h4">Descuento: {{ descuento.toFixed(2) }}</p>
+              <div  :class="!pagodo?'col-12':'col-md-4 col-ms-12'">
+                <p class="h4 m-0">Descuento: {{ descuento.toFixed(2) }}</p>
               </div>
-              <div class="col-4">
-                <p class="h4">Total: {{ total.toFixed(2) }}</p>
+              <div  :class="!pagodo?'col-12':'col-md-4 col-ms-12'">
+                <p class="h4 m-0">Total: {{ total.toFixed(2) }}</p>
               </div>
-              <div class="col-4">
-                <p class="h4">Abono: {{bill.abono.toFixed(2) }}</p>
+              <div  :class="!pagodo?'col-12':'col-md-4 col-ms-12'">
+                <p class="h4 m-0">Abono: {{bill.abono.toFixed(2) }}</p>
               </div>
-              <div class="col-4">
-                <p class="h4">Pendiente: {{ pendiente.toFixed(2) }}</p>
+              <div  :class="!pagodo?'col-12':'col-md-4 col-ms-12'">
+                <p class="h4 m-0">Pendiente: {{ pendiente.toFixed(2) }}</p>
               </div>
-              <div class="col-12 justify-content-center  align-items-centerm d-flex" v-if="!pagodo">
+              </div>
+              <div class="col-md-8 col-ms-12 justify-content-center  align-items-centerm d-flex" v-if="!pagodo">
             <div class="col-12">
             <div class="row">
-              <label class="col-form-label col-3">Otros Costo</label>
-             <div class="col-9">
+              <label class="col-form-label col-5">Otros Costo</label>
+             <div class="col-7">
                <input type="number" class="form-control" v-model="bill.otroCostos">
              </div>
             </div>
@@ -447,6 +453,8 @@
                 >
             </div>
           </div>
+            </div>
+    
             </div>
 
           </card>
@@ -495,9 +503,16 @@
                 >
                 <i class="fa-solid fa-comments-dollar display-4"></i>Nota Credito</base-button
                 >
+                <!-- <base-button
+                  type="white"
+                  class="w-100"
+                  @click.native="subclientmodal('Envio')"
+                >
+                <i class="fa-solid fa-comments-dollar display-4"></i>Envio</base-button
+                > -->
             </div>
           </div>
-          <!-- print  -->
+          <!-- print  --> 
           <div class="col-12 row" v-if="pagodo &&( pendiente<=0 || bill.tipoFactura==2)">
             <div class="col-md-6 col-ms-12 ">
        
@@ -524,12 +539,23 @@
                 </div>
           </div>
             </div>
-            <div class="col-md-6 col-ms-12">
-              <router-link to="/billDashboard/bill/create"   @click.native="$router.go()">
-              <button class="btn  btn-lg btn-youtube w-100">
-                <i class="fa-solid fa-file-invoice display-4"></i> General nuevaa Factura
-              </button>
-            </router-link>
+            <div class="col-md-6 col-ms-12 row">
+              <div class="col-md-6 col-ms-12">
+              <base-button
+                  type="white"
+                  class="w-100  btn-lg"
+                  @click.native="subclientmodal('Envio')"
+                >
+                <i class="fa-solid fa-comments-dollar display-4"></i>Envio</base-button
+                >
+              </div>
+              <div class="col-md-6 col-ms-12">
+                <router-link to="/billDashboard/bill/create"   @click.native="$router.go()">
+                <button class="btn  btn-lg btn-youtube w-100">
+                  <i class="fa-solid fa-file-invoice display-4"></i> Nueva Factura
+                </button>
+              </router-link>
+              </div>
             </div>
           </div>
         </div>
@@ -637,10 +663,10 @@
             </tbody>
 
           </table>
-          <hr> <div class="col-12 text-right">Descuento: {{facturas.descuento.toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Sub Total: {{facturas.subTotal.toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Itbis: {{facturas.itbis.toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Envio: {{facturas.otroCostos.toFixed(2)}}</div>
+          <hr> <div class="col-12 text-right">Descuento: {{facturas.descuento.toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Total:{{(facturas.total+facturas.otroCostos).toFixed(2)}}</div>
           <hr> <div class="col-12 text-right">Monto Pagado:{{facturas.abono.toFixed(2)}}</div>
 
@@ -661,6 +687,7 @@ import swal from 'sweetalert2'
 import axios from 'axios'
 import config from '@/config'
 import clientForm from '@/components/Form/Client.vue';
+import sendForm from '@/components/Form/Send.vue';
 export default {
   components: {
     Loading,
@@ -671,7 +698,8 @@ export default {
     [Option.name]: Option,
     [Table.name]: Table,
     [TableColumn.name]: TableColumn,
-    clientForm
+    clientForm,
+    sendForm
   },
   computed: {
     queriedData() {
@@ -708,8 +736,8 @@ export default {
       titleModalPay:'',
       readOnly:false,
       menuOption:false,
-      Vendedor:false,
-      Comprobante:false,
+      Vendedor:true,
+      Comprobante:true,
       typePrice:'precio',
       search:'',
       tableDataProducFilter:[],
@@ -877,8 +905,6 @@ export default {
       this.formToAddProducts=false
     },
     checkIn(){
-
-      console.log(this.bill)
       if(this.bill.clienteId !=null){
         this.readOnly=true
       this.pagodo=true
@@ -997,12 +1023,12 @@ export default {
           descuento=toFixedNumber(this.currentCode.descuento,2)
           itbis =
           toFixedNumber((precio *
-            this.currentCode.quanty- descuento) *
+            this.currentCode.quanty) *
             this.currentCode.tax,2)
           total =
           toFixedNumber(precio * this.currentCode.quanty +
             itbis -descuento,2)
-          subTotal= toFixedNumber(precio * this.currentCode.quanty-descuento,2)
+          subTotal= toFixedNumber(precio * this.currentCode.quanty,2)
           if (AddedProduct >= 0) {
             let quanty =
             parseInt(this.tableData[AddedProduct].cantidad) +
@@ -1017,13 +1043,13 @@ export default {
             }
             this.tableData[AddedProduct].precio = precio
             subTotal = toFixedNumber(this.tableData[AddedProduct].precio*quanty,2)
-            itbis = toFixedNumber((subTotal-descuento)* this.currentCode.tax,2)
+            itbis = toFixedNumber((subTotal)* this.currentCode.tax,2)
             this.tableData[AddedProduct].cantidad = quanty
             this.tableData[AddedProduct].itbis = itbis
             this.tableData[AddedProduct].total =
             toFixedNumber(subTotal + itbis -descuento,2)
             this.tableData[AddedProduct].descuento = descuento
-            this.tableData[AddedProduct].subTotal = subTotal-descuento
+            this.tableData[AddedProduct].subTotal = subTotal
 
           } else {
             if (this.currentCode.quanty < 0)
@@ -1041,7 +1067,7 @@ export default {
               cantidad: this.currentCode.quanty,
               precio: precio,
               itbis: itbis,
-              subTotal:subTotal-descuento,
+              subTotal:subTotal,
               descuento:descuento,
               total:total,
               estadoDetalleFactura:1
@@ -1076,15 +1102,15 @@ export default {
           let subTotal = 0
           let descuento=0
           let precio=this.currentCode.price
-          descuento=this.currentCode.descuento
+          descuento=toFixedNumber(this.currentCode.descuento,2)
           itbis =
           toFixedNumber((precio *
-            this.currentCode.quanty-descuento) *
+            this.currentCode.quanty) *
             this.currentCode.tax,2)
           total =
           toFixedNumber(precio * this.currentCode.quanty +
             itbis -descuento,2)
-          subTotal= toFixedNumber(precio * this.currentCode.quanty-descuento,2)
+          subTotal= toFixedNumber(precio * this.currentCode.quanty,2)
           document.getElementById("sercivioCodigo").focus()
           if (AddedProduct >= 0) {
             let quanty =
@@ -1099,9 +1125,8 @@ export default {
             itbis = subTotal * this.currentCode.tax
             this.tableData[AddedProduct].cantidad = quanty
             this.tableData[AddedProduct].itbis = itbis
-            this.tableData[AddedProduct].total =
-              subTotal + itbis - descuento
-            this.tableData[AddedProduct].subTotal = subTotal-descuento
+            this.tableData[AddedProduct].subTotal = subTotal
+            this.tableData[AddedProduct].total = subTotal + itbis - descuento
 
 
           } else {
@@ -1120,7 +1145,7 @@ export default {
               precio: precio,
               itbis: itbis,
               descuento:descuento,
-              subTotal:subTotal-descuento,
+              subTotal:subTotal,
               total: total,
               estadoDetalleFactura:1
             }

@@ -117,15 +117,14 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Correo*</label>
+              <label class="col-sm-2 col-form-label">Correo</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Correo"
-                  rules="required|email"
+                  rules="email"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -173,7 +172,6 @@
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -242,11 +240,10 @@
               <div class="col-sm-10">
                 <ValidationProvider
                   name="empresaTelefono"
-                  rules="required|numeric"
+                  rules="numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -460,6 +457,7 @@ export default {
       return (
         !this.client.nombre ||
         !this.client.apellido ||
+        !this.client.direccion ||
         !this.client.celular
       )
     },
@@ -468,7 +466,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.globalEdit('clientes', this.id, this.client, '/clients/index')
-        this.client = this.globalClear(this.client)
+        // this.client = this.globalClear(this.client)
       }
     },
     create() {
@@ -476,7 +474,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.globalPost('clientes', this.client, '/clients/index')
-        this.client = this.globalClear(this.client)
+        // this.client = this.globalClear(this.client)
       }
     }
   }

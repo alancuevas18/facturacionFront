@@ -221,6 +221,11 @@
       "index" : "Administracion de Envios",
       "sends" : "Envios"
     },
+    "Reports":{
+      "Reports":"Reportes",
+      "ReportSellers" : "Reporte de vendedores",
+      "ReportBills" : "Reporte de Factura"
+    },
   "validate":{
     "fields":{      
     },

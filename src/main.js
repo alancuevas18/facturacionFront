@@ -169,12 +169,14 @@ Vue.mixin({
         .post(baseApiUrl + page, obj)
         .then((response) => {
           this.globalSweetMessage(response.data.message)
-          if (redirect) this.$router.push({ path: redirect })
+          if (redirect) this.$router.push({ path: redirect })     
         })
         .catch((error) => {
           this.globalSweetMessage(error.response.data.message, 'error')
+          return false
         })
         .finally(() => (this.isLoading = false))
+        return true
     },
     globalFillCatalog(catalog) {
       let baseApiUrl = config.global.baseApiUrl

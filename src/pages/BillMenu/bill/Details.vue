@@ -231,6 +231,7 @@ components:{
         itbis:0,
         total:0,
         abono:0,
+        otroCostos:0
       },
       id:0,
       title: '',

@@ -117,15 +117,14 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Correo*</label>
+              <label class="col-sm-2 col-form-label">Correo</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Correo"
-                  rules="required|email"
+                  rules="email"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -165,15 +164,14 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Telefono*</label>
+              <label class="col-sm-2 col-form-label">Telefono</label>
               <div class="col-sm-10">
                 <ValidationProvider
                   name="Telefono"
-                  rules="required|numeric"
+                  rules="numeric"
                   v-slot="{ passed, failed, errors }"
                 >
                   <base-input
-                    required
                     :disabled="checkedID"
                     :readonly="readOnly"
                     :key="readOnly"
@@ -189,7 +187,7 @@
               </div>
             </div>
             <div class="row">
-              <label class="col-sm-2 col-form-label">Status</label>
+              <label class="col-sm-2 col-form-label">Estado</label>
               <div class="col-sm-10">
                 <el-select
                   :disabled="checkedID"
@@ -331,6 +329,7 @@ export default {
       return (
         !this.seller.nombre ||
         !this.seller.apellido ||
+        !this.seller.direccion ||
         !this.seller.celular
       )
     },
@@ -339,7 +338,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       else {
         this.globalEdit('vendedores', this.id, this.seller, '/sellers/index')
-        this.seller = this.globalClear(this.seller)
+        // this.seller = this.globalClear(this.seller)
       }
     },
     create() {
@@ -347,7 +346,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       else {
         this.globalPost('vendedores', this.seller, '/sellers/index')
-        this.seller = this.globalClear(this.seller)
+        // this.seller = this.globalClear(this.seller)
       }
     }
   }

@@ -192,7 +192,7 @@
                     <base-input>
                       <el-date-picker
                         type="date"
-                        placeholder="Fecha"
+                        placeholder="Fecha entrega"
                         v-model="send.fechaEntrega"
                         :error="errors[0]"
                         :class="[
@@ -368,7 +368,7 @@ export default {
         facturas: null,
         mensajeroId: null,
         mensajeros: null,
-        estadoEnvios: null
+        estadoEnvios: 2
       }
     }
   },

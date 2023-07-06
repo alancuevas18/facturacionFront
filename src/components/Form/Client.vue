@@ -361,6 +361,7 @@ export default {
       return (
         !this.client.nombre ||
         !this.client.apellido ||
+        !this.client.direccion ||
         !this.client.celular
       )
     },
@@ -371,7 +372,7 @@ export default {
         this.globalSweetMessage('Favor llenar todos los campos!', 'error')
       } else {
         this.isLoading = true   
-        await  this.globalPost('clientes', this.client)
+        console.log(await  this.globalPost('clientes', this.client))
         this.client = this.globalClear(this.client) 
         this.$emit('close')
         this.$emit('reload')        
